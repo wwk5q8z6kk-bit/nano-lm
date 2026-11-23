@@ -1,0 +1,96 @@
+{
+ "run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2",
+ "final_step": 234950,
+ "final_mix": 0.8049,
+ "final_domains": {
+  "web": 0.8877,
+  "textbook": 0.5307,
+  "math": 0.8713,
+  "code": 0.6024
+ },
+ "Q2": {
+  "held": true,
+  "bound": [
+   0.79,
+   0.83
+  ],
+  "value": 0.8049
+ },
+ "Q3a": {
+  "held": true,
+  "arc_easy": {
+   "ours_386M": 0.5964,
+   "ours_211M": 0.5215,
+   "beats": true
+  },
+  "piqa": {
+   "ours_386M": 0.6779,
+   "ours_211M": 0.648,
+   "beats": true
+  }
+ },
+ "Q3b": {
+  "held": false,
+  "arc_easy": {
+   "ours": 0.5964,
+   "pythia_410m": 0.521,
+   "within_0.03": false
+  },
+  "piqa": {
+   "ours": 0.6779,
+   "pythia_410m": 0.668,
+   "within_0.03": true
+  },
+  "lambada_ppl": {
+   "ours": 32.06,
+   "pythia_410m": 10.8,
+   "worse": true
+  }
+ },
+ "all_tasks_acc": {
+  "hellaswag": {
+   "acc": 0.3427,
+   "acc_norm": 0.4102,
+   "ppl": null
+  },
+  "arc_easy": {
+   "acc": 0.5964,
+   "acc_norm": 0.5345,
+   "ppl": null
+  },
+  "arc_challenge": {
+   "acc": 0.2602,
+   "acc_norm": 0.2918,
+   "ppl": null
+  },
+  "piqa": {
+   "acc": 0.6779,
+   "acc_norm": 0.6763,
+   "ppl": null
+  },
+  "winogrande": {
+   "acc": 0.5201,
+   "acc_norm": null,
+   "ppl": null
+  },
+  "openbookqa": {
+   "acc": 0.218,
+   "acc_norm": 0.312,
+   "ppl": null
+  },
+  "lambada": {
+   "acc": 0.3544,
+   "acc_norm": null,
+   "ppl": 32.06
+  }
+ },
+ "nocontext_acc": {
+  "hellaswag": 0.3023,
+  "arc_easy": 0.3333,
+  "arc_challenge": 0.2218,
+  "piqa": 0.6311,
+  "winogrande": 0.4957,
+  "openbookqa": 0.126,
+  "lambada": 0.0
+ }
+}

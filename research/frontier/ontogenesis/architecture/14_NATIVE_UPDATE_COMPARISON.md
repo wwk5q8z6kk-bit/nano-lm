@@ -1,3 +1,5 @@
+> **V6 current entry point:** [Full architecture](00_FULL_ARCHITECTURE.md). This chapter preserves the V5/historical contract and results. [15](15_NATIVE_BASELINE_AND_RESEARCH_UPDATE.md), [16](16_GENERATIVE_REASONING_EVALUATION.md) and [17](17_CORRECTION_MEASUREMENT_AND_PROTECTION.md) carry the newer evidence, instruments and corrections. In particular the101M store status is no longer pending; see chapter15 for the scoped stopping decision.
+
 # 14 — Native update allocation: a fixed exploratory comparison
 
 ## Executive finding

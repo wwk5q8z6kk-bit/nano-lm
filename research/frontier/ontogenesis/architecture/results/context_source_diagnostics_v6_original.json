@@ -1,0 +1,45 @@
+{
+  "classification": "SOURCE_ONLY_SYNTHETIC_DIAGNOSTICS_NOT_MODEL_RESULTS",
+  "research_cutoff": "3a38b5f1529a718838b5bc83a010574bfa9a4c6e",
+  "model_execution": "NOT_RUN",
+  "actual_tokenizer_or_corpus_access": "NOT_AVAILABLE",
+  "entries_witnesses": {
+    "normal_target_alignment_correct": true,
+    "left_crop_preserves_target_alignment": true,
+    "left_crop_removes_initial_EOS": true,
+    "long_sequence_length": 513,
+    "winogrande_no_context_identical_options": true,
+    "empty_continuation_is_accepted": true,
+    "empty_greedy_all_is_true": true,
+    "oversized_continuation_rejected": true
+  },
+  "committed_aggregate_arithmetic": {
+    "task_n": {
+      "hellaswag": 10042,
+      "arc_easy": 2376,
+      "arc_challenge": 1172,
+      "piqa": 1838,
+      "winogrande": 1267,
+      "openbookqa": 500,
+      "lambada": 5153
+    },
+    "sum_task_n": 22348,
+    "investigation_narrative_n": 30328,
+    "arc_easy_no_context_native_minus_smol135m": 0.0046
+  },
+  "q13_identity_binding_witness": {
+    "synthetic_run_name": "SYNTHETIC_RUN_A",
+    "synthetic_benchmark_checkpoint": "FOREIGN_SYNTHETIC_CHECKPOINT_B",
+    "mismatched_identity_accepted": true,
+    "scorer_reported_run": "SYNTHETIC_RUN_A",
+    "historical_misbinding_demonstrated": false,
+    "interpretation": "The scorer lacks identity/hash binding. This synthetic witness does not establish a historical benchmark mismatch."
+  },
+  "scope": [
+    "AST-executed entries() only; no JAX import or model.",
+    "Malformed/empty continuation witness is a schema robustness gap, not an observed real task row.",
+    "Boundary tokenization discrepancy is a conditional code risk; actual tokenizer bytes were unavailable.",
+    "No historical score changed by these diagnostics."
+  ],
+  "diagnostic_source_sha256": "41431ae44bfbaa72ec14c23996bd5972e9618b53d4f3098f967c7faed85a2bd3"
+}

@@ -1,0 +1,1047 @@
+{
+  "published_commit": "beb156b279900d640c3d1478eb8cafec9a8899ac",
+  "pr_head_before_v6": "d177685bd5fd55a44c221efc35d18470358d10c3",
+  "basis": "PR architecture subtree unchanged since V5; current shared-ledger relocation is preserved separately.",
+  "files": [
+    {
+      "path": "01_ARCHITECTURE_AND_THEOREMS.md",
+      "bytes": 41740,
+      "sha256": "df689ad0d7f4b269dc838c3d57985ab6e08226e28abf09e2df6dea22c7e523e7"
+    },
+    {
+      "path": "02_DECISION_LEDGER.md",
+      "bytes": 37876,
+      "sha256": "c9770ca5ffcfc62f9d2b1a1741ed7aebbe0b249f73b668ceea98b7d7de273879"
+    },
+    {
+      "path": "03_EXPERIMENTS_AND_EXECUTION.md",
+      "bytes": 33850,
+      "sha256": "37d7ef2ad34ce174bf914e734049bb12c55f7dbc99db3e29900a6a83f33583d0"
+    },
+    {
+      "path": "04_EVIDENCE_AND_REFERENCES.md",
+      "bytes": 29396,
+      "sha256": "8f10b1bb8313718dd4fe112d64b060c00d9a181a96ecc1eecd293c84b93409eb"
+    },
+    {
+      "path": "05_GAP_CLOSURE_AND_FORMAL_REVIEW.md",
+      "bytes": 38110,
+      "sha256": "7c325d055ed3a3c59e974019fbcc19b4a5370b1d72502ce63bbefc98a42ecadf"
+    },
+    {
+      "path": "06_VALIDATION_AND_UNRESOLVED_WORK.md",
+      "bytes": 19961,
+      "sha256": "4473889012cb04938cfb2c3266672be577e91666150515df40c718b399519a3a"
+    },
+    {
+      "path": "07_IMPLEMENTATION_CONTRACT.md",
+      "bytes": 18558,
+      "sha256": "e2f06860f3a081a1c4e83b3df8f7f667788e408a4a3ac4abd4a027b80a4f0e68"
+    },
+    {
+      "path": "08_LITERATURE_AUDIT.md",
+      "bytes": 33685,
+      "sha256": "7ee717a3cf809861cf4716d073c55cbaff41b9ff8c680f9b48fd9852c94f8f63"
+    },
+    {
+      "path": "09_EVIDENCE_REFRESH_AND_PROTOCOL_REPAIRS.md",
+      "bytes": 21307,
+      "sha256": "b6236f18c891be61c8e4579b5def060c79a34388b8c9b4576e3c6301659b402e"
+    },
+    {
+      "path": "10_TRAINING_AND_CONTROLLED_UPDATE_CONTRACT.md",
+      "bytes": 20999,
+      "sha256": "360dfcc53117edb924067651f5e768ea17cae84e0a1dd0c4b3eaab6da3ed7937"
+    },
+    {
+      "path": "11_MARGIN_RESULTS_AND_DURABILITY_THEORY.md",
+      "bytes": 18940,
+      "sha256": "fda7cea01398aef1ddeda278e2ee038585296c864f859284878300a74133b82c"
+    },
+    {
+      "path": "12_OPTIMIZER_FACTORIAL_AND_UPDATE_GEOMETRY.md",
+      "bytes": 19640,
+      "sha256": "5e4cb2ef16cc2fab16994130640d88b9c12d4ef46de6af7f990fbc7dc49a6dbb"
+    },
+    {
+      "path": "13_CAUSAL_MEMORY_AND_RESOURCE_FRONTIER.md",
+      "bytes": 21203,
+      "sha256": "ff2fb8795351c7d15fd51107e7b003e5ec490a94d12e3d37ad77e3be28ffd07d"
+    },
+    {
+      "path": "14_NATIVE_UPDATE_COMPARISON.md",
+      "bytes": 16662,
+      "sha256": "11adf0e046a4b21eb3b577341f2575b037dadb73fc3f69b28283972691eea2de"
+    },
+    {
+      "path": "README.md",
+      "bytes": 13490,
+      "sha256": "c0f57e4f69f8ac1708a7ecdc9ffca985467bace898177d18639684a0f4d23085"
+    },
+    {
+      "path": "analysis/margin_durability.py",
+      "bytes": 5443,
+      "sha256": "00c37e665770370d06123ec1a97d9f35cfed2248defa5a752e7bbec02aa6bf3d"
+    },
+    {
+      "path": "analysis/plot_evidence.py",
+      "bytes": 3676,
+      "sha256": "4487f69b5dbd9f7a5b74307f44164b626669a05102078a6e7213dc2598a24dbf"
+    },
+    {
+      "path": "analysis/plot_margin_results.py",
+      "bytes": 3376,
+      "sha256": "1f889a4170368f9e0114a7a150f31a255565beec6c2f17d2ca27ad4452d070ee"
+    },
+    {
+      "path": "analysis/plot_native_update_comparison.py",
+      "bytes": 12858,
+      "sha256": "5de95dfa10d3cbdbd715dfccf38cd948b7d1a57cee566f7406025f477e5ca670"
+    },
+    {
+      "path": "analysis/plot_optimizer_factorial.py",
+      "bytes": 9246,
+      "sha256": "868e625bad6f0f4e7a5ae40efe6724cf4a03370d5b7ad3d238d8a181a0917c95"
+    },
+    {
+      "path": "analysis/reconcile_margin_results.py",
+      "bytes": 9021,
+      "sha256": "377f95165407eebfc283b4fa47d272c18bb6f5367bac957582712693f53c4fbc"
+    },
+    {
+      "path": "analysis/reconcile_optimizer_factorial.py",
+      "bytes": 16098,
+      "sha256": "5edbd33534037331c70886abf80d93df84595b755e69163dcd60cdb37ceb2caa"
+    },
+    {
+      "path": "analysis/reconcile_repository_evidence.py",
+      "bytes": 6714,
+      "sha256": "54ec46fbd23ebb0e02489197a0c07f8da1bdf50310b4b04d9dbb01ff8af38d11"
+    },
+    {
+      "path": "analysis/reconcile_store_cache.py",
+      "bytes": 7859,
+      "sha256": "9e9d739ff6d0328276a5b549d5d0e9269bda381663815249e5325279e3a61dc5"
+    },
+    {
+      "path": "analysis/reconcile_store_cache_late.py",
+      "bytes": 12214,
+      "sha256": "78c516e2eac1715d5a34a61ee0708b5597a33dc2e4dc1d6c2e4db4d1a823e158"
+    },
+    {
+      "path": "analysis/update_feasibility_geometry.py",
+      "bytes": 3657,
+      "sha256": "2b789e2a1f809ea9a0432a3d837722cd4e05425349be0f89f5921f891e046c1e"
+    },
+    {
+      "path": "analysis/validate_release.py",
+      "bytes": 7344,
+      "sha256": "b26ab64209ac69c4df8913ca6a185d9753b1b6e69e0a8f323d45bf3920309408"
+    },
+    {
+      "path": "analysis/validate_release_v4.py",
+      "bytes": 22831,
+      "sha256": "0b62d25c70a9f68a00488126115d5815978c5989e4abdc160ee2170a5e9b2f4b"
+    },
+    {
+      "path": "analysis/validate_release_v5.py",
+      "bytes": 36344,
+      "sha256": "d5824d28cdc16c09ba865106a2c99639e1c446228b3a45bfdd9976ecfd724108"
+    },
+    {
+      "path": "architecture_scheme.mmd",
+      "bytes": 710,
+      "sha256": "5b152706baca99bc2f1bd984cf5e3c3948b765a2d855711586c95761c6cf847f"
+    },
+    {
+      "path": "checks/formal_sanity.py",
+      "bytes": 2216,
+      "sha256": "74f70899ca9a1fa83a3bf9ef14db321aeed2234a25aa6a48858aa73aee78c60e"
+    },
+    {
+      "path": "checks/repo_lightweight_checks.py",
+      "bytes": 5528,
+      "sha256": "6c6ef03a35a9bea824f7f7d11b1beb3fb37baea61ae48df17b72c11c5aed464f"
+    },
+    {
+      "path": "checks/requirements-checks.txt",
+      "bytes": 50,
+      "sha256": "48dd293a821e60367e2914957d9f4f663d3c49aa8aef231e8dd8f9227ef8e960"
+    },
+    {
+      "path": "checks/review_correction_oracle.py",
+      "bytes": 7732,
+      "sha256": "d5d8b781cb770bf663f884facaf857db4258c6f58b8fa7c66d94ba8f2d733866"
+    },
+    {
+      "path": "checks/review_native_bridge_replay.py",
+      "bytes": 5266,
+      "sha256": "1ac55f9d630a60a4fd6ecf2ccb7b59841548d4d711d0e4e073d398503e5f4a27"
+    },
+    {
+      "path": "checks/test_margin_durability.py",
+      "bytes": 4438,
+      "sha256": "7a63d38175ad02ce60999f77f1848aad1563f2467ed80cc7e071836ba4f8cfc3"
+    },
+    {
+      "path": "checks/test_optimizer_reanalysis.py",
+      "bytes": 4897,
+      "sha256": "a0671f561e8b4b71589590d18066447df2d37a862858aeab10cee7a8a69411d6"
+    },
+    {
+      "path": "checks/test_research_package.py",
+      "bytes": 15591,
+      "sha256": "be1f09437de9cb67e9e37a79cdfee16bd0796c9fbf3fcd73f12c534a87279b6f"
+    },
+    {
+      "path": "checks/test_update_feasibility_geometry.py",
+      "bytes": 3914,
+      "sha256": "21a19038dca17dbe1e4f3ab5153616fe2b91986a8da54f25ca967fffc185eeda"
+    },
+    {
+      "path": "checks/transport_anchor_pilot.py",
+      "bytes": 2959,
+      "sha256": "179bdcd3880fdf7b9047ae7758614c0871748271ecd130302bb9e5d2364d7828"
+    },
+    {
+      "path": "checks/validate_research_package.py",
+      "bytes": 15655,
+      "sha256": "9dcdd6ded8904855cb70c1be679398abc56d22dfd8eddcd0e2a0be882e081cef"
+    },
+    {
+      "path": "evidence/source_manifest.json",
+      "bytes": 13059,
+      "sha256": "1ce6a5ff391f9c5ea4a160dde072801877510ecc3fb9313e06acf00e0bcb7ab3"
+    },
+    {
+      "path": "evidence/source_manifest_v5.json",
+      "bytes": 57006,
+      "sha256": "d99569a08eb00ae9264f5575746c99724d6fc1f5d8b84a40347ede040507a804"
+    },
+    {
+      "path": "evidence/source_manifest_v5_addendum.json",
+      "bytes": 3616,
+      "sha256": "1c5de7e54d026441c6e514b0dea0405cd830b8d5d8aff712576e3eb80e6cb18a"
+    },
+    {
+      "path": "evidence/upstream/PROTOCOL-NESTED-DEVIATION.md.txt",
+      "bytes": 3916,
+      "sha256": "e8c4c9267bb802392a860a43f38811d4b61db3a42eefecc2831c7bc818b8588a"
+    },
+    {
+      "path": "evidence/upstream/cab_s.py.txt",
+      "bytes": 10343,
+      "sha256": "e8ae8ed8f6cd31a9c951d7f8b82169d4080ea0b6fb3912e0eb148c236c0d183b"
+    },
+    {
+      "path": "evidence/upstream/correction_interference.py.txt",
+      "bytes": 10251,
+      "sha256": "4e0251740d3d8636ca342540a4e0f1c862efc66a3a2376166485011aff99cae7"
+    },
+    {
+      "path": "evidence/upstream/correction_margins.py.txt",
+      "bytes": 5721,
+      "sha256": "ffc4eb6fdfdf209d23c2cfe19a491645de7d2fb749a74c83b4859867ae98f0d8"
+    },
+    {
+      "path": "evidence/upstream/lm_store.py.txt",
+      "bytes": 9879,
+      "sha256": "37ba723b00edffc9ffad1640330871aa531e1c6514c5fdcb0cd749a82d617578"
+    },
+    {
+      "path": "evidence/upstream/results/correction_interference/constrained.json",
+      "bytes": 765,
+      "sha256": "ec30002fc3f937543e79ebca6c42d76740d5afca7dd3996f2c2ad94850863405"
+    },
+    {
+      "path": "evidence/upstream/results/correction_interference/entity_replay.json",
+      "bytes": 683,
+      "sha256": "8b5c27875d661bf345ef3558fcdfc496c7c288d319ee006f3a951a4e7595f7c8"
+    },
+    {
+      "path": "evidence/upstream/results/correction_interference/frozen_address.json",
+      "bytes": 696,
+      "sha256": "a09e4707b93e3d12b72860b3c4ea4830c2fcff0e91ada06952741d6429069e73"
+    },
+    {
+      "path": "evidence/upstream/results/correction_interference/random_replay.json",
+      "bytes": 684,
+      "sha256": "aa0d4f5defcabeffbf4ee757439219ad205b4eb360e9c6669f6ec6e4e794bb33"
+    },
+    {
+      "path": "evidence/upstream/results/correction_interference/single.json",
+      "bytes": 670,
+      "sha256": "b266cb3b84b360857b0baef118b5dd7c28c96e63894ed68c3315163a67a3ae19"
+    },
+    {
+      "path": "evidence/upstream/results/correction_interference/store.json",
+      "bytes": 674,
+      "sha256": "ee0d07c3b7203f00f69201928e123d2695ecf0a7efc651307929c70ed7b5d91e"
+    },
+    {
+      "path": "evidence/upstream/results/lm/store-pilot.json",
+      "bytes": 882,
+      "sha256": "53acac818d3c77e30951a3c14f2709c228f1ef67a155d4d0f4902595c4089ea7"
+    },
+    {
+      "path": "evidence/upstream_v4/research/frontier/ontogenesis/INVESTIGATION.md.txt",
+      "bytes": 46661,
+      "sha256": "cb22a2ad5bf3b563d26a5b33fba8d6f7444fe2bd00a544044c399b22eb939a9f"
+    },
+    {
+      "path": "evidence/upstream_v4/research/frontier/ontogenesis/cab_s.py",
+      "bytes": 10343,
+      "sha256": "e8ae8ed8f6cd31a9c951d7f8b82169d4080ea0b6fb3912e0eb148c236c0d183b"
+    },
+    {
+      "path": "evidence/upstream_v4/research/frontier/ontogenesis/correction_interference.py",
+      "bytes": 10251,
+      "sha256": "4e0251740d3d8636ca342540a4e0f1c862efc66a3a2376166485011aff99cae7"
+    },
+    {
+      "path": "evidence/upstream_v4/research/frontier/ontogenesis/correction_margins.py",
+      "bytes": 5721,
+      "sha256": "ffc4eb6fdfdf209d23c2cfe19a491645de7d2fb749a74c83b4859867ae98f0d8"
+    },
+    {
+      "path": "evidence/upstream_v4/research/frontier/ontogenesis/results/correction_interference/margins-half-m1.json",
+      "bytes": 537,
+      "sha256": "1da9008689f57d13b16342b39fbec4b70c7bcd0f083580f959040832361f9564"
+    },
+    {
+      "path": "evidence/upstream_v4/research/frontier/ontogenesis/results/correction_interference/margins-half-m3.json",
+      "bytes": 527,
+      "sha256": "6b14ba351e2263d3b79a687b23a028a520284043a05a7f59e69542aa5305fa71"
+    },
+    {
+      "path": "evidence/upstream_v4/research/frontier/ontogenesis/results/correction_interference/margins-half-m6.json",
+      "bytes": 532,
+      "sha256": "5d6e65584e5011a16737d514106cc5ccc1031655a72d1861630ef7809e4e115d"
+    },
+    {
+      "path": "evidence/upstream_v4/research/frontier/ontogenesis/results/correction_interference/margins-keep-m3.json",
+      "bytes": 529,
+      "sha256": "4796e5f636d055d21f1f41c0c29fa552e528fb40049f6ee9b3342febf89a4166"
+    },
+    {
+      "path": "evidence/upstream_v4/research/frontier/ontogenesis/results/correction_interference/margins-none-m1.json",
+      "bytes": 526,
+      "sha256": "055c14b2109181d3bd9fe3d50f60a41cdc769c42243694ce3f80c7123b2505b7"
+    },
+    {
+      "path": "evidence/upstream_v5_context/pr_ledger_before_v5.md.txt",
+      "bytes": 35722,
+      "sha256": "35bdedb2cfec4abe9fd334ea8f18877df244a0aa3784b8cb9af7d860a6220625"
+    },
+    {
+      "path": "evidence/upstream_v5_optimizer/correction/research/frontier/ontogenesis/INVESTIGATION.md.txt",
+      "bytes": 48316,
+      "sha256": "ecaf6427870382d523dfc0158b4c0c86defbdf8e8353f33f620d6bac172eb294"
+    },
+    {
+      "path": "evidence/upstream_v5_optimizer/correction/research/frontier/ontogenesis/cab_s.py",
+      "bytes": 10343,
+      "sha256": "e8ae8ed8f6cd31a9c951d7f8b82169d4080ea0b6fb3912e0eb148c236c0d183b"
+    },
+    {
+      "path": "evidence/upstream_v5_optimizer/correction/research/frontier/ontogenesis/correction_interference.py",
+      "bytes": 10251,
+      "sha256": "4e0251740d3d8636ca342540a4e0f1c862efc66a3a2376166485011aff99cae7"
+    },
+    {
+      "path": "evidence/upstream_v5_optimizer/correction/research/frontier/ontogenesis/correction_optimizer.py",
+      "bytes": 4921,
+      "sha256": "653f0af7438385a00ea12a482535780622d92343671f2120e2a42baa1f966790"
+    },
+    {
+      "path": "evidence/upstream_v5_optimizer/correction/research/frontier/ontogenesis/results/correction_interference/optimizer-adam_200.json",
+      "bytes": 488,
+      "sha256": "8f2ba3d6bf3bc357d144871c37b57aefb94aeeb71329d81aa193ef599d933cf8"
+    },
+    {
+      "path": "evidence/upstream_v5_optimizer/correction/research/frontier/ontogenesis/results/correction_interference/optimizer-adam_stop.json",
+      "bytes": 492,
+      "sha256": "729d9a99a331507dae545540d741e5ed4f7bb8fd11749bab0b8a8c7f80c6b290"
+    },
+    {
+      "path": "evidence/upstream_v5_optimizer/correction/research/frontier/ontogenesis/results/correction_interference/optimizer-gd_stop.json",
+      "bytes": 485,
+      "sha256": "e9ad22a2da7166caa25de803cfd9ae19dc777ee549c93b0c961b1c5f9f46d607"
+    },
+    {
+      "path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/PROTOCOL-MEMSAT-FACTORIAL.md.txt",
+      "bytes": 4835,
+      "sha256": "8ef1a2a201dcea58ea365454049483601fb3d6c0c5fc9b8510ffdc39e73f76aa"
+    },
+    {
+      "path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/RESULTS-MEMSAT-FACTORIAL.md.txt",
+      "bytes": 5515,
+      "sha256": "b1971b0c9e7d77c5b8d50ff3299053390ff9664fcd2764acd191d21fc6b82e49"
+    },
+    {
+      "path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/cab.py",
+      "bytes": 10056,
+      "sha256": "7826f2132024b2cf28cdba3ab2e6aa664982b07a416c2a990686fc78e621470c"
+    },
+    {
+      "path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/memory_saturation.py",
+      "bytes": 5126,
+      "sha256": "4456c7136088267c8da3db821246901edee376fe6880fbf33c462b89fbe652b4"
+    },
+    {
+      "path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/memory_saturation_factorial.py",
+      "bytes": 4366,
+      "sha256": "c883d11fd39602546357d256d25031913cbb9242fbd086d1595d712c3ed147f8"
+    },
+    {
+      "path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/memory_saturation_factorial_score.py",
+      "bytes": 2966,
+      "sha256": "384acea8df0e885a60023997b2cc7c1493f5561a4a0dc876c88374f611b768cb"
+    },
+    {
+      "path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/dev-hash-sgd-lr1-s3001.json",
+      "bytes": 6930,
+      "sha256": "27c5c4d4ccd48fd11b75f4b85df7d04dd4095f95def88876814ffdbd023374b1"
+    },
+    {
+      "path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/dev-hash-sgd-lr10-s3001.json",
+      "bytes": 6936,
+      "sha256": "9ee24b31ffc20605bd64bcb78aab2ff35bbae906191d07b14a474ad484b2dd2f"
+    },
+    {
+      "path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/dev-hash-sgd-lr100-s3001.json",
+      "bytes": 6254,
+      "sha256": "2d06b860d2e1d9342406203a2878a75120a44aff8c6d0a22ae325a200caef4dd"
+    },
+    {
+      "path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/dev-hash-sgd-lr3-s3001.json",
+      "bytes": 6930,
+      "sha256": "4e63d0780a55b19bf55d3d763ceda55c55ec04ce2972a8d08e4d8502b9c93adf"
+    },
+    {
+      "path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/dev-hash-sgd-lr30-s3001.json",
+      "bytes": 6909,
+      "sha256": "0facd16340236bb7b42838af06e79a62f8762bdcb682f05f58cef46e8c331895"
+    },
+    {
+      "path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/dev-hash-sgd-lr300-s3001.json",
+      "bytes": 6296,
+      "sha256": "0df518cc237a2e94f12dae134bd7173744361f8371409d38ba005f75db8a1624"
+    },
+    {
+      "path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/dev-sgd-selection.json",
+      "bytes": 127,
+      "sha256": "18308a430d27b51d50b9d7920c27524d16798c8e84f9970697a0a1f144a65c22"
+    },
+    {
+      "path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/driver.log",
+      "bytes": 7677,
+      "sha256": "1be6bf699bf69526bae756b2f039e39c9b9f54e97e33c43c600a60d0c2f41d9f"
+    },
+    {
+      "path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/driver.log.run1",
+      "bytes": 4384,
+      "sha256": "934f576823c83ae1125c8dc8563fceba33dab2f0fae3ebe3adccbf1bf3e6bbaf"
+    },
+    {
+      "path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/driver.py.txt",
+      "bytes": 2198,
+      "sha256": "4cdced5bebebb9d7942833e71d94e375e692d0c83a6dc3440219393c6fd88534"
+    },
+    {
+      "path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/hash-adam-s3101.json",
+      "bytes": 6939,
+      "sha256": "eb47e9980448e8d90e01d19f04c609caa3ad66e6f22cc82c4574807b2c0f3849"
+    },
+    {
+      "path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/hash-adam-s3102.json",
+      "bytes": 6938,
+      "sha256": "323ee371c32d8f87fdc709468ff29ee82a8205adf201b7d5205ee7f0dde08ff0"
+    },
+    {
+      "path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/hash-adam-s3103.json",
+      "bytes": 6954,
+      "sha256": "25b589b73955e64d9970d5ab6c0c628990b0540e8d4ec1c7a7db7acf95a5ab53"
+    },
+    {
+      "path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/hash-adam-s3104.json",
+      "bytes": 6945,
+      "sha256": "2049688556a892f0694be4b32d2ff40898134ee9e507173101c4f93442b814d6"
+    },
+    {
+      "path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/hash-adam-s3105.json",
+      "bytes": 6925,
+      "sha256": "907d04db1c05fe8710688631ecf96456a80bc5ad9bdcfeebf6c3775cfa82a3ae"
+    },
+    {
+      "path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/hash-adam_reset-s3101.json",
+      "bytes": 6858,
+      "sha256": "383898abfd29366905e002397eefe1b5f2fffb046912631baddd520d2de2c6ec"
+    },
+    {
+      "path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/hash-adam_reset-s3102.json",
+      "bytes": 6796,
+      "sha256": "20b4a716582e151c43c6407d4bd8133ce720ddf0d80201b5e4e170480b36d3da"
+    },
+    {
+      "path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/hash-adam_reset-s3103.json",
+      "bytes": 6944,
+      "sha256": "b85ef8de7ab2cf62ac611cb7f68beec21d9eac0aae4ab59d20e5eefe9d801d1e"
+    },
+    {
+      "path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/hash-adam_reset-s3104.json",
+      "bytes": 6843,
+      "sha256": "68e6c3282ca63a5000e4b0ab6d52d984ddf31bb0fc47b9886a89ff8d79a1a7a3"
+    },
+    {
+      "path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/hash-adam_reset-s3105.json",
+      "bytes": 6888,
+      "sha256": "e0ab2d9ed9096230863aeb1ac0b5990ac7c7ef1c99d443f32316ae52cdd1ad7d"
+    },
+    {
+      "path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam-s3101.json",
+      "bytes": 7195,
+      "sha256": "e26a68f2a20dfb57b55d1d7f0d2b845a377426660c9143e0f5321a1b4eb9f235"
+    },
+    {
+      "path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam-s3102.json",
+      "bytes": 7198,
+      "sha256": "8b274fdddd5129c560519e4ca1261e5c8dd96914799a1267ca11746442a46175"
+    },
+    {
+      "path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam-s3103.json",
+      "bytes": 7184,
+      "sha256": "9942debaedd392d73c39883535d4c388ac5bcb5c5e351d4dedaceacd932f2111"
+    },
+    {
+      "path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam-s3104.json",
+      "bytes": 7196,
+      "sha256": "131d51a1e9e2a41c5ddfc4ca464410cccc3a91edaf93dc794548398944fd28fa"
+    },
+    {
+      "path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam-s3105.json",
+      "bytes": 7209,
+      "sha256": "fbb60b31febc8cacc42d1b10d9d06e57be111bdf04428fb7905aac9c9edcc699"
+    },
+    {
+      "path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam_b2_09-s3101.json",
+      "bytes": 7208,
+      "sha256": "e44db177ff8cdf9367a2d4a5b8ded3788b61b3609f614d36e2e5a552509286c5"
+    },
+    {
+      "path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam_b2_09-s3102.json",
+      "bytes": 7163,
+      "sha256": "a1abe7b81d55b02239779b9141d9632e1ec24f7705ecf66280ec7752ebb05a7c"
+    },
+    {
+      "path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam_b2_09-s3103.json",
+      "bytes": 7191,
+      "sha256": "42644957f798b445f11d48d5568413609e298402d6790dac8fbdcc8781535503"
+    },
+    {
+      "path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam_b2_09-s3104.json",
+      "bytes": 7187,
+      "sha256": "5288de3db40a42ad86038eb361756d2f34299fcc5be4189b668ed4c3d06817c6"
+    },
+    {
+      "path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam_b2_09-s3105.json",
+      "bytes": 7217,
+      "sha256": "5fcfe0a23beb30b0c44b22c6d629ef5c569f8c37527adf7bfee0725920458947"
+    },
+    {
+      "path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam_reset-s3101.json",
+      "bytes": 7200,
+      "sha256": "7bb38c98c2c72c472beefaa12b180a4cb335d82af7df88b1c8ac603e511c3ed1"
+    },
+    {
+      "path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam_reset-s3102.json",
+      "bytes": 7143,
+      "sha256": "d5f536ca492892cbe8f9def55a700b08a67110854244a94fad32aab204fba99f"
+    },
+    {
+      "path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam_reset-s3103.json",
+      "bytes": 7220,
+      "sha256": "8ef72acfe6c5bf02821b3edc9f75af955f70f0f1410b47443a4a8ce3e81b478a"
+    },
+    {
+      "path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam_reset-s3104.json",
+      "bytes": 7183,
+      "sha256": "1589f8a698615a1206034c6989af16513bd265eadf443f0c6992c30482272d16"
+    },
+    {
+      "path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam_reset-s3105.json",
+      "bytes": 7157,
+      "sha256": "1fab4b3e5df9df9df661dae190380898a3c755a0d52b581e4b2ad87149b80e43"
+    },
+    {
+      "path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/original-sgd-s3101.json",
+      "bytes": 7197,
+      "sha256": "01f79f49d3d9f314ed85d3abd260b85fa8d57d3e786509fa0d8b26267d3eb051"
+    },
+    {
+      "path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/original-sgd-s3102.json",
+      "bytes": 7188,
+      "sha256": "3bf7280d237fd44e8351186c4984bee7958d038e4d961e4e25aab5ae0d4de18a"
+    },
+    {
+      "path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/original-sgd-s3103.json",
+      "bytes": 7196,
+      "sha256": "faa2507728874d80591e1ca6f7cb3addfab731e6ef6c6afac04e03d1d13a4fc5"
+    },
+    {
+      "path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/original-sgd-s3104.json",
+      "bytes": 7165,
+      "sha256": "043a7061ee4fc439eb60d6007b621da2a00c282b8b4f2b7ab78be24bf420d440"
+    },
+    {
+      "path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/original-sgd-s3105.json",
+      "bytes": 7201,
+      "sha256": "c7b2fd630648f37f32a119812f97675bb6e1be122aaa03fff0a4f544df3b70c9"
+    },
+    {
+      "path": "evidence/upstream_v5_optimizer/manifest.json",
+      "bytes": 49723,
+      "sha256": "0442caf4885aa4df807571099e2aa3b10badeb2d21849e1d6ec664e53ea57712"
+    },
+    {
+      "path": "evidence/upstream_v5_store/cache_initial/research/frontier/ontogenesis/tpu/cache_exchange.py",
+      "bytes": 7749,
+      "sha256": "0884965f47dde77edc240241c9d7e3e091a409d0cf78c4f30b3bd95a7a05f23d"
+    },
+    {
+      "path": "evidence/upstream_v5_store/current/research/frontier/ontogenesis/INVESTIGATION.md.txt",
+      "bytes": 48316,
+      "sha256": "ecaf6427870382d523dfc0158b4c0c86defbdf8e8353f33f620d6bac172eb294"
+    },
+    {
+      "path": "evidence/upstream_v5_store/current/research/frontier/ontogenesis/LEDGER.md.txt",
+      "bytes": 15214,
+      "sha256": "9a25961a3c144a95e6be8124e4b4ee4fba72432f056c40f2dba3e03560b1cc9a"
+    },
+    {
+      "path": "evidence/upstream_v5_store/current/research/frontier/ontogenesis/results/lm/store-exchange-S.json",
+      "bytes": 1040,
+      "sha256": "c5429693dbfecba6ec2906361fc49f7d309909040eb901125228f4e25732e02b"
+    },
+    {
+      "path": "evidence/upstream_v5_store/current/research/frontier/ontogenesis/theory/RESEARCH-DECISION-20261121.md.txt",
+      "bytes": 16223,
+      "sha256": "45ba61d176952875d1e85999d9498d214649c6878d5f3aaaa6deccf45615170a"
+    },
+    {
+      "path": "evidence/upstream_v5_store/current/research/frontier/ontogenesis/tpu/cache_exchange.py",
+      "bytes": 9207,
+      "sha256": "081f9588585165e45a5245a404b03a6204aeb1dfc9cdb8a93a6dffd282a194ff"
+    },
+    {
+      "path": "evidence/upstream_v5_store/current/research/frontier/ontogenesis/tpu/store_exchange.py",
+      "bytes": 8804,
+      "sha256": "01233c322aac26731d3d482f3e5d9d5a4ddc0a8cd21801b37335a9829878920f"
+    },
+    {
+      "path": "evidence/upstream_v5_store/source_manifest.json",
+      "bytes": 6849,
+      "sha256": "08b9ed052f42c64a4c1ad62271ae36515f9ec7763bd2e517e5287bd2fe6fd23d"
+    },
+    {
+      "path": "evidence/upstream_v5_store/store_initial/research/frontier/ontogenesis/tpu/store_exchange.py",
+      "bytes": 7197,
+      "sha256": "40641d34007e8c0e8c70c820a7266a22f144856712c4fcfa438503c7a05e9b1e"
+    },
+    {
+      "path": "evidence/upstream_v5_store/store_result_initial/research/frontier/ontogenesis/results/lm/store-exchange-S.json",
+      "bytes": 996,
+      "sha256": "60cec1fe915f5a854a4227bdfae154205c06cba1412914d43625d38d0d3be92d"
+    },
+    {
+      "path": "evidence/upstream_v5_store/train_current/research/frontier/ontogenesis/tpu/train_jax.py",
+      "bytes": 13498,
+      "sha256": "878ec45c1bd9863ca07e4cd5db93b04d3857650b49da00facc00c2d81251df34"
+    },
+    {
+      "path": "evidence/upstream_v5_store_late/research/frontier/ontogenesis/INVESTIGATION.md.txt",
+      "bytes": 50321,
+      "sha256": "f155d4b90cf2131d2c11f08318e83208b38b85984ca466d96e42ff1fbc912d47"
+    },
+    {
+      "path": "evidence/upstream_v5_store_late/research/frontier/ontogenesis/results/lm/cache-exchange-M.json",
+      "bytes": 1048,
+      "sha256": "1e732d08c7fa2c6d037b5743e87b9a3b850e2ab6d7ad6e427e92e15dc653d1c3"
+    },
+    {
+      "path": "evidence/upstream_v5_store_late/research/frontier/ontogenesis/results/lm/cache-exchange-S.json",
+      "bytes": 1048,
+      "sha256": "55b85cb92775bfc4c257a1df73a9ad0790e8dbccb8f63da55e2edcfe152d9327"
+    },
+    {
+      "path": "evidence/upstream_v5_store_late/research/frontier/ontogenesis/results/lm/store-exchange-M.json",
+      "bytes": 1043,
+      "sha256": "d8880f082ec26ea31c66f3e9162a317f791adc0fdc20de741fbe9f25a418dda6"
+    },
+    {
+      "path": "evidence/upstream_v5_store_late/research/frontier/ontogenesis/tpu/train_jax.py",
+      "bytes": 19669,
+      "sha256": "6d769c89cf3dbcc748693730ebbbc6cb8e364391688523ee93004297fc91a1f6"
+    },
+    {
+      "path": "evidence/upstream_v5_store_late/source_manifest.json",
+      "bytes": 6867,
+      "sha256": "2f6a0b5c97eacdd1e44e877b4559853212aee7aa43d540dbd9fb81b112f9ddea"
+    },
+    {
+      "path": "experiments/correction_protocol.py",
+      "bytes": 30543,
+      "sha256": "f7339939059c8337a2257c9064c3073522b63fb5744cb6a464e7423c15b86087"
+    },
+    {
+      "path": "experiments/native_correction_smoke.py",
+      "bytes": 13285,
+      "sha256": "a664645c79e0cbb4a7bc87784790f38364d7f77788b9fca951fe7eca3707f746"
+    },
+    {
+      "path": "experiments/native_update_comparison.py",
+      "bytes": 23610,
+      "sha256": "1540a68e526dad7097b2b5ee3d9cc5bb0e740049782dcae05a8575a95927a189"
+    },
+    {
+      "path": "experiments/native_update_comparison_protocol.json",
+      "bytes": 5240,
+      "sha256": "4cd9bdabedd2b507663f5d5d368dab34c037c2b078b386d872d9238b23f18425"
+    },
+    {
+      "path": "experiments/test_correction_protocol.py",
+      "bytes": 21727,
+      "sha256": "0722befa7924833e2918584ac6d54c46c6054f1c9a52d8cf1e34547eede34932"
+    },
+    {
+      "path": "experiments/test_native_correction_smoke.py",
+      "bytes": 10103,
+      "sha256": "94189081eb05dc3ba7300e829f9aef6585338ab44d2ed7cb3f7fb7491d349137"
+    },
+    {
+      "path": "experiments/test_native_update_comparison.py",
+      "bytes": 22740,
+      "sha256": "d26087c32444b291eeec1636a0c81b9aff71acdc3aa36f9a8a828fbc8d0c938c"
+    },
+    {
+      "path": "figures/correction_locality_durability.png",
+      "bytes": 181681,
+      "sha256": "23ffb5260c190c761a681440608f9f3687b9eac0ea29c133d070d9b1ba9d15c9"
+    },
+    {
+      "path": "figures/correction_locality_durability.svg",
+      "bytes": 109526,
+      "sha256": "878e6ea0aa623472cbace2a456a39f17d5cd7bee05bf3af82f9c97d9fadab03a"
+    },
+    {
+      "path": "figures/margin_tradeoffs.png",
+      "bytes": 185551,
+      "sha256": "7b80ff5ed65f00604863a9437e188095ffe2cdef66d5c8081c437063e1982e74"
+    },
+    {
+      "path": "figures/margin_tradeoffs.svg",
+      "bytes": 63246,
+      "sha256": "f1a61b255300c55d061b1380f322e54336f96d71ab03c57f52555c956c03cdf8"
+    },
+    {
+      "path": "figures/memory_acquisition_controls.png",
+      "bytes": 123370,
+      "sha256": "51697aafbfa32a1ab545d9228ab0d3585c7a47857ccf8a6ebba5e45d9f2c26f1"
+    },
+    {
+      "path": "figures/memory_acquisition_controls.svg",
+      "bytes": 4038,
+      "sha256": "c0f0ae1918c16d9957957790bdca24cd70e7ae642167b5c6b19f2fd5a0d05cb8"
+    },
+    {
+      "path": "figures/native_update_comparison.png",
+      "bytes": 399804,
+      "sha256": "cd5cba8c8711918cdb3e026f9f38f90be5d32e42aeeb102b640f2aa8a4c9c0ed"
+    },
+    {
+      "path": "figures/native_update_comparison.svg",
+      "bytes": 57369,
+      "sha256": "714584440f29b44f57a175c1d12361d429c92338e2d6a684db417613da698f30"
+    },
+    {
+      "path": "figures/optimizer_factorial.png",
+      "bytes": 219968,
+      "sha256": "881c733ad25fab1fd0117ddfc0037b306a232558507139ade17272aa93801410"
+    },
+    {
+      "path": "figures/optimizer_factorial.svg",
+      "bytes": 39963,
+      "sha256": "aed08eff538f94d924190869cb809a28d8479b80d8e20308a0162c55c81526ca"
+    },
+    {
+      "path": "figures/transport_anchor_cost.png",
+      "bytes": 68789,
+      "sha256": "333a52e01ac20a77b150c339778d355976f849ceecd46c4af462480e8a0e2ab9"
+    },
+    {
+      "path": "figures/transport_anchor_cost.svg",
+      "bytes": 3193,
+      "sha256": "aafaad502502f6a656a9ab8c61ee467bec37c3fc0b5ceb8b61970a869accf7f6"
+    },
+    {
+      "path": "ledger_event.schema.json",
+      "bytes": 5734,
+      "sha256": "ba3a452bc413aa6ebe13643fb8f4039dc9c38cdf469fd82e5c272de53bf48203"
+    },
+    {
+      "path": "ledger_events.jsonl",
+      "bytes": 68986,
+      "sha256": "ddb31fd6313090fc1e61f7407a3e67bed890c30683eeb8e8e4b3d76e71e6d356"
+    },
+    {
+      "path": "ledger_history.json",
+      "bytes": 1112,
+      "sha256": "58c07844112e0766b36447db41e74e01175e17639ce82b2b8b7c94b3f1d1b928"
+    },
+    {
+      "path": "prototype/causal_ngram_cache.py",
+      "bytes": 11383,
+      "sha256": "8836cf8ab645628499a6b438963d798c6c064cf832bb67df8a42a8ac32325732"
+    },
+    {
+      "path": "prototype/native_reference.py",
+      "bytes": 15161,
+      "sha256": "bbcbf1d87f0495e18cce28ea2df125450dd36f3af84d061e95135e39ce487462"
+    },
+    {
+      "path": "prototype/test_causal_ngram_cache.py",
+      "bytes": 10631,
+      "sha256": "b22f37dc4fc9a9355683eec6d30f7b5a9471bc4b2a89a0178e2e3174c0abd23f"
+    },
+    {
+      "path": "prototype/test_native_reference.py",
+      "bytes": 8545,
+      "sha256": "71c8cebb824c84fd27061b1f3b127d93ff3da05ffec15ff54163e6099810236c"
+    },
+    {
+      "path": "prototype/test_trainable_native.py",
+      "bytes": 19621,
+      "sha256": "ec15d6a167102362ed256c8f118ca047f97a52e6ad0fbdb5596833bd54b4e3bf"
+    },
+    {
+      "path": "prototype/trainable_native.py",
+      "bytes": 25584,
+      "sha256": "34f65e06d9251066363d3969fc47cfdb17a0fa5b1877e6da20087fb6651852ed"
+    },
+    {
+      "path": "results/causal_cache_checks_v5.json",
+      "bytes": 1044,
+      "sha256": "9f385a4f02a9491c774b430cb50a69afe08620d86d0d22926f36ee0c4c00fdbb"
+    },
+    {
+      "path": "results/causal_cache_checks_v5_final.json",
+      "bytes": 1044,
+      "sha256": "9f385a4f02a9491c774b430cb50a69afe08620d86d0d22926f36ee0c4c00fdbb"
+    },
+    {
+      "path": "results/correction_protocol_v4.json",
+      "bytes": 258,
+      "sha256": "1321c9f9b8bddef09205a3ba29811845f314c716f899220ece63c3c83b6441e4"
+    },
+    {
+      "path": "results/formal_sanity_20261121.json",
+      "bytes": 1383,
+      "sha256": "f03bc319af7ed77773acced2a84dd7b0c676415009b40d3d4c018f0c19639bbe"
+    },
+    {
+      "path": "results/integration_validation_v3.json",
+      "bytes": 13537,
+      "sha256": "d2b4570173722b74a20de7fbdd5fba1c60f6c84e740ce32c4e2d9e06925c3621"
+    },
+    {
+      "path": "results/literature_audit_20261121.json",
+      "bytes": 28302,
+      "sha256": "ffe02185a5b8a7169e813d78124ce8bbd929b470bed44de71ae7c99708269181"
+    },
+    {
+      "path": "results/literature_audit_v4.json",
+      "bytes": 30923,
+      "sha256": "698864dc8ca050cfc5c2131f6b95ddb653cca773f5a561f2587c9dc01cc0fcbe"
+    },
+    {
+      "path": "results/literature_audit_v5.json",
+      "bytes": 33683,
+      "sha256": "de36f24665f796733ffd670a0163558eccdc9c5fecbc0e035767659101d76783"
+    },
+    {
+      "path": "results/margin_durability_v4.json",
+      "bytes": 2389,
+      "sha256": "3f25576de1f1f55d610fab298f0d5f9549ed180d98653f6ee42914c4646aecc1"
+    },
+    {
+      "path": "results/margin_reanalysis_v4.json",
+      "bytes": 24656,
+      "sha256": "13f3453ba8b78aa2f535dd282dee9118f3ffe5d7fcefe02b78f026084bfc9e32"
+    },
+    {
+      "path": "results/native_correction_smoke_v4.json",
+      "bytes": 102401,
+      "sha256": "987c3179a5e5b9ff3ebaeb57005cbb8b557f6929e69072388bdb67a1deb3b953"
+    },
+    {
+      "path": "results/native_reference_v3.json",
+      "bytes": 1596,
+      "sha256": "c02b9abc90e41508ad159bcbe0796d7728bbec95e762ce3c6a43fd64e49f8624"
+    },
+    {
+      "path": "results/native_reference_v3_final.json",
+      "bytes": 1872,
+      "sha256": "7ef6a41529436c4fbbae4a45bc2afb721aac24cb625b2dfcf54a893877486086"
+    },
+    {
+      "path": "results/native_update_comparison_summary_v5.json",
+      "bytes": 190005,
+      "sha256": "6f552991c5d02459633ece79006dab622f8f5084d51eccc748d0de640b7cb72d"
+    },
+    {
+      "path": "results/native_update_comparison_v5.json.gz",
+      "bytes": 1088605,
+      "sha256": "7bcbe0b22d2ba1930e435db80e635396e135fa44c31f295f0e0f66d5eb0f2bab"
+    },
+    {
+      "path": "results/optimizer_factorial_reanalysis_v5.json",
+      "bytes": 62752,
+      "sha256": "7b0d97a10ef59032b17589137228d4c10dc2585e2920d92d35033337593a6d2f"
+    },
+    {
+      "path": "results/repository_reanalysis_v3.json",
+      "bytes": 8340,
+      "sha256": "2a41dcfd2a18e6832b5da84b9f03c599d399e243def28fa44d7ca39c5476d5a6"
+    },
+    {
+      "path": "results/store_cache_late_reanalysis_v5.json",
+      "bytes": 9932,
+      "sha256": "fa75a633bab73d3b1e701f79d6a053867711157b0f9290b4549c4a77928d0805"
+    },
+    {
+      "path": "results/store_cache_reanalysis_v5.json",
+      "bytes": 3414,
+      "sha256": "8fcf7a3e392901df4f3609c8beac2e000fb2295fe3132bdccc9db8bbab5f764d"
+    },
+    {
+      "path": "results/trainable_independent_verification_v4.json",
+      "bytes": 17020,
+      "sha256": "d11cd69c114db824cd96b322d40bf7536261b5c0cfad3c97a7c5dd6ac4ffa08e"
+    },
+    {
+      "path": "results/trainable_native_v4.json",
+      "bytes": 4848,
+      "sha256": "595cca5fe86ca04f04125061b83060f229ecc9afe464606f79c43c0b22b9b367"
+    },
+    {
+      "path": "results/transport_anchor_pilot_v0.json",
+      "bytes": 2665,
+      "sha256": "365380834ea393456486bcc59bf51e36c64db181c2fac15cd9529d6be951126c"
+    },
+    {
+      "path": "results/update_feasibility_geometry_v5.json",
+      "bytes": 3150,
+      "sha256": "0bb8eae41c8e26d83f711c3a028fabb5f527f8a9d1bc81dabb1c27b91613da35"
+    },
+    {
+      "path": "results/v2_artifact_manifest.json",
+      "bytes": 416,
+      "sha256": "0d1232ca72cab497143be508524c85221d845a6ee00161d7b025ce7bc644fe41"
+    },
+    {
+      "path": "results/validation_v3_final.json",
+      "bytes": 29856,
+      "sha256": "a3286b1a0842439fb6073d96d961da8299e2d7cb57af25b0befcb7912ddf80fd"
+    },
+    {
+      "path": "results/validation_v4_final.json",
+      "bytes": 222864,
+      "sha256": "492338180c706b80b2a98a2d2a76e274ca7a1b1301d70e3b89564f2dc23abf3e"
+    },
+    {
+      "path": "results/validation_v5_final.json",
+      "bytes": 418609,
+      "sha256": "96dffd4035a6929f0b163dda3637e025b496aefa71e85eec2a845ff9e8d26aaf"
+    },
+    {
+      "path": "reviews/causal_cache_review.md",
+      "bytes": 10398,
+      "sha256": "65fc5c551abd2964f63bc5068155e1376ec1ea8dc7a53a2446b060487a1135e1"
+    },
+    {
+      "path": "reviews/correction_protocol_review.md",
+      "bytes": 6483,
+      "sha256": "41ac2f46f5e546257c1ce7c5ed760f7d98f74f87ec14868420836603380ff8b8"
+    },
+    {
+      "path": "reviews/formal_audit.md",
+      "bytes": 15872,
+      "sha256": "09025dd80907a0e4f2334376e876c72849e6aa9eea9756c29a8c8d00d9f45c9f"
+    },
+    {
+      "path": "reviews/ledger_audit.md",
+      "bytes": 9305,
+      "sha256": "68debba3c113e8a980cae5dbd95cf0286b2f4976152d917e9913da2ae0b0420b"
+    },
+    {
+      "path": "reviews/margin_durability_review.md",
+      "bytes": 5770,
+      "sha256": "2104a30539c56e4a0a2a2f36f2614fbc83249946e2ef9b3ace133989360784c0"
+    },
+    {
+      "path": "reviews/margin_evidence_review.md",
+      "bytes": 14062,
+      "sha256": "2a37fd8ef0f0700ce24ca510fe4db620f5979c15ceaeab9680b6e975e77e5e36"
+    },
+    {
+      "path": "reviews/native_correction_smoke_review.md",
+      "bytes": 5575,
+      "sha256": "a2dd8c1ef256234ffe7a7ea9373da9f3f76a2f6a9f8c2e670a4a9538039465c4"
+    },
+    {
+      "path": "reviews/native_reference_review.md",
+      "bytes": 4410,
+      "sha256": "7171d51a751fb4d1664cb1e6cd69a9151dc9dfe4c8a4750adf8a4297afe4cb08"
+    },
+    {
+      "path": "reviews/native_update_comparison_review.md",
+      "bytes": 8850,
+      "sha256": "e6d45aa060746c6a9fdaa87322d6a8a242621e45e3b7034bf77a9220a4d4620b"
+    },
+    {
+      "path": "reviews/optimizer_factorial_review.md",
+      "bytes": 31221,
+      "sha256": "269f8744048dc0e0557a590c83606e210ac40a0e12abc0e80872e1ae74359b12"
+    },
+    {
+      "path": "reviews/reanalysis_independent_review.md",
+      "bytes": 10314,
+      "sha256": "fa494bff15d074a8bfd9ccd664178b7cf6a9d94cb67e3c21d6d3d50c1c81b5ce"
+    },
+    {
+      "path": "reviews/store_cache_late_review.md",
+      "bytes": 15773,
+      "sha256": "fb16a0c89746f795e621bac2b9b14a7975cdec3c007e55108ffaa53e7a496219"
+    },
+    {
+      "path": "reviews/store_cache_review.md",
+      "bytes": 21269,
+      "sha256": "939ae7d010cd92dd3c571880d3b744a772f32c65942b38a81e43c92ef9c96dac"
+    },
+    {
+      "path": "reviews/trainable_native_review.md",
+      "bytes": 7242,
+      "sha256": "618275b49b85119f1634abf021d3ddb0d5799e9aca5146cebd98ccfdfb3f9bba"
+    },
+    {
+      "path": "reviews/update_geometry_review.md",
+      "bytes": 3469,
+      "sha256": "cc3fabd86f9d4457f23f9df0176f0796b6f6b04e93c3f7cd7288540f01488c7b"
+    },
+    {
+      "path": "reviews/v5_release_review.md",
+      "bytes": 15430,
+      "sha256": "40d9572988142e233fb09a3950d3a04fbf59880c4d3db1c7137f0c6da3bed51f"
+    }
+  ]
+}

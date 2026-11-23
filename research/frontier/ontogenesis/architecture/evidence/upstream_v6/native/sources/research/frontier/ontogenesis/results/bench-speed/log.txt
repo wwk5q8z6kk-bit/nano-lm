@@ -1,0 +1,12 @@
+DEPRECATION: The HTML index page being used (https://storage.googleapis.com/jax-releases/libtpu_releases.html) is not a proper HTML 5 document. This is in violation of PEP 503 which requires these pages to be well-formed HTML 5 documents. Please reach out to the owners of this index page, and ask them to update this index page to a valid HTML 5 document. pip 22.2 will enforce this behaviour change. Discussion can be found at https://github.com/pypa/pip/issues/10825
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+05:26:43 data ready: 200000000 bytes of train.bin
+05:32:26 base-micro2 exit 0: tokens/s, loss, GB = 30774 4.6737 3.19
+05:39:00 remat-micro1 exit 0: tokens/s, loss, GB = 25518 4.6746 3.18
+05:39:15 splash-micro1 exit 1: tokens/s, loss, GB = None None None
+jax.errors.SimplifiedTraceback: For simplicity, JAX has removed its internal frames from the traceback of the following exception. Set JAX_TRACEBACK_FILTERING=off to include these.
+05:39:30 splash-micro2 exit 1: tokens/s, loss, GB = None None None
+jax.errors.SimplifiedTraceback: For simplicity, JAX has removed its internal frames from the traceback of the following exception. Set JAX_TRACEBACK_FILTERING=off to include these.
+05:39:44 remat-splash-micro1 exit 1: tokens/s, loss, GB = None None None
+jax.errors.SimplifiedTraceback: For simplicity, JAX has removed its internal frames from the traceback of the following exception. Set JAX_TRACEBACK_FILTERING=off to include these.
+05:39:52 bench finished

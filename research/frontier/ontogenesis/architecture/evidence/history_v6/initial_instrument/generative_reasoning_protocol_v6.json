@@ -1,0 +1,132 @@
+{
+  "schema_version": 1,
+  "experiment_id": "nanolm-generated-relations-v6-1",
+  "classification": "Locally frozen evaluation instrument; symbolic controls are not learned-model results.",
+  "local_recipe_frozen_at_utc": "2026-11-23T21:01:36Z",
+  "freeze_scope": "Recipe written before generated checks. Local timestamp and SHA256 do not establish independent preregistration or secure execution custody.",
+  "source_research_cutoff": "3a38b5f1529a718838b5bc83a010574bfa9a4c6e",
+  "families": [
+    "direct_retrieval",
+    "two_hop"
+  ],
+  "splits": {
+    "development": {
+      "seed": 6012301,
+      "worlds_per_family": 16
+    },
+    "evaluation": {
+      "seed": 6012302,
+      "worlds_per_family": 32
+    }
+  },
+  "conditions": [
+    "full_a",
+    "full_b",
+    "permuted_a",
+    "no_context",
+    "broken_chain"
+  ],
+  "world": {
+    "distractor_entities": 6,
+    "name_hex_chars": 12,
+    "value_hex_chars": 12,
+    "rule": "Unique arbitrary names and values; one value fact per entity; two-hop has one relevant pointer. No conflicting assignments or cycles. Counterfactual changes only the relevant value fact; original query, other facts and fact order stay fixed.",
+    "splits": "Disjoint world IDs, entity/value vocabularies and full-context fact sets. Same grammar templates; no template-out-of-distribution claim."
+  },
+  "prompt": {
+    "preamble": "Use only the facts below. Names are arbitrary.\nA fact \"X has value V.\" assigns V to X.\nA fact \"X points to Y.\" gives the one outgoing pointer from X.\nReturn exactly the requested value, or UNKNOWN if it cannot be determined.\nDo not add explanations or punctuation.",
+    "layout": "{preamble}\n\nFacts:\n{facts_or_(none)}\n\nQuery: {query}\nAnswer:",
+    "direct_query": "What is the value of {entity}?",
+    "two_hop_query": "What is the value of the entity reached from {entity}?",
+    "fact_value": "{entity} has value {value}.",
+    "fact_pointer": "{entity} points to {entity}.",
+    "answer_rule": "value_[0-9a-f]{12} or UNKNOWN; ASCII space, tab, CR and LF may be stripped only at the outer boundary. Case, punctuation, extra words, Unicode lookalikes and interior whitespace are not normalized."
+  },
+  "information_boundary": "Only CandidateView(prompt) reaches candidate encode/generate calls. Coordinator IDs, world IDs, split, condition, seeds, original target, oracle answers and oracle facts are excluded. Per-case model state resets; no in-context examples, cross-case memory, tools, retrieval or training. Files are data boundaries, not an OS security sandbox.",
+  "conditions_semantics": {
+    "full_a": "Original complete visible fact set; gold follows visible relational semantics.",
+    "full_b": "Same query and fact order as full_a; exactly the relevant value fact changes; answer differs.",
+    "permuted_a": "Same facts and answer as full_a, with a guaranteed different fact order.",
+    "no_context": "Same query with no facts; policy gold UNKNOWN; original-target control uses full_a target separately.",
+    "broken_chain": "Remove the queried value assignment for direct retrieval or relevant pointer for two-hop; policy gold UNKNOWN. Two-hop keeps the destination value visible."
+  },
+  "generation": {
+    "do_sample": false,
+    "max_new_tokens": 32,
+    "stop_policy": "first newline or EOS; max_new_tokens is budget exhaustion",
+    "max_budget_output_policy": "Budget-exhausted outputs are censored and scored incorrect even if their text matches.",
+    "context_policy": "Actual model tokenizer input IDs including all BOS/special tokens plus max_new_tokens must fit model context_limit. Otherwise record context_ineligible; never silently truncate. Unknown actual token counts cannot establish eligibility."
+  },
+  "primary_endpoint": "Within each split and family: fraction of all base worlds with both full_a and full_b strictly correct. No filtering on output availability, formatting, context eligibility or successful acquisition.",
+  "secondary_endpoints": [
+    "All-record policy accuracy by condition with complete denominators.",
+    "Original-target contextual gain: mean of 1(full_a output equals A target) minus 1(no_context output equals A target); no_context UNKNOWN policy accuracy is separate.",
+    "Permutation joint correctness: both full_a and permuted_a correct; same-answer consistency separately.",
+    "UNKNOWN abstention accuracy on no_context and broken_chain.",
+    "Missing, context-ineligible, backend-error, budget-exhausted and format-invalid counts."
+  ],
+  "uncertainty": "Descriptive exact numerators/denominators and paired differences only. No confirmatory p-value, efficacy threshold or broad generalization claim; conditions within a base world are dependent.",
+  "validation": "Reject malformed schemas, unknown or duplicate IDs, incomplete oracle groups, wrong hashes, wrong visible-semantics gold, invalid relations, conflicting facts, changed counterfactual query, overlap across splits and nonfinite JSON. Missing predictions remain explicit incorrect rows.",
+  "contamination": {
+    "status": "NOT_CHECKED",
+    "meaning": "Generated disjoint worlds reduce direct reuse within this instrument. No actual training-corpus overlap or pretraining exposure audit has been performed. Publication itself can expose cases; never claim contamination-free."
+  },
+  "artifact_contract": {
+    "files": [
+      "public.jsonl",
+      "oracle.jsonl",
+      "manifest.json"
+    ],
+    "public_record": [
+      "id",
+      "prompt"
+    ],
+    "oracle_record": [
+      "id",
+      "world_id",
+      "split",
+      "family",
+      "condition",
+      "query_entity",
+      "facts",
+      "expected_answer",
+      "a_target",
+      "prompt_sha256",
+      "prompt_utf8_bytes",
+      "context_utf8_bytes"
+    ],
+    "immutability": "Generate only into a nonexistent destination directory; exclusive file creation; load verifies manifest and all file hashes. This detects accidental changes, not malicious replacement of all files and hashes.",
+    "predictions": "JSONL coordinator records: id, status, raw_text, receipt. Missing IDs permitted and scored missing; unknown/duplicate IDs rejected. run manifest identifies dataset, protocol, decoding, evidence kind and model identity.",
+    "model_receipt": "Actual input and output token IDs, input/output counts, prompt SHA256, tokenizer/checkpoint/config/adapter SHA256 identities, context_limit, max_new_tokens, truncated=false, reset_state_per_case=true, stop_reason. Model checkpoint evaluation requires actual tokenizer counts; control receipts cannot become model evidence.",
+    "model_adapter": "Python CandidateAdapter contract: identity property, encode_prompt(CandidateView)->list[int], generate(CandidateView)->Completion. Adapter must use exactly the encoded prompt including BOS, frozen greedy decoder and per-case fresh state. Generic runner does preflight and receipts; a real native checkpoint binding is pending."
+  },
+  "instrument_controls": [
+    "Independent symbolic parser/oracle",
+    "Always UNKNOWN",
+    "First visible value",
+    "Last visible value",
+    "Constant value",
+    "Perfect-oracle predictions for scorer self-check only"
+  ],
+  "adversarial_checks": [
+    "Counterfactual joint endpoint rejects same-answer shortcuts",
+    "Missing-output denominators",
+    "Duplicate and unknown ID rejection",
+    "Tampered gold/hash rejection",
+    "Visible-facts derivation and missing-edge abstention",
+    "ASCII-only boundary whitespace",
+    "Budget-exhaustion and ineligible-context handling",
+    "Prompt-only candidate call boundary",
+    "Actual tokenizer count and receipt validation",
+    "Overlap detection with planted duplicate",
+    "Nonfinite rejection"
+  ],
+  "not_claimed": [
+    "Learned language-model accuracy",
+    "Training or architecture improvement",
+    "Pretraining contamination clearance",
+    "Security isolation from an adversarial adapter",
+    "Template or natural-language out-of-distribution transfer",
+    "Checkpoint execution without a real model/tokenizer receipt"
+  ]
+}

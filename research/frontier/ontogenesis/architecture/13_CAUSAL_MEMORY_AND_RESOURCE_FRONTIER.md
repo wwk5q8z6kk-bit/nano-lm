@@ -1,3 +1,5 @@
+> **V6 current entry point:** [Full architecture](00_FULL_ARCHITECTURE.md). This chapter preserves the V5/historical contract and results. [15](15_NATIVE_BASELINE_AND_RESEARCH_UPDATE.md), [16](16_GENERATIVE_REASONING_EVALUATION.md) and [17](17_CORRECTION_MEASUREMENT_AND_PROTECTION.md) carry the newer evidence, instruments and corrections. In particular the101M store status is no longer pending; see chapter15 for the scoped stopping decision.
+
 # 13 — Causal memory, equal information and the quality–resource frontier
 
 **V5 late-addendum notice.** Sections1–6 preserve the audit at0afd562. Section7 incorporates three newly available result JSONs at fixed cutoff c597d5f: the40M cache meets the registered numerical stopping branch with unresolved control qualifications, while the101M store gate remains pending. The earlier absence statement is historical, and the invalidated0.62 result stays invalidated.

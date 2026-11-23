@@ -1,0 +1,43 @@
+{
+ "train": "/Volumes/Express1M2/nanolm-lab/data/v1/train.bin",
+ "train_tokens": 800000000,
+ "window": 13,
+ "tasks": {
+  "hellaswag": {
+   "n": 10042,
+   "any_shared_window": 0.0037,
+   "window_touching_answer": 0.0022
+  },
+  "arc_easy": {
+   "n": 2376,
+   "any_shared_window": 0.0042,
+   "window_touching_answer": 0.0008
+  },
+  "arc_challenge": {
+   "n": 1172,
+   "any_shared_window": 0.0043,
+   "window_touching_answer": 0.0
+  },
+  "piqa": {
+   "n": 1838,
+   "any_shared_window": 0.0044,
+   "window_touching_answer": 0.0044
+  },
+  "winogrande": {
+   "n": 1267,
+   "any_shared_window": 0.0,
+   "window_touching_answer": 0.0
+  },
+  "openbookqa": {
+   "n": 500,
+   "any_shared_window": 0.0,
+   "window_touching_answer": 0.0
+  },
+  "lambada": {
+   "n": 5153,
+   "any_shared_window": 0.0014,
+   "window_touching_answer": 0.0
+  }
+ },
+ "seconds": 351
+}

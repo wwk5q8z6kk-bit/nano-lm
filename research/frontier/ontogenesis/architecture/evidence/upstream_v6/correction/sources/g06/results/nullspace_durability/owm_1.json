@@ -1,0 +1,38 @@
+[
+ {
+  "arm": "owm_1",
+  "seed": 8001,
+  "acquire_now": 0.9995,
+  "corrected_now": 0.9824,
+  "rule_old_corrected": 1.0,
+  "rule_old_clean": 0.9996,
+  "corrected_old": 0.9816,
+  "infer_late": 0.6613,
+  "room_end": 0.0003,
+  "in_store": 10
+ },
+ {
+  "arm": "owm_1",
+  "seed": 8002,
+  "acquire_now": 0.9997,
+  "corrected_now": 0.9936,
+  "rule_old_corrected": 1.0,
+  "rule_old_clean": 0.9996,
+  "corrected_old": 0.9856,
+  "infer_late": 0.7,
+  "room_end": 0.0004,
+  "in_store": 4
+ },
+ {
+  "arm": "owm_1",
+  "seed": 8003,
+  "acquire_now": 0.9988,
+  "corrected_now": 0.9856,
+  "rule_old_corrected": 0.9987,
+  "rule_old_clean": 1.0,
+  "corrected_old": 0.9889,
+  "infer_late": 0.6262,
+  "room_end": 0.0003,
+  "in_store": 9
+ }
+]

@@ -249,3 +249,25 @@ These closures repair definitions, executable mechanics, evidence and mathematic
 
 
 **Late-evidence refinement of F-46/F-47.** The c597d5f addendum supplies S/M cache and M store results. The40M cache's numerical stopping branch is met, with unresolved baseline/provenance controls; the101M/L store gate remains pending. All90source copies are accounted for across the unchanged85-copy core manifest and separate5-copy addendum. The earlier absence statements are cutoff-specific history, not current claims. D-058 records the revision.
+
+
+## V6 gap register — current disposition
+
+“Closed” below means the stated documentation, reference or code defect is addressed under its explicit scope. It does not mean all scientific questions are solved.
+
+| Gap | Problem | V6 action | Status / remaining dependency |
+|---|---|---|---|
+| F-55 | Full architecture hard to locate inside the combined volume | Dedicated complete architecture entry point with exact components, state and proofs | Closed as a document/navigation gap |
+| F-56 | New native baseline and old pending gates absent from V5 | Pin 386M, nested, transfer and LDO/cache evidence; update D-058 | Closed source/status synthesis; new-model replication open |
+| F-57 | Wrong total and ambiguous BPB/compute labels |22,348 items; sampled weighted BPB; processed versus planned exposure | Closed reporting errors; item-level provenance still missing |
+| F-58 | Continuation/context results overinterpreted | Preserve token-boundary, BOS, tie and causal-attribution qualifications | Source risk documented; actual tokenizer/task parity pending |
+| F-59 | No controlled generative reasoning instrument | Frozen direct/two-hop A/B and order/absence controls | Implemented and tested; learned-model run NOT_RUN |
+| F-60 | In-memory dataset mutation retained stale identity | Revalidate canonical dataset and manifest bytes at scoring | Repaired and independently tested |
+| F-61 | EOS output bypassed newline policy | Enforce first-newline stop across stop labels | Repaired and independently tested |
+| F-62 | Mutable token arrays bypassed preflight or changed receipts | Freeze preflight IDs and copy receipt buffers | Repaired and independently tested |
+| F-63 | Historical targets scored against final predictions | Explicit temporal reference with intervals, target provenance and complete denominators | Reference repaired; no historical score reconstruction or G04 branch patch |
+| F-64 | Soft protection described as exact/free nullspace | Spectral proof, actual-displacement and address-motion requirements | Theory corrected; trained-run drift magnitude unmeasured |
+| F-65 | Contamination coverage overstated | Stride-seven counterexample and precise scan scope | Claim corrected; actual leakage/cleanliness not established |
+| F-66 | Concurrent ledger ownership and initial-review history could be overwritten | Preserve current first-principles prefix, all old events/results, initial/final instrument receipts | Verified in V6 release gate |
+
+Remaining gates are real native-checkpoint evaluation, broad held-out quality, durable native revision, useful learned transport, calibrated new-family transfer, native-scale architecture comparison, and measured deployment/resource performance. Each has an explicit next evidence requirement in the current execution plan.

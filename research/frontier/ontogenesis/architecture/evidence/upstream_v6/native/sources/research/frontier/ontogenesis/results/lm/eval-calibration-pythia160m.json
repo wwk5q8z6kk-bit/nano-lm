@@ -1,0 +1,30 @@
+{
+ "model": "EleutherAI/pythia-160m",
+ "tasks": {
+  "arc_easy": {
+   "acc": 0.4364,
+   "n": 2376,
+   "acc_norm": 0.4007
+  },
+  "arc_challenge": {
+   "acc": 0.1945,
+   "n": 1172,
+   "acc_norm": 0.2346
+  },
+  "piqa": {
+   "acc": 0.623,
+   "n": 1838,
+   "acc_norm": 0.6208
+  },
+  "winogrande": {
+   "acc": 0.513,
+   "n": 1267
+  },
+  "lambada": {
+   "acc": 0.3538,
+   "ppl": 37.26,
+   "n": 5153
+  }
+ },
+ "seconds": 219
+}

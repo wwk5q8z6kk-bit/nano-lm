@@ -1,3 +1,5 @@
+> **V6 current entry point:** [Full architecture](00_FULL_ARCHITECTURE.md). This chapter preserves the V5/historical contract and results. [15](15_NATIVE_BASELINE_AND_RESEARCH_UPDATE.md), [16](16_GENERATIVE_REASONING_EVALUATION.md) and [17](17_CORRECTION_MEASUREMENT_AND_PROTECTION.md) carry the newer evidence, instruments and corrections. In particular the101M store status is no longer pending; see chapter15 for the scoped stopping decision.
+
 # 07 — Executable native-model contract and resource accounting
 
 **V5 current implementation notice.** This chapter remains the exact forward/tensor/cost contract. Training and checkpoint semantics are in [10](10_TRAINING_AND_CONTROLLED_UPDATE_CONTRACT.md). New optional causal cache interfaces are in [13](13_CAUSAL_MEMORY_AND_RESOURCE_FRONTIER.md), and the small native update-allocation experiment is in [14](14_NATIVE_UPDATE_COMPARISON.md). No learned controller, new backbone or natural-language superiority result has been added by naming those interfaces.

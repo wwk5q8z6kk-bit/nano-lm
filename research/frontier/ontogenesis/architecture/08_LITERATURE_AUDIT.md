@@ -198,3 +198,20 @@ Current machine index: [literature_audit_v4.json](results/literature_audit_v4.js
 | P-43 | PyTorch contributors, [Tensor.index_put_, version2.11 documentation](https://docs.pytorch.org/docs/2.11/generated/torch.Tensor.index_put_.html) | Official contract says assignment without accumulation has undefined behavior for duplicate indices; accessed2026-11-21 | Does not identify historical scatter order, errors or the missing correction runtime version |
 
 Current machine index: [literature_audit_v5.json](results/literature_audit_v5.json), 43 identities. No publisher results were rerun. The earlier40 records and their limitations are retained without upgrading inspection depth. The separate external ledger contribution reporting44 headline reference checks is attributed historical context; overlapping lists are not added to inflate a source count.
+
+
+## V6 primary additions P-44–P-48 and current evidence boundary
+
+**Access date: November 23, 2026.** The current canonical register contains **48 primary identities**. The 43 V5 records remain unchanged, with their original reading-depth limits. Five additions support the current comparison context and evaluation design; they do not independently validate Nano LM results.
+
+| ID | Primary source | What was inspected and used | Explicit boundary |
+|---|---|---|---|
+| P-44 | HuggingFaceTB, [SmolLM2-135M official card](https://huggingface.co/HuggingFaceTB/SmolLM2-135M) | Model/training sections: reported 2T pretraining tokens | No weight/data reproduction; the project harness scores are separate evidence |
+| P-45 | HuggingFaceTB, [SmolLM2-360M official card](https://huggingface.co/HuggingFaceTB/SmolLM2-360M) | Model/training sections: reported 4T pretraining tokens | Different tokenizers, data and recipes prevent causal compute attribution |
+| P-46 | Cheng-Ping Hsieh et al.(2024), [RULER](https://arxiv.org/html/2404.06654v3) | Abstract and selected benchmark-method excerpts on configurable retrieval, multi-hop tracking and aggregation | Design precedent; the Nano instrument is not RULER replication or long-context certification |
+| P-47 | Iman Mirzadeh et al.(2024), [GSM-Symbolic](https://arxiv.org/abs/2410.05229) | Abstract: controlled symbolic template instantiations | No full-method/code audit; sweeping author reasoning hypotheses are not adopted as fact |
+| P-48 | Stella Biderman et al.(2023), [Pythia](https://arxiv.org/abs/2304.01373) | Abstract: shared data order and intermediate checkpoints for studying training | Early checkpoints are not tuned terminal runs at a matched budget |
+
+Current machine index: [literature_audit_v 6.json](results/literature_audit_v6.json). The separate V6 repository audit has 231 frozen source copies across 217 distinct commit/path identities; these are not 231 papers or independent experiments. Main research and separately pinned correction branches are distinguished in [source_manifest_v 6.json](evidence/source_manifest_v6.json).
+
+The [standalone architecture](00_FULL_ARCHITECTURE.md) is the current implementation/evidence map. [Chapter 15](15_NATIVE_BASELINE_AND_RESEARCH_UPDATE.md) covers new native/scaling/transfer results; [16](16_GENERATIVE_REASONING_EVALUATION.md) covers the evaluation instrument; [17](17_CORRECTION_MEASUREMENT_AND_PROTECTION.md) covers temporal-scoring and protection-theory corrections. Historical source counts and statuses in earlier sections remain historical.

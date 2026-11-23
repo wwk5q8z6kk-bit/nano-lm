@@ -1,3 +1,5 @@
+> **V6 current entry point:** [Full architecture](00_FULL_ARCHITECTURE.md). This chapter preserves the V5/historical contract and results. [15](15_NATIVE_BASELINE_AND_RESEARCH_UPDATE.md), [16](16_GENERATIVE_REASONING_EVALUATION.md) and [17](17_CORRECTION_MEASUREMENT_AND_PROTECTION.md) carry the newer evidence, instruments and corrections. In particular the101M store status is no longer pending; see chapter15 for the scoped stopping decision.
+
 # 01 — Nano LM candidate architecture, falsifiable hypotheses and mathematical propositions
 
 **V5 current architecture notice.** The implemented native core is unchanged; [12](12_OPTIMIZER_FACTORIAL_AND_UPDATE_GEOMETRY.md) adds exact update geometry and audited optimizer evidence, [13](13_CAUSAL_MEMORY_AND_RESOURCE_FRONTIER.md) specifies the optional causal cache and full resource frontier, and [14](14_NATIVE_UPDATE_COMPARISON.md) executes a frozen three-seed synthetic update comparison. The primary correction-horizon result is mixed/negative for the replay arms. This is an executable research architecture, not an adopted superior model. Earlier V4/V3 statements below retain their historical scope.

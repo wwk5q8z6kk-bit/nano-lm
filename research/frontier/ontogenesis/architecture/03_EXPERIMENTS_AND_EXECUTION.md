@@ -252,3 +252,22 @@ For native evaluation, define tokenizer/byte accounting, clean document splits, 
 The next experiment must address the mixed endpoint trade-off instead of retuning until one seed looks favorable. If replay allocation is revised, record a new recipe with a separate development set and freeze it before fresh evaluation. Longer horizons require an event schedule that leaves eligible corrections at those horizons; an empty cohort is undefined, not zero retention. State that total target presentations match only where they actually do; the additive replay arm remains more expensive.
 
 No new paid compute, remote training job, corpus-scale run or merge is initiated by this continuation. Existing source plans are preserved, with execution status bounded by the reviewed repository cutoff.
+
+
+## V6 current execution order — November 23, 2026
+
+This section governs the next work; earlier plans above are historical. V6 has completed the source audit, standalone architecture, generated-reasoning instrument, temporal reference repair and scoped code review. A complete native-model reasoning result has not been run.
+
+| Order | Work | Entry requirement | Output / acceptance boundary | Present status |
+|---|---|---|---|---|
+| 1 | Freeze and bind the current 386M baseline | Checkpoint, tokenizer, model configuration and adapter content identities | Exact native adapter; prompt/output IDs decode consistently; reset/stop rules pass | Pending asset binding; source recipe audited |
+| 2 | Execute the V6 generated-relational evaluation | Frozen protocol and valid actual-tokenizer context checks | All world/family counts, paired A/B metric, abstention and failures; no dropped outputs | Instrument complete; learned-model run NOT_RUN |
+| 3 | Repair future continual-update measurements | Explicit event validity, cohorts and prediction times | Use temporal reference and per-query outputs; preserve old raw records | Reference implemented; upstream integration pending |
+| 4 | Test actual protection invariants | Address/decoder trajectories and controlled optimizer handling | Separate decoder-only, representation-only and total logit drift, with cost | Required diagnostic; trained-run effect unmeasured |
+| 5 | Select a native dense/shared comparison | Tuned controls, equal-exposure and measured-compute views, fresh seeds | Joint quality/resource/retention decision under a prospectively frozen rule | Not launched |
+| 6 | Expand reasoning training/transfer | Holdout families and calibrated adaptation positive controls | Native learning curves and honest transfer/storage accounting | Not launched |
+| 7 | Consider deployment or architecture adoption | Repeated quality plus measured peak memory, latency and operational evidence | Reviewable candidate satisfying declared workload budgets | Open scientific/engineering gate |
+
+Source plan A (continue 386M), B (dense/recurrent 101M), C (generated reasoning data) and D (generative evaluation) remain distinguishable. This continuation implements D's measurement dependency without launching A–C. New costed work needs the applicable existing execution authority; the documentation does not grant it. PR195 stays draft and unmerged.
+
+**Reproduction now:** run `python -B analysis/validate_release_v6.py` from the architecture directory. It performs bounded current checks and preservation verification; it does not replay the full historical V5 experiment or any corpus/model training. To reproduce historical V5 validation exactly, use its published commit rather than assuming its old ledger-path requirements survive the later owner-directed relocation.

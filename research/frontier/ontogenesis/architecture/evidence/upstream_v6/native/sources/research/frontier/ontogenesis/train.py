@@ -1,0 +1,148 @@
+"""Fit one arm on BINDINGS for a fixed wall-clock budget and report accuracy by hop count.
+
+Pilot use only until PROTOCOL.md is committed; pilots use seeds >= 1000.
+"""
+from __future__ import annotations
+import argparse, json, time
+import numpy as np, torch, torch.nn.functional as F
+from bindings import Spec, make, guessers, NULL
+from demos import Demos
+from baselines import EventTransformer
+from structured import GraphMP, KeyStore
+
+
+def collate(spec, rng, batch, device):
+    ds = [make(spec, rng) for _ in range(batch)]
+    Ns = max(len(b) for d in ds for b in d["blocks"])
+    st = np.zeros((batch, spec.groups, Ns, 3), np.int64)
+    q = np.zeros((batch, spec.groups, spec.queries, 2), np.int64)
+    y = np.zeros((batch, spec.groups, spec.queries), np.int64)
+    T = max(len(d["events"]) for d in ds)
+    ev = np.zeros((batch, T, 5), np.int64)
+    for i, d in enumerate(ds):
+        for g, (blk, qs) in enumerate(zip(d["blocks"], d["queries"])):
+            if blk: st[i, g, :len(blk)] = blk
+            q[i, g] = [(k, h) for k, h, _ in qs]; y[i, g] = [a for _, _, a in qs]
+        ev[i, :len(d["events"])] = d["events"]
+    t = lambda a: torch.from_numpy(a).to(device)
+    return {"st": t(st), "q": t(q), "y": t(y), "ev": t(ev), "N": np.mean([d["N"] for d in ds]),
+            "M": np.mean([d["M"] for d in ds])}
+
+
+BLOCK_ARMS = ("demos", "graph", "keystore")
+
+
+def step_loss(model, arm, b, max_hop_in_loss=None):
+    """Returns loss, and per-query (correct, hops) tensors."""
+    if arm.startswith(BLOCK_ARMS):
+        logits = model(b)
+        y, hops = b["y"], b["q"][..., 1]
+        per = F.cross_entropy(logits.flatten(0, 2), y.flatten(), reduction="none")
+        w = torch.ones_like(per) if max_hop_in_loss is None else (hops.flatten() <= max_hop_in_loss).float()
+        loss = (per * w).sum() / w.sum().clamp_min(1)
+        return loss, (logits.argmax(-1) == y).flatten(), hops.flatten()
+    ev = b["ev"]; logits = model(ev)
+    mask = ev[..., 4] == 1
+    loss = F.cross_entropy(logits[mask], ev[..., 3][mask])
+    # hop count of each scored position = 1 + number of HOP events directly before it
+    hop = torch.zeros_like(ev[..., 0]); run = torch.zeros_like(ev[:, 0, 0])
+    for tpos in range(ev.shape[1]):
+        run = torch.where(ev[:, tpos, 0] == 4, run + 1, torch.zeros_like(run)); hop[:, tpos] = run + 1
+    return loss, (logits.argmax(-1) == ev[..., 3])[mask], hop[mask]
+
+
+def build(arm, spec, d, device):
+    if arm == "demos": m = Demos(spec.symbols, d=d)
+    elif arm == "demos_expm": m = Demos(spec.symbols, d=d, hop_mode="expm")
+    elif arm == "demos_linear": m = Demos(spec.symbols, d=d, hop_mode="linear")
+    elif arm == "demos_nomass": m = Demos(spec.symbols, d=d, mass_dynamics=False)
+    elif arm == "demos_noflow": m = Demos(spec.symbols, d=d, store_steps=0)
+    elif arm == "graph": m = GraphMP(spec.symbols, d=d)
+    elif arm == "keystore_token": m = KeyStore(spec.symbols, d=d, mode="token")
+    elif arm == "keystore_learned": m = KeyStore(spec.symbols, d=d, mode="learned")
+    elif arm == "dense": m = EventTransformer(spec.symbols, d=d, layers=4)
+    elif arm == "looped": m = EventTransformer(spec.symbols, d=d, layers=1, loops=4)
+    elif arm == "dense1": m = EventTransformer(spec.symbols, d=d, layers=1, loops=1)          # same weights as looped, one pass
+    elif arm == "looped_wide": m = EventTransformer(spec.symbols, d=96, layers=1, loops=4)    # parameters close to dense
+    elif arm == "looped2x2": m = EventTransformer(spec.symbols, d=d, layers=2, loops=2)
+    elif arm.startswith("tf-"):                                                                # generic: tf-<layers>x<loops>-d<width>
+        lr_, d_ = arm[3:].split("-d"); L, R = lr_.split("x")
+        m = EventTransformer(spec.symbols, d=int(d_), layers=int(L), loops=int(R))
+    else: raise SystemExit(arm)
+    return m.to(device)
+
+
+def probes(model, arm, spec, device, seed):
+    """After training, no further fitting. For Transformer arms only.
+    (a) accuracy by hop count, including untrained three-step chains, at the trained number of loops and with more;
+    (b) how much the state still moves at each outer loop (relative change), on the training distribution."""
+    if not hasattr(model, "loops"): return None
+    import dataclasses
+    trained, out = model.loops, {"trained_loops": model.loops}
+    spec3 = dataclasses.replace(spec, hops=(1, 2, 3))
+    for loops in sorted({trained, trained + 1, 2 * trained}):
+        model.loops = loops; out[f"acc_loops{loops}"] = evaluate(model, arm, spec3, device, seed + 99)
+    model.loops = trained; model.eval()
+    b = collate(spec, np.random.default_rng(seed + 98), 16, device); ev = b["ev"] if "ev" in b else None
+    if ev is not None:
+        with torch.no_grad():
+            x = model.inp(torch.cat([model.op(ev[..., 0]), model.sym(ev[..., 1]), model.sym(ev[..., 2])], -1)); moves = []
+            for _ in range(2 * trained):
+                y = x
+                for blk in model.blocks: y = blk(y)
+                moves.append(round(float((y - x).norm(dim=-1).mean() / x.norm(dim=-1).mean()), 4)); x = y
+        out["relative_move_per_loop"] = moves
+    model.train(); return out
+
+
+def evaluate(model, arm, spec, device, seed, batches=8, batch=16):
+    rng = np.random.default_rng(seed); model.eval()
+    ok, hp = [], []
+    for _ in range(batches):
+        b = collate(spec, rng, batch, device)
+        with torch.enable_grad() if arm.startswith("demos") else torch.no_grad():
+            _, c, h = step_loss(model, arm, b)
+        ok.append(c.detach().float().cpu()); hp.append(h.detach().cpu())
+    ok, hp = torch.cat(ok), torch.cat(hp); model.train()
+    return {"all": ok.mean().item(), **{f"h{int(k)}": ok[hp == k].mean().item() for k in hp.unique()}}
+
+
+if __name__ == "__main__":
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--arm", required=True); ap.add_argument("--seconds", type=float, default=120)
+    ap.add_argument("--seed", type=int, default=1000); ap.add_argument("--d", type=int, default=64)
+    ap.add_argument("--lr", type=float, default=3e-3); ap.add_argument("--batch", type=int, default=32)
+    ap.add_argument("--symbols", type=int, default=256); ap.add_argument("--live", type=int, default=32)
+    ap.add_argument("--churn", type=float, default=0.0); ap.add_argument("--hops", default="1")
+    ap.add_argument("--groups", type=int, default=2); ap.add_argument("--queries", type=int, default=16)
+    ap.add_argument("--steps", type=int, default=0); ap.add_argument("--eval-every", type=int, default=0)
+    ap.add_argument("--warmup", type=int, default=0); ap.add_argument("--max-hop-in-loss", type=int, default=None)
+    ap.add_argument("--device", default="mps"); ap.add_argument("--out", default="")
+    a = ap.parse_args()
+    spec = Spec(symbols=a.symbols, live=a.live, churn=a.churn, hops=tuple(int(x) for x in a.hops.split(",")),
+                groups=a.groups, queries=a.queries)
+    torch.manual_seed(a.seed); rng = np.random.default_rng(a.seed)
+    model = build(a.arm, spec, a.d, a.device)
+    opt = torch.optim.AdamW(model.parameters(), lr=a.lr, weight_decay=0.0)
+    params = sum(p.numel() for p in model.parameters())
+    g = guessers(spec, np.random.default_rng(a.seed + 1), 100)
+    t0, steps, log, gnorms = time.time(), 0, [], []
+    curve = []
+    while (steps < a.steps) if a.steps else (time.time() - t0 < a.seconds):
+        b = collate(spec, rng, a.batch, a.device)
+        loss, c, _ = step_loss(model, a.arm, b, a.max_hop_in_loss)
+        if a.warmup:
+            for gparam in opt.param_groups: gparam["lr"] = a.lr * min(1.0, (steps + 1) / a.warmup)
+        opt.zero_grad(set_to_none=True); loss.backward()
+        gn = float(torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)); gnorms.append(gn); opt.step(); steps += 1
+        if a.eval_every and steps % a.eval_every == 0:
+            curve.append((steps, round(time.time() - t0, 1), evaluate(model, a.arm, spec, a.device, 424242, batches=4)))
+        if steps % 50 == 0:
+            log.append((steps, round(time.time() - t0, 1), round(loss.item(), 4), round(c.float().mean().item(), 4)))
+            print(*log[-1], flush=True)
+    res = {"curve": curve, "train_seconds": round(time.time() - t0, 1), "arm": a.arm, "lr": a.lr, "warmup": a.warmup, "seed": a.seed, "params": params, "steps": steps, "seconds": a.seconds,
+           "spec": spec.__dict__, "guessers": g, "eval": evaluate(model, a.arm, spec, a.device, a.seed + 7),
+           "live_particles": getattr(model, "last_live", None), "grad_norm_median": float(np.median(gnorms)), "grad_norm_p95": float(np.percentile(gnorms, 95)), "grad_norm_max": float(np.max(gnorms)), "log": log[-5:],
+           "probes": probes(model, a.arm, spec, a.device, a.seed)}
+    print(json.dumps(res, default=str))
+    if a.out: open(a.out, "w").write(json.dumps(res, default=str))

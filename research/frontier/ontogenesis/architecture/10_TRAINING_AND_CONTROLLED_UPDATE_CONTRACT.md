@@ -1,3 +1,5 @@
+> **V6 current entry point:** [Full architecture](00_FULL_ARCHITECTURE.md). This chapter preserves the V5/historical contract and results. [15](15_NATIVE_BASELINE_AND_RESEARCH_UPDATE.md), [16](16_GENERATIVE_REASONING_EVALUATION.md) and [17](17_CORRECTION_MEASUREMENT_AND_PROTECTION.md) carry the newer evidence, instruments and corrections. In particular the101M store status is no longer pending; see chapter15 for the scoped stopping decision.
+
 # 10 — Native training and controlled-update measurement
 
 **V5 current integration notice.** The V4 training and measurement implementation below is unchanged. [14](14_NATIVE_UPDATE_COMPARISON.md) now branches four arms from identical weights and optimizer states on a locally frozen synthetic protocol. This progresses beyond a single bridge smoke fixture, while remaining short-horizon, untuned and separate from a natural-language G03b result. Exact target/optimizer-call matching is not measured FLOP or energy equality.

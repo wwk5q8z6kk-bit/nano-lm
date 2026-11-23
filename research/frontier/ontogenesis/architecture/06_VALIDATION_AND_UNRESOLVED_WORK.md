@@ -179,3 +179,63 @@ The gate verifies local reproducibility and package contracts, not an external l
 The actual language evaluator still needs equal prefix/reset information, raw byte/crop accounting and checkpoint/data identities. The40M cache has met the numerical stopping condition in the late reported rows while full control clearance remains open; the registered101M/L store gate still lacks its required result. Native language-quality and long-term continual-learning claims require meaningful held-out tasks, sufficient eligible cohorts, independent tuning/evaluation and full cost. The tiny run shows why favorable acquisition alone cannot close a correction-durability gate.
 
 The source audits do not recreate historical Torch execution order or recover missing model/corpus bytes. The parallel contributor's V3 subset rerun remains that contributor's attributed historical check, not an independent rerun of the complete V5 gate.
+
+
+## V6 current validation — November 23, 2026
+
+**The V6 release gate passes all 10 groups.** Its current receipt is [validation_v6_final.json](results/validation_v6_final.json). The groups test current instruments, reconcile exact saved results and preserve historical evidence. They do not rerun the historical corpus training or treat symbolic controls as learned-model performance.
+
+| Verification group | Observed scope | Outcome |
+|---|---|---|
+| V5 preservation | 208 prior files; 195 unchanged byte-for-byte; historical chapter text retained in extended documents; all 27 old result files unchanged | PASS |
+| Frozen V6 sources | 231 exact copies, 217 distinct commit/path identities, 1,603,517 bytes; SHA256 and Git blob checks | PASS |
+| Decision ledger | 73 human IDs; 58 events covering 50 IDs; prior 46-event prefix, schema, revision links and new evidence hashes | PASS |
+| Literature | 48 identities; 43 previous records unchanged; five primary additions with reading limits | PASS |
+| Source reanalysis | Native/scaling/transfer/store arithmetic; 26 correction predicates and world diagnostics; scorer-source witnesses | PASS; saved results reproduce |
+| Generated reasoning | 31 focused checks; 96 worlds / 480 records; exact stored control reports reproduced | PASS; model NOT_RUN |
+| Independent generation review | 21 adversarial checks against current source | PASS; three initial defects closed |
+| Temporal scoring | 20 checks, including 1,350 independent small-history plans; exact stored receipt reproduction | PASS |
+| Architecture arithmetic | 386,062,080 parameters; 10MiB hypothetical GQA KV tensor allocation; 7,698,841,600 training target presentations | PASS; source accounting, not model/hardware measurement |
+| Current document links | Main architecture, README and new chapters; local targets and code fences | PASS |
+
+The prior shared ledger remains unchanged at 23,049 bytes. The complete current first-principles ledger prefix is 65,209 bytes and remains the exact prefix of the V6 append. These are bytes, not the smaller Unicode character counts reported by some earlier text reads. The 23 historical human-only decision IDs are not retroactively given invented machine provenance.
+
+### Independent review changed the implementation
+
+The initial generation implementation passed 27 tests, yet independent review found stale dataset identity after in-memory mutation, an EOS/newline bypass and mutable token buffers that could invalidate preflight or prior receipts. The repaired implementation passes 31 focused tests and all 21 independent checks. Public/oracle/manifest bytes and all control metrics remain unchanged.
+
+| Artifact | Current identity / disposition |
+|---|---|
+| Generation protocol | `1d86c0b00d4c6db8974fd2bb3f739ba54809daedaa8a839109521c2184fd49b6`; unchanged local freeze |
+| Repaired generation implementation | `fb189cfdac616c3036f8bfe3e443bc39ff8bcaf746d0f09f145185d24eae2ff8` |
+| Final generation receipt | `44af92e3cf4938731559091368e1d205b838b25d450a2c840cdbed2ccdd917eb` |
+| Unchanged generated manifest | `8cffe7ed4e5cd308cf675974cc30382462c82085720645502a0107c270b0706c` |
+| Temporal implementation | `89f56cfc18e95a1cfea91b286efe5eae02d212877fde9bfddf51023e469c9e35` |
+| Temporal result receipt | `7323e568f674987a8b605cf570499ae3f549b4dcd114355d195a01b4854a6780` |
+| Initial generation source and result | Retained explicitly as historical in evidence/history_v6 and results/generative_reasoning_checks_v6.json |
+
+The [generation review](reviews/v6_generation_independent_review.md), [temporal review](reviews/v6_temporal_revision_review.md), [source/theory review](reviews/v6_correction_theory_review.md) and [architecture math review](reviews/v6_architecture_math_review.md) state scope and remaining limitations. Declarations of checkpoint identity or prediction time are not independent execution attestation.
+
+### Reproduction
+
+From the architecture directory:
+
+```bash
+python -B analysis/validate_release_v6.py
+```
+
+The default leaves package bytes unchanged. An explicit new `--out` destination creates a receipt exclusively. The gate uses only bounded local computation. It reruns current generation and temporal tests and source arithmetic; it checks unchanged V5 implementation/result bytes instead of repeating its entire historical suite. To reproduce V5's original 24-group gate exactly, use its frozen publication commit before the owner-directed ledger relocation.
+
+### Remaining work, without implied completion
+
+| Question | What is completed | What remains |
+|---|---|---|
+| Native generation capability | Frozen relational instrument and validated software | Real checkpoint/tokenizer adapter; actual output decoding, length, stop and reset checks; full prediction run |
+| Context-harness parity | Source audit and synthetic contract witnesses | Exact prepared tasks, tokenizer bytes, model IDs and per-item lengths/likelihoods |
+| G04 temporal correctness | Separate time-valid reference scorer | Prospective integration and new per-query observations; historical aggregates cannot recover missing outputs |
+| G06 causal protection story | Spectral/actual-update correction and drift requirements | Measured protected-row motion and frozen-row control; nonlinear and native-model efficacy |
+| Contamination | Precise coverage descriptions and overlap counterexample | Actual corpus/exposure audit; per-item clean-subset evidence |
+| Architecture and transfer | Scoped updated source evidence and controls | Native-scale tuned comparisons, calibrated new-family adaptation, longer horizons |
+| Resource/deployment readiness | Exact parameter arithmetic and qualified reported throughput | Peak memory, end-to-end latency, energy/cost where measured, repetition on a declared workload |
+
+No paid resource, remote training job, pretrained-base adoption, raw-result rewrite or merge is performed by this release. PR195 remains draft and unmerged. The current publication receipt records the actual Git/App delivery outcome separately from this scientific validation.

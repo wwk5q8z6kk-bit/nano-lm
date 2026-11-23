@@ -1,0 +1,13 @@
+Copying gs://nanolm-lab-eu-0478806098/corpus/v2/manifest.json to file:///root/data2/manifest.json
+Copying gs://nanolm-lab-eu-0478806098/corpus/v2/tokenizer_32k.json to file:///root/data2/tokenizer_32k.json
+  
+Copying gs://nanolm-lab-eu-0478806098/corpus/v2/train.bin to file:///root/data2/train.bin
+Copying gs://nanolm-lab-eu-0478806098/corpus/v2/val_code.bin to file:///root/data2/val_code.bin
+Copying gs://nanolm-lab-eu-0478806098/corpus/v2/val_math.bin to file:///root/data2/val_math.bin
+Copying gs://nanolm-lab-eu-0478806098/corpus/v2/val_textbook.bin to file:///root/data2/val_textbook.bin
+Copying gs://nanolm-lab-eu-0478806098/corpus/v2/val_web.bin to file:///root/data2/val_web.bin
+.....................................................................................................................................................................................................................................................................................................................................................................................................................................................
+
+Average throughput: 220.7MiB/s
+{"run": "dense-L128-lr0.002-s1000-tok8e+08-muon-dp4-fl0.01-splash-hs-v2", "name": "dense-L128-lr0.002-s1000-tok8e+08-muon-dp4-fl0.01-splash-hs-v2", "cfg": {"d": 768, "layers": 12, "ffn": 2048, "heads": 6, "kv": 2, "attn": "splash"}, "lr": 0.002, "warmup": 500, "bs": 64, "seq": 512, "micro": 1, "seed": 1000, "steps": 24400, "train_tokens": 799539200, "corpus_tokens": 10000000000, "dtype": "bfloat16", "sampler": "uniform crops drawn on the host with numpy default_rng(seed + 1)", "jax": "0.6.2", "device": "TPU_0(process=0,(0,0,0,0))", "device_kind": "TPU v5 lite", "code_sha256": "7511f8f8e2d9665c", "n_devices": 4, "wd": 0.1, "wd_on": "all", "lr_floor": 0.01, "opt": "muon", "dp": 4, "objective": "cross-entropy", "params": 100685568}
+{"run": "dense-L128-lr0.002-s1000-tok8e+08-muon-dp4-fl0.01-splash-hs-v2", "step": 500, "loss": 4.3817, "tok_s": 461536}

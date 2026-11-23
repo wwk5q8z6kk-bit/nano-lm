@@ -590,3 +590,20 @@ Run and recorded by nano-lm-d5 on `research/g04-rule-change` (PR [#204](https://
 - **With discovered types and no labels, the router now revises 54% of old entities after a rule change at no measurable cost to the stable rule (0.6 points), keeping 96% of exceptions.** The cooldown is what removes the cost.
 - **Still open:** about 6 of 12 rule changes are missed with discovered types, against about 1 with given types. The cause is unexplained: no before/after splits occurred on these seeds, and over-splitting did not separate detected from missed changes earlier.
 - Limits: synthetic world; value tables. Not evidence about a language model.
+
+
+---
+
+## V6 architecture and measurement continuation — 2026-11-23
+
+This additive entry preserves the owner-directed move of this workstream into LEDGER-FIRST-PRINCIPLES.md. The shared LEDGER.md remains unchanged by V6. Source cutoff 3a 38b 5f 1529a 718838b 5bc 83a 010574bfa 9a 4c 6e; separate G04 and G06 draft cuts are explicit in the source manifest.
+
+- Full standalone architecture: [architecture/00_FULL_ARCHITECTURE.md](architecture/00_FULL_ARCHITECTURE.md).
+- Current decisions and reasons: [architecture/02_DECISION_LEDGER.md](architecture/02_DECISION_LEDGER.md), D-063–D-073 plus a new D-058 event.73 human IDs; 58 machine events covering 50 IDs; complete 46-event V5 prefix preserved.
+- New evidence: reported 386M native baseline, mixed nested-LR result, negative finite-procedure transfer, incomplete Q14 speed trial, scoped 101M LDO/40Mcache stopping decisions. Source/arithmetic audit only; no training rerun.
+- New code: locally frozen counterfactual generative instrument (31 focused+21 independent checks) and temporal scoring repair (20checks incl 1,350 small-history plans). All model scores remain NOT_RUN for the new instrument.
+- Formal corrections: soft attenuation is not exact nullspace projection; protected address invariance requires enforcement or measured drift; prediction targets must be valid at prediction time.
+- Preservation: 27V5 result files and all existing scientific code are byte-identical; initial generation receipt/source retained after reviewed repairs.231new exact source copies represent 217distinct commit/path identities; 48primary literature identities retain explicit reading depth.
+- Remaining science: real native adapter/checkpoint run, broader quality, durable native updates, transfer and measured resource frontier. PR195 remains draft and unmerged.
+
+See [architecture/06_VALIDATION_AND_UNRESOLVED_WORK.md](architecture/06_VALIDATION_AND_UNRESOLVED_WORK.md) for exact verification scope. This entry does not authorize new paid resources, raw-result replacement or architecture adoption.

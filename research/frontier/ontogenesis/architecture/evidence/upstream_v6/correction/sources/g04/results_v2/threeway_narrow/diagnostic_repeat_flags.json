@@ -1,0 +1,16 @@
+{
+ "threeway": {
+  "false_alarms": 34.6,
+  "distinct_false_groups": 20.8,
+  "false_alarms_on_a_repeat_group": 13.8,
+  "true_flags": 20.2,
+  "true_flags_repeats": 10.2
+ },
+ "threeway_s02": {
+  "false_alarms": 32.8,
+  "distinct_false_groups": 20.2,
+  "false_alarms_on_a_repeat_group": 12.6,
+  "true_flags": 20.6,
+  "true_flags_repeats": 10.6
+ }
+}

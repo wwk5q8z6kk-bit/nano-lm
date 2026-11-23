@@ -1,0 +1,40 @@
+{
+  "classification": "INSTRUMENT_REVIEW_HISTORY_NOT_MODEL_RESULTS",
+  "protocol_sha256": "1d86c0b00d4c6db8974fd2bb3f739ba54809daedaa8a839109521c2184fd49b6",
+  "dataset_manifest_sha256": "8cffe7ed4e5cd308cf675974cc30382462c82085720645502a0107c270b0706c",
+  "dataset_content_changed": false,
+  "initial": {
+    "receipt": "work_v6/architecture/results/generative_reasoning_checks_v6.json",
+    "receipt_sha256": "13e6419797d9744f23cd3fb2bdcf3b573b934d55e3dcf84c5a818cb7f6d85552",
+    "source_sha256": "6f79b8f606bc7fa780c9724ad199a44628dfa886e762783292f4fba19ef14c73",
+    "test_source_sha256": "db843e3c11eed5f7c301ea0a2ba8b7c6b3f56579e0d308e757c6755039a905ae",
+    "test_count": 27,
+    "status": "HISTORICAL_PRE_REVIEW"
+  },
+  "final": {
+    "receipt": "work_v6/architecture/results/generative_reasoning_checks_v6_final.json",
+    "receipt_sha256": "44af92e3cf4938731559091368e1d205b838b25d450a2c840cdbed2ccdd917eb",
+    "source_sha256": "fb189cfdac616c3036f8bfe3e443bc39ff8bcaf746d0f09f145185d24eae2ff8",
+    "test_source_sha256": "54f4505c20cc25d1a1a829df79a4a5e6a06072a5adf5e3a773e179c296012dd7",
+    "test_count": 31,
+    "status": "REPAIRED_INDEPENDENT_RECHECK_PASS"
+  },
+  "repairs": [
+    "Bind in-memory canonical public/oracle/manifest bytes to immutable dataset identities at every score() invocation.",
+    "Apply first-newline stopping consistently even when a receipt labels its stop EOS or max budget.",
+    "Freeze preflight input token IDs and copy input/output buffers into receipts so adapter mutation cannot rewrite them."
+  ],
+  "limits": [
+    "All controls synthetic; no model checkpoint or corpus execution.",
+    "Receipts verify consistency, not independent execution or text-decoding attestation."
+  ],
+  "independent_review": {
+    "review": "v6_review/generation_independent_review.md",
+    "sha256": "f40bc7bc59deaffcf86864bd457be40f4e7cf8768420e25ae86e8b500943f03f",
+    "supplied_regressions_passed": 31,
+    "independent_checks_passed": 21,
+    "all_original_findings_closed": true,
+    "dataset_and_control_metrics_unchanged": true,
+    "scope": "Synthetic instrument review; no checkpoint/tokenizer/corpus/model execution."
+  }
+}

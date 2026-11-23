@@ -1,0 +1,43 @@
+{
+ "train": "/home/mac/corpus-v2/train.bin",
+ "train_tokens": 10000000000,
+ "window": 13,
+ "tasks": {
+  "hellaswag": {
+   "n": 10042,
+   "any_shared_window": 0.0208,
+   "window_touching_answer": 0.0127
+  },
+  "arc_easy": {
+   "n": 2376,
+   "any_shared_window": 0.0152,
+   "window_touching_answer": 0.0017
+  },
+  "arc_challenge": {
+   "n": 1172,
+   "any_shared_window": 0.0179,
+   "window_touching_answer": 0.0026
+  },
+  "piqa": {
+   "n": 1838,
+   "any_shared_window": 0.0125,
+   "window_touching_answer": 0.0125
+  },
+  "winogrande": {
+   "n": 1267,
+   "any_shared_window": 0.0,
+   "window_touching_answer": 0.0
+  },
+  "openbookqa": {
+   "n": 500,
+   "any_shared_window": 0.0,
+   "window_touching_answer": 0.0
+  },
+  "lambada": {
+   "n": 5153,
+   "any_shared_window": 0.0023,
+   "window_touching_answer": 0.0002
+  }
+ },
+ "seconds": 3648
+}
