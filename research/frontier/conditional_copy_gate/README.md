@@ -18,6 +18,8 @@ p(y|x[:t+1]) = (1-g(t)) p_dense(y|x[:t+1]) + g(t) sum_j alpha(t,j) 1[x[j]==y].
 
 The sparse loss computes only the true target's pointer probability and does **not** allocate another dense (B,T,V) tensor. Full-vocabulary pointer probabilities are available only for inference/debugging. Complexity is O(B*T*window*d_ptr) for pointers on top of the backbone; this is not free and has poor scaling if applied indiscriminately. The small initial gate bias avoids changing a pretrained backbone too strongly before the head learns; it is not a substitute for evidence-based calibration.
 
+**Scaling warning:** this correctness-first PyTorch implementation gathers a B*T*window*d_ptr intermediate for key comparisons. Sparse target loss saves the extra vocabulary-sized *pointer* tensor, but it does not eliminate the potentially large key-gather activation. Before a large-model run, profile peak memory and compare a fused/chunked or sparse attention kernel; reject the mechanism if quality-per-wall-clock/energy does not improve.
+
 ## Run local correctness tests
 
 From this directory:
