@@ -231,3 +231,42 @@ Kaggle is free. No RunPod spend.
 | **Corrected figures:** given types revise 81.5% (was 70%), stable 72.4% (was 77%); EM clusters revise 52.8% (was 50.4%), stable 67.5%, noise resisted 84.9%, misses 6.2 (was 5.2). The EM gap is about 29 points of revision, not 20. Verdicts unchanged (E2 on 3 of 5 seeds, E3 on 4 of 5). *Original text:* The same router with entity types learned from data (EM clusters) instead of given. Old entities revised 50%, against 70% with given types and 14% with no detector. Exceptions kept 97%. Stable rule 0.71 against 0.77 with given types; noise resisted 88% against 94%. The typed-address caveat is therefore a measured cost (about 20 points of revision, 6 of stable rule, 6 of noise), not a failure to transfer. A changed type split into before/after clusters in 21% of checks (E1 failed narrowly, bound 0.20); noise bound missed (E5 failed) | **Corrected 2026-11-23** (`CORRECTIONS-G04-20261123.md`, `19e4258`, files in `results_v2/`, same predictions and seeds; checked here). Demonstrated, toy (seeds 7601–7605; E2 on 4 of 5 seeds, E3 on 3 of 5; given-type revision 70% here against 77–86% on earlier seed sets, so seed variance is large) | Sessions d5 and first-principles, PR #204, `THREEWAY-EM-20261122.md`; registered `3a0e17b` before the runs; checked here against `results/threeway_em/verdict.json` |
 | **Corrected figures:** the pooled typed configuration is about 79–80% (only one seed set changed). The EM configuration revises 52.8%. *Original text:* Seed variance of the router, pooled across identical configurations only. The one configuration run on three seed sets (typed addresses, normal revision, standard private table) revised 86%, 71% and 82% of old entities, pooled 79% [58–91] over 15 seeds. **Five-seed means of this router should be read as ±10 points.** Other configurations, each on one seed set: share 0.2 79%, fixed 77%, EM clusters 50% [31–66]. A post-hoc diagnostic finds EM's extra misses mostly not explained by before/after splits (10 of 26) or by over-splitting | **Corrected 2026-11-23** (`CORRECTIONS-G04-20261123.md`, `19e4258`, files in `results_v2/`, same predictions and seeds; checked here). Demonstrated, toy (pooled); diagnostic post-hoc | Session d5, `THREEWAY-EM-20261122.md` addendum `1e949d5`; the three seed-set means agree with the verdict tables checked above (0.858, 0.711, 0.815) |
 | A once-per-group cooldown on the change detector, on corrected code. Flags fall from 52.6 to 25.0 per seed without losing detection (misses 1.0 against 1.2). With narrow revision as well: stable rule 77.0%, against 71.2% for the plain router and 82.4% with no routing, so the cost falls from 11.2 to 5.4 points; exceptions kept 94.7%, noise resisted 92.7%. **Price, not predicted: old-entity revision falls from 82.3% to 68.5%** | Demonstrated, toy (seeds 7701–7705; K1–K5 held, K2 on 3 of 5 seeds; typed addresses; thresholds from a development seed; revision varies about ±10 points between seed sets) | Session d5, PR #204, `THREEWAY-COOLDOWN-20261123.md`; registered `071587e` before the runs; checked here against `results_v2/threeway_cooldown/verdict.json` |
+
+## Update 2026-11-23 (this branch's own results; overrides earlier rows where they conflict)
+
+Full write-ups with registered predictions are in `INVESTIGATION.md`.
+
+### Measured
+
+| Item | Status | Evidence |
+|---|---|---|
+| Muon at 101M, 0.8B tokens: rates 2e-3, 4e-3 and 8e-3 give mix 0.9540, 0.9544 and 0.9577, so the rate is flat across this range. Gain over the old default recipe at the same tokens: 0.0235 | Demonstrated (one seed). Q1: "best rate is 4e-3" failed narrowly; "gain at least 0.02" held | `results/scale2/`, Question 13 step 1 |
+| 386M dense model, Muon, 7.7B tokens of corpus v2: held-out mix 0.8049 (web 0.888, textbook 0.531, math 0.871, code 0.602) | Demonstrated (one seed). Q2 held (predicted 0.79–0.83); Q3a held (beats our 211M on ARC-Easy 0.596 and PIQA 0.678); Q3b failed as worded (ARC-Easy 0.075 above Pythia-410M, outside the band on the high side) | `results/scale2/q13-verdict.json`; scorer committed before the result |
+| Against SmolLM2-135M (about 260 times more training tokens, from memory), on the same harness: behind or equal on every task, ahead on none. Within about 0.02 only on tasks where context adds little (PIQA, HellaSwag, ARC-Challenge); clearly behind on ARC-Easy (0.048) and LAMBADA (accuracy 0.354 against 0.429, perplexity 32 against 19) | Observed | `results/lm/eval-reference-SmolLM2-*.json`, `INVESTIGATION.md` Question 13 result |
+| SmolLM2-135M and 360M scored through the calibrated harness; where the model card gives figures, ours are close (from memory) | Observed | `results/lm/eval-reference-SmolLM2-*.json` |
+| Nested experiment, per-arm learning rates (3e-4 and 3e-3 added to 1e-3). A reused whole block (4 × 2) learns two-step chains in 4 of 5 at its best rate, against 0 for the untied 8 × 1 of equal compute; a single reused layer against four untied ones is 2 against 1. A lower rate rescues no untied model | Demonstrated, toy. Registered decision "mixed"; L1 and L2 failed, L3 held | `results/nested-lr/verdict.json`, `PROTOCOL-NESTED-LR.md` |
+| Training speed: the trainer reaches about 36% of a v5e chip's peak at 386M; data-parallel efficiency over 4 chips about 86%. Recomputing activations is 17% slower. The fused attention kernel needs heads of 128; at 101M with heads of 128 it is only 1.05 times faster | Measured (one chip; Question 14 run c) | `results/bench-speed/`, `results/q14/` |
+| Question 14: heads of 128 with fused attention. W1 (at least 1.25 times faster) failed, so heads of 64 are kept; W2 and W3 not measured | Decided by the registered rule | `INVESTIGATION.md` Question 14 |
+
+### Status changes
+
+| Idea or claim | New status | Reason |
+|---|---|---|
+| Nested dense-loop architecture | Closed for this task: whole-block reuse helps at every rate tried; single-layer reuse not distinguishable from untied | registered test and its learning-rate control both done |
+| n-gram store as a core component | Closed, as a complement and as a core component | leave-document-out gains 0.0096, 0.0037 and 0.0017 at 14M, 40M and 101M, below the registered 0.01 |
+| "The single learning rate explains the reuse advantage" | Not supported | no arm did better at 3e-4 or 3e-3 than at 1e-3 |
+| Fused Pallas attention with wider heads | Not adopted | 1.05 times faster, against the 1.25 required |
+| Our models compared with Pythia-160M/410M | Superseded by the SmolLM2 comparison | Pythia is a low bar for education-filtered training text |
+
+### Spend, 22–23 November (list-price upper bounds; billing not yet read; network egress not included)
+
+| Item | Upper bound |
+|---|---|
+| Question 13: on-demand v5e-4, about 2.1 hours | about $10 |
+| Question 13: spot v5e-4, 20.8 hours (billed at the lower spot rate) | at most $100 |
+| Speed benchmark: spot v5e-1, about 15 minutes | under $1 |
+| Question 14: spot v5e-4, at most about 4.6 hours (stopped responding at about 06:05; cause not established) | at most about $22 |
+| Nested learning-rate runs: CPU of the Question 13 host | no extra cost |
+| SmolLM2 scoring: laptop | none |
+
+All machines and Cloud Scheduler jobs are deleted (checked 2026-11-23, 14:25 UTC).
