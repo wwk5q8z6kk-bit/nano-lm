@@ -34,7 +34,7 @@ Nothing was pushed to this public repository. After the owner's go-ahead ("do al
 
 | Copy | Contents | Check |
 |---|---|---|
-| `nano-lm-all-local-refs.bundle` | every local branch that existed at the time, tags and `HEAD` (1.68 GB) | `git bundle verify`: complete history; every worktree tip is reachable from a bundled branch |
+| `nano-lm-all-local-refs.bundle` | every local branch that existed at the time (113 at bundling; one was removed by another session before the later count of 112), tags and `HEAD` (1.68 GB) | `git bundle verify`: complete history; every worktree tip is reachable from a bundled branch |
 | `nano-lm-all-refs-incl-stash-checkpoints.bundle` | the same plus the stash tip, harness checkpoint refs and Codex snapshot refs, which hold 493 further commits (1.68 GB) | `git bundle verify`: complete history |
 | `stashes/` | all 14 stash entries as binary patches, with an index of their commit ids | exported with untracked files; not re-applied as a test |
 | `uncommitted/` | the 85 uncommitted and untracked files, by worktree | each copy re-hashed against its source, 85 of 85 match |
