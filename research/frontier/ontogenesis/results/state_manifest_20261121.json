@@ -8,13 +8,13 @@
   "heads": 134,
   "git_bundle_verify": "complete history",
   "local_branches": 113,
-  "local_branches_note": "113 local branches existed when the bundle was made; 112 when the totals were counted later the same session (one removed meanwhile by another session)"
+  "local_branches_note": "113 local branches when the bundle was made; 114 at the later local-only count in the same session (branches were being created by other sessions). totals.local_branches previously said 112, a transcription error."
  },
  "totals": {
   "worktrees": 22,
   "uncommitted_files": 85,
   "uncommitted_bytes": 1322183,
-  "local_branches": 112,
+  "local_branches": 114,
   "local_branches_with_local_only_commits": 76,
   "unique_local_only_commits": 386,
   "worktrees_with_local_only_commits": 13

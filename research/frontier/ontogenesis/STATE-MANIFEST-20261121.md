@@ -11,7 +11,7 @@ Most of the research record of the last five days was not on `origin`.
 | Measure | Count |
 |---|---|
 | Worktrees inspected | 22 |
-| Local branches holding commits absent from every `origin` branch | 76 of 112 |
+| Local branches holding commits absent from every `origin` branch | 76 of 114 (114 local branches at the time of this count; 113 when the bundle was made a little earlier, as other sessions were creating branches during the inventory. An earlier version of this table said 112, which was a transcription error) |
 | Unique commits absent from every `origin` branch | 386 |
 | Of those, on branches checked out in a worktree | 13 worktrees (per-worktree counts below; they overlap, so they do not sum to a unique total) |
 | Uncommitted or untracked files | 85 (1.3 MB) across 8 worktrees |
@@ -34,7 +34,7 @@ Nothing was pushed to this public repository. After the owner's go-ahead ("do al
 
 | Copy | Contents | Check |
 |---|---|---|
-| `nano-lm-all-local-refs.bundle` | every local branch that existed at the time (113 at bundling; one was removed by another session before the later count of 112), tags and `HEAD` (1.68 GB) | `git bundle verify`: complete history; every worktree tip is reachable from a bundled branch |
+| `nano-lm-all-local-refs.bundle` | every local branch that existed at the time (113 when the bundle was made), tags and `HEAD` (1.68 GB) | `git bundle verify`: complete history; every worktree tip is reachable from a bundled branch |
 | `nano-lm-all-refs-incl-stash-checkpoints.bundle` | the same plus the stash tip, harness checkpoint refs and Codex snapshot refs, which hold 493 further commits (1.68 GB) | `git bundle verify`: complete history |
 | `stashes/` | all 14 stash entries as binary patches, with an index of their commit ids | exported with untracked files; not re-applied as a test |
 | `uncommitted/` | the 85 uncommitted and untracked files, by worktree | each copy re-hashed against its source, 85 of 85 match |
