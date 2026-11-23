@@ -72,8 +72,27 @@ def apply_rope(x, cos, sin):                                   # x [..., T, hd];
     return jnp.stack((x1 * c - x2 * s, x1 * s + x2 * c), -1).reshape(x.shape)
 
 
+_MESH = None      # set by run() when training on several devices; used only by the opt-in splash attention
+
+
+def _splash_attention(q, k, v):
+    """Opt-in (--attn splash): fused causal attention from the Pallas TPU kernel. q [B, KV, rep, T, hd] already scaled
+    by hd^-0.5; k, v [B, KV, T, hd]. Returns [B, KV, rep, T, hd]. Each data-parallel shard runs the kernel on its rows."""
+    from jax.experimental.pallas.ops.tpu.splash_attention import splash_attention_kernel as sk, splash_attention_mask as sm
+    rep, T = q.shape[2], q.shape[3]
+    kern = sk.make_splash_mqa_single_device(mask=sm.MultiHeadMask([sm.CausalMask((T, T)) for _ in range(rep)]))
+    f = jax.vmap(jax.vmap(kern))
+    if _MESH is not None:
+        from jax.experimental.shard_map import shard_map
+        from jax.sharding import PartitionSpec as PS
+        f = shard_map(f, mesh=_MESH, in_specs=(PS("data"),) * 3, out_specs=PS("data"), check_rep=False)
+    return f(q, k, v)
+
+
 def forward(params, idx, c, dt=jnp.bfloat16):
-    """idx [B, T] int -> logits [B, T, VOCAB] float32."""
+    """idx [B, T] int -> logits [B, T, VOCAB] float32.
+    Opt-in config keys, absent by default: "remat" recomputes each block's activations in the backward pass instead
+    of storing them; "attn": "splash" uses the fused TPU attention kernel. Without them the computation is unchanged."""
     H, KV = c["heads"], c["kv"]
     p = jax.tree_util.tree_map(lambda a: a.astype(dt), params)
     B, T = idx.shape
@@ -82,18 +101,25 @@ def forward(params, idx, c, dt=jnp.bfloat16):
     cos, sin = rope_tables(T, hd)
     mask = jnp.tril(jnp.ones((T, T), bool))
     neg = jnp.finfo(jnp.float32).min
-    for b in p["blocks"]:
+    def block(x, b):
         h = rms(x, b["n1"])
         q = rms((h @ b["q"]).reshape(B, T, KV, rep, hd), b["qn"]).transpose(0, 2, 3, 1, 4)      # B KV rep T hd
         k = rms((h @ b["k"]).reshape(B, T, KV, hd), b["kn"]).transpose(0, 2, 1, 3)              # B KV T hd
         v = (h @ b["v"]).reshape(B, T, KV, hd).transpose(0, 2, 1, 3)
         q, k = apply_rope(q, cos, sin), apply_rope(k, cos, sin)
-        s = jnp.einsum("bgrqd,bgkd->bgrqk", q, k).astype(jnp.float32) * (hd ** -0.5)
-        a = jax.nn.softmax(jnp.where(mask, s, neg), -1).astype(dt)
-        y = jnp.einsum("bgrqk,bgkd->bgrqd", a, v).transpose(0, 3, 1, 2, 4).reshape(B, T, H * hd)
+        if c.get("attn") == "splash":
+            y = _splash_attention(q * jnp.asarray(hd ** -0.5, q.dtype), k, v)
+        else:
+            s = jnp.einsum("bgrqd,bgkd->bgrqk", q, k).astype(jnp.float32) * (hd ** -0.5)
+            a = jax.nn.softmax(jnp.where(mask, s, neg), -1).astype(dt)
+            y = jnp.einsum("bgrqk,bgkd->bgrqd", a, v)
+        y = y.transpose(0, 3, 1, 2, 4).reshape(B, T, H * hd)
         x = x + y @ b["o"]
         g, u = jnp.split(rms(x, b["n2"]) @ b["gu"], 2, -1)
-        x = x + (jax.nn.silu(g) * u) @ b["dn"]
+        return x + (jax.nn.silu(g) * u) @ b["dn"]
+    if c.get("remat"): block = jax.checkpoint(block)
+    for b in p["blocks"]:
+        x = block(x, b)
     return (rms(x, p["nf"]) @ p["emb"].T).astype(jnp.float32)
 
 
@@ -213,6 +239,8 @@ def run_name(a):
     if a.dp > 1: n += f"-dp{a.dp}"
     if a.lr_floor != 0.1: n += f"-fl{a.lr_floor:g}"
     if kd: n += f"-kd{a.teacher_size}a{a.kd_alpha:g}"
+    if a.remat: n += "-remat"
+    if a.attn != "xla": n += f"-{a.attn}"
     return n + "-hs" + (f"-{a.tag}" if a.tag else "")       # hs: crops sampled uniformly on the host (second version of this script)
 
 
@@ -224,12 +252,15 @@ def run(a):
         if len(devs) < a.dp: raise SystemExit(f"--dp {a.dp} needs {a.dp} devices from index {a.device}")
         if a.bs % a.dp or (a.bs // a.micro) % a.dp or 16 % a.dp: raise SystemExit("batch, micro-batch and the evaluation batch (16) must divide by --dp")
         mesh = Mesh(np.array(devs), ("data",)); dev = devs[0]
+        global _MESH; _MESH = mesh
         r_sh, t_sh, e_sh = NamedSharding(mesh, PS()), NamedSharding(mesh, PS(None, "data", None)), NamedSharding(mesh, PS("data", None))
         put, put_toks, put_eval = (lambda x: jax.device_put(x, r_sh)), (lambda x: jax.device_put(x, t_sh)), (lambda x: jax.device_put(x, e_sh))
     else:
         dev = jax.devices()[a.device]
         put, put_toks, put_eval = (lambda x: jax.device_put(x, dev)), (lambda x: x), (lambda x: x)
-    c = SIZES[a.size]; dt = jnp.float32 if a.f32 else jnp.bfloat16
+    c = dict(SIZES[a.size]); dt = jnp.float32 if a.f32 else jnp.bfloat16
+    if a.remat: c["remat"] = True                                  # keys added only when set, so default runs keep their identity
+    if a.attn != "xla": c["attn"] = a.attn
     kd = (SIZES[a.teacher_size], float(a.kd_alpha)) if a.teacher and a.kd_alpha is not None else None
     name = run_name(a)
     say = lambda d: print(json.dumps({"run": name, **d}), flush=True)
@@ -331,6 +362,8 @@ if __name__ == "__main__":
     ap.add_argument("--wd", type=float, default=0.1); ap.add_argument("--wd-on", default="all", choices=("all", "matrices"))
     ap.add_argument("--lr-floor", type=float, default=0.1, help="cosine schedule ends at this fraction of the peak rate")
     ap.add_argument("--opt", default="adamw", choices=("adamw", "muon"))
+    ap.add_argument("--remat", action="store_true", help="recompute block activations in the backward pass (less memory, same result)")
+    ap.add_argument("--attn", default="xla", choices=("xla", "splash"), help="splash: fused Pallas attention on TPU (opt-in)")
     ap.add_argument("--ckpt-every", type=int, default=0, help="save resumable state every this many steps (0: at every evaluation)")
     ap.add_argument("--dp", type=int, default=1, help="train this one run on this many devices (not with --multi)")
     ap.add_argument("--multi", default="", help='several runs, one per device at a time: "SIZE:LR:MICRO[:TAG[:TOKENS[:SEED[:ALPHA[:key=value...]]]]];..." '
