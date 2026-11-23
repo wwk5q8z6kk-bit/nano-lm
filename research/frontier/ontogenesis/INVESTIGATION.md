@@ -881,6 +881,19 @@ The 211M model trained on 4.2B tokens of corpus v2:
 - New deadlines: on-machine 2026-11-23 16:00 UTC, Cloud Scheduler 16:02, laptop watcher 16:10.
 - **Cause confirmed (17:34 UTC).** With the batch in one pass, the program could not load: `RESOURCE_EXHAUSTED: Attempting to reserve 9.71G ... 9.68G free`. With the batch in 2 passes it trains at 105,900 tokens per second (loss 3.86 at step 1,000). That is about 20.2 hours for 234,950 steps, ending about 13:50 UTC on 23 November.
 - Machine: no on-demand v5e capacity in any of 10 zones tried, so this runs on a **spot** v5e-4 in us-east1-c, billed at the spot rate (below on-demand). `tpu/spot_supervisor.sh` runs on the laptop. If the machine is reclaimed, it recreates one in any zone and restarts the same queue entry, which resumes from the bucket checkpoint (every 10,000 steps, about 52 minutes). It is also the 16:10 laptop deadline. Each reclaim costs at most about an hour, and there is about 2 hours of margin.
+- **Training-speed benchmark (2026-11-23, 05:26–05:40 UTC, one spot v5e chip, about $0.20).** The setting is the 386M model at one chip's share of the batch (16 sequences of 512), measured on the first 100M tokens of corpus v2. Script `tpu/bench_speed.sh`; raw output in `results/bench-speed/`.
+
+| Setup | Tokens per second per chip |
+|---|---|
+| Current (batch in 2 passes) | 30,774 |
+| Recompute activations, 1 pass (`--remat`) | 25,518 (17% slower) |
+| Fused Pallas attention (`--attn splash`) | does not run: the kernel needs a head size that is a multiple of 128; ours is 64 |
+
+  - The current setup runs at about 36% of the chip's peak (6 × 386M × 30,774 against 197 TFLOP/s).
+  - Four chips would give 123k tokens per second; the real run gets 105.9k, so data-parallel efficiency is about 86%.
+  - Recomputing activations costs more than the second pass it saves, so `--remat` is not a speed gain here. It remains useful only where memory, not speed, is the limit.
+  - The fused kernel would need heads of 128 (for example 10 heads instead of 20 at this width). That is an architecture change and would need its own quality check, so it is not adopted as a speed fix.
+  - Both options stay in `train_jax.py` as opt-in flags. Without them the computation is bit-identical to before (checked on CPU).
 - **Scorer committed before the result (2026-11-22, evening).** `tpu/score_q13.py` reads Q2 and Q3 mechanically from the run's result and benchmark files, in plain accuracy: the registered Pythia figures are plain accuracy, and so was the 211M comparison.
 - Note written before the result: testing the scorer on the 211M model's files shows that **the 211M model already meets Q3b** (ARC-Easy 0.5215 against 0.521; PIQA 0.648 against 0.668, within 0.03; LAMBADA perplexity 49 against 10.8). Q3b was therefore a weak prediction, and a pass will be reported as uninformative. The informative comparisons are Q2, Q3a, and the SmolLM2 references (not scored).
 
