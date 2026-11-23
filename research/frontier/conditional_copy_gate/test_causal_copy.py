@@ -93,3 +93,19 @@ def test_reject_shape_mismatch_and_invalid_window():
     with pytest.raises(ValueError):
         m.target_nll(torch.randn(1, 4, 10), torch.ones(1, 3, dtype=torch.long),
                      torch.randn(1, 3, 6), torch.ones(1, 3, dtype=torch.long))
+
+
+def test_high_gate_with_missing_target_stays_numerically_stable():
+    # Sigmoid(25) rounds to 1.0 in FP32, so probability-space mixing
+    # would incorrectly zero all non-copyable tokens. Log-space must not.
+    seq = torch.tensor([[2, 7, 4, 2]])
+    head = identity_pointer(10, bias=25.0)
+    logits = torch.zeros(1, 4, 10)
+    h = onehot(seq, 10)
+    targets = torch.tensor([[1, 1, 1, 9]])
+    sparse = head.target_nll(logits, seq, h, targets)
+    dense = -head.full_log_probs(logits, seq, h).gather(-1, targets.unsqueeze(-1)).squeeze(-1)
+    assert torch.isfinite(sparse).all()
+    assert torch.allclose(sparse, dense, atol=1e-5)
+    probs = head.full_log_probs(logits, seq, h).exp()
+    assert torch.allclose(probs.sum(-1), torch.ones(1, 4), atol=1e-6)
