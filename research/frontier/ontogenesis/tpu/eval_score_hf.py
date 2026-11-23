@@ -4,7 +4,10 @@ Encoding follows lm-evaluation-harness: context and continuation are tokenized t
 the tokenized context; no prefix token is added for non-empty contexts. Scores comparable with eval_score.py except
 for the tokenizer and the end-of-document prefix our own models get.
 
-usage: eval_score_hf.py --model EleutherAI/pythia-160m --texts tasks-v1-text.json [--only a,b] [--limit N] [--device mps] [--out f]
+--control nocontext scores each continuation alone, after the model's end-of-text token as the only context, matching
+eval_score.py's control (added 2026-11-23). Without it the computation is unchanged.
+
+usage: eval_score_hf.py --model EleutherAI/pythia-160m --texts tasks-v1-text.json [--only a,b] [--limit N] [--device mps] [--control nocontext] [--out f]
 """
 from __future__ import annotations
 import argparse, json, math, time
@@ -14,6 +17,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 ap = argparse.ArgumentParser()
 ap.add_argument("--model", required=True); ap.add_argument("--texts", required=True); ap.add_argument("--only", default="")
 ap.add_argument("--limit", type=int, default=0); ap.add_argument("--device", default="cpu"); ap.add_argument("--batch", type=int, default=32); ap.add_argument("--out", default="")
+ap.add_argument("--control", default="", choices=("", "nocontext"))
 a = ap.parse_args(); t0 = time.time()
 tok = AutoTokenizer.from_pretrained(a.model); model = AutoModelForCausalLM.from_pretrained(a.model, torch_dtype=torch.float32).to(a.device).eval()
 data = json.load(open(a.texts))
@@ -25,7 +29,9 @@ for task, rows in data.items():
     for e, r in enumerate(rows):
         pairs = [(c, r["cont"]) for c in r["ctxs"]] if task == "winogrande" else [(r["ctx"], k) for k in r["conts"]]
         for j, (ctx, cont) in enumerate(pairs):
-            whole = enc(ctx + cont); n = len(enc(ctx)); ents.append((task, e, j, whole, n, len(cont)))
+            if a.control == "nocontext": whole = [tok.eos_token_id] + enc(cont); n = 1
+            else: whole = enc(ctx + cont); n = len(enc(ctx))
+            ents.append((task, e, j, whole, n, len(cont)))
 ents.sort(key=lambda x: len(x[3])); S = {}
 with torch.no_grad():
     for i in range(0, len(ents), a.batch):
@@ -49,5 +55,5 @@ for task, rows in data.items():
         if task != "winogrande": accn.append(int(np.argmax(sc / np.array([S[(task, e, j)][2] for j in range(k)]))) == r["gold"])
     res[task] = {"acc": round(float(np.mean(acc)), 4), "n": len(rows)}
     if accn: res[task]["acc_norm"] = round(float(np.mean(accn)), 4)
-out = {"model": a.model, "tasks": res, "seconds": round(time.time() - t0)}; print(json.dumps(out))
+out = {"model": a.model, "control": a.control or "none", "tasks": res, "seconds": round(time.time() - t0)}; print(json.dumps(out))
 if a.out: json.dump(out, open(a.out, "w"), indent=1)

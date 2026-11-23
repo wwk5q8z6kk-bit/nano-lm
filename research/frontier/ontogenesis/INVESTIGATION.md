@@ -979,26 +979,30 @@ Rerun with the fix (session d5, `results/nullspace_local/fixed_owm_ent/` on rese
 
 **Against the modern references** (same harness; cells give accuracy / length-normalised accuracy):
 
-| Task | Ours 211M, 4.2B tokens | **Ours 386M, 7.7B tokens** | SmolLM2-135M, 2T tokens | SmolLM2-360M, 4T tokens | 386M with no context |
+| Task | Ours 211M, 4.2B tokens | **Ours 386M, 7.7B tokens** | SmolLM2-135M, 2T tokens* | SmolLM2-360M, 4T tokens* | 386M with no context |
 |---|---|---|---|---|---|
 | HellaSwag | 0.308 / 0.346 | **0.343 / 0.410** | 0.355 / 0.432 | 0.432 / 0.564 | 0.302 |
 | ARC-Easy | 0.521 / 0.466 | **0.596 / 0.534** | 0.644 / 0.597 | 0.704 / 0.695 | 0.333 |
 | ARC-Challenge | 0.226 / 0.257 | **0.260 / 0.292** | 0.281 / 0.294 | 0.365 / 0.387 | 0.222 |
 | PIQA | 0.648 / 0.629 | **0.678 / 0.676** | 0.684 / 0.687 | 0.721 / 0.720 | 0.631 |
-| WinoGrande | 0.511 | **0.520** | 0.530 | 0.590 | 0.496 |
+| WinoGrande | 0.511 | **0.520** | 0.530 | 0.590 | n/a† |
 | OpenBookQA | 0.184 / 0.302 | **0.218 / 0.312** | 0.218 / 0.332 | 0.246 / 0.374 | 0.126 |
 | LAMBADA accuracy | 0.326 | **0.354** | 0.429 | 0.538 | 0.000 |
 | LAMBADA perplexity | 49.01 | **32.06** | 19.26 | 9.44 | — |
 
 - **Reading.** The 386M model approaches SmolLM2-135M on most multiple-choice tasks: PIQA 0.006 behind, WinoGrande 0.010 behind, OpenBookQA equal on plain accuracy (0.218) and 0.020 behind normalised, HellaSwag 0.022 behind normalised. It is behind or equal on every task and ahead on none. It is clearly behind on ARC-Easy (0.048 plain, 0.063 normalised) and LAMBADA (accuracy 0.35 against 0.43, perplexity 32 against 19). It had about 1/260 of SmolLM2-135M's training tokens and 2.9 times its parameters.
-- The no-context control is far below on ARC, HellaSwag and LAMBADA, so the scores come from using the question. PIQA's no-context score is high (0.631), which is typical for that task.
+- \* SmolLM2 token counts are from the model cards, from memory, not re-checked here.
+- † WinoGrande has no meaningful no-context control: without the prefixes both options score the same suffix, so the 0.496 reported by the scorer only measures how often the gold answer is option 1.
+- **What the context adds** (plain accuracy, with context minus no context): ARC-Easy +0.263, OpenBookQA +0.092, LAMBADA +0.354, PIQA +0.047, HellaSwag +0.041, ARC-Challenge +0.038.
+- **Where the gap to SmolLM2-135M is small, the context adds least.** On PIQA, HellaSwag and ARC-Challenge the 386M model gains under 0.05 from the context, and it sits within about 0.02 of SmolLM2-135M. On ARC-Easy and LAMBADA, where the context carries the score, it is clearly behind. "Close to SmolLM2-135M" therefore holds only on low-headroom tasks. A like-for-like comparison of context gains for SmolLM2 is running (its scorer now has the same no-context control).
 - Not a frontier claim: SmolLM2-360M is better on every task by a wide margin.
 
 **Cost of Question 13** (list prices; billing not yet read):
 - First machine, on-demand v5e-4, about 2.1 hours: about $10.
 - Spot v5e-4, 17:31 to 14:19, 20.8 hours, billed at the spot rate. Bounded above by the on-demand rate: at most $100.
+- Not included: network egress of the 20 GB corpus from the EU bucket to US machines, copied at least three times.
 - Total at most about $110; the actual figure is lower and will be read from billing.
-- Also today: a one-chip spot v5e for about 15 minutes (speed benchmark), and a spot v5e-4 for Question 14, about 15 minutes of training before it was reclaimed.
+- Also today: a one-chip spot v5e for about 15 minutes (speed benchmark), and a spot v5e-4 for Question 14. That machine stopped responding at about 06:05 UTC, cause not established, and was deleted at 10:30–10:49, so it was billed for at most about 4.6 hours.
 - All machines and Cloud Scheduler jobs are deleted (checked 14:25 UTC).
 
 ## Question 14. Do wider attention heads make training faster at equal quality? (registered 2026-11-23, 06:00 UTC, before any run)
@@ -1027,7 +1031,10 @@ Rerun with the fix (session d5, `results/nullspace_local/fixed_owm_ent/` on rese
 **Question 14, result (2026-11-23, 11:00 UTC).** Raw files: `results/q14/`.
 - The fused kernel runs under four-chip data parallelism: the shard_map path works. Run c trained at a steady 461,538 tokens per second (steps 500 to 2,000) against run a's 439,118.
 - **W1 failed: 1.05 times faster, against the required 1.25.**
-- The spot machine was reclaimed at about 06:10 UTC, after run c's step-2,000 evaluation (mix 1.2098). No supervisor was running for this machine, so it sat idle until its 10:30 deadline deleted it. Runs b, d and e never started. Compute lost: about 15 minutes.
+- The machine stopped responding after run c's step-2,000 evaluation (mix 1.2098), at about 06:05 UTC. The cause is not established.
+  - The audit log shows Cloud Scheduler's deletion calls from 10:32 to 10:49. It shows no deletion call at 10:30 from the machine's own timer. That is consistent with a reclaimed spot machine, but no preemption event was found.
+  - No supervisor was running for this machine. Runs b, d and e never started. It was billed for at most about 4.6 hours.
+  - If the machine hung rather than being reclaimed, the hang could have been in the fused-attention run. The 1,500 steps it trained show that the shard_map path runs, not that it is free of faults.
 - **Decision, as registered: keep heads of 64 and standard attention.** The rule required W1 and W2 both to hold, and W1 failed by a wide margin. W2 and W3 were therefore not measured, and the study is not rerun: they cannot change the decision.
 - Reading: the attention kernel is not where most of the step time goes at this size and sequence length (512). The remaining inefficiency is elsewhere, for example the 32,768-token output layer, the matrix multiplications themselves, or data-parallel communication. The benchmark gave about 36% of peak and 86% data-parallel efficiency.
 - Operations lesson: every spot machine needs a supervisor. Later spot jobs run under `tpu/spot_supervisor.sh` or an equivalent.
