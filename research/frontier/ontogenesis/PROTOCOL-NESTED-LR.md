@@ -38,4 +38,17 @@ A one-seed difference is not a finding. Taking each arm's maximum over three rat
 - If the 386M model's throughput (105,900 tokens per second) falls by more than 2% after these runs start, they are stopped, and that is recorded.
 - If the node is reclaimed, unfinished runs are restarted from the beginning on the replacement node. `train.py` has no resume, and a restart is the same computation.
 - Results are copied to `gs://nanolm-lab-eu-0478806098/runs/nested-lr/` as each run finishes.
-- **Scorer corrected after an independent read-only review, before any result (2026-11-23, about 05:20 UTC).** The "explained by learning rate" branch tested only that no-reuse was at most 1 below reuse. The protocol says "within 1", so it now tests the absolute difference. If no-reuse beats reuse by 2 or more in both pairs, the outcome is "mixed", as the text says. The scorer also now checks that each new file's arm, rate, seed and step count match its name.
+
+## Execution record (added after launch; see the note on timing)
+
+- Launched 2026-11-22 21:07 UTC on the spot v5e-4 host (112 cores): 40 runs, one thread each, at nice 10.
+- The code was unpacked into `~/onto-lr`, separate from the running 386M job's `~/onto`, so that no running script was overwritten. On the node the script's `cd ~/onto` was edited to `cd ~/onto-lr`. The committed script now changes to its own parent folder instead (3538102), which is the same thing.
+- Throughput check, as registered: with all 40 runs going (load average 40), two consecutive 500-step intervals of the 386M run took 155.8 s and 154.7 s. The expected time is 154.7 s (105,900 tokens per second), so the worst slowdown is 0.7%, under the 2% limit. The runs continued.
+- Timing note: commit 3538102's message says it adds this record, but only the launcher change was committed; the text was lost. It is restored here on 2026-11-23 with the same measurements.
+
+## Scorer correction (2026-11-23, about 05:20 UTC)
+
+An independent read-only review by another session found one mismatch between `score_nested_lr.py` (11e2c4c) and this text.
+- The "explained by learning rate" branch tested only that no-reuse was at most 1 below reuse. The text says "within 1", so the scorer now tests the absolute difference. If no-reuse beats reuse by 2 or more in both pairs, the outcome is "mixed", as written above.
+- The scorer also now checks each new file's arm, rate, seed and step count against its name.
+- State when corrected: 20 of the 40 result files were in the bucket. They were counted, not opened; no count, curve or accuracy from them had been seen. The correction makes the scorer follow the registered text and does not depend on any result.
