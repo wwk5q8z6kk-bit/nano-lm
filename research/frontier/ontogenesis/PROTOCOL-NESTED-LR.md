@@ -38,3 +38,4 @@ A one-seed difference is not a finding. Taking each arm's maximum over three rat
 - If the 386M model's throughput (105,900 tokens per second) falls by more than 2% after these runs start, they are stopped, and that is recorded.
 - If the node is reclaimed, unfinished runs are restarted from the beginning on the replacement node. `train.py` has no resume, and a restart is the same computation.
 - Results are copied to `gs://nanolm-lab-eu-0478806098/runs/nested-lr/` as each run finishes.
+- **Scorer corrected after an independent read-only review, before any result (2026-11-23, about 05:20 UTC).** The "explained by learning rate" branch tested only that no-reuse was at most 1 below reuse. The protocol says "within 1", so it now tests the absolute difference. If no-reuse beats reuse by 2 or more in both pairs, the outcome is "mixed", as the text says. The scorer also now checks that each new file's arm, rate, seed and step count match its name.

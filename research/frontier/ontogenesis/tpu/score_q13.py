@@ -8,7 +8,12 @@ Plain accuracy is used throughout because the registered Pythia figures are plai
 in Question 12 was reported in plain accuracy. Length-normalised accuracy and the SmolLM2 references are reported
 alongside, not scored. If the full-rate run diverged and the half-rate rerun finished, the rerun is scored and named.
 
-usage: score_q13.py <run.json> <run.bench.json> <xl.bench.json> [--nocontext <run.bench-nocontext.json>] [--out verdict.json]
+Half-rate rule (registered: "If it diverges, it is rerun once at half the rate"): pass the full-rate run file always, and
+--half <rerun.json> only if one exists. The full-rate run is scored if it finished; the rerun is scored only if the
+full-rate run is recorded as diverged; any other combination is refused. (Added 2026-11-23 after an independent review,
+before any result.)
+
+usage: score_q13.py <run.json> <run.bench.json> <xl.bench.json> [--half <rerun.json>] [--nocontext <run.bench-nocontext.json>] [--out verdict.json]
 """
 from __future__ import annotations
 import argparse, json
@@ -17,10 +22,15 @@ PYTHIA_410M = {"arc_easy": 0.521, "piqa": 0.668, "lambada_ppl": 10.8}
 
 ap = argparse.ArgumentParser()
 ap.add_argument("run"); ap.add_argument("bench"); ap.add_argument("xl")
-ap.add_argument("--nocontext", default=""); ap.add_argument("--out", default="")
+ap.add_argument("--nocontext", default=""); ap.add_argument("--half", default=""); ap.add_argument("--out", default="")
 a = ap.parse_args()
 run, b, xl = json.load(open(a.run)), json.load(open(a.bench))["tasks"], json.load(open(a.xl))["tasks"]
-if not run.get("finished"): raise SystemExit(f"{a.run} is not finished; nothing is scored")
+if a.half:
+    if run.get("status") != "diverged": raise SystemExit("a half-rate rerun is scored only when the full-rate run is recorded as diverged")
+    run = json.load(open(a.half))
+elif run.get("status") == "diverged": raise SystemExit("the full-rate run diverged; pass its half-rate rerun with --half")
+if not run.get("finished"): raise SystemExit(f"the scored run is not finished; nothing is scored")
+if run["curve"][-1]["step"] != run["steps"]: raise SystemExit(f"last evaluation at step {run['curve'][-1]['step']}, run has {run['steps']} steps")
 mix = run["curve"][-1]["mix"]
 v = {"run": run["name"], "final_step": run["curve"][-1]["step"], "final_mix": mix, "final_domains": {k: run["curve"][-1][k] for k in ("web", "textbook", "math", "code")}}
 v["Q2"] = {"held": 0.79 <= mix <= 0.83, "bound": [0.79, 0.83], "value": mix}
