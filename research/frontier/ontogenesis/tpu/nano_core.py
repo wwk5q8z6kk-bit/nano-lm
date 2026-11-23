@@ -146,3 +146,40 @@ def forward(params, tok, cfg, policy=None, M=None, oracle=None):
         x, a = block(p, x, kind, cfg["H"], allow)
         if "attn" in a: aux["attn"].append(a["attn"])
     return rms(x, params["nf"]) @ params["emb"].T, aux
+
+
+# ---------------------------------------------------------------------------------------------------------------------
+# Candidate 3: adaptive recurrent depth (RESEARCH-PLAN.md section 8). A prelude of distinct layers, then ONE shared core
+# block applied R times, then a coda. h_{k+1} = core(h_k). With halt_eps set, a token stops iterating once the relative
+# change of its state ||h_{k+1} - h_k|| / ||h_k|| falls below halt_eps (a fixed-point convergence test, as an iterative
+# solver stops); halted tokens keep their state and still serve as keys for later tokens.
+
+def init_looped(key, cfg):
+    """cfg: vocab, d, H, ffn, pre=[kinds], core=kind, coda=[kinds]."""
+    n = len(cfg["pre"]) + 1 + len(cfg["coda"])
+    ks = jax.random.split(key, n + 1)
+    mk = lambda i, kind: init_layer(ks[i + 1], kind, cfg["d"], cfg["H"], cfg["ffn"])
+    return {"emb": jax.random.normal(ks[0], (cfg["vocab"], cfg["d"])) * 0.02, "nf": jnp.ones(cfg["d"]),
+            "pre": [mk(i, k) for i, k in enumerate(cfg["pre"])], "core": mk(len(cfg["pre"]), cfg["core"]),
+            "coda": [mk(len(cfg["pre"]) + 1 + i, k) for i, k in enumerate(cfg["coda"])]}
+
+
+def forward_looped(params, tok, cfg, R, halt_eps=None):
+    """Returns logits and the mean number of core iterations actually applied per token."""
+    x = params["emb"][tok]
+    for p, kind in zip(params["pre"], cfg["pre"]):
+        x, _ = block(p, x, kind, cfg["H"])
+    active = jnp.ones(tok.shape, bool); iters = jnp.zeros(tok.shape)
+    for _ in range(R):
+        xn, _ = block(params["core"], x, cfg["core"], cfg["H"])
+        if halt_eps is not None:
+            rel = jnp.linalg.norm(xn - x, axis=-1) / (jnp.linalg.norm(x, axis=-1) + 1e-6)
+            xn = jnp.where(active[..., None], xn, x)
+            iters = iters + active
+            active = active & (rel >= halt_eps)
+        else:
+            iters = iters + 1
+        x = xn
+    for p, kind in zip(params["coda"], cfg["coda"]):
+        x, _ = block(p, x, kind, cfg["H"])
+    return rms(x, params["nf"]) @ params["emb"].T, iters.mean()
