@@ -28,3 +28,11 @@ Arms, the same held-out seeds 4101–4105 (15 reruns): `drop`, `transport` (`mem
 - End-of-run snapshot only, not averaged over late phases.
 - Synthetic world, value table. Not evidence about a language model.
 - Results under `results/memory_rule_factsplit/`, created exclusively.
+
+## Addendum, recorded before any confirmatory result was read (2026-11-23, about 05:20 UTC)
+
+This protocol was committed by a second, duplicate copy of the session (after a resume), which then stood down. The copy that runs the measurement adds three facts:
+
+- **The development seed was seen.** Contrary to the Limits above, the running copy measured the split on development seed 4100 just before this protocol was committed. End-of-run retention (regular / exception / corrected): `drop` 0.902 / 0.038 / 0.042; `transport` 0.904 / 0.047 / 0.042; full re-index, 32 clusters, 0.998 / 0.631 / 0.636; given types without re-index 0.927 / 0.023 / 0.043. The predictions F1–F3 above were written by the copy that had not seen these numbers. They are kept unchanged.
+- **Timing.** The confirmatory runner (`run_factsplit.sh`) was started at 05:10:15 UTC, seven seconds before the protocol commit (05:10:22 UTC). No result file had been opened or printed when this addendum was written; one had been written to disk.
+- **One extra arm, descriptive only.** The runner also reruns given types without re-index (`memory_rule_recluster.py ... typed`, with `every` set beyond the run length). It is reported for reference and has no prediction.
