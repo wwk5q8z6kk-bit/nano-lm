@@ -990,7 +990,7 @@ Rerun with the fix (session d5, `results/nullspace_local/fixed_owm_ent/` on rese
 | LAMBADA accuracy | 0.326 | **0.354** | 0.429 | 0.538 | 0.000 |
 | LAMBADA perplexity | 49.01 | **32.06** | 19.26 | 9.44 | — |
 
-- **Reading.** The 386M model approaches SmolLM2-135M on most multiple-choice tasks: PIQA within 0.01, WinoGrande within 0.01, OpenBookQA equal on plain accuracy, HellaSwag within 0.02 normalised. It is still behind on every task. It is clearly behind on ARC-Easy (0.05) and LAMBADA (accuracy 0.35 against 0.43, perplexity 32 against 19). It had about 1/260 of SmolLM2-135M's training tokens and 2.9 times its parameters.
+- **Reading.** The 386M model approaches SmolLM2-135M on most multiple-choice tasks: PIQA 0.006 behind, WinoGrande 0.010 behind, OpenBookQA equal on plain accuracy (0.218) and 0.020 behind normalised, HellaSwag 0.022 behind normalised. It is behind or equal on every task and ahead on none. It is clearly behind on ARC-Easy (0.048 plain, 0.063 normalised) and LAMBADA (accuracy 0.35 against 0.43, perplexity 32 against 19). It had about 1/260 of SmolLM2-135M's training tokens and 2.9 times its parameters.
 - The no-context control is far below on ARC, HellaSwag and LAMBADA, so the scores come from using the question. PIQA's no-context score is high (0.631), which is typical for that task.
 - Not a frontier claim: SmolLM2-360M is better on every task by a wide margin.
 
