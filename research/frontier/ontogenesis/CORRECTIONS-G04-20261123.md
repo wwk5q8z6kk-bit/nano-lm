@@ -58,3 +58,16 @@ Added below as each rerun finishes, with old and new figures side by side.
    - With given types (study 6), the router revises 82%, not 70%; the repeated-pair scoring had depressed it.
 4. **The learned-cluster gap is larger than reported:** 82% (given types) against 53% (EM clusters), a 29-point gap rather than 20.
 5. **Studies 3 and 4 stand as reported.**
+
+## Follow-up diagnostic: the suggested mechanism for the withdrawn result is wrong (post hoc)
+
+Above I suggested that properly narrow revisions make the detector fire repeatedly on falsely flagged groups. On the narrow study's registered seeds, with the corrected code (rerun reproduces `results_v2` exactly; raw: `results_v2/threeway_narrow/diagnostic_repeat_flags.json`):
+
+| Router | False alarms | Distinct falsely flagged groups | Repeat flags on an already-flagged false group | True flags | Repeat true flags |
+|---|---|---|---|---|---|
+| normal revision | 34.6 | 20.8 | 13.8 | 20.2 | 10.2 |
+| narrow revision (share ≥ 0.2) | 32.8 | 20.2 | 12.6 | 20.6 | 10.6 |
+
+- **Narrowing does not raise false alarms** relative to normal revision; the counts are equal. The apparent doubling was relative to the buggy original, whose OR'd masks made each revision wider and suppressed re-firing. My suggested mechanism is therefore not supported.
+- **Re-firing is general.** About 40% of false alarms and about half of true flags repeat a group already flagged, under either revision. Those repeats add revision volume without new information.
+- **What remains of N4:** narrowing lifts the router's shared-only stable rule by only 1.6 points (0.752 → 0.768), against the 4 points predicted.

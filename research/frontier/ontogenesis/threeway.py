@@ -213,7 +213,7 @@ def run(arm, seed, phases=rc.PHASES, p_slots=None, private_steps=None, changes_o
                 found = detect(new_facts, ph)
             exempt = {(e, r) for r, v, members, *_ in found for e in members}
             for r, v, members, olds, true, z_major, P, cp, pkey in found:
-                flags.append({"phase": ph, "r": r, "v": v, "z": z_major, "true_change": true, "change_phase": cp})
+                flags.append({"phase": ph, "r": r, "v": v, "z": z_major, "true_change": true, "change_phase": cp, "pkey": int(pkey)})
                 others = [x for x in range(R) if x != r]
                 cap = olds if len(olds) <= MAX_OLDS else sel.choice(olds, MAX_OLDS, replace=False)
                 revision += [(int(o), r, v) for o in cap]
@@ -298,6 +298,7 @@ def run(arm, seed, phases=rc.PHASES, p_slots=None, private_steps=None, changes_o
                               "clusters_of_type": max([s_["clusters_of_type"] for s_ in split_log if (s_["z"], s_["r"], s_["change_phase"]) == (z, r, p)] or [0])}
                              for p, z, r, v in changes]
     out["detector_stage"] = [{"phase": p, "z": int(z), "r": int(r), "stage": int(stage_of.get((p, z, r), 0))} for p, z, r, v in changes]
+    out["flag_log"] = flags                                               # diagnostic: every flag with its group key
     eg = sorted(set((a, b) for a, b in exc_in_false_group if born[a] <= last - 10))
     out["exceptions_in_false_groups"] = len(eg)
     out["exceptions_in_false_groups_kept"] = round(acc(np.array([a for a, _ in eg]), np.array([b for _, b in eg])), 4) if eg else None
