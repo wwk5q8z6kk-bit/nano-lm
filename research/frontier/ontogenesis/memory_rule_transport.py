@@ -21,6 +21,7 @@ import numpy as np, torch, torch.nn.functional as F
 from scipy.optimize import linear_sum_assignment
 from cab_s import world, V
 from memory_rule_sharing import SLOTS, K, D, PHASES, NEW, FIX, STEPS, LR
+from memory_rule_factsplit import fact_split
 from memory_rule_recluster import features, em
 
 torch.set_num_threads(2)
@@ -68,7 +69,8 @@ def run(mode, seed, KC=32, every=5, transport_steps=1000, lr=LR):
         for _ in range(n_steps):
             loss = F.cross_entropy(read(qq), y); opt.zero_grad(set_to_none=True); loss.backward(); opt.step()
 
-    r0 = np.random.default_rng(seed); r0.integers(V, size=(16, R)); typ = r0.integers(16, size=n)
+    r0 = np.random.default_rng(seed); rule = r0.integers(V, size=(16, R)); typ = r0.integers(16, size=n)
+    corrected = np.zeros((n, R), bool)
     log, moved_total, keys_moved, purity_log = [], 0, 0, []
     for ph in range(PHASES):
         ents = np.arange(ph * NEW, (ph + 1) * NEW)
@@ -79,7 +81,7 @@ def run(mode, seed, KC=32, every=5, transport_steps=1000, lr=LR):
         fe = fr = np.zeros(0, int)
         if ph:
             oe, orr = np.nonzero(shown[:ph * NEW]); pick = rng.choice(len(oe), FIX, replace=False)
-            fe, fr = oe[pick], orr[pick]; truth[fe, fr] = rng.integers(V, size=FIX)
+            fe, fr = oe[pick], orr[pick]; truth[fe, fr] = rng.integers(V, size=FIX); corrected[fe, fr] = True
         qe, qr = np.concatenate([se, fe]), np.concatenate([sr, fr]); fit(qe, qr, STEPS); written[qe, qr] = True
         row = {"phase": ph}
         if (ph + 1) % every == 0:
@@ -114,10 +116,12 @@ def run(mode, seed, KC=32, every=5, transport_steps=1000, lr=LR):
                 ue, ur = np.nonzero(~shown[:ph * NEW]); row["infer_old"] = acc(ue, ur)
         log.append(row)
     late = log[-(PHASES // 4):]; mean = lambda kk: round(float(np.nanmean([x.get(kk, np.nan) for x in late])), 4)
+    with torch.no_grad(): final_split = fact_split(acc, truth0, rule, typ, shown, corrected)
     return {"mode": mode, "seed": seed, "KC": KC, "every": every, "transport_steps": transport_steps,
             "entities_moved": int(moved_total), "keys_transported": int(keys_moved),
             "final_purity": purity_log[-1] if purity_log else None,
-            "late": {k: mean(k) for k in ("acquire", "infer_new", "infer_old", "retain", "correct")}, "log": log}
+            "late": {k: mean(k) for k in ("acquire", "infer_new", "infer_old", "retain", "correct")},
+            "final_split": final_split, "log": log}
 
 
 if __name__ == "__main__":

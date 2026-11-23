@@ -24,6 +24,7 @@ import json, sys, time
 import numpy as np, torch, torch.nn.functional as F
 from cab_s import world, V
 from memory_rule_sharing import SLOTS, K, D, PHASES, NEW, FIX, STEPS, LR
+from memory_rule_factsplit import fact_split
 
 torch.set_num_threads(2)
 
@@ -83,7 +84,8 @@ def run(seed, KC=16, every=5, reindex_steps=1000, lr=LR, oracle=False):
             loss = F.cross_entropy(read(qq), y); opt.zero_grad(set_to_none=True); loss.backward(); opt.step()
 
     log, replayed, purity_log = [], 0, []
-    r0 = np.random.default_rng(seed); r0.integers(V, size=(16, R)); typ = r0.integers(16, size=n)
+    r0 = np.random.default_rng(seed); rule = r0.integers(V, size=(16, R)); typ = r0.integers(16, size=n)
+    corrected = np.zeros((n, R), bool)
     if oracle:
         assert KC >= 16, "the typed control needs one prototype per hidden type"
     for ph in range(PHASES):
@@ -98,7 +100,7 @@ def run(seed, KC=16, every=5, reindex_steps=1000, lr=LR, oracle=False):
         fe = fr = np.zeros(0, int)
         if ph:
             oe, orr = np.nonzero(shown[:ph * NEW]); pick = rng.choice(len(oe), FIX, replace=False)
-            fe, fr = oe[pick], orr[pick]; truth[fe, fr] = rng.integers(V, size=FIX)
+            fe, fr = oe[pick], orr[pick]; truth[fe, fr] = rng.integers(V, size=FIX); corrected[fe, fr] = True
         fit(np.concatenate([se, fe]), np.concatenate([sr, fr]), STEPS)
         row = {"phase": ph}
         if (ph + 1) % every == 0:
@@ -119,9 +121,11 @@ def run(seed, KC=16, every=5, reindex_steps=1000, lr=LR, oracle=False):
                 ue, ur = np.nonzero(~shown[:ph * NEW]); row["infer_old"] = acc(ue, ur)
         log.append(row)
     late = log[-(PHASES // 4):]; mean = lambda kk: round(float(np.nanmean([x.get(kk, np.nan) for x in late])), 4)
+    with torch.no_grad(): final_split = fact_split(acc, truth0, rule, typ, shown, corrected)
     return {"codes": "typed_reindexed" if oracle else "reclustered", "seed": seed, "KC": KC, "every": every, "reindex_steps": reindex_steps,
             "facts_replayed": int(replayed), "final_purity": purity_log[-1] if purity_log else None,
-            "late": {k: mean(k) for k in ("acquire", "infer_new", "infer_old", "retain", "correct")}, "log": log}
+            "late": {k: mean(k) for k in ("acquire", "infer_new", "infer_old", "retain", "correct")},
+            "final_split": final_split, "log": log}
 
 
 if __name__ == "__main__":
