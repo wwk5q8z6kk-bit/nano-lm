@@ -990,3 +990,11 @@ Rerun with the fix (session d5, `results/nullspace_local/fixed_owm_ent/` on rese
 
 **Cost.** About 2 hours of a v5e-4, under $10 at spot price.
 
+**Question 14, result (2026-11-23, 11:00 UTC).** Raw files: `results/q14/`.
+- The fused kernel runs under four-chip data parallelism: the shard_map path works. Run c trained at a steady 461,538 tokens per second (steps 500 to 2,000) against run a's 439,118.
+- **W1 failed: 1.05 times faster, against the required 1.25.**
+- The spot machine was reclaimed at about 06:10 UTC, after run c's step-2,000 evaluation (mix 1.2098). No supervisor was running for this machine, so it sat idle until its 10:30 deadline deleted it. Runs b, d and e never started. Compute lost: about 15 minutes.
+- **Decision, as registered: keep heads of 64 and standard attention.** The rule required W1 and W2 both to hold, and W1 failed by a wide margin. W2 and W3 were therefore not measured, and the study is not rerun: they cannot change the decision.
+- Reading: the attention kernel is not where most of the step time goes at this size and sequence length (512). The remaining inefficiency is elsewhere, for example the 32,768-token output layer, the matrix multiplications themselves, or data-parallel communication. The benchmark gave about 36% of peak and 86% data-parallel efficiency.
+- Operations lesson: every spot machine needs a supervisor. Later spot jobs run under `tpu/spot_supervisor.sh` or an equivalent.
+
