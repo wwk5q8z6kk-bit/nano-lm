@@ -523,3 +523,19 @@ nano-lm-d5 reported defects found by automated review of its G04 code (PR [#204]
 - There were two smaller defects in the second study.
 
 It is fixing them and rerunning every affected study into separate result folders, keeping the originals. Until those deltas are recorded here, treat as provisional every G04-derived entry in this file: the three-way router, its cost decomposition, narrow revisions, and the three-way router on discovered types. The entries themselves are left unchanged.
+
+---
+
+## 2026-11-23 — What dropping moved values costs individual facts
+
+Branch `research/memory-saturation-factorial` (PR [#199](https://github.com/wwk5q8z6kk-bit/nano-lm/pull/199)): protocol `daf9453` with addendum `8d24559`, scorer `0b64b71` (all before any result was read), results `7a4e40e`. Reruns of the registered seeds 4101–4105 with per-fact scoring; every rerun reproduced its original metrics exactly.
+
+| Arm | Regular facts | Exceptions | Corrected facts |
+|---|---|---|---|
+| Re-cluster, full re-index (exact store replayed) | 0.997 | 0.636 | 0.604 |
+| Re-cluster, drop moved values | 0.898 | 0.048 | 0.041 |
+| Given types, no re-index (descriptive) | 0.919 | 0.022 | 0.035 |
+
+- F1–F3 held. Against a full re-index, dropping loses most exceptions and corrected facts. But a memory never re-clustered keeps them no better, so the loss is not caused by dropping: without replay, a single shared typed path does not retain facts that break their type's rule.
+- With the previous entry: in this memory, revisable grouping carries the generalisation and costs no individual facts that the memory would otherwise keep. Exceptions and corrections need a private path, as the private-slot and routing results showed, or an exact store.
+- Limits: end-of-run snapshot; the development seed's split was seen before the protocol was committed, as its addendum records; synthetic world. Not evidence about a language model.
