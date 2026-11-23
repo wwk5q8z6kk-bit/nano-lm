@@ -37,3 +37,15 @@ Typed addresses: the corrected learned-cluster gap is 29 points of revision, and
 
 1. Find out whether the revision loss comes from the cooldown blocking a needed second write on true changes. Half of true flags re-fire, so a second write may help. Candidate: a cooldown on false-looking groups only, or a limit of two writes per group.
 2. Run the combination on learned clusters (EM).
+
+## Exploratory follow-up (development seed 1 only): more writes per group
+
+To recover the revision the cooldown costs, the cooldown was generalised to at most k flags per group (`cooldown_k`; k = 1 reproduces the registered arm exactly).
+
+| Narrow + cooldown | Stable rule | Old entities revised | Exceptions kept | Noise resisted | Flags / false |
+|---|---|---|---|---|---|
+| k = 1 (registered) | 76.6% | 67.0% | 91.4% | 92.9% | 26 / 16 |
+| k = 2 | 72.8% | 77.0% | 84.8% | 91.1% | 60 / 40 |
+| k = 3 | 72.4% | 75.6% | 82.8% | 89.7% | 74 / 51 |
+
+A second write per group brings back the false alarms along with the revision, so k only moves the router along the same trade-off line. It does not escape it. No confirmatory run was registered: no candidate beats the registered setting on both sides. Separating true from false groups before the second write, rather than limiting writes, is the open question.

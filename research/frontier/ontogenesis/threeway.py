@@ -48,7 +48,7 @@ def build_world(seed, phases=rc.PHASES):
 
 
 def run(arm, seed, phases=rc.PHASES, p_slots=None, private_steps=None, changes_on=True, narrow=False, narrow_w=0.02, share=None,
-        codes="typed", KC=32, every=5, detector=True, cooldown=False):
+        codes="typed", KC=32, every=5, detector=True, cooldown=False, cooldown_k=1):
     """Version 2 (2026-11-23): Bugbot fixes on PR #204, see CORRECTIONS-G04-20261123.md.
     codes: 'typed' (registered: memory_rule_sharing typed addresses), 'given32' or 'em' (THREEWAY-EM; the memory-line
     session's construction: cluster prototype + noise, KC prototypes; 'given32' uses the hidden types, 'em' re-clusters
@@ -129,7 +129,7 @@ def run(arm, seed, phases=rc.PHASES, p_slots=None, private_steps=None, changes_o
     exc_in_false_group = []                                              # (entity, relation) exceptions inside falsely flagged groups
     fa_pairs = set()                                                     # (type, relation) hit by a false alarm
 
-    fired = set()                                                        # cooldown: (group key, relation, value) already flagged
+    fired = {}                                                           # cooldown: times each (group key, relation, value) was flagged
     stage_of = {}                                                        # diagnostic: furthest detector stage per true change
     def note_stage(e, r, v, ph, stage):
         for p, z, r_, v_ in changes:
@@ -166,8 +166,8 @@ def run(arm, seed, phases=rc.PHASES, p_slots=None, private_steps=None, changes_o
                 cp = max(active)[0] if active else None                  # the change in force now (fix, Bugbot #204)
                 true = bool(active) and max(active)[1] == v
                 pkey = int(np.bincount(assign[olds], minlength=max(KC, Z) if codes != "typed" else Z).argmax())
-                if cooldown and (pkey, r, v) in fired: continue                  # this group already flagged this value
-                fired.add((pkey, r, v))
+                if cooldown and fired.get((pkey, r, v), 0) >= cooldown_k: continue   # this group already flagged this value k times
+                fired[(pkey, r, v)] = fired.get((pkey, r, v), 0) + 1
                 out.append((r, v, members, olds, true, z_major, P, cp if true else None, pkey))
         return out
 
