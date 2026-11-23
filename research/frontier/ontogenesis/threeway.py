@@ -49,7 +49,8 @@ def build_world(seed, phases=rc.PHASES):
 
 def run(arm, seed, phases=rc.PHASES, p_slots=None, private_steps=None, changes_on=True, narrow=False, narrow_w=0.02, share=None,
         codes="typed", KC=32, every=5, detector=True):
-    """codes: 'typed' (registered: memory_rule_sharing typed addresses), 'given32' or 'em' (THREEWAY-EM; the memory-line
+    """Version 2 (2026-11-23): Bugbot fixes on PR #204, see CORRECTIONS-G04-20261123.md.
+    codes: 'typed' (registered: memory_rule_sharing typed addresses), 'given32' or 'em' (THREEWAY-EM; the memory-line
     session's construction: cluster prototype + noise, KC prototypes; 'given32' uses the hidden types, 'em' re-clusters
     by EM over creation-time facts every `every` phases, labels matched, no replay). detector=False skips change detection."""
     """p_slots, private_steps, changes_on: exploration settings added after the registered run (THREEWAY-COST);
@@ -128,6 +129,12 @@ def run(arm, seed, phases=rc.PHASES, p_slots=None, private_steps=None, changes_o
     exc_in_false_group = []                                              # (entity, relation) exceptions inside falsely flagged groups
     fa_pairs = set()                                                     # (type, relation) hit by a false alarm
 
+    stage_of = {}                                                        # diagnostic: furthest detector stage per true change
+    def note_stage(e, r, v, ph, stage):
+        for p, z, r_, v_ in changes:
+            if p <= ph and z == typ[e] and r_ == r and v_ == v:
+                stage_of[(p, z, r)] = max(stage_of.get((p, z, r), 0), stage)
+
     def detect(facts, ph):
         """Group-agreement change detector on the given new-entity facts. Returns flags as (r, v, members, olds, true)."""
         if not facts or ph < WARMUP: return []
@@ -143,14 +150,22 @@ def run(arm, seed, phases=rc.PHASES, p_slots=None, private_steps=None, changes_o
                 if GATE_SIG: agree = lambda rows: ((P[rows][:, others] == sig) & C[rows][:, others] & csig).sum(1) >= SIG_AGREE
                 else: agree = lambda rows: (P[rows][:, others] == sig).sum(1) >= SIG_AGREE
                 members = [f for f, vf in lst if vf == v and agree(np.array([f]))[0]]
+                note_stage(e, r, v, ph, 1)                                   # stage 1: the new value was observed
                 if len(members) < Q_DET or (r, v, tuple(sig)) in done: continue
+                note_stage(e, r, v, ph, 2)                                   # stage 2: enough agreeing new members
                 olds = np.flatnonzero(agree(np.arange(ph * NEW)))
                 olds = olds[C[olds, r]]                                  # older members confidently answering r
-                if len(olds) < 3 or np.mean(P[olds, r] == v) >= 0.5: continue
+                if len(olds) < 3: continue
+                note_stage(e, r, v, ph, 3)                                   # stage 3: enough confident older members
+                if np.mean(P[olds, r] == v) >= 0.5: continue
+                note_stage(e, r, v, ph, 4)                                   # stage 4: older members disagree -> flag
                 done.add((r, v, tuple(sig)))
                 z_major = int(np.bincount(typ[olds], minlength=Z).argmax())
-                true = any(p <= ph and z == z_major and r_ == r and v_ == v for p, z, r_, v_ in changes)
-                out.append((r, v, members, olds, true, z_major, P))
+                active = [(p, v_) for p, z, r_, v_ in changes if z == z_major and r_ == r and p <= ph]
+                cp = max(active)[0] if active else None                  # the change in force now (fix, Bugbot #204)
+                true = bool(active) and max(active)[1] == v
+                pkey = int(np.bincount(assign[olds], minlength=max(KC, Z) if codes != "typed" else Z).argmax())
+                out.append((r, v, members, olds, true, z_major, P, cp if true else None, pkey))
         return out
 
     for ph in range(phases):
@@ -173,7 +188,7 @@ def run(arm, seed, phases=rc.PHASES, p_slots=None, private_steps=None, changes_o
                 e, r = int(oe[i]), int(orr[i]); wrong = (truth_at(ph, e, r) + 1 + int(rng.integers(V - 1))) % V
                 old_obs.append((e, r, wrong, "noise")); noisy.setdefault((e, r), ph)
 
-        joint, private, revision = [], [], []
+        joint, private, revision, rev_groups = [], [], [], []
         gate = lambda facts: [f for f, (pv, pp) in zip(facts, zip(*predict(np.array([x[0] for x in facts]), np.array([x[1] for x in facts])))) if pv != f[2] and pp >= tau] if facts else []
 
         if arm == "none":
@@ -188,6 +203,7 @@ def run(arm, seed, phases=rc.PHASES, p_slots=None, private_steps=None, changes_o
                 if p == ph:
                     olds = np.flatnonzero((typ[:ph * NEW] == z) & (exc[:ph * NEW, r] < 0))
                     revision += [(int(e), r, v) for e in olds]
+                    rev_groups.append(((z, r), [(int(e), r, v) for e in olds]))
         else:                                                            # change_only and the threeway family
             if not detector: found = []
             elif arm == "threeway_privfirst":
@@ -196,11 +212,12 @@ def run(arm, seed, phases=rc.PHASES, p_slots=None, private_steps=None, changes_o
             else:
                 found = detect(new_facts, ph)
             exempt = {(e, r) for r, v, members, *_ in found for e in members}
-            for r, v, members, olds, true, z_major, P in found:
-                flags.append({"phase": ph, "r": r, "v": v, "z": z_major, "true_change": true})
+            for r, v, members, olds, true, z_major, P, cp, pkey in found:
+                flags.append({"phase": ph, "r": r, "v": v, "z": z_major, "true_change": true, "change_phase": cp})
                 others = [x for x in range(R) if x != r]
                 cap = olds if len(olds) <= MAX_OLDS else sel.choice(olds, MAX_OLDS, replace=False)
                 revision += [(int(o), r, v) for o in cap]
+                rev_groups.append(((pkey, r), [(int(o), r, v) for o in cap]))
                 if not true:
                     fa_pairs.add((z_major, r))
                     exc_in_false_group += [(int(o), r) for o in olds if exc[o, r] >= 0] + [(int(e), r) for e in members if exc[e, r] >= 0]
@@ -219,9 +236,8 @@ def run(arm, seed, phases=rc.PHASES, p_slots=None, private_steps=None, changes_o
         fit(joint, [T1, T2], JOINT_STEPS)
         fit(private, [T2], private_steps); n_private += len(private)
         if narrow and revision:
-            rmask = torch.zeros(SLOTS, dtype=torch.bool)
-            for zz, rr_ in {(int(assign[e]) if arm != "oracle" else int(typ[e]), int(r_)) for e, r_, _ in revision}: rmask |= allowed_slots(zz, rr_)
-            fit(revision, [T1], rev_steps, row_mask=rmask)
+            for (zz, rr_), facts_ in rev_groups:
+                fit(facts_, [T1], rev_steps, row_mask=allowed_slots(int(zz), int(rr_)))
         else:
             fit(revision, [T1], rev_steps)
         if codes == "em" and (ph + 1) % every == 0:                      # re-cluster, match labels, re-address; no replay
@@ -259,28 +275,30 @@ def run(arm, seed, phases=rc.PHASES, p_slots=None, private_steps=None, changes_o
         shared_only = (w1[q][..., None] * T1[i1[q]]).sum(1).argmax(-1).numpy()
         out["infer_stable_shared_only"] = round(float((shared_only == T(ue[st], ur[st])).mean()), 4)
     r5, r10, ro = [], [], []
-    for p, z, r, v in changes:
+    for p, z, r, v in changes:                                           # fix (Bugbot #204): a pair may change twice
+        nxt = min([p2 for p2, z2, r2, _ in changes if (z2, r2) == (z, r) and p2 > p] or [phases])
         for lo, hi, bucket in ((p + 1, p + 6, r5), (p + 6, p + 11, r10)):
-            es = np.flatnonzero((typ == z) & (born >= lo) & (born < min(hi, phases)) & ~shown[:, r] & (exc[:, r] < 0))
+            es = np.flatnonzero((typ == z) & (born >= lo) & (born < min(hi, phases, nxt)) & ~shown[:, r] & (exc[:, r] < 0))
             bucket += list(pred(es, np.full(len(es), r)) == v)
-        es = np.flatnonzero((typ == z) & (born < p) & (exc[:, r] < 0)); ro += list(pred(es, np.full(len(es), r)) == v)
+        if nxt == phases:                                                # only the change still in force is scored on old entities
+            es = np.flatnonzero((typ == z) & (born < p) & (exc[:, r] < 0)); ro += list(pred(es, np.full(len(es), r)) == v)
     out.update({"revise_next5": round(float(np.mean(r5)), 4), "revise_next10": round(float(np.mean(r10)), 4), "revise_old": round(float(np.mean(ro)), 4)})
     ee, er = np.nonzero((exc >= 0) & (born[:, None] <= last - 10)); out["exception_kept"] = round(acc(ee, er), 4)
     nk = [(e, r) for (e, r), p in noisy.items() if p <= last - 10]
     out["noise_resisted"] = round(acc(np.array([a for a, _ in nk]), np.array([b for _, b in nk])), 4)
-    found = {(f["z"], f["r"]) for f in flags if f["true_change"]}
+    found = {(f["change_phase"], f["z"], f["r"]) for f in flags if f["true_change"]}
     out.update({"routed_private": n_private, "flags": len(flags), "false_alarms": sum(1 for f in flags if not f["true_change"]),
-                "missed": sum(1 for p, z, r, v in changes if (z, r) not in found)})
+                "missed": sum(1 for p, z, r, v in changes if (p, z, r) not in found)})
     if codes == "em":
         out["purity"] = round(float(sum(np.bincount(typ[assign == c]).max() for c in set(assign)) / n), 4)
         out["clusters_used"] = int(len(set(assign)))
         out["changed_types_split"] = round(float(np.mean([s_["split"] for s_ in split_log])), 4) if split_log else None
-        found_keys = {(f["z"], f["r"]) for f in flags if f["true_change"]}
-        out["per_change"] = [{"phase": p, "z": int(z), "r": int(r), "detected": (int(z), int(r)) in found_keys,
+        out["per_change"] = [{"phase": p, "z": int(z), "r": int(r), "detected": (p, int(z), int(r)) in found,
                               "ever_split": any(s_["split"] for s_ in split_log if (s_["z"], s_["r"], s_["change_phase"]) == (z, r, p)),
                               "clusters_of_type": max([s_["clusters_of_type"] for s_ in split_log if (s_["z"], s_["r"], s_["change_phase"]) == (z, r, p)] or [0])}
                              for p, z, r, v in changes]
-    eg = sorted(set(exc_in_false_group))
+    out["detector_stage"] = [{"phase": p, "z": int(z), "r": int(r), "stage": int(stage_of.get((p, z, r), 0))} for p, z, r, v in changes]
+    eg = sorted(set((a, b) for a, b in exc_in_false_group if born[a] <= last - 10))
     out["exceptions_in_false_groups"] = len(eg)
     out["exceptions_in_false_groups_kept"] = round(acc(np.array([a for a, _ in eg]), np.array([b for _, b in eg])), 4) if eg else None
     return out

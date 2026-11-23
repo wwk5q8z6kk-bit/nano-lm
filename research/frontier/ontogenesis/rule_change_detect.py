@@ -54,7 +54,8 @@ Q, SIG_AGREE = 2, 5                # fixed by the development check (see docstri
 
 
 def run(arm, seed, q=None, sig_agree=None, phases=rc.PHASES, m=24):
-    """A copy of rule_change.run (which stays unchanged) with the detector added for arm 'detect'."""
+    """A copy of rule_change.run (which stays unchanged) with the detector added for arm 'detect'.
+    Version 2 (2026-11-23): Bugbot fixes on PR #204, see CORRECTIONS-G04-20261123.md."""
     q = q or Q; sig_agree = sig_agree or SIG_AGREE; NEW = rc.NEW
     rng = np.random.default_rng(seed); n = phases * NEW
     rule = rng.integers(V, size=(Z, R)); typ = rng.integers(Z, size=n)
@@ -83,6 +84,10 @@ def run(arm, seed, q=None, sig_agree=None, phases=rc.PHASES, m=24):
     def all_preds(upto):
         ee = np.repeat(np.arange(upto), R); rr = np.tile(np.arange(R), upto)
         return pred(ee, rr).reshape(upto, R)
+
+    def model_preds(upto):                                               # the model alone, without the override store (fix, Bugbot #204)
+        ee = np.repeat(np.arange(upto), R); rr = np.tile(np.arange(R), upto)
+        return L.predict(ee, rr).reshape(upto, R)
 
     for ph in range(phases):
         ents = np.arange(ph * NEW, (ph + 1) * NEW)
@@ -129,11 +134,14 @@ def run(arm, seed, q=None, sig_agree=None, phases=rc.PHASES, m=24):
                     if np.mean(P[olds, r] == v) >= 0.5: continue                # the cluster already answers v
                     done.add((r, v, tuple(sig)))
                     z_major = int(np.bincount(typ[olds], minlength=Z).argmax())
-                    true = [(p, z, rr_, vv) for p, z, rr_, vv in changes if p <= ph and z == z_major and rr_ == r and vv == v]
-                    flags.append({"phase": ph, "r": r, "v": v, "z": z_major, "cluster": int(len(olds)), "true_change": bool(true),
-                                  "change_phase": true[0][0] if true else None})
-                    targets = [(int(o), r, v) for o in olds] + [(int(o), int(x), int(P[o, x])) for o in olds for x in others]
+                    active = [(p, vv) for p, z, rr_, vv in changes if p <= ph and z == z_major and rr_ == r]
+                    is_true = bool(active) and max(active)[1] == v               # only the change in force now (fix, Bugbot #204)
+                    flags.append({"phase": ph, "r": r, "v": v, "z": z_major, "cluster": int(len(olds)), "true_change": is_true,
+                                  "change_phase": max(active)[0] if is_true else None})
+                    M_ = model_preds((ph + 1) * NEW)
+                    targets = [(int(o), r, v) for o in olds] + [(int(o), int(x), int(M_[o, x])) for o in olds for x in others]
                     L.fit(targets, frozen=torch.tensor(sorted(int(o) for o in olds), dtype=torch.long))
+                    P = all_preds((ph + 1) * NEW)                                # refresh after the write (fix, Bugbot #204)
         nf = np.array(new_facts); log.append({"phase": ph, "acquire_now": float((pred(nf[:, 0], nf[:, 1]) == nf[:, 2]).mean())})
 
     last = phases - 1
@@ -144,11 +152,13 @@ def run(arm, seed, q=None, sig_agree=None, phases=rc.PHASES, m=24):
     st = np.array([(typ[a], b) not in changed for a, b in zip(ue, ur)])
     out = {"arm": arm, "seed": seed, "acquire_now": round(float(np.mean([x["acquire_now"] for x in log])), 4), "infer_stable": round(acc(ue[st], ur[st]), 4)}
     r5, r10, ro = [], [], []
-    for p, z, r, v in changes:
+    for p, z, r, v in changes:                                           # fix (Bugbot #204): a pair may change twice
+        nxt = min([p2 for p2, z2, r2, _ in changes if (z2, r2) == (z, r) and p2 > p] or [phases])
         for lo, hi, bucket in ((p + 1, p + 6, r5), (p + 6, p + 11, r10)):
-            es = np.flatnonzero((typ == z) & (born >= lo) & (born < min(hi, phases)) & ~shown[:, r] & (exc[:, r] < 0))
+            es = np.flatnonzero((typ == z) & (born >= lo) & (born < min(hi, phases, nxt)) & ~shown[:, r] & (exc[:, r] < 0))
             bucket += list(pred(es, np.full(len(es), r)) == v)
-        es = np.flatnonzero((typ == z) & (born < p) & (exc[:, r] < 0)); ro += list(pred(es, np.full(len(es), r)) == v)
+        if nxt == phases:
+            es = np.flatnonzero((typ == z) & (born < p) & (exc[:, r] < 0)); ro += list(pred(es, np.full(len(es), r)) == v)
     out.update({"revise_next5": round(float(np.mean(r5)), 4), "revise_next10": round(float(np.mean(r10)), 4), "revise_old": round(float(np.mean(ro)), 4)})
     ee, er = np.nonzero((exc >= 0) & (born[:, None] <= last - 10)); out["exception_kept"] = round(acc(ee, er), 4)
     nk = [(e, r) for (e, r), p in noisy.items() if p <= last - 10]

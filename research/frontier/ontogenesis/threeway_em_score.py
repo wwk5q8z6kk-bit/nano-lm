@@ -1,8 +1,9 @@
 """Apply E1-E5 of PROTOCOL-THREEWAY-EM.md mechanically. Committed before any confirmatory result."""
-import json
+import json, sys
+BASE = sys.argv[1] if len(sys.argv) > 1 else "results"   # results_v2 for the corrected reruns
 import numpy as np
 A = ("given_det", "given_nodet", "em_det", "em_nodet")
-D = {a: json.load(open(f"results/threeway_em/{a}.json")) for a in A}
+D = {a: json.load(open(f"{BASE}/threeway_em/{a}.json")) for a in A}
 m = lambda a, k: float(np.mean([r[k] for r in D[a]]))
 pi = lambda a, k, i: D[a][i][k]
 ok = lambda f: sum(1 for i in range(5) if f(i))
@@ -18,6 +19,6 @@ def mm(a, k):
     xs = [r.get(k) for r in D[a]]
     return None if any(x is None for x in xs) else round(float(np.mean(xs)), 4)
 table = {a: {k: mm(a, k) for k in K} for a in A}
-json.dump({"predictions": {k: {"held_on_mean": bool(v[0]), "seeds_meeting_bound": v[1]} for k, v in E.items()}, "table": table}, open("results/threeway_em/verdict.json", "w"), indent=1)
+json.dump({"predictions": {k: {"held_on_mean": bool(v[0]), "seeds_meeting_bound": v[1]} for k, v in E.items()}, "table": table}, open(f"{BASE}/threeway_em/verdict.json", "w"), indent=1)
 for k, (h, n) in E.items(): print(k, "HELD" if h else "FAILED", f"({n} of 5 seeds)")
 for a, v in table.items(): print(a, json.dumps(v))

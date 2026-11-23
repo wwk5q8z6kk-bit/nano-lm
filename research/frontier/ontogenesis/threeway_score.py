@@ -1,8 +1,9 @@
 """Apply predictions Z1-Z8 of PROTOCOL-THREEWAY.md mechanically. Committed before any registered result."""
-import json
+import json, sys
+BASE = sys.argv[1] if len(sys.argv) > 1 else "results"   # results_v2 for the corrected reruns
 import numpy as np
 ARMS = ("none", "private", "private_t02", "change_only", "threeway", "threeway_t02", "threeway_rev200", "threeway_privfirst", "threeway_random", "oracle")
-D = {a: json.load(open(f"results/threeway/{a}.json")) for a in ARMS}
+D = {a: json.load(open(f"{BASE}/threeway/{a}.json")) for a in ARMS}
 m = lambda a, k: float(np.nanmean([np.nan if r[k] is None else r[k] for r in D[a]]))
 per = lambda a, k: [r[k] for r in D[a]]
 def seeds_ok(f): return sum(1 for i in range(5) if f(i))
@@ -19,6 +20,6 @@ Z["Z8"] = (m("threeway", "revise_old") - m("threeway_rev200", "revise_old") >= 0
 keys = ("acquire_now", "infer_stable", "infer_stable_fa_pairs", "infer_stable_other_pairs", "revise_next5", "revise_old", "exception_kept", "noise_resisted",
         "routed_private", "flags", "false_alarms", "missed", "exceptions_in_false_groups", "exceptions_in_false_groups_kept")
 table = {a: {k: round(m(a, k), 4) for k in keys} for a in ARMS}
-json.dump({"predictions": {k: {"held_on_mean": bool(v[0]), "seeds_meeting_bound": v[1]} for k, v in Z.items()}, "table": table}, open("results/threeway/verdict.json", "w"), indent=1)
+json.dump({"predictions": {k: {"held_on_mean": bool(v[0]), "seeds_meeting_bound": v[1]} for k, v in Z.items()}, "table": table}, open(f"{BASE}/threeway/verdict.json", "w"), indent=1)
 for k, (h, n) in Z.items(): print(k, "HELD" if h else "FAILED", f"(bound met on {n} of 5 seeds)")
 for a, v in table.items(): print(a, json.dumps(v))

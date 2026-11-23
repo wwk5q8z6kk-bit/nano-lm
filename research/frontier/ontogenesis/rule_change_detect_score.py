@@ -1,7 +1,8 @@
 """Apply predictions Y1-Y5 of rule_change_detect.py mechanically. Committed before any registered result."""
-import json
+import json, sys
+BASE = sys.argv[1] if len(sys.argv) > 1 else "results"   # results_v2 for the corrected reruns
 import numpy as np
-D = {a: json.load(open(f"results/rule_change_detect/{a}.json")) for a in ("seen2", "detect", "oracle_dec")}
+D = {a: json.load(open(f"{BASE}/rule_change_detect/{a}.json")) for a in ("seen2", "detect", "oracle_dec")}
 m = lambda a, k: round(float(np.mean([r[k] for r in D[a]])), 4)
 per = lambda a, k: [r[k] for r in D[a]]
 Y = {}
@@ -14,6 +15,6 @@ Y["Y5"] = {"held": m("detect", "missed") <= 1, "missed": per("detect", "missed")
 keys = ("acquire_now", "infer_stable", "revise_next5", "revise_next10", "revise_old", "exception_kept", "noise_resisted", "store_size")
 table = {a: {k: m(a, k) for k in keys} for a in D}
 table["detect"].update({k: per("detect", k) for k in ("flags", "false_alarms", "missed", "delay_mean")})
-json.dump({"predictions": Y, "table": table}, open("results/rule_change_detect/verdict.json", "w"), indent=1)
+json.dump({"predictions": Y, "table": table}, open(f"{BASE}/rule_change_detect/verdict.json", "w"), indent=1)
 for k, v in Y.items(): print(k, "HELD" if v["held"] else "FAILED", json.dumps({a: b for a, b in v.items() if a != "held"}))
 print(json.dumps(table, indent=1))
