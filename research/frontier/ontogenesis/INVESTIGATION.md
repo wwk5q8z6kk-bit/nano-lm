@@ -968,6 +968,39 @@ Rerun with the fix (session d5, `results/nullspace_local/fixed_owm_ent/` on rese
 - This is the bar for Question 13. At 7.7B tokens the 386M model is not expected to reach SmolLM2-135M. The useful comparison is our tokens-to-score curve against theirs. Matching a 2T-token model at about 1/250 of the tokens is not a claim we can make.
 - Raw results: `results/lm/eval-reference-SmolLM2-135M.json` and `-360M.json`. The first attempt ran out of laptop memory at batch 32; the rerun used batch 8, with the scorer unchanged.
 
+**Question 13, result (2026-11-23, 14:25 UTC).** The 386M model finished 234,950 steps (7.70B tokens) at 14:16 UTC with no spot reclaims. Benchmarks and the no-context control ran on the full sets. Scored by `tpu/score_q13.py`, committed before the result and corrected after review: `results/scale2/q13-verdict.json`. Raw files: `results/scale2/`.
+
+**Held-out bits per byte at the end:** mix **0.8049**; web 0.888, textbook 0.531, math 0.871, code 0.602. (211M on 4.2B tokens, old recipe: mix 0.876.)
+
+**Predictions:**
+- **Q2 held:** 0.8049 lies in [0.79, 0.83].
+- **Q3a held:** it beats our 211M model on ARC-Easy (0.596 against 0.522) and PIQA (0.678 against 0.648).
+- **Q3b failed as worded.** ARC-Easy is 0.075 *above* Pythia-410M's 0.521, outside the predicted ±0.03 band on the high side. PIQA is within (0.678 against 0.668). LAMBADA perplexity is worse, as predicted (32.1 against 10.8). As noted before the result, Q3b was a weak prediction: the 211M model already met it.
+
+**Against the modern references** (same harness; cells give accuracy / length-normalised accuracy):
+
+| Task | Ours 211M, 4.2B tokens | **Ours 386M, 7.7B tokens** | SmolLM2-135M, 2T tokens | SmolLM2-360M, 4T tokens | 386M with no context |
+|---|---|---|---|---|---|
+| HellaSwag | 0.308 / 0.346 | **0.343 / 0.410** | 0.355 / 0.432 | 0.432 / 0.564 | 0.302 |
+| ARC-Easy | 0.521 / 0.466 | **0.596 / 0.534** | 0.644 / 0.597 | 0.704 / 0.695 | 0.333 |
+| ARC-Challenge | 0.226 / 0.257 | **0.260 / 0.292** | 0.281 / 0.294 | 0.365 / 0.387 | 0.222 |
+| PIQA | 0.648 / 0.629 | **0.678 / 0.676** | 0.684 / 0.687 | 0.721 / 0.720 | 0.631 |
+| WinoGrande | 0.511 | **0.520** | 0.530 | 0.590 | 0.496 |
+| OpenBookQA | 0.184 / 0.302 | **0.218 / 0.312** | 0.218 / 0.332 | 0.246 / 0.374 | 0.126 |
+| LAMBADA accuracy | 0.326 | **0.354** | 0.429 | 0.538 | 0.000 |
+| LAMBADA perplexity | 49.01 | **32.06** | 19.26 | 9.44 | — |
+
+- **Reading.** The 386M model approaches SmolLM2-135M on most multiple-choice tasks: PIQA within 0.01, WinoGrande within 0.01, OpenBookQA equal on plain accuracy, HellaSwag within 0.02 normalised. It is still behind on every task. It is clearly behind on ARC-Easy (0.05) and LAMBADA (accuracy 0.35 against 0.43, perplexity 32 against 19). It had about 1/260 of SmolLM2-135M's training tokens and 2.9 times its parameters.
+- The no-context control is far below on ARC, HellaSwag and LAMBADA, so the scores come from using the question. PIQA's no-context score is high (0.631), which is typical for that task.
+- Not a frontier claim: SmolLM2-360M is better on every task by a wide margin.
+
+**Cost of Question 13** (list prices; billing not yet read):
+- First machine, on-demand v5e-4, about 2.1 hours: about $10.
+- Spot v5e-4, 17:31 to 14:19, 20.8 hours, billed at the spot rate. Bounded above by the on-demand rate: at most $100.
+- Total at most about $110; the actual figure is lower and will be read from billing.
+- Also today: a one-chip spot v5e for about 15 minutes (speed benchmark), and a spot v5e-4 for Question 14, about 15 minutes of training before it was reclaimed.
+- All machines and Cloud Scheduler jobs are deleted (checked 14:25 UTC).
+
 ## Question 14. Do wider attention heads make training faster at equal quality? (registered 2026-11-23, 06:00 UTC, before any run)
 
 **Why.** The speed benchmark (Question 13 notes) found the trainer at about 36% of a v5e chip's peak. The fused Pallas attention kernel cannot run with our head size of 64; it needs 128. At 101M, 6 heads of 128 with 2 key-value heads (size `L128`) has the same weight matrices as `L` (12 heads of 64, 4 key-value heads, the same 3:1 grouping); only the per-head norm sizes differ.
@@ -998,4 +1031,3 @@ Rerun with the fix (session d5, `results/nullspace_local/fixed_owm_ent/` on rese
 - **Decision, as registered: keep heads of 64 and standard attention.** The rule required W1 and W2 both to hold, and W1 failed by a wide margin. W2 and W3 were therefore not measured, and the study is not rerun: they cannot change the decision.
 - Reading: the attention kernel is not where most of the step time goes at this size and sequence length (512). The remaining inefficiency is elsewhere, for example the 32,768-token output layer, the matrix multiplications themselves, or data-parallel communication. The benchmark gave about 36% of peak and 86% data-parallel efficiency.
 - Operations lesson: every spot machine needs a supervisor. Later spot jobs run under `tpu/spot_supervisor.sh` or an equivalent.
-
