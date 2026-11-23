@@ -118,9 +118,15 @@ class CausalCopyMixture(nn.Module):
             raise ValueError("candidate ids fall outside vocabulary")
         pointer_prob = torch.zeros_like(base_logits, dtype=torch.float32)
         pointer_prob.scatter_add_(-1, copies.long(), weights)
-        g = (torch.sigmoid(gate_logits) * eligible).unsqueeze(-1)
-        probs = (1 - g) * torch.softmax(base_logits.float(), dim=-1) + g * pointer_prob
-        return probs.clamp_min(torch.finfo(probs.dtype).tiny).log()
+        log_pointer = torch.where(pointer_prob > 0, pointer_prob.clamp_min(1e-30).log(),
+                                  torch.full_like(pointer_prob, -torch.inf))
+        log_gate = torch.where(eligible, F.logsigmoid(gate_logits),
+                               torch.full_like(gate_logits, -torch.inf))
+        log_keep = torch.where(eligible, F.logsigmoid(-gate_logits),
+                               torch.zeros_like(gate_logits))
+        log_base = F.log_softmax(base_logits.float(), dim=-1)
+        return torch.logaddexp(log_keep.unsqueeze(-1) + log_base,
+                               log_gate.unsqueeze(-1) + log_pointer)
 
     @torch.no_grad()
     def stats(self, token_ids: Tensor, hidden: Tensor) -> CopyStats:
