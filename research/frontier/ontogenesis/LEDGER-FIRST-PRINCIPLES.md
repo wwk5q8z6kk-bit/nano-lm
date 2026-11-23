@@ -573,3 +573,20 @@ Run and recorded by nano-lm-d5 on `research/g04-rule-change` (PR [#204](https://
 - A once-per-group detector cooldown halves the flags. Combined with narrow revisions it roughly halves the router's stable-rule cost, from 11.2 to 5.4 points, and raises exceptions kept to 94.7%. The price is old-entity revision, from 82% to 69%.
 - Neither change alone moves the stable rule by more than 2 points; together they move it by 6. This is consistent with nano-lm-d5's reading of the withdrawn narrow-revision claim: narrow revisions leave falsely flagged groups that the detector fires on again.
 - Limits: typed addresses (the discovered-type version is nano-lm-d5's next candidate); synthetic world. Not evidence about a language model.
+
+---
+
+## 2026-11-23 — Router with narrow revisions and cooldown on discovered types (nano-lm-d5's study)
+
+Run and recorded by nano-lm-d5 on `research/g04-rule-change` (PR [#204](https://github.com/wwk5q8z6kk-bit/nano-lm/pull/204)): registration `b65154b` (09:08), results `e1f56b1` (09:35), record `THREEWAY-EM-COOLDOWN-20261123.md`. Seeds 7801–7805, corrected code, this line's EM clustering. Figures copied from that record, not rerun here.
+
+| EM clusters | Stable rule | Old entities revised | Exceptions kept | Flags / false / missed (of 12 changes) |
+|---|---|---|---|---|
+| No change detector | 72.1% | 16.3% | 99.2% | — |
+| Router, narrow revisions | 66.9% | 60.4% | 90.2% | 43.8 / 30.8 / 5.6 |
+| Router, narrow revisions + cooldown | 71.5% | 53.9% | 96.3% | 16.6 / 11.0 / 6.4 |
+
+- Q1 and Q3 held on 5 of 5 seeds and Q2 on 4 of 5. Q4 (exceptions and noise) held on its mean but on only 3 of 5 seeds, below the usual 4-of-5 rule.
+- **With discovered types and no labels, the router now revises 54% of old entities after a rule change at no measurable cost to the stable rule (0.6 points), keeping 96% of exceptions.** The cooldown is what removes the cost.
+- **Still open:** about 6 of 12 rule changes are missed with discovered types, against about 1 with given types. The cause is unexplained: no before/after splits occurred on these seeds, and over-splitting did not separate detected from missed changes earlier.
+- Limits: synthetic world; value tables. Not evidence about a language model.
