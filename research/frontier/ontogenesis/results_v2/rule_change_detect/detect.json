@@ -1,0 +1,50 @@
+[
+ {
+  "arm": "detect",
+  "seed": 7201,
+  "acquire_now": 0.9987,
+  "infer_stable": 0.9454,
+  "revise_next5": 0.8497,
+  "revise_next10": 0.7969,
+  "revise_old": 0.8954,
+  "exception_kept": 1.0,
+  "noise_resisted": 0.9863,
+  "store_size": 389,
+  "flags": 41,
+  "false_alarms": 30,
+  "missed": 1,
+  "delay_mean": 2.45
+ },
+ {
+  "arm": "detect",
+  "seed": 7202,
+  "acquire_now": 0.999,
+  "infer_stable": 0.9522,
+  "revise_next5": 0.9407,
+  "revise_next10": 0.9801,
+  "revise_old": 0.9407,
+  "exception_kept": 1.0,
+  "noise_resisted": 0.968,
+  "store_size": 359,
+  "flags": 41,
+  "false_alarms": 31,
+  "missed": 2,
+  "delay_mean": 0.4
+ },
+ {
+  "arm": "detect",
+  "seed": 7203,
+  "acquire_now": 0.9988,
+  "infer_stable": 0.9664,
+  "revise_next5": 0.8671,
+  "revise_next10": 0.9097,
+  "revise_old": 0.9476,
+  "exception_kept": 1.0,
+  "noise_resisted": 0.9775,
+  "store_size": 342,
+  "flags": 19,
+  "false_alarms": 9,
+  "missed": 2,
+  "delay_mean": 2.2
+ }
+]

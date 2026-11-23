@@ -1,5 +1,8 @@
 # The three-way router's stable-rule cost has two sources (2026-11-22)
 
+> **Correction (2026-11-23).** Rerun with corrected code (`CORRECTIONS-G04-20261123.md`): unchanged, and all verdicts the same.
+
+
 `PROTOCOL-THREEWAY-COST.md`, predictions C1–C5 and scorer committed in `a50fc4e` before any confirmatory run; development exploration on seed 1 is recorded there. Seeds 7401–7405 (new). Raw files: `results/threeway_cost/`; scored output: `results/threeway_cost/verdict.json`. The masking diagnostic (private read removed for unseen keys, which no private write ever targeted) was proposed by the memory-line session. [Observed]
 
 | Arm | Stable rule | Shared table only | Old entities revised | Exceptions kept |

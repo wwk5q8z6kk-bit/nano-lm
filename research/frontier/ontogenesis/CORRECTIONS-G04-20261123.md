@@ -18,3 +18,43 @@ Study 1 (`RULE-CHANGE-20261122.md`) is not affected: none of its seeds repeats a
 ## Corrected results
 
 Added below as each rerun finishes, with old and new figures side by side.
+
+### Prediction verdicts, original → corrected (same registered predictions, same seeds)
+
+| Study | Changed verdicts | Unchanged |
+|---|---|---|
+| 2: bilinear detector (Y1–Y5) | none | Y1–Y4 held, Y5 failed |
+| 3: three-way router (Z1–Z8) | none | Z1–Z5, Z8 held; Z6, Z7 failed |
+| 4: cost decomposition (C1–C5) | none | C1–C4 held, C5 failed |
+| 5: narrow revisions (N1–N5) | **N4 held → failed (1 of 5 seeds); N5 held → failed (0 of 5 seeds)** | N1–N3 held |
+| 6: learned clusters (E1–E5) | none (E2 now 3 of 5 seeds, E3 now 4 of 5) | E2–E4 held; E1, E5 failed |
+
+### Headline figures, original → corrected (five-seed means; three seeds for study 2)
+
+| Study, arm | Old entities revised | Stable rule | Exceptions kept | Noise resisted | False alarms / missed |
+|---|---|---|---|---|---|
+| 2: detector (bilinear) | 86.9% → **92.8%** | 94.5% → 95.5% | 100% → 100% | 97.1% → 97.7% | 47.7 / 2.3 → **23.3 / 1.7** |
+| 2: seen twice | 58.2% → 60.8% | 95.9% → 95.9% | 100% | 97.7% | — |
+| 2: ceiling | 92.9% → 97.1% | 99.4% | 100% | 99.4% | — |
+| 3: three-way | 85.8% → 86.6% | 72.6% → 72.6% | 89.1% | 91.1% | 27.8 / 1.4 → same |
+| 3: private first | 42.6% → 41.9% | 75.3% | 91.5% | 90.8% | 15.2 / 6.2 → 15.2 / 6.4 |
+| 4: oracle and router | changes ≤ 0.6 points | unchanged | unchanged | unchanged | unchanged |
+| 5: oracle, share ≥ 0.2 | 92.5% → 92.0% | 76.7% → 76.8% | 99.9% | 95.4% → 95.1% | — |
+| 5: three-way, share ≥ 0.2 | 79.0% → 78.5% | **77.4% → 74.1%** | **95.4% → 89.9%** | 94.5% → 92.5% | **15.8 → 32.8** / 2.4 → 2.0 |
+| 5: three-way, share ≥ 0.2 + ×16 | 76.7% → 81.3% | **80.3% → 74.6%** | **94.1% → 85.8%** | 94.4% → 90.8% | **19.6 → 57.8** / 2.8 → 1.6 |
+| 6: given types + detector | **70.0% → 81.5%** | 77.0% → 72.4% | 94.8% → 88.9% | 93.8% → 91.8% | 14.2 → 27.2 / 1.2 → 1.6 |
+| 6: EM clusters + detector | 50.4% → 52.8% | 70.7% → 67.5% | 97.0% → 93.5% | 87.8% → 84.9% | 14.4 → 20.8 / 5.2 → 6.2 |
+
+## What the corrections change
+
+1. **Withdrawn:** "both fixes bring the three-way router's stable-rule cost under 3 points" (`THREEWAY-NARROW-20261122.md`, N5).
+   - With correct per-pair masks, the router with narrow revisions raises about twice as many false alarms (33–58 per run).
+   - It keeps fewer exceptions (86–90%), and its stable rule is 74–75%, not 80%.
+   - The original result depended on the bug: the OR'd mask made each revision wider, and so stronger.
+   - A likely mechanism, not tested: weaker, properly narrow revisions leave a falsely flagged group still disagreeing, so the detector fires on it again.
+2. **Stands:** narrowing helps when revisions are triggered correctly. The oracle arms are practically unchanged (N1–N3): 9 points of stable rule recovered for about 7 points of revision. The open problem is now the detector's repeated firing under narrow revisions, not the revision itself.
+3. **Revised upward:**
+   - The bilinear change detector (study 2) revises 93% of old entities with half the false alarms. Using stored exceptions as targets, and stale predictions, had been hurting it.
+   - With given types (study 6), the router revises 82%, not 70%; the repeated-pair scoring had depressed it.
+4. **The learned-cluster gap is larger than reported:** 82% (given types) against 53% (EM clusters), a 29-point gap rather than 20.
+5. **Studies 3 and 4 stand as reported.**

@@ -1,0 +1,472 @@
+[
+ {
+  "arm": "threeway",
+  "seed": 7501,
+  "acquire_now": 0.9779,
+  "infer_stable": 0.7105,
+  "infer_stable_fa_pairs": 0.8212,
+  "infer_stable_other_pairs": 0.6655,
+  "infer_stable_shared_only": 0.713,
+  "revise_next5": 0.8355,
+  "revise_next10": 0.8346,
+  "revise_old": 0.8627,
+  "exception_kept": 0.8763,
+  "noise_resisted": 0.9248,
+  "routed_private": 1145,
+  "flags": 91,
+  "false_alarms": 67,
+  "missed": 1,
+  "detector_stage": [
+   {
+    "phase": 10,
+    "z": 0,
+    "r": 6,
+    "stage": 4
+   },
+   {
+    "phase": 10,
+    "z": 9,
+    "r": 3,
+    "stage": 4
+   },
+   {
+    "phase": 10,
+    "z": 13,
+    "r": 5,
+    "stage": 4
+   },
+   {
+    "phase": 10,
+    "z": 15,
+    "r": 6,
+    "stage": 4
+   },
+   {
+    "phase": 20,
+    "z": 1,
+    "r": 3,
+    "stage": 4
+   },
+   {
+    "phase": 20,
+    "z": 12,
+    "r": 1,
+    "stage": 4
+   },
+   {
+    "phase": 20,
+    "z": 13,
+    "r": 7,
+    "stage": 2
+   },
+   {
+    "phase": 20,
+    "z": 15,
+    "r": 1,
+    "stage": 4
+   },
+   {
+    "phase": 30,
+    "z": 3,
+    "r": 1,
+    "stage": 4
+   },
+   {
+    "phase": 30,
+    "z": 5,
+    "r": 1,
+    "stage": 4
+   },
+   {
+    "phase": 30,
+    "z": 11,
+    "r": 6,
+    "stage": 4
+   },
+   {
+    "phase": 30,
+    "z": 14,
+    "r": 0,
+    "stage": 4
+   }
+  ],
+  "exceptions_in_false_groups": 44,
+  "exceptions_in_false_groups_kept": 0.4545
+ },
+ {
+  "arm": "threeway",
+  "seed": 7502,
+  "acquire_now": 0.9777,
+  "infer_stable": 0.7536,
+  "infer_stable_fa_pairs": 0.8586,
+  "infer_stable_other_pairs": 0.7197,
+  "infer_stable_shared_only": 0.7571,
+  "revise_next5": 0.9045,
+  "revise_next10": 0.9024,
+  "revise_old": 0.9279,
+  "exception_kept": 0.8736,
+  "noise_resisted": 0.9018,
+  "routed_private": 1083,
+  "flags": 71,
+  "false_alarms": 47,
+  "missed": 1,
+  "detector_stage": [
+   {
+    "phase": 10,
+    "z": 2,
+    "r": 6,
+    "stage": 4
+   },
+   {
+    "phase": 10,
+    "z": 3,
+    "r": 4,
+    "stage": 4
+   },
+   {
+    "phase": 10,
+    "z": 5,
+    "r": 5,
+    "stage": 3
+   },
+   {
+    "phase": 10,
+    "z": 13,
+    "r": 7,
+    "stage": 4
+   },
+   {
+    "phase": 20,
+    "z": 1,
+    "r": 6,
+    "stage": 4
+   },
+   {
+    "phase": 20,
+    "z": 5,
+    "r": 0,
+    "stage": 4
+   },
+   {
+    "phase": 20,
+    "z": 8,
+    "r": 1,
+    "stage": 4
+   },
+   {
+    "phase": 20,
+    "z": 13,
+    "r": 4,
+    "stage": 4
+   },
+   {
+    "phase": 30,
+    "z": 5,
+    "r": 1,
+    "stage": 4
+   },
+   {
+    "phase": 30,
+    "z": 7,
+    "r": 1,
+    "stage": 4
+   },
+   {
+    "phase": 30,
+    "z": 10,
+    "r": 2,
+    "stage": 4
+   },
+   {
+    "phase": 30,
+    "z": 13,
+    "r": 6,
+    "stage": 4
+   }
+  ],
+  "exceptions_in_false_groups": 37,
+  "exceptions_in_false_groups_kept": 0.4595
+ },
+ {
+  "arm": "threeway",
+  "seed": 7503,
+  "acquire_now": 0.9746,
+  "infer_stable": 0.7692,
+  "infer_stable_fa_pairs": 0.8473,
+  "infer_stable_other_pairs": 0.7169,
+  "infer_stable_shared_only": 0.771,
+  "revise_next5": 0.8167,
+  "revise_next10": 0.8252,
+  "revise_old": 0.785,
+  "exception_kept": 0.8074,
+  "noise_resisted": 0.9027,
+  "routed_private": 1243,
+  "flags": 105,
+  "false_alarms": 82,
+  "missed": 0,
+  "detector_stage": [
+   {
+    "phase": 10,
+    "z": 7,
+    "r": 7,
+    "stage": 4
+   },
+   {
+    "phase": 10,
+    "z": 10,
+    "r": 2,
+    "stage": 4
+   },
+   {
+    "phase": 10,
+    "z": 10,
+    "r": 3,
+    "stage": 4
+   },
+   {
+    "phase": 10,
+    "z": 15,
+    "r": 0,
+    "stage": 4
+   },
+   {
+    "phase": 20,
+    "z": 1,
+    "r": 2,
+    "stage": 4
+   },
+   {
+    "phase": 20,
+    "z": 2,
+    "r": 0,
+    "stage": 4
+   },
+   {
+    "phase": 20,
+    "z": 8,
+    "r": 5,
+    "stage": 4
+   },
+   {
+    "phase": 20,
+    "z": 9,
+    "r": 6,
+    "stage": 4
+   },
+   {
+    "phase": 30,
+    "z": 4,
+    "r": 2,
+    "stage": 4
+   },
+   {
+    "phase": 30,
+    "z": 5,
+    "r": 3,
+    "stage": 4
+   },
+   {
+    "phase": 30,
+    "z": 7,
+    "r": 4,
+    "stage": 4
+   },
+   {
+    "phase": 30,
+    "z": 14,
+    "r": 6,
+    "stage": 4
+   }
+  ],
+  "exceptions_in_false_groups": 70,
+  "exceptions_in_false_groups_kept": 0.3571
+ },
+ {
+  "arm": "threeway",
+  "seed": 7504,
+  "acquire_now": 0.9725,
+  "infer_stable": 0.7408,
+  "infer_stable_fa_pairs": 0.8521,
+  "infer_stable_other_pairs": 0.6887,
+  "infer_stable_shared_only": 0.7422,
+  "revise_next5": 0.655,
+  "revise_next10": 0.6605,
+  "revise_old": 0.5609,
+  "exception_kept": 0.8456,
+  "noise_resisted": 0.8884,
+  "routed_private": 1344,
+  "flags": 92,
+  "false_alarms": 72,
+  "missed": 4,
+  "detector_stage": [
+   {
+    "phase": 10,
+    "z": 2,
+    "r": 3,
+    "stage": 4
+   },
+   {
+    "phase": 10,
+    "z": 5,
+    "r": 4,
+    "stage": 4
+   },
+   {
+    "phase": 10,
+    "z": 9,
+    "r": 4,
+    "stage": 3
+   },
+   {
+    "phase": 10,
+    "z": 12,
+    "r": 7,
+    "stage": 4
+   },
+   {
+    "phase": 20,
+    "z": 0,
+    "r": 4,
+    "stage": 4
+   },
+   {
+    "phase": 20,
+    "z": 3,
+    "r": 0,
+    "stage": 4
+   },
+   {
+    "phase": 20,
+    "z": 5,
+    "r": 0,
+    "stage": 4
+   },
+   {
+    "phase": 20,
+    "z": 15,
+    "r": 7,
+    "stage": 4
+   },
+   {
+    "phase": 30,
+    "z": 6,
+    "r": 2,
+    "stage": 4
+   },
+   {
+    "phase": 30,
+    "z": 7,
+    "r": 0,
+    "stage": 1
+   },
+   {
+    "phase": 30,
+    "z": 8,
+    "r": 2,
+    "stage": 1
+   },
+   {
+    "phase": 30,
+    "z": 12,
+    "r": 4,
+    "stage": 1
+   }
+  ],
+  "exceptions_in_false_groups": 36,
+  "exceptions_in_false_groups_kept": 0.2778
+ },
+ {
+  "arm": "threeway",
+  "seed": 7505,
+  "acquire_now": 0.9815,
+  "infer_stable": 0.7552,
+  "infer_stable_fa_pairs": 0.8254,
+  "infer_stable_other_pairs": 0.746,
+  "infer_stable_shared_only": 0.757,
+  "revise_next5": 0.8808,
+  "revise_next10": 0.8507,
+  "revise_old": 0.9276,
+  "exception_kept": 0.886,
+  "noise_resisted": 0.9244,
+  "routed_private": 959,
+  "flags": 44,
+  "false_alarms": 21,
+  "missed": 2,
+  "detector_stage": [
+   {
+    "phase": 10,
+    "z": 0,
+    "r": 5,
+    "stage": 3
+   },
+   {
+    "phase": 10,
+    "z": 1,
+    "r": 4,
+    "stage": 3
+   },
+   {
+    "phase": 10,
+    "z": 1,
+    "r": 6,
+    "stage": 4
+   },
+   {
+    "phase": 10,
+    "z": 2,
+    "r": 1,
+    "stage": 4
+   },
+   {
+    "phase": 20,
+    "z": 1,
+    "r": 0,
+    "stage": 4
+   },
+   {
+    "phase": 20,
+    "z": 2,
+    "r": 7,
+    "stage": 4
+   },
+   {
+    "phase": 20,
+    "z": 6,
+    "r": 1,
+    "stage": 4
+   },
+   {
+    "phase": 20,
+    "z": 12,
+    "r": 4,
+    "stage": 4
+   },
+   {
+    "phase": 30,
+    "z": 0,
+    "r": 0,
+    "stage": 4
+   },
+   {
+    "phase": 30,
+    "z": 5,
+    "r": 1,
+    "stage": 4
+   },
+   {
+    "phase": 30,
+    "z": 6,
+    "r": 7,
+    "stage": 4
+   },
+   {
+    "phase": 30,
+    "z": 7,
+    "r": 0,
+    "stage": 4
+   }
+  ],
+  "exceptions_in_false_groups": 19,
+  "exceptions_in_false_groups_kept": 0.3158
+ }
+]

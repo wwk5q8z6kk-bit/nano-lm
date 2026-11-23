@@ -1,0 +1,472 @@
+[
+ {
+  "arm": "change_only",
+  "seed": 7301,
+  "acquire_now": 0.9469,
+  "infer_stable": 0.7434,
+  "infer_stable_fa_pairs": 0.9173,
+  "infer_stable_other_pairs": 0.7075,
+  "infer_stable_shared_only": 0.7455,
+  "revise_next5": 0.8867,
+  "revise_next10": 0.8897,
+  "revise_old": 0.9132,
+  "exception_kept": 0.2238,
+  "noise_resisted": 0.9404,
+  "routed_private": 0,
+  "flags": 55,
+  "false_alarms": 32,
+  "missed": 1,
+  "detector_stage": [
+   {
+    "phase": 10,
+    "z": 3,
+    "r": 7,
+    "stage": 4
+   },
+   {
+    "phase": 10,
+    "z": 10,
+    "r": 5,
+    "stage": 1
+   },
+   {
+    "phase": 10,
+    "z": 11,
+    "r": 3,
+    "stage": 4
+   },
+   {
+    "phase": 10,
+    "z": 14,
+    "r": 3,
+    "stage": 4
+   },
+   {
+    "phase": 20,
+    "z": 1,
+    "r": 3,
+    "stage": 4
+   },
+   {
+    "phase": 20,
+    "z": 2,
+    "r": 7,
+    "stage": 4
+   },
+   {
+    "phase": 20,
+    "z": 3,
+    "r": 6,
+    "stage": 4
+   },
+   {
+    "phase": 20,
+    "z": 12,
+    "r": 5,
+    "stage": 4
+   },
+   {
+    "phase": 30,
+    "z": 2,
+    "r": 1,
+    "stage": 4
+   },
+   {
+    "phase": 30,
+    "z": 2,
+    "r": 6,
+    "stage": 4
+   },
+   {
+    "phase": 30,
+    "z": 7,
+    "r": 1,
+    "stage": 4
+   },
+   {
+    "phase": 30,
+    "z": 7,
+    "r": 6,
+    "stage": 4
+   }
+  ],
+  "exceptions_in_false_groups": 18,
+  "exceptions_in_false_groups_kept": 0.0
+ },
+ {
+  "arm": "change_only",
+  "seed": 7302,
+  "acquire_now": 0.9484,
+  "infer_stable": 0.7755,
+  "infer_stable_fa_pairs": 0.9102,
+  "infer_stable_other_pairs": 0.7587,
+  "infer_stable_shared_only": 0.7793,
+  "revise_next5": 0.7987,
+  "revise_next10": 0.8425,
+  "revise_old": 0.923,
+  "exception_kept": 0.2509,
+  "noise_resisted": 0.95,
+  "routed_private": 0,
+  "flags": 60,
+  "false_alarms": 30,
+  "missed": 0,
+  "detector_stage": [
+   {
+    "phase": 10,
+    "z": 4,
+    "r": 1,
+    "stage": 4
+   },
+   {
+    "phase": 10,
+    "z": 7,
+    "r": 3,
+    "stage": 4
+   },
+   {
+    "phase": 10,
+    "z": 13,
+    "r": 0,
+    "stage": 4
+   },
+   {
+    "phase": 10,
+    "z": 14,
+    "r": 2,
+    "stage": 4
+   },
+   {
+    "phase": 20,
+    "z": 0,
+    "r": 5,
+    "stage": 4
+   },
+   {
+    "phase": 20,
+    "z": 1,
+    "r": 2,
+    "stage": 4
+   },
+   {
+    "phase": 20,
+    "z": 2,
+    "r": 4,
+    "stage": 4
+   },
+   {
+    "phase": 20,
+    "z": 9,
+    "r": 3,
+    "stage": 4
+   },
+   {
+    "phase": 30,
+    "z": 0,
+    "r": 6,
+    "stage": 4
+   },
+   {
+    "phase": 30,
+    "z": 4,
+    "r": 1,
+    "stage": 4
+   },
+   {
+    "phase": 30,
+    "z": 6,
+    "r": 3,
+    "stage": 4
+   },
+   {
+    "phase": 30,
+    "z": 12,
+    "r": 2,
+    "stage": 4
+   }
+  ],
+  "exceptions_in_false_groups": 19,
+  "exceptions_in_false_groups_kept": 0.0
+ },
+ {
+  "arm": "change_only",
+  "seed": 7303,
+  "acquire_now": 0.9324,
+  "infer_stable": 0.7563,
+  "infer_stable_fa_pairs": 0.835,
+  "infer_stable_other_pairs": 0.7259,
+  "infer_stable_shared_only": 0.7611,
+  "revise_next5": 0.8897,
+  "revise_next10": 0.8872,
+  "revise_old": 0.9134,
+  "exception_kept": 0.1636,
+  "noise_resisted": 0.9238,
+  "routed_private": 0,
+  "flags": 87,
+  "false_alarms": 61,
+  "missed": 0,
+  "detector_stage": [
+   {
+    "phase": 10,
+    "z": 4,
+    "r": 0,
+    "stage": 4
+   },
+   {
+    "phase": 10,
+    "z": 4,
+    "r": 3,
+    "stage": 4
+   },
+   {
+    "phase": 10,
+    "z": 6,
+    "r": 0,
+    "stage": 4
+   },
+   {
+    "phase": 10,
+    "z": 8,
+    "r": 5,
+    "stage": 4
+   },
+   {
+    "phase": 20,
+    "z": 1,
+    "r": 6,
+    "stage": 4
+   },
+   {
+    "phase": 20,
+    "z": 3,
+    "r": 3,
+    "stage": 4
+   },
+   {
+    "phase": 20,
+    "z": 5,
+    "r": 7,
+    "stage": 4
+   },
+   {
+    "phase": 20,
+    "z": 9,
+    "r": 5,
+    "stage": 4
+   },
+   {
+    "phase": 30,
+    "z": 1,
+    "r": 5,
+    "stage": 4
+   },
+   {
+    "phase": 30,
+    "z": 3,
+    "r": 0,
+    "stage": 4
+   },
+   {
+    "phase": 30,
+    "z": 3,
+    "r": 1,
+    "stage": 4
+   },
+   {
+    "phase": 30,
+    "z": 10,
+    "r": 3,
+    "stage": 4
+   }
+  ],
+  "exceptions_in_false_groups": 38,
+  "exceptions_in_false_groups_kept": 0.0
+ },
+ {
+  "arm": "change_only",
+  "seed": 7304,
+  "acquire_now": 0.9531,
+  "infer_stable": 0.8027,
+  "infer_stable_fa_pairs": 0.8702,
+  "infer_stable_other_pairs": 0.7975,
+  "infer_stable_shared_only": 0.8055,
+  "revise_next5": 0.8348,
+  "revise_next10": 0.8014,
+  "revise_old": 0.8762,
+  "exception_kept": 0.2731,
+  "noise_resisted": 0.9196,
+  "routed_private": 0,
+  "flags": 32,
+  "false_alarms": 14,
+  "missed": 2,
+  "detector_stage": [
+   {
+    "phase": 10,
+    "z": 0,
+    "r": 2,
+    "stage": 4
+   },
+   {
+    "phase": 10,
+    "z": 2,
+    "r": 2,
+    "stage": 3
+   },
+   {
+    "phase": 10,
+    "z": 2,
+    "r": 7,
+    "stage": 3
+   },
+   {
+    "phase": 10,
+    "z": 11,
+    "r": 6,
+    "stage": 4
+   },
+   {
+    "phase": 20,
+    "z": 4,
+    "r": 1,
+    "stage": 4
+   },
+   {
+    "phase": 20,
+    "z": 5,
+    "r": 6,
+    "stage": 4
+   },
+   {
+    "phase": 20,
+    "z": 8,
+    "r": 1,
+    "stage": 4
+   },
+   {
+    "phase": 20,
+    "z": 10,
+    "r": 4,
+    "stage": 4
+   },
+   {
+    "phase": 30,
+    "z": 3,
+    "r": 5,
+    "stage": 4
+   },
+   {
+    "phase": 30,
+    "z": 9,
+    "r": 6,
+    "stage": 4
+   },
+   {
+    "phase": 30,
+    "z": 10,
+    "r": 6,
+    "stage": 4
+   },
+   {
+    "phase": 30,
+    "z": 12,
+    "r": 3,
+    "stage": 4
+   }
+  ],
+  "exceptions_in_false_groups": 15,
+  "exceptions_in_false_groups_kept": 0.0
+ },
+ {
+  "arm": "change_only",
+  "seed": 7305,
+  "acquire_now": 0.9497,
+  "infer_stable": 0.7894,
+  "infer_stable_fa_pairs": 0.878,
+  "infer_stable_other_pairs": 0.773,
+  "infer_stable_shared_only": 0.7942,
+  "revise_next5": 0.9259,
+  "revise_next10": 0.8514,
+  "revise_old": 0.9239,
+  "exception_kept": 0.2121,
+  "noise_resisted": 0.9389,
+  "routed_private": 0,
+  "flags": 56,
+  "false_alarms": 33,
+  "missed": 2,
+  "detector_stage": [
+   {
+    "phase": 10,
+    "z": 7,
+    "r": 5,
+    "stage": 3
+   },
+   {
+    "phase": 10,
+    "z": 9,
+    "r": 0,
+    "stage": 4
+   },
+   {
+    "phase": 10,
+    "z": 12,
+    "r": 2,
+    "stage": 4
+   },
+   {
+    "phase": 10,
+    "z": 15,
+    "r": 7,
+    "stage": 3
+   },
+   {
+    "phase": 20,
+    "z": 1,
+    "r": 3,
+    "stage": 4
+   },
+   {
+    "phase": 20,
+    "z": 8,
+    "r": 2,
+    "stage": 4
+   },
+   {
+    "phase": 20,
+    "z": 9,
+    "r": 3,
+    "stage": 4
+   },
+   {
+    "phase": 20,
+    "z": 12,
+    "r": 3,
+    "stage": 4
+   },
+   {
+    "phase": 30,
+    "z": 0,
+    "r": 4,
+    "stage": 4
+   },
+   {
+    "phase": 30,
+    "z": 5,
+    "r": 5,
+    "stage": 4
+   },
+   {
+    "phase": 30,
+    "z": 10,
+    "r": 5,
+    "stage": 4
+   },
+   {
+    "phase": 30,
+    "z": 14,
+    "r": 4,
+    "stage": 4
+   }
+  ],
+  "exceptions_in_false_groups": 19,
+  "exceptions_in_false_groups_kept": 0.0
+ }
+]

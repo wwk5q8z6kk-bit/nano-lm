@@ -1,5 +1,8 @@
 # Narrow shared revisions close most of the three-way router's cost (2026-11-22)
 
+> **Correction (2026-11-23).** Code review found bugs. With corrected code (`CORRECTIONS-G04-20261123.md`), **N4 and N5 fail**, and the headline "the router's stable-rule cost falls under 3 points" is **withdrawn**. The oracle-level result (N1–N3: narrowing cuts collateral at small revision cost) stands. Figures below are the original, superseded run.
+
+
 `PROTOCOL-THREEWAY-NARROW.md`; development curve, predictions N1–N5 and scorer committed in `cf11f8e` before any confirmatory run. Seeds 7501–7505 (new). Raw files: `results/threeway_narrow/`; scored output: `results/threeway_narrow/verdict.json`. [Observed]
 
 **Question.** `THREEWAY-COST-20261122.md` traced the router's stable-rule cost to two sources:

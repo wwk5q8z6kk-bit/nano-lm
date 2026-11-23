@@ -1,5 +1,8 @@
 # G04 second study: a label-free rule-change detector (2026-11-22)
 
+> **Correction (2026-11-23).** Code review found bugs. With corrected code (`CORRECTIONS-G04-20261123.md`) the detector does better: old entities revised 92.8% (not 86.9%), false alarms 23 (not 48). Verdicts are unchanged. Figures below are the original run.
+
+
 `rule_change_detect.py`. Threshold chosen on development seed 1 and declared tuned; predictions Y1–Y5 and scorer committed in `4159de4` before any registered run. Registered seeds 7201–7203 are new. Raw files: `results/rule_change_detect/`; scored output: `results/rule_change_detect/verdict.json`. [Observed]
 
 **Question.** The first study (`RULE-CHANGE-20261122.md`) showed that repetition separates noise from exceptions without labels, but leaves rule changes unrevised: a 45-point gap to a ceiling that knows the hidden types. Can a label-free signal detect the changes and write them into the shared rule?

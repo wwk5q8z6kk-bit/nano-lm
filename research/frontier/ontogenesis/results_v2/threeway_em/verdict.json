@@ -1,0 +1,82 @@
+{
+ "predictions": {
+  "E1": {
+   "held_on_mean": false,
+   "seeds_meeting_bound": 2
+  },
+  "E2": {
+   "held_on_mean": true,
+   "seeds_meeting_bound": 3
+  },
+  "E3": {
+   "held_on_mean": true,
+   "seeds_meeting_bound": 4
+  },
+  "E4": {
+   "held_on_mean": true,
+   "seeds_meeting_bound": 5
+  },
+  "E5": {
+   "held_on_mean": false,
+   "seeds_meeting_bound": 0
+  }
+ },
+ "table": {
+  "given_det": {
+   "infer_stable": 0.7238,
+   "infer_stable_shared_only": 0.7532,
+   "revise_old": 0.8149,
+   "revise_next5": 0.732,
+   "exception_kept": 0.8894,
+   "noise_resisted": 0.9177,
+   "purity": null,
+   "clusters_used": null,
+   "changed_types_split": null,
+   "flags": 48.6,
+   "false_alarms": 27.2,
+   "missed": 1.6
+  },
+  "given_nodet": {
+   "infer_stable": 0.7817,
+   "infer_stable_shared_only": 0.8174,
+   "revise_old": 0.1299,
+   "revise_next5": 0.2123,
+   "exception_kept": 0.9822,
+   "noise_resisted": 0.916,
+   "purity": null,
+   "clusters_used": null,
+   "changed_types_split": null,
+   "flags": 0.0,
+   "false_alarms": 0.0,
+   "missed": 12.0
+  },
+  "em_det": {
+   "infer_stable": 0.6746,
+   "infer_stable_shared_only": 0.7157,
+   "revise_old": 0.5283,
+   "revise_next5": 0.5241,
+   "exception_kept": 0.9349,
+   "noise_resisted": 0.8489,
+   "purity": 0.9931,
+   "clusters_used": 23.4,
+   "changed_types_split": 0.2125,
+   "flags": 32.8,
+   "false_alarms": 20.8,
+   "missed": 6.2
+  },
+  "em_nodet": {
+   "infer_stable": 0.7108,
+   "infer_stable_shared_only": 0.7626,
+   "revise_old": 0.1485,
+   "revise_next5": 0.2152,
+   "exception_kept": 0.9927,
+   "noise_resisted": 0.8597,
+   "purity": 0.9931,
+   "clusters_used": 23.4,
+   "changed_types_split": 0.2125,
+   "flags": 0.0,
+   "false_alarms": 0.0,
+   "missed": 12.0
+  }
+ }
+}

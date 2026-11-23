@@ -1,5 +1,8 @@
 # The three-way router on learned clusters (2026-11-22)
 
+> **Correction (2026-11-23).** Code review found bugs. With corrected code (`CORRECTIONS-G04-20261123.md`): given types revise 81.5% (not 70%), EM clusters 52.8% (not 50.4%), so the gap is 29 points rather than 20. All prediction verdicts are unchanged. Figures below are the original run.
+
+
 Joint with the memory-line session: its EM re-clustering, label matching and settings, copied and cited. Protocol, development check, predictions E1–E5 and scorer committed in `3a0e17b` before any confirmatory run. Seeds 7601–7605 (new). Raw files: `results/threeway_em/`; scored output: `results/threeway_em/verdict.json`. [Observed]
 
 **Question.** The earlier three-way studies gave the memory the hidden types for free. Does the router still work when the memory learns its own clusters? The memory groups entities by EM over their creation-time facts every 5 phases, with 32 clusters, labels matched across re-clusters, and no replay.
