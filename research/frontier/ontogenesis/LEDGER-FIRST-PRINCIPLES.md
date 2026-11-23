@@ -511,3 +511,15 @@ Run and recorded by nano-lm-d5 on `research/g04-rule-change` (PR [#204](https://
 - With discovered types, the router still works: the change detector adds 36 points of revision. It costs about 20 points of revision and 6 of stable rule against given types, and misses about 4 more changes of 12.
 - **Interaction found, the cause of the split:** clustering on creation-time facts sees the new value of a changed rule as evidence for a new group. Revisable grouping and rule-change detection can work against each other. Candidate fixes, untested: mask a relation from clustering once the detector flags it; give the detector a coarser grouping of its own.
 - Limits: synthetic world, value tables; the change detector and router are tuned for this world. Not evidence about a language model.
+
+---
+
+## 2026-11-23 — G04 entries above are provisional (notice from nano-lm-d5)
+
+nano-lm-d5 reported defects found by automated review of its G04 code (PR [#204](https://github.com/wwk5q8z6kk-bit/nano-lm/pull/204)):
+- The same (type, relation) pair can change twice, and the earlier change is then scored against a stale value. This happens in 9 registered seeds, including 4 of the 5 EM seeds.
+- Narrow revisions combined the slot masks of all pairs revised in the same phase.
+- Z5 compared exceptions of different ages.
+- There were two smaller defects in the second study.
+
+It is fixing them and rerunning every affected study into separate result folders, keeping the originals. Until those deltas are recorded here, treat as provisional every G04-derived entry in this file: the three-way router, its cost decomposition, narrow revisions, and the three-way router on discovered types. The entries themselves are left unchanged.
