@@ -994,7 +994,21 @@ Rerun with the fix (session d5, `results/nullspace_local/fixed_owm_ent/` on rese
 - \* SmolLM2 token counts are from the model cards, from memory, not re-checked here.
 - † WinoGrande has no meaningful no-context control: without the prefixes both options score the same suffix, so the 0.496 reported by the scorer only measures how often the gold answer is option 1.
 - **What the context adds** (plain accuracy, with context minus no context): ARC-Easy +0.263, OpenBookQA +0.092, LAMBADA +0.354, PIQA +0.047, HellaSwag +0.041, ARC-Challenge +0.038.
-- **Where the gap to SmolLM2-135M is small, the context adds least.** On PIQA, HellaSwag and ARC-Challenge the 386M model gains under 0.05 from the context, and it sits within about 0.02 of SmolLM2-135M. On ARC-Easy and LAMBADA, where the context carries the score, it is clearly behind. "Close to SmolLM2-135M" therefore holds only on low-headroom tasks. A like-for-like comparison of context gains for SmolLM2 is running (its scorer now has the same no-context control).
+- **Where the gap to SmolLM2-135M is small, the context adds least.** On PIQA, HellaSwag and ARC-Challenge the 386M model gains under 0.05 from the context, and it sits within about 0.02 of SmolLM2-135M. On ARC-Easy and LAMBADA, where the context carries the score, it is clearly behind. "Close to SmolLM2-135M" therefore holds only on low-headroom tasks. Like-for-like context gains (2026-11-23, 15:30 UTC; `results/lm/eval-reference-SmolLM2-*-nocontext.json`, same no-context control, laptop GPU at batch 8). Plain accuracy, with context / no context (gain):
+
+| Task | Ours 386M | SmolLM2-135M | SmolLM2-360M |
+|---|---|---|---|
+| ARC-Easy | 0.596 / 0.333 (+0.263) | 0.644 / 0.329 (+0.316) | 0.704 / 0.310 (+0.394) |
+| ARC-Challenge | 0.260 / 0.222 (+0.038) | 0.281 / 0.220 (+0.061) | 0.365 / 0.220 (+0.145) |
+| HellaSwag | 0.343 / 0.302 (+0.040) | 0.355 / 0.306 (+0.049) | 0.432 / 0.343 (+0.089) |
+| PIQA | 0.678 / 0.631 (+0.047) | 0.684 / 0.627 (+0.057) | 0.721 / 0.663 (+0.058) |
+| OpenBookQA | 0.218 / 0.126 (+0.092) | 0.218 / 0.130 (+0.088) | 0.246 / 0.144 (+0.102) |
+| LAMBADA | 0.354 / 0.000 (+0.354) | 0.429 / 0.000 (+0.429) | 0.538 / 0.000 (+0.538) |
+
+  - Without the question, our 386M model and SmolLM2-135M score almost the same (within 0.004 on every task).
+  - The whole gap to SmolLM2-135M is in how much the model gains from the question: ARC-Easy +0.263 against +0.316, ARC-Challenge +0.038 against +0.061, LAMBADA +0.354 against +0.429.
+  - Its prior over answers is as good; its use of the question is weaker.
+  - On OpenBookQA the gains are equal (+0.092 against +0.088).
 - Not a frontier claim: SmolLM2-360M is better on every task by a wide margin.
 
 **Cost of Question 13** (list prices; billing not yet read):
