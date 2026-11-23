@@ -498,3 +498,47 @@ If those three can be shown to deliver more capability per FLOP, per byte of mem
 - **Architectures:** 2412.06464 (Gated DeltaNet), 2402.18668 (Based), 2406.07887 (NVIDIA Mamba-2 hybrid), 2510.26692 (Kimi Linear), 2604.03444 (Olmo Hybrid), 2502.05171 (Huginn), 2507.10524 (MoR), 2502.17416 (looped transformers), 2505.06708 (gated attention), 2412.09871 (BLT), 2507.07955 (H-Net), 2502.16982 (Moonlight/Muon).
 - **Reference models:** Hugging Face model cards and `config.json` for every ID in §10. Qwen2.5 (2412.15115), Qwen3 (2505.09388), Gemma 3 (2503.19786), OLMo 2 (2501.00656), MobileLLM (2402.14905, 2509.24945).
 - **Our records:** `INVESTIGATION.md`, `LEDGER.md`, `results/` (including `checkpoint-index.tsv`), and the V5 package on PR #195 (`research/frontier/ontogenesis/architecture/`).
+
+---
+
+## 18. Component coverage map (living; updated each cycle)
+
+**Plain summary.** Every part of the system gets an explicit decision: retain, strengthen, redesign, replace or invent, each with its evidence and status. Status words mean: *proposed* (in documents only); *implemented* (code exists and passes tests); *executed* (run, with results recorded); *demonstrated* (an advantage under controlled conditions, with seeds).
+
+| Area | Current implementation (386M control) | Limitation found | Decision and proposed change | Evidence | Status | Measured result | Next decision |
+|---|---|---|---|---|---|---|---|
+| Inputs and tokenization | Own 32k byte-level BPE, single digits, NFC | 1–6% fewer bytes per token than Pythia and SmolLM2 on benchmark text; 44% of LAMBADA targets split into several tokens | **Replace** on the inheritance route with the teacher's tokenizer (required for logit and weight transfer). Byte-level hierarchy (H-Net, BLT) stays the leading option only if a from-scratch line is chosen | Audit; 2412.09871, 2507.07955 | proposed | — | Fixed by the teacher choice (Qwen2.5/Qwen3 tokenizer, 152k) |
+| Embeddings and outputs | Tied input/output, 32k × d | With a 152k vocabulary, embeddings take 25–40% of a 0.5–1.5B model | **Redesign:** keep tied; measure the output-layer cost; options are a factored or low-rank output and vocabulary trimming | Matrix report (Gemma-3-270M: 168M of 268M are embeddings) | proposed | — | Measure in E1; act if the output layer exceeds 15% of FLOPs |
+| Internal representations | Residual stream, RMSNorm, QK-norm | No direct measure of what is represented | **Strengthen** measurement: probes for entities and positions; hidden-state alignment to the teacher (MOHAWK stage 2 added about 8 points) | 2408.10189 | proposed | — | Part of E1 |
+| Overall architecture | Dense decoder, all layers attention | Long-context cost; no parameter reuse | **Redesign** into Candidate 1: an inherited hybrid with measured attention placement, plus Candidates 2 and 3 | §6, §8 | proposed | — | E1 |
+| Information processing (mixing) | Softmax attention with GQA | KV cache grows with context; recurrent replacements lose exact recall | **Replace most layers** with Gated DeltaNet, keeping some attention. **Invent:** budgeted exact memory (Candidate 2) | 2412.06464; 2402.18668 | **implemented** (`nano_core.py`, tests 4/4) | MQAR pilot: attention 100%, GDN 8% (one seed) | Cycle-1 grid running |
+| Position and time | RoPE, 512 context | Short training context; RoPE may hurt hybrids (Kimi Linear's gain vanished with RoPE) | **Redesign:** a short causal convolution for local order (adopted in `nano_core`); compare NoPE against RoPE in the attention layers of hybrids; train at 2k–4k | 2510.26692; cycle-1 pilot (no order information: nothing learned) | partly implemented (conv) | Without order information, attention reached 4% on MQAR; with the conv, 100% | NoPE vs RoPE study (open question 2) |
+| Mathematical building blocks | SwiGLU, RMSNorm, pre-norm residual | Untested alternatives | **Retain** SwiGLU and RMSNorm (strong evidence, no credible replacement). **Strengthen:** gated attention output (2505.06708); hyper-connections only if depth grows | 2505.06708; 2512.24880 | proposed | — | Gated attention as a cheap add in E1 |
+| Memory and state | KV cache only | No budgeted or editable memory; n-gram stores and caches failed at 14–101M | **Invent:** budgeted exact memory with a teacher-guided write policy. **Retire:** n-gram store and cache augmentation | Store gains 0.0096 / 0.0037 / 0.0017 bits/byte; cache below 0.01 at 40M | **implemented**; running | pending | Decide after the cycle-1 grid |
+| Allocation of computation | Fixed depth for every token | No adaptive compute; whole-block reuse helped only on a toy task | **Invent:** adaptive recurrent depth with residual (fixed-point) halting (Candidate 3). Mixture-of-experts kept as an option at the 7B ceiling | Our nested-LR result; 2507.10524; 2502.05171 | proposed | toy result only | E3 (cycle 2) |
+| Learning objectives | Next-token cross-entropy | Learns knowledge slowly | **Strengthen:** logit distillation and hidden-state alignment from the teacher; a write-policy auxiliary loss; multi-token prediction at ≥ 1B only (small-model benefit unverified) | §7 | partly implemented (write auxiliary loss) | pending | E1, E2 |
+| Optimization and training | Muon + AdamW, cosine to 1%, batch 32k tokens | Learning rate chosen at 101M; gains decayed with weight decay; final state not saved | **Strengthen:** wd = 0 on gains, split gate/up matrices for Muon, save final state, μP-style transfer of hyperparameters | Audit; 2203.03466; 2502.16982 | proposed | — | Fix in the trainer before any new from-scratch run (E4) |
+| Data and curriculum | Corpus v2, education-filtered; sampling with replacement | Validation overlaps training on code and maths (about 7%); decontamination checks only every 7th window; benchmarks not removed | **Redesign:** sample without replacement, hash every window (or MinHash), split code by repository, remove benchmark matches; inheritance route adds verified teacher-written reasoning data | Audit | proposed | — | E4 |
+| Knowledge inheritance | Small-teacher distillation (+0.02 bits/byte at 14–40M) | Weak teacher; never tried at scale | **Invent the pipeline:** prune from larger → convert → distil → train new mechanisms | §7 | proposed | — | E1 |
+| Adaptation and correction | None in the LM. V5 and G04/G06 toy studies | Toy only. V5's largest executed model has 840 parameters | **Retain as evaluation:** V5 correction metrics. **Strengthen later:** budgeted memory gives an editable store | V5 assessment | evaluation infrastructure only | — | Secondary evaluation from stage 2 |
+| Generation and interaction | Greedy and likelihood scoring only | No generative evaluation, verification or tool use | **Strengthen:** generative reasoning with checked answers; a verifier head linked to Candidate 3's halting | §10 | proposed | — | Harness extension (free) |
+| Runtime and hardware | JAX on TPU v5e, data parallel, about 36% of peak (estimated) | Bottlenecks unmeasured; fused attention gave 1.05×; recomputing activations is 17% slower | **Measure first** (E0b profile). GPU with fla kernels for the recurrent layers in stages 1–2 | Q14; benchmark | executed (benchmark) | 30.8k tokens/s per chip at 386M | E0b |
+
+### V5 and APS, scoped
+
+- **Implemented in native computation:** a standard decoder, with optional block reuse. 840 parameters is the largest *executed* V5 model; that figure describes the V5 package only, not other Nano LM models.
+- **In evaluation infrastructure only:** correction and acquisition cohorts, the causal cache, equal-information contracts, and the validation receipts.
+- **Proposed only:** APS transport, the projection controller, operation memory and AETHER.
+- **Demonstrated:** nothing above toy scale.
+
+**APS reconstructed.** APS's mechanism is to reorganise predictive state without losing earlier access, through learned transport between parameterisations and projection of updates. It assumes a compatible parameterisation (V5's own compatibility table) and gradient-free transport maps.
+
+**Should APS get a prototype?** Not now. Its claimed benefit (continual correction without interference) is not on the critical path to capability per FLOP. The cheapest test of its core idea, update projection, was already run in G06/G06b and works only when protection is localised. Revisit if the flagship needs continual factual updates.
+
+**Memory and cache negative results, exactly:**
+1. An n-gram store mixed into predictions after training: gains 0.0096 / 0.0037 / 0.0017 bits/byte at 14M / 40M / 101M (leave-document-out). Below the registered 0.01.
+2. An exact in-context n-gram cache at 40M: all domain gains below 0.01.
+3. Store-M at 40M worsened (1.0481 → 1.0495).
+4. Joint training with the store: 0.14 worse, but biased by same-document leakage, so unsettled.
+
+All four are *non-learned, count-based* memories bolted onto a trained model. None says anything about a learned, budgeted, attention-readable memory inside the model, which is what cycle 1 tests.
