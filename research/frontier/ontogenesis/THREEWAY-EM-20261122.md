@@ -49,3 +49,34 @@ The design itself transfers.
 
    A cheap test is 16 clusters for the detector's grouping only.
 2. **Noise with learned clusters:** check whether the noise loss comes from shared-table disturbance, using the shared-only readout.
+
+
+## Post-hoc diagnostic: why EM misses more changes (rerun of the registered seeds, reproduced exactly)
+
+Per rule change, over the five registered seeds (60 changes): was it detected, did EM ever split its type into before/after clusters, and over how many clusters was the type spread? Raw: `results/threeway_em/diagnostic_per_change.json`.
+
+| | Detected | Missed |
+|---|---|---|
+| Type split before/after at some re-cluster | 7 | 10 |
+| Never split | 27 | 16 |
+| Mean clusters per changed type | 2.62 | 2.62 |
+
+- Splits are more frequent among missed changes (10 of 26, 38%) than among detected ones (7 of 34, 21%), but most misses (16 of 26) happen without any split.
+- Over-splitting (the memory-line session's hypothesis) does not separate detected from missed changes: both average 2.62 clusters per type.
+- Most of the extra misses under EM are therefore unexplained by either mechanism. Masking a flagged relation from clustering (the memory-line session's proposed fix for splits) would address at most the split-related third.
+
+## The router's revision across seed sets, by configuration (requested by the ontogenesis session)
+
+Pooling is valid only across identical configurations. Mean, with the minimum and maximum over seeds in brackets.
+
+| Configuration | Seeds | Old entities revised |
+|---|---|---|
+| Three-way, typed addresses, normal revision, private 16,384 | 7301–7305 | 86% [78%–91%] |
+| same | 7401–7405 | 71% [58%–78%] |
+| same | 7501–7505 | 82% [71%–89%] |
+| Three-way, typed addresses, share ≥ 0.2, private 16,384 | 7501–7505 | 79% [70%–85%] |
+| Three-way, typed addresses, share ≥ 0.2, private ×16 | 7501–7505 | 77% [71%–81%] |
+| Three-way, given types (32-prototype construction), share ≥ 0.2 | 7601–7605 | 70% [60%–75%] |
+| Three-way, EM clusters, share ≥ 0.2 | 7601–7605 | 50% [31%–66%] |
+
+Pooled over the 15 seeds of the one configuration run three times (typed addresses, normal revision): **79% [58%–91%]**. Single five-seed means of this router should be read as ±10 points.

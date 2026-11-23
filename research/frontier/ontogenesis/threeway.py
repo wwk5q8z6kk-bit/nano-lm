@@ -239,7 +239,8 @@ def run(arm, seed, phases=rc.PHASES, p_slots=None, private_steps=None, changes_o
                     mem = np.flatnonzero(typ[:(ph + 1) * NEW] == z); before = mem[born[mem] < p]; after = mem[born[mem] >= p]
                     if len(before) and len(after):
                         top_b = np.bincount(assign[before], minlength=KC).argmax(); top_a = np.bincount(assign[after], minlength=KC).argmax()
-                        split_log.append({"phase": ph, "change_phase": p, "split": bool(top_b != top_a)})
+                        split_log.append({"phase": ph, "change_phase": p, "z": int(z), "r": int(r), "split": bool(top_b != top_a),
+                                          "clusters_of_type": int(len(set(assign[mem])))})
         nf = np.array(new_facts); log.append({"phase": ph, "acquire_now": float((predict(nf[:, 0], nf[:, 1])[0] == nf[:, 2]).mean())})
 
     last = phases - 1
@@ -274,6 +275,11 @@ def run(arm, seed, phases=rc.PHASES, p_slots=None, private_steps=None, changes_o
         out["purity"] = round(float(sum(np.bincount(typ[assign == c]).max() for c in set(assign)) / n), 4)
         out["clusters_used"] = int(len(set(assign)))
         out["changed_types_split"] = round(float(np.mean([s_["split"] for s_ in split_log])), 4) if split_log else None
+        found_keys = {(f["z"], f["r"]) for f in flags if f["true_change"]}
+        out["per_change"] = [{"phase": p, "z": int(z), "r": int(r), "detected": (int(z), int(r)) in found_keys,
+                              "ever_split": any(s_["split"] for s_ in split_log if (s_["z"], s_["r"], s_["change_phase"]) == (z, r, p)),
+                              "clusters_of_type": max([s_["clusters_of_type"] for s_ in split_log if (s_["z"], s_["r"], s_["change_phase"]) == (z, r, p)] or [0])}
+                             for p, z, r, v in changes]
     eg = sorted(set(exc_in_false_group))
     out["exceptions_in_false_groups"] = len(eg)
     out["exceptions_in_false_groups_kept"] = round(acc(np.array([a for a, _ in eg]), np.array([b for _, b in eg])), 4) if eg else None
