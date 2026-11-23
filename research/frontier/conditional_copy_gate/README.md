@@ -24,7 +24,7 @@ From this directory:
 
     python -m pytest -q test_causal_copy.py
 
-Current local result: **7 passing CPU tests** for prefix-only access, copy alignment, distribution normalization, matching target-only/full losses, no-candidate fallback, gradient flow, and shape guards. No model-training or energy claims are made.
+Current local result: **8 passing CPU tests** for prefix-only access, copy alignment, distribution normalization, matching target-only/full losses, no-candidate fallback, gradient flow, shape guards, and high-gate numerical stability. No model-training or energy claims are made.
 
 ## Next experiment (not launched here)
 
