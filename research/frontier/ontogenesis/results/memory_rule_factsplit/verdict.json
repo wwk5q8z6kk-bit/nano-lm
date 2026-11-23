@@ -1,0 +1,202 @@
+{
+ "reproduction_failures": [],
+ "means": {
+  "drop": {
+   "regular": 0.8978,
+   "exception": 0.0479,
+   "corrected": 0.041
+  },
+  "transport": {
+   "regular": 0.8907,
+   "exception": 0.0694,
+   "corrected": 0.04
+  },
+  "full-k32": {
+   "regular": 0.9971,
+   "exception": 0.6355,
+   "corrected": 0.6038
+  },
+  "typed-noreindex": {
+   "regular": 0.9189,
+   "exception": 0.0218,
+   "corrected": 0.0351
+  }
+ },
+ "per_seed": {
+  "drop s4101": {
+   "regular": 0.9022,
+   "regular_n": 6340,
+   "exception": 0.0397,
+   "exception_n": 756,
+   "corrected": 0.0514,
+   "corrected_n": 584
+  },
+  "drop s4102": {
+   "regular": 0.9035,
+   "regular_n": 6413,
+   "exception": 0.0448,
+   "exception_n": 692,
+   "corrected": 0.0417,
+   "corrected_n": 575
+  },
+  "drop s4103": {
+   "regular": 0.8972,
+   "regular_n": 6380,
+   "exception": 0.0401,
+   "exception_n": 724,
+   "corrected": 0.0347,
+   "corrected_n": 576
+  },
+  "drop s4104": {
+   "regular": 0.8876,
+   "regular_n": 6405,
+   "exception": 0.059,
+   "exception_n": 695,
+   "corrected": 0.0483,
+   "corrected_n": 580
+  },
+  "drop s4105": {
+   "regular": 0.8984,
+   "regular_n": 6397,
+   "exception": 0.056,
+   "exception_n": 697,
+   "corrected": 0.029,
+   "corrected_n": 586
+  },
+  "full-k32 s4101": {
+   "regular": 0.9978,
+   "regular_n": 6340,
+   "exception": 0.6601,
+   "exception_n": 756,
+   "corrected": 0.6336,
+   "corrected_n": 584
+  },
+  "full-k32 s4102": {
+   "regular": 0.9973,
+   "regular_n": 6413,
+   "exception": 0.6228,
+   "exception_n": 692,
+   "corrected": 0.5913,
+   "corrected_n": 575
+  },
+  "full-k32 s4103": {
+   "regular": 0.9944,
+   "regular_n": 6380,
+   "exception": 0.616,
+   "exception_n": 724,
+   "corrected": 0.5677,
+   "corrected_n": 576
+  },
+  "full-k32 s4104": {
+   "regular": 0.9984,
+   "regular_n": 6405,
+   "exception": 0.6417,
+   "exception_n": 695,
+   "corrected": 0.6069,
+   "corrected_n": 580
+  },
+  "full-k32 s4105": {
+   "regular": 0.9977,
+   "regular_n": 6397,
+   "exception": 0.637,
+   "exception_n": 697,
+   "corrected": 0.6195,
+   "corrected_n": 586
+  },
+  "transport s4101": {
+   "regular": 0.9013,
+   "regular_n": 6340,
+   "exception": 0.0675,
+   "exception_n": 756,
+   "corrected": 0.0548,
+   "corrected_n": 584
+  },
+  "transport s4102": {
+   "regular": 0.8907,
+   "regular_n": 6413,
+   "exception": 0.0564,
+   "exception_n": 692,
+   "corrected": 0.0383,
+   "corrected_n": 575
+  },
+  "transport s4103": {
+   "regular": 0.8903,
+   "regular_n": 6380,
+   "exception": 0.0677,
+   "exception_n": 724,
+   "corrected": 0.0382,
+   "corrected_n": 576
+  },
+  "transport s4104": {
+   "regular": 0.8753,
+   "regular_n": 6405,
+   "exception": 0.082,
+   "exception_n": 695,
+   "corrected": 0.0397,
+   "corrected_n": 580
+  },
+  "transport s4105": {
+   "regular": 0.8957,
+   "regular_n": 6397,
+   "exception": 0.0732,
+   "exception_n": 697,
+   "corrected": 0.029,
+   "corrected_n": 586
+  },
+  "typed-noreindex s4101": {
+   "regular": 0.9185,
+   "regular_n": 6340,
+   "exception": 0.0251,
+   "exception_n": 756,
+   "corrected": 0.0514,
+   "corrected_n": 584
+  },
+  "typed-noreindex s4102": {
+   "regular": 0.9228,
+   "regular_n": 6413,
+   "exception": 0.0188,
+   "exception_n": 692,
+   "corrected": 0.033,
+   "corrected_n": 575
+  },
+  "typed-noreindex s4103": {
+   "regular": 0.9301,
+   "regular_n": 6380,
+   "exception": 0.0193,
+   "exception_n": 724,
+   "corrected": 0.0278,
+   "corrected_n": 576
+  },
+  "typed-noreindex s4104": {
+   "regular": 0.901,
+   "regular_n": 6405,
+   "exception": 0.0259,
+   "exception_n": 695,
+   "corrected": 0.0362,
+   "corrected_n": 580
+  },
+  "typed-noreindex s4105": {
+   "regular": 0.922,
+   "regular_n": 6397,
+   "exception": 0.0201,
+   "exception_n": 697,
+   "corrected": 0.0273,
+   "corrected_n": 586
+  }
+ },
+ "F1_exceptions_drop_le_full_minus_0.20": {
+  "seeds": 5,
+  "of": 5,
+  "holds": true
+ },
+ "F2_regular_drop_within_0.10_of_full": {
+  "seeds": 4,
+  "of": 5,
+  "holds": true
+ },
+ "F3_corrected_drop_le_full": {
+  "seeds": 5,
+  "of": 5,
+  "holds": true
+ }
+}
