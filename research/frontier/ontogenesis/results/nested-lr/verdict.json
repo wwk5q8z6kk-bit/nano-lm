@@ -1,0 +1,52 @@
+{
+ "counts": {
+  "looped": {
+   "1e-3": 2,
+   "3e-4": 0,
+   "3e-3": 0
+  },
+  "dense": {
+   "1e-3": 1,
+   "3e-4": 0,
+   "3e-3": 0
+  },
+  "tf-4x2-d64": {
+   "1e-3": 4,
+   "3e-4": 1,
+   "3e-3": 0
+  },
+  "tf-8x1-d64": {
+   "1e-3": 0,
+   "3e-4": 0,
+   "3e-3": 0
+  }
+ },
+ "best": {
+  "looped": 2,
+  "dense": 1,
+  "tf-4x2-d64": 4,
+  "tf-8x1-d64": 0
+ },
+ "pairs": {
+  "A": {
+   "reuse": "looped",
+   "no_reuse": "dense",
+   "reuse_best": 2,
+   "no_reuse_best": 1,
+   "stands": false,
+   "explained": true
+  },
+  "B": {
+   "reuse": "tf-4x2-d64",
+   "no_reuse": "tf-8x1-d64",
+   "reuse_best": 4,
+   "no_reuse_best": 0,
+   "stands": true,
+   "explained": false
+  }
+ },
+ "L1_dense_3e-4_ge3": false,
+ "L2_8x1_3e-4_ge3": false,
+ "L3_3e-3_no_arm_above_1e-3": true,
+ "decision": "mixed"
+}

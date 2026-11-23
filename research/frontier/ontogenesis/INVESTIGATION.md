@@ -794,6 +794,26 @@ Registered laptop-GPU arms: dense 1/5, looped 3/5.
 - All arms share one learning rate (1e-3). The closest published study reports untied models failing at 1e-3 but succeeding at 3e-4, so this may be tolerance of a single learning rate rather than an effect of reuse. The per-arm learning-rate sweep is the needed control.
 - Extra loops at test time do not buy three-step chains: three-step accuracy stays 0.29 to 0.44 and often falls with more loops.
 
+**Per-arm learning rates: result (2026-11-23, 05:50 UTC).** `PROTOCOL-NESTED-LR.md` (76826a0), scorer `score_nested_lr.py`, corrected after review and before any result was read (12dd25a). 40 new runs on one CPU thread each; raw files in `results/nested-lr/`, scored output in `results/nested-lr/verdict.json`. Runs that learned two-step chains, out of 5:
+
+| Arm | 1e-3 | 3e-4 | 3e-3 | Best |
+|---|---|---|---|---|
+| looped (reuse) | 2 | 0 | 0 | 2 |
+| dense (no reuse) | 1 | 0 | 0 | 1 |
+| 4 × 2 (reuse) | 4 | 1 | 0 | 4 |
+| 8 × 1 (no reuse) | 0 | 0 | 0 | 0 |
+
+- **Decision, as registered: "mixed".**
+  - Pair B: the reuse advantage stands (4 against 0).
+  - Pair A: within one seed (2 against 1), so it is not distinguishable here.
+- **L1 and L2 failed.** A lower rate did not rescue the models without reuse: 0 of 5 at 3e-4 for both. **L3 held.**
+- 1e-3 was the best rate for every arm. The caveat "this may be tolerance of a single learning rate" is therefore not supported here: no arm did better at another rate.
+- Descriptive, not registered:
+  - At 3e-3 every arm failed to train at all (one-step accuracy 0.2–0.33).
+  - At 3e-4 every arm learned one-step lookups perfectly, but two-step accuracy stayed at the 0.22 plateau in 19 of 20 runs.
+  - Learning here is a sudden jump, so a lower rate may only delay it beyond the fixed 26,000 steps. This design cannot tell "never" from "later".
+- **What stands now.** At this budget, reuse of a whole block (4 × 2) learns two-step chains where the untied model of equal compute (8 × 1) does not, at every rate tried. For a single reused layer against four untied ones, the difference is within noise. The published report that untied models succeed at 3e-4 did not reproduce in this task and budget. It is still from memory and not re-checked, so this is not a contradiction of it.
+
 **Cost of the cycle** (list prices; billing not yet read): machine A, v5e-4, 00:57 to 08:53, about $38; machine B, v6e-4, 01:25 to 11:15, about $127. **Total about $165.** Both machines deleted themselves on the normal path, and Cloud Scheduler later received 404.
 
 ### Question 9, review checks: results
