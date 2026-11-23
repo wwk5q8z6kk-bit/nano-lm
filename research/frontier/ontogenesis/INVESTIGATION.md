@@ -967,3 +967,26 @@ Rerun with the fix (session d5, `results/nullspace_local/fixed_owm_ent/` on rese
 - This is the bar for Question 13. At 7.7B tokens the 386M model is not expected to reach SmolLM2-135M. The useful comparison is our tokens-to-score curve against theirs. Matching a 2T-token model at about 1/250 of the tokens is not a claim we can make.
 - Raw results: `results/lm/eval-reference-SmolLM2-135M.json` and `-360M.json`. The first attempt ran out of laptop memory at batch 32; the rerun used batch 8, with the scorer unchanged.
 
+## Question 14. Do wider attention heads make training faster at equal quality? (registered 2026-11-23, 06:00 UTC, before any run)
+
+**Why.** The speed benchmark (Question 13 notes) found the trainer at about 36% of a v5e chip's peak. The fused Pallas attention kernel cannot run with our head size of 64; it needs 128. At 101M, 6 heads of 128 with 2 key-value heads (size `L128`) has the same weight matrices as `L` (12 heads of 64, 4 key-value heads, the same 3:1 grouping); only the per-head norm sizes differ.
+
+**Design.** Same recipe as Question 13's rate check: Muon, rate 2e-3, decay 0.1, 1% floor, 0.8B tokens of corpus v2, batch 64 × 512, a v5e-4 with data parallelism over 4 chips. Job `tpu/job_q14.sh`.
+
+| Run | Size | Attention | Seed | Status |
+|---|---|---|---|---|
+| a | L | standard | 1000 | exists: Question 13 rate check, mix 0.9540, 439k tokens/s |
+| b | L | standard | 1001 | new |
+| c | L128 | fused (`--attn splash`) | 1000 | new |
+| d | L128 | fused | 1001 | new |
+| e | L128 | standard | 1000 | new: separates the effect of head size from the effect of the kernel |
+
+**Predictions.**
+- W1, speed: run c reaches at least 1.25 times run a's tokens per second.
+- W2, quality: the mean final mix of c and d is within 0.005 of the mean of a and b.
+- W3, kernel parity: c and e differ by at most 0.005 in final mix.
+
+**Decision.** If W1 and W2 both hold, later dense runs use heads of 128 with the fused kernel. Otherwise they keep the current design. If the fused path fails to run under data parallelism (its shard_map wrapper has not been run on a TPU before), that is recorded; runs b and e still give the head-size comparison.
+
+**Cost.** About 2 hours of a v5e-4, under $10 at spot price.
+

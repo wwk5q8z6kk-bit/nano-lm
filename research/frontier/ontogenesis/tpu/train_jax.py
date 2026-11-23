@@ -38,6 +38,7 @@ SIZES = {
     "S": dict(d=256, layers=8, ffn=704, heads=4, kv=2),       # ~14M, the local pilot model
     "M": dict(d=512, layers=8, ffn=1408, heads=8, kv=4),      # ~42M, the Kaggle baseline model
     "L": dict(d=768, layers=12, ffn=2048, heads=12, kv=4),    # ~101M
+    "L128": dict(d=768, layers=12, ffn=2048, heads=6, kv=2),  # ~101M, as L with 6 heads of 128 (Question 14)
     "XL": dict(d=1024, layers=16, ffn=2752, heads=16, kv=4),  # ~211M
     "XXL": dict(d=1280, layers=20, ffn=3456, heads=20, kv=4), # ~386M
 }
