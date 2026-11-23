@@ -47,7 +47,11 @@ def build_world(seed, phases=rc.PHASES):
     return rng, rule, typ, shown, exc, changes, rule_at
 
 
-def run(arm, seed, phases=rc.PHASES, p_slots=None, private_steps=None, changes_on=True, narrow=False, narrow_w=0.02, share=None):
+def run(arm, seed, phases=rc.PHASES, p_slots=None, private_steps=None, changes_on=True, narrow=False, narrow_w=0.02, share=None,
+        codes="typed", KC=32, every=5, detector=True):
+    """codes: 'typed' (registered: memory_rule_sharing typed addresses), 'given32' or 'em' (THREEWAY-EM; the memory-line
+    session's construction: cluster prototype + noise, KC prototypes; 'given32' uses the hidden types, 'em' re-clusters
+    by EM over creation-time facts every `every` phases, labels matched, no replay). detector=False skips change detection."""
     """p_slots, private_steps, changes_on: exploration settings added after the registered run (THREEWAY-COST);
     their defaults reproduce the registered behaviour exactly."""
     NEW = rc.NEW; n = phases * NEW
@@ -62,6 +66,28 @@ def run(arm, seed, phases=rc.PHASES, p_slots=None, private_steps=None, changes_o
     try: i2, w2, _, _ = addresses("typed", 8, seed, n)
     finally: msr.SLOTS = SLOTS
     assert np.array_equal(typ_m, typ), "memory addresses must use the world's types"
+    assign = typ.copy(); split_log = []
+    if codes != "typed":
+        from memory_rule_recluster import features, em
+        from memory_rule_transport import match
+        import torch.nn.functional as F_
+        Dm, Km = msr.D, msr.K
+        gq = torch.Generator().manual_seed(seed + 30_000)
+        relv = torch.randn(R, Dm, generator=gq) / Dm ** 0.5
+        qm = torch.randn(2 * Dm, Dm, generator=gq) / (2 * Dm) ** 0.5; keys = torch.randn(SLOTS, Dm, generator=gq) / Dm ** 0.5
+        hq = torch.Generator().manual_seed(seed + 40_000)
+        proto = torch.randn(KC, Dm, generator=hq) / Dm ** 0.5; noise_v = torch.randn(n, Dm, generator=hq) / Dm ** 0.5
+        i1 = torch.zeros(n * R, Km, dtype=torch.long); w1 = torch.zeros(n * R, Km)
+        em_pi = np.ones(KC) / KC; em_th = np.full((KC, R, V), 1.0 / V)
+        truth0 = np.zeros((n, R), int)                                   # values shown at creation (what clustering sees)
+        def address(ents):
+            ents = np.asarray(ents)
+            if not len(ents): return
+            ent = proto[torch.from_numpy(assign[ents])] + noise_v[torch.from_numpy(ents)]
+            e_ = torch.from_numpy(ents).repeat_interleave(R); r_ = torch.arange(R).repeat(len(ents))
+            x = torch.cat([ent.repeat_interleave(R, 0), relv[r_]], -1) @ qm
+            tt, ii = (F_.normalize(x, dim=-1) @ F_.normalize(keys, dim=-1).T).topk(Km, -1)
+            rows = e_ * R + r_; i1[rows] = ii; w1[rows] = torch.softmax(tt * 8.0, -1)
     T1 = torch.nn.Parameter(torch.zeros(SLOTS, V)); T2 = torch.nn.Parameter(torch.zeros(p_slots, V))
     key = lambda e, r: torch.as_tensor(np.asarray(e) * R + np.asarray(r))
     read = lambda q: (w1[q][..., None] * T1[i1[q]]).sum(1) + (w2[q][..., None] * T2[i2[q]]).sum(1)
@@ -74,7 +100,7 @@ def run(arm, seed, phases=rc.PHASES, p_slots=None, private_steps=None, changes_o
 
     # narrow revision (exploration setting, THREEWAY-NARROW): a shared slot may be revised for (type z, relation r)
     # only if no query of any other (type, relation) pair reads it with weight above narrow_w
-    pair_of_query = torch.as_tensor(typ).repeat_interleave(R) * R + torch.arange(R).repeat(n)
+    pair_of_query = torch.as_tensor(assign).repeat_interleave(R) * R + torch.arange(R).repeat(n)
     def allowed_slots(z, r):
         if share is not None:                                            # soft: the changed pair carries at least `share` of the slot's read weight
             own_q = (pair_of_query == z * R + r)[:, None].expand_as(i1)
@@ -130,6 +156,12 @@ def run(arm, seed, phases=rc.PHASES, p_slots=None, private_steps=None, changes_o
     for ph in range(phases):
         ents = np.arange(ph * NEW, (ph + 1) * NEW)
         new_facts = [(int(e), int(r), truth_at(ph, e, r)) for e in ents for r in np.flatnonzero(shown[e])]
+        if codes != "typed":
+            for e, r, v in new_facts: truth0[e, r] = v
+            if codes == "em":
+                X, M = features(truth0, shown, ents)
+                ll = np.log(em_pi)[None] + np.einsum('nrv,krv->nk', X, np.log(em_th)); assign[ents] = ll.argmax(1)
+            address(ents); pair_of_query[:] = torch.as_tensor(assign).repeat_interleave(R) * R + torch.arange(R).repeat(n)
         old_obs = []
         if ph:
             prev = np.arange((ph - 1) * NEW, ph * NEW)
@@ -157,7 +189,8 @@ def run(arm, seed, phases=rc.PHASES, p_slots=None, private_steps=None, changes_o
                     olds = np.flatnonzero((typ[:ph * NEW] == z) & (exc[:ph * NEW, r] < 0))
                     revision += [(int(e), r, v) for e in olds]
         else:                                                            # change_only and the threeway family
-            if arm == "threeway_privfirst":
+            if not detector: found = []
+            elif arm == "threeway_privfirst":
                 flagged = set(gate(new_facts)); rest = [f for f in new_facts if f not in flagged]
                 found = detect(rest, ph); private += list(flagged)
             else:
@@ -187,10 +220,26 @@ def run(arm, seed, phases=rc.PHASES, p_slots=None, private_steps=None, changes_o
         fit(private, [T2], private_steps); n_private += len(private)
         if narrow and revision:
             rmask = torch.zeros(SLOTS, dtype=torch.bool)
-            for zz, rr_ in {(int(typ[e]), int(r_)) for e, r_, _ in revision}: rmask |= allowed_slots(zz, rr_)
+            for zz, rr_ in {(int(assign[e]) if arm != "oracle" else int(typ[e]), int(r_)) for e, r_, _ in revision}: rmask |= allowed_slots(zz, rr_)
             fit(revision, [T1], rev_steps, row_mask=rmask)
         else:
             fit(revision, [T1], rev_steps)
+        if codes == "em" and (ph + 1) % every == 0:                      # re-cluster, match labels, re-address; no replay
+            seen = np.arange((ph + 1) * NEW)
+            Xs, Ms = features(truth0, shown, seen)
+            new_assign, em_pi, em_th = em(Xs, Ms, KC)
+            perm_assign = match(assign[seen], new_assign, KC)
+            inv = np.arange(KC)                                          # reorder EM parameters to the matched labels
+            for old_label, new_label in zip(perm_assign, new_assign): inv[old_label] = new_label
+            em_pi, em_th = em_pi[inv], em_th[inv]
+            moved = np.flatnonzero(perm_assign != assign[seen]); assign[seen] = perm_assign
+            address(seen[moved]); pair_of_query[:] = torch.as_tensor(assign).repeat_interleave(R) * R + torch.arange(R).repeat(n)
+            for p, z, r, v in changes:                                   # does EM split a changed type into before / after?
+                if p <= ph:
+                    mem = np.flatnonzero(typ[:(ph + 1) * NEW] == z); before = mem[born[mem] < p]; after = mem[born[mem] >= p]
+                    if len(before) and len(after):
+                        top_b = np.bincount(assign[before], minlength=KC).argmax(); top_a = np.bincount(assign[after], minlength=KC).argmax()
+                        split_log.append({"phase": ph, "change_phase": p, "split": bool(top_b != top_a)})
         nf = np.array(new_facts); log.append({"phase": ph, "acquire_now": float((predict(nf[:, 0], nf[:, 1])[0] == nf[:, 2]).mean())})
 
     last = phases - 1
@@ -221,6 +270,10 @@ def run(arm, seed, phases=rc.PHASES, p_slots=None, private_steps=None, changes_o
     found = {(f["z"], f["r"]) for f in flags if f["true_change"]}
     out.update({"routed_private": n_private, "flags": len(flags), "false_alarms": sum(1 for f in flags if not f["true_change"]),
                 "missed": sum(1 for p, z, r, v in changes if (z, r) not in found)})
+    if codes == "em":
+        out["purity"] = round(float(sum(np.bincount(typ[assign == c]).max() for c in set(assign)) / n), 4)
+        out["clusters_used"] = int(len(set(assign)))
+        out["changed_types_split"] = round(float(np.mean([s_["split"] for s_ in split_log])), 4) if split_log else None
     eg = sorted(set(exc_in_false_group))
     out["exceptions_in_false_groups"] = len(eg)
     out["exceptions_in_false_groups_kept"] = round(acc(np.array([a for a, _ in eg]), np.array([b for _, b in eg])), 4) if eg else None
