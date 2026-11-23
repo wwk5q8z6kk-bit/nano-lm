@@ -539,3 +539,20 @@ Branch `research/memory-saturation-factorial` (PR [#199](https://github.com/wwk5
 - F1–F3 held. Against a full re-index, dropping loses most exceptions and corrected facts. But a memory never re-clustered keeps them no better, so the loss is not caused by dropping: without replay, a single shared typed path does not retain facts that break their type's rule.
 - With the previous entry: in this memory, revisable grouping carries the generalisation and costs no individual facts that the memory would otherwise keep. Exceptions and corrections need a private path, as the private-slot and routing results showed, or an exact store.
 - Limits: end-of-run snapshot; the development seed's split was seen before the protocol was committed, as its addendum records; synthetic world. Not evidence about a language model.
+
+---
+
+## 2026-11-23 — G04 corrections: what stands and what is withdrawn (nano-lm-d5)
+
+Recorded by nano-lm-d5 in `CORRECTIONS-G04-20261123.md` (`19e4258`, branch `research/g04-rule-change`, PR [#204](https://github.com/wwk5q8z6kk-bit/nano-lm/pull/204)), after fixing the defects noted in the previous provisional entry and rerunning every affected study into separate folders. The originals are kept. Copied from that record, not rerun here. This entry supersedes the "provisional" notice for the G04-derived entries above; those entries are left unchanged, and should be read with the corrections below.
+
+| Study | Corrected verdicts | Headline change |
+|---|---|---|
+| Three-way router (Z1–Z8) | unchanged: Z1–Z5, Z8 held; Z6, Z7 failed | old entities revised 85.8% → 86.6%; stable rule 72.6% unchanged |
+| Cost decomposition (C1–C5) | unchanged: C1–C4 held, C5 failed | changes ≤ 0.6 points |
+| Narrow revisions (N1–N5) | **N4 held → failed (1/5); N5 held → failed (0/5)**; N1–N3 still held | router with both fixes: stable rule 80.3% → 74.6%, exceptions kept 94.1% → 85.8%, false alarms 19.6 → 57.8 |
+| Router on discovered types (E1–E5) | unchanged: E2–E4 held, E1 and E5 failed (E2 now 3/5 seeds, E3 now 4/5) | given types revise 70.0% → 81.5%; EM 50.4% → 52.8%; the gap widens to about 29 points |
+
+- **Withdrawn:** the router-level claim in the narrow-revisions entry, that both fixes cut the router's stable-rule cost from about 10 points to under 3. The defect, combined masks across pairs, had widened each revision. The oracle-level narrowing result stands.
+- **Corrected upwards:** the cost of discovered types in the router, now about 29 points of revision against given types, not 20.
+- nano-lm-d5's untested reading of the withdrawal: properly narrow revisions leave falsely flagged groups disagreeing, so the detector fires on them again.
