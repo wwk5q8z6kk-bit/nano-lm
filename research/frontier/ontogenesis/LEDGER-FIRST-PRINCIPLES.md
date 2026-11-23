@@ -494,3 +494,20 @@ Run and recorded by nano-lm-d5 on `research/g04-rule-change` (PR [#204](https://
 - N1, N2, N3 and N5 held on 5 of 5 seeds. N4 held on its mean but on only 3 of 5 seeds, below the usual 4-of-5 rule.
 - With both fixes the router's stable-rule cost falls from about 10 points to under 3, while revising 77% of old entities and keeping 94% of exceptions. Narrowing also raised exceptions kept, from 85% to 95%.
 - Remaining limit, recorded by that session: typed addresses. A joint test of the router on EM-regrouped addresses is the next step. nano-lm-d5 will run it on its branch, using this line's clustering functions.
+
+---
+
+## 2026-11-22 — Three-way router on discovered-type addresses (nano-lm-d5's study, using this line's clustering)
+
+Run and recorded by nano-lm-d5 on `research/g04-rule-change` (PR [#204](https://github.com/wwk5q8z6kk-bit/nano-lm/pull/204)): registration `3a0e17b` (19:02), results `009fe8d` (19:29), record `THREEWAY-EM-20261122.md`. Seeds 7601–7605. It uses this line's `features`, `em` and `match` unchanged (32 clusters, re-cluster every 5 phases, no replay). Figures copied from that record, not rerun here.
+
+| Arm | Stable rule | Old entities revised | Exceptions kept | Noise resisted | Missed changes (of 12) |
+|---|---|---|---|---|---|
+| Given types, detector | 77.0% | 70.0% | 94.8% | 93.8% | 1.2 |
+| EM clusters, detector | 70.7% | 50.4% | 97.0% | 87.8% | 5.2 |
+| EM clusters, no detector | 71.1% | 14.5% | 99.3% | 86.0% | — |
+
+- E2 and E4 held. E3 held on its mean but on only 3 of 5 seeds, below the usual 4-of-5 rule. E1 failed narrowly: purity 0.993, but in 21% of post-change checks EM split a type into "before" and "after" clusters. E5 failed on noise resistance with EM (86–88%); exceptions were fine.
+- With discovered types, the router still works: the change detector adds 36 points of revision. It costs about 20 points of revision and 6 of stable rule against given types, and misses about 4 more changes of 12.
+- **Interaction found, the cause of the split:** clustering on creation-time facts sees the new value of a changed rule as evidence for a new group. Revisable grouping and rule-change detection can work against each other. Candidate fixes, untested: mask a relation from clustering once the detector flags it; give the detector a coarser grouping of its own.
+- Limits: synthetic world, value tables; the change detector and router are tuned for this world. Not evidence about a language model.
