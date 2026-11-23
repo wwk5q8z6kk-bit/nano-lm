@@ -1,0 +1,80 @@
+# Kept checkpoints in gs://nanolm-lab-eu-0478806098 (listed 2026-11-23). Columns: object, bytes, md5 (empty for composite uploads), crc32c, upload time. Hashes are GCS-computed; weights not downloaded.
+runs/kd-v5e/dense-M-lr0.001-s1000-hs.npz	161539408		70AFvQ==	2026-11-22T04:51:45+0000
+runs/kd-v5e/dense-M-lr0.001-s1000-kdLa0.5-hs.npz	161539408		e3oWyw==	2026-11-22T05:25:04+0000
+runs/kd-v5e/dense-S-lr0.001-s1000-hs.npz	57188688	e5jOkq27NWQAtSn6VpbD3Q==	Vpzqiw==	2026-11-22T05:17:24+0000
+runs/kd-v5e/dense-S-lr0.001-s1000-kdLa0-hs.npz	57188688	npViFtFo9/sjqZFl13DhDQ==	cstwjQ==	2026-11-22T04:56:15+0000
+runs/kd-v5e/dense-S-lr0.001-s1000-kdLa0.5-hs.npz	57188688	PbNohZZVMCRE4I+PvxG7vQ==	hjoNUQ==	2026-11-22T04:59:41+0000
+runs/kd-v5e/dense-S-lr0.001-s1001-hs.npz	57188688	4TuGtK5xvv4XGmvFdG2LMw==	mYYpcA==	2026-11-22T05:21:54+0000
+runs/kd-v5e/dense-S-lr0.001-s1002-hs.npz	57188688	3zejo5qINRG/lnqganMh2w==	ci2zUg==	2026-11-22T05:25:24+0000
+runs/ladder-v5e-2/dense-M-lr0.002-s1000.npz	161539408		HSA6/Q==	2026-11-22T03:50:31+0000
+runs/ladder-v5e-2/dense-S-lr0.0005-s1000.npz	57188688	IPG5RKlouzCV4Wlt2/WvqA==	UbYOqQ==	2026-11-22T03:27:03+0000
+runs/ladder-v5e-2/dense-S-lr0.002-s1000.npz	57188688	LSUbpjn9v8DVu+9lIF3WvQ==	joL/ag==	2026-11-22T03:26:59+0000
+runs/ladder-v5e-2/dense-S-lr0.003-s1000.npz	57188688	fCkRDNY9Db8IrPecjoGnNg==	yMA6IQ==	2026-11-22T03:26:49+0000
+runs/ladder-v5e/dense-L-lr0.0005-s1000.npz	402765608		iTjhLQ==	2026-11-22T02:57:12+0000
+runs/ladder-v5e/dense-L-lr0.001-s1000.npz	402765608		/jDISQ==	2026-11-22T02:57:30+0000
+runs/ladder-v5e/dense-M-lr0.0005-s1000.npz	161539408		G7OqEA==	2026-11-22T02:26:24+0000
+runs/ladder-v5e/dense-M-lr0.001-s1000.npz	161539408		oh18Zw==	2026-11-22T01:57:27+0000
+runs/ladder-v5e/dense-S-lr0.001-s1000.npz	57188688	/uI3+Hs335OtM4VUeqxKtw==	SRDGOQ==	2026-11-22T01:35:14+0000
+runs/ladder-v6e/dense-L-lr0.001-s1000-2pass.npz	402765608		58v0wA==	2026-11-22T03:45:08+0000
+runs/ladder-v6e/dense-L-lr0.001-s1001.npz	402765608		LoVm3A==	2026-11-22T02:39:01+0000
+runs/ladder-v6e/dense-M-lr0.001-s1000-2pass.npz	161539408		i9xOSA==	2026-11-22T04:22:30+0000
+runs/ladder-v6e/dense-M-lr0.001-s1001.npz	161539408		D9SOOg==	2026-11-22T03:07:41+0000
+runs/ladder-v6e/dense-S-lr0.001-s1001.npz	57188688	wJD2i2jPNp64DUuH/ZvtXw==	6nsV0w==	2026-11-22T03:27:55+0000
+runs/ladder-v6e/dense-S-lr0.001-s1002.npz	57188688	6hDIYVxosaYekFUP6KpIyw==	V0XbYQ==	2026-11-22T03:44:17+0000
+runs/ladder-v6e/dense-XL-lr0.0005-s1000.npz	843237672		43vtBg==	2026-11-22T03:24:41+0000
+runs/ladder-v6e/dense-XL-lr0.001-s1000.npz	843237672		g2k8Ag==	2026-11-22T03:24:11+0000
+runs/recipe-m-v6e/dense-M-lr0.001-s1000-fl0.01-hs.npz	161539408		Ck1miw==	2026-11-22T05:48:49+0000
+runs/recipe-m-v6e/dense-M-lr0.001-s1000-hs.npz	161539408		t7uHcg==	2026-11-22T04:51:46+0000
+runs/recipe-m-v6e/dense-M-lr0.001-s1000-muon-fl0.01-hs.npz	161539408		MghkWA==	2026-11-22T04:51:52+0000
+runs/recipe-m-v6e/dense-M-lr0.001-s1000-muon-hs.npz	161539408		W4ojpQ==	2026-11-22T05:49:05+0000
+runs/recipe-m-v6e/dense-M-lr0.001-s1000-wd0.5-fl0.01-hs.npz	161539408		Imo5WQ==	2026-11-22T06:17:26+0000
+runs/recipe-m-v6e/dense-M-lr0.001-s1000-wd0.5-hs.npz	161539408		tK+GLw==	2026-11-22T05:49:00+0000
+runs/recipe-m-v6e/dense-M-lr0.001-s1000-wd0.5-muon-fl0.01-hs.npz	161539408		9E8v2w==	2026-11-22T05:20:16+0000
+runs/recipe-m-v6e/dense-M-lr0.001-s1000-wdmat-hs.npz	161539408		n72ICQ==	2026-11-22T07:14:32+0000
+runs/recipe-m-v6e/dense-M-lr0.001-s1001-hs.npz	161539408		mEELGA==	2026-11-22T04:51:39+0000
+runs/recipe-m-v6e/dense-M-lr0.001-s1002-hs.npz	161539408		L1hQ0Q==	2026-11-22T04:51:51+0000
+runs/recipe-m-v6e/dense-M-lr0.002-s1000-fl0.01-hs.npz	161539408		LjtUXQ==	2026-11-22T06:17:36+0000
+runs/recipe-m-v6e/dense-M-lr0.002-s1000-hs.npz	161539408		vg9G2w==	2026-11-22T06:17:26+0000
+runs/recipe-m-v6e/dense-M-lr0.002-s1000-muon-fl0.01-hs.npz	161539408		QdefVQ==	2026-11-22T05:20:16+0000
+runs/recipe-m-v6e/dense-M-lr0.002-s1000-wd0.5-fl0.01-hs.npz	161539408		Ao8bDw==	2026-11-22T06:46:02+0000
+runs/recipe-m-v6e/dense-M-lr0.002-s1000-wd0.5-hs.npz	161539408		XKGioA==	2026-11-22T06:17:28+0000
+runs/recipe-m-v6e/dense-M-lr0.002-s1000-wd0.5-muon-fl0.01-hs.npz	161539408		sCLVFg==	2026-11-22T05:20:32+0000
+runs/recipe-m-v6e/dense-M-lr0.004-s1000-fl0.01-hs.npz	161539408		nH+DQQ==	2026-11-22T06:45:54+0000
+runs/recipe-m-v6e/dense-M-lr0.004-s1000-hs.npz	161539408		i3ftCw==	2026-11-22T06:46:09+0000
+runs/recipe-m-v6e/dense-M-lr0.004-s1000-muon-fl0.01-hs.npz	161539408		4ssoBQ==	2026-11-22T05:20:24+0000
+runs/recipe-m-v6e/dense-M-lr0.004-s1000-wd0.5-fl0.01-hs.npz	161539408		2Xu2AA==	2026-11-22T07:14:20+0000
+runs/recipe-m-v6e/dense-M-lr0.004-s1000-wd0.5-hs.npz	161539408		s/uEYQ==	2026-11-22T06:46:11+0000
+runs/recipe-m-v6e/dense-M-lr0.004-s1000-wd0.5-muon-fl0.01-hs.npz	161539408		leiUUQ==	2026-11-22T05:48:58+0000
+runs/recipe-v5e/dense-M-lr0.001-s1000-fl0.01-hs.npz	161539408		Przcaw==	2026-11-22T08:52:54+0000
+runs/recipe-v5e/dense-M-lr0.001-s1000-muon-fl0.01-hs.npz	161539408		w4/Qgg==	2026-11-22T08:27:31+0000
+runs/recipe-v5e/dense-S-lr0.001-s1000-fl0.01-hs.npz	57188688	xoixLKp3T5AmRa0Xx6f0Yg==	09Rwuw==	2026-11-22T06:17:26+0000
+runs/recipe-v5e/dense-S-lr0.001-s1000-hs-m2.npz	57188688	F5EBVRpE7E4QyF+8nQEZQg==	nbVMFA==	2026-11-22T07:36:04+0000
+runs/recipe-v5e/dense-S-lr0.001-s1000-muon-fl0.01-hs.npz	57188688	a6S7P2RXxnv2UiVEvfly6w==	mjqBXQ==	2026-11-22T05:52:16+0000
+runs/recipe-v5e/dense-S-lr0.001-s1000-muon-hs.npz	57188688	QBP00h86kGchrirNy2DAaA==	DMGVwg==	2026-11-22T06:18:12+0000
+runs/recipe-v5e/dense-S-lr0.001-s1000-wd0.5-fl0.01-hs.npz	57188688	U72Auh3cswsPzKgICn7rmA==	qL9TPA==	2026-11-22T06:42:59+0000
+runs/recipe-v5e/dense-S-lr0.001-s1000-wd0.5-hs.npz	57188688	Iyop6dA7qP4/atxmnBllqw==	cWSBrQ==	2026-11-22T06:42:26+0000
+runs/recipe-v5e/dense-S-lr0.001-s1000-wd0.5-muon-fl0.01-hs.npz	57188688	Op7EHu3ZjC8SP/v+IPUgYQ==	/QXf9w==	2026-11-22T05:52:15+0000
+runs/recipe-v5e/dense-S-lr0.001-s1000-wdmat-hs.npz	57188688	5Ep68ovhoEVkNQwXHKSRvg==	I6AV5A==	2026-11-22T07:32:58+0000
+runs/recipe-v5e/dense-S-lr0.002-s1000-fl0.01-hs.npz	57188688	04kVWu/R2l4FjR8n3YKNfQ==	6krUcg==	2026-11-22T06:43:13+0000
+runs/recipe-v5e/dense-S-lr0.002-s1000-hs.npz	57188688	arlsB1KBUv2AhF/mCLBiXw==	OuuIAQ==	2026-11-22T06:43:06+0000
+runs/recipe-v5e/dense-S-lr0.002-s1000-muon-fl0.01-hs.npz	57188688	PMCX2Q5/w/2d5NbaJguWdA==	cGEq4A==	2026-11-22T05:52:11+0000
+runs/recipe-v5e/dense-S-lr0.002-s1000-wd0.5-fl0.01-hs.npz	57188688	HnNcjPFnxN9/doofXgthUg==	XB3b9Q==	2026-11-22T07:07:54+0000
+runs/recipe-v5e/dense-S-lr0.002-s1000-wd0.5-hs.npz	57188688	9xb0ZWXIpQPL3OSC/CJRdA==	gVE1dA==	2026-11-22T07:07:25+0000
+runs/recipe-v5e/dense-S-lr0.002-s1000-wd0.5-muon-fl0.01-hs.npz	57188688	IOEfG/QCmexiHrjxphzuhg==	pWHuhg==	2026-11-22T05:52:08+0000
+runs/recipe-v5e/dense-S-lr0.004-s1000-fl0.01-hs.npz	57188688	0/CMd8p9+le0gqhWwUwtHQ==	K3zQyQ==	2026-11-22T07:08:10+0000
+runs/recipe-v5e/dense-S-lr0.004-s1000-hs.npz	57188688	gr33W6DATiEjtk3+w1vNRQ==	8rSd3w==	2026-11-22T07:08:01+0000
+runs/recipe-v5e/dense-S-lr0.004-s1000-muon-fl0.01-hs.npz	57188688	Ld7ynkusdPfo6zDdRMVXDQ==	lC/ZZA==	2026-11-22T06:17:56+0000
+runs/recipe-v5e/dense-S-lr0.004-s1000-wd0.5-fl0.01-hs.npz	57188688	+EHHC/EcI3Q6gQtPLlqtkw==	mi9k8Q==	2026-11-22T07:32:50+0000
+runs/recipe-v5e/dense-S-lr0.004-s1000-wd0.5-hs.npz	57188688	ifieqo8hmxskFsvCKRSRaw==	1PNmNA==	2026-11-22T07:32:21+0000
+runs/recipe-v5e/dense-S-lr0.004-s1000-wd0.5-muon-fl0.01-hs.npz	57188688	cMLEn8vOOy3/w9M5tb1IpA==	J/gOfg==	2026-11-22T06:18:07+0000
+runs/recipe-v5e/dense-S-lr0.004-s1001-fl0.01-hs.npz	57188688	91yD8TOdzjafHlE6FuDBZQ==	6PYE4g==	2026-11-22T08:01:35+0000
+runs/recipe-v5e/dense-S-lr0.004-s1001-muon-fl0.01-hs.npz	57188688	rfu0E7bQSg19uZmKtlyVpw==	DES3mQ==	2026-11-22T08:02:24+0000
+runs/recipe-v5e/dense-S-lr0.004-s1002-fl0.01-hs.npz	57188688	NP7Z8SpSLhYlToxTMgECSg==	IFh++Q==	2026-11-22T08:26:38+0000
+runs/recipe-v5e/dense-S-lr0.004-s1002-muon-fl0.01-hs.npz	57188688	nOfoAaa8ZKHOcgq1pTAm3A==	1m09Cw==	2026-11-22T08:02:23+0000
+runs/scale1-v6e/dense-L-lr0.001-s1000-tok2e+09-dp4-hs-v2.npz	402765608		04pshQ==	2026-11-22T10:45:20+0000
+runs/scale1-v6e/dense-L-lr0.001-s1000-tok8e+08-dp4-hs-v2.npz	402765608		/AM/dg==	2026-11-22T11:09:24+0000
+runs/scale1-v6e/dense-XL-lr0.001-s1000-tok4.2e+09-dp4-hs-v2.npz	843237672		PYlKRA==	2026-11-22T10:01:32+0000
+runs/scale2-v5e/dense-L-lr0.002-s1000-tok8e+08-muon-dp4-fl0.01-hs-v2.npz	402765608		I+1pGQ==	2026-11-22T15:45:45+0000
+runs/scale2-v5e/dense-L-lr0.004-s1000-tok8e+08-muon-dp4-fl0.01-hs-v2.npz	402765608		cctpNw==	2026-11-22T16:22:41+0000
+runs/scale2-v5e/dense-L-lr0.008-s1000-tok8e+08-muon-dp4-fl0.01-hs-v2.npz	402765608		hD4COw==	2026-11-22T16:59:34+0000
+runs/scale2-v5e/dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2.npz	1544297256		rPsGcg==	2026-11-23T14:16:27+0000
