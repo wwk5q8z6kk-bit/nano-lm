@@ -20,6 +20,9 @@ STUDIES = {
             "oracle_s02": ("threeway", "oracle", {"narrow": True, "share": 0.2}), "oracle_s035": ("threeway", "oracle", {"narrow": True, "share": 0.35}),
             "threeway": ("threeway", "threeway", {}), "threeway_s02": ("threeway", "threeway", {"narrow": True, "share": 0.2}),
             "threeway_fixed": ("threeway", "threeway", {"narrow": True, "share": 0.2, "p_slots": 262144})}),
+ "em_cooldown": ([7801, 7802, 7803, 7804, 7805], {"em_nodet": ("threeway", "threeway", {"codes": "em", "detector": False, "narrow": True, "share": 0.2}),
+                 "em_narrow": ("threeway", "threeway", {"codes": "em", "narrow": True, "share": 0.2}),
+                 "em_narrow_cd": ("threeway", "threeway", {"codes": "em", "narrow": True, "share": 0.2, "cooldown": True})}),
  "cooldown": ([7701, 7702, 7703, 7704, 7705], {"none": ("threeway", "none", {}), "threeway": ("threeway", "threeway", {}),
               "threeway_cd": ("threeway", "threeway", {"cooldown": True}), "threeway_s02": ("threeway", "threeway", {"narrow": True, "share": 0.2}),
               "threeway_s02_cd": ("threeway", "threeway", {"narrow": True, "share": 0.2, "cooldown": True})}),
@@ -28,7 +31,7 @@ STUDIES = {
         "em_det": ("threeway", "threeway", {"codes": "em", "detector": True, "narrow": True, "share": 0.2}),
         "em_nodet": ("threeway", "threeway", {"codes": "em", "detector": False, "narrow": True, "share": 0.2})}),
 }
-FOLDER = {"cooldown": "threeway_cooldown", "detect": "rule_change_detect", "threeway": "threeway", "cost": "threeway_cost", "narrow": "threeway_narrow", "em": "threeway_em"}
+FOLDER = {"em_cooldown": "threeway_em_cooldown", "cooldown": "threeway_cooldown", "detect": "rule_change_detect", "threeway": "threeway", "cost": "threeway_cost", "narrow": "threeway_narrow", "em": "threeway_em"}
 
 if __name__ == "__main__":
     study = sys.argv[1]; seeds, arms = STUDIES[study]
