@@ -636,6 +636,6 @@ That turns the teacher from a per-experiment cost into a one-time cost.
   - T4s have no bf16, so training needs fp16 with loss scaling.
   - Support for the fla recurrent kernels on Turing is unverified.
   - E1 therefore realistically needs a small paid budget or TRC.
-- **Stage 2, at 1.5B, likely needs about $600–1,000 of rented compute, or credit. The flagship needs TRC or other funding.
+- **Stage 2:** at 1.5B, likely needs about $600–1,000 of rented compute, or credit. The flagship needs TRC or other funding.
 - **What justifies asking for more.** A demonstrated result at 0.5B: (a) a converted student meeting T0 at a measured token cost, and (b) at least one of the memory or depth mechanisms showing a registered gain.
 - **TRC terms (programme pages; GitHub repository archived April 2026, live status to confirm).** TPUs are free. Other Google Cloud services are charged. Participants share feedback with Google and follow the Google AI Principles. TRC quota does not work with Vertex workflows; use Compute Engine. An application draft will be prepared from the results.
