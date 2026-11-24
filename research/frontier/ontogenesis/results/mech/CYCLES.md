@@ -146,3 +146,13 @@ Training hop range was 1–4, so hops 2–4 were *in distribution* and still at 
 3. success defined in advance as accuracy ≥ 0.9 at k = 2, 3 and 4.
 
 If the baseline cannot learn k = 2 within 20,000 steps with the curriculum, the task is replaced (not tuned further) by the registered BINDINGS task from the earlier nested experiment, where delayed learning is already characterised and 26,000-step budgets learned in 14 of 20 reuse runs.
+
+## Stage A, conversion of SmolLM2-135M attention to Gated DeltaNet: registered, not yet run (2026-11-24)
+
+`tpu/convert_stage_a.py` carries the registered criteria in its docstring; they are not to be changed after seeing results.
+- **C1:** at least 90% of layers (27 of 30) reach trained-inherit error ≤ 0.1 × the untrained random-initialisation error. Error is ||y − t||² / ||t||² on 16 held-out sequences of 1,024 tokens, per layer, after 300 steps.
+- **C2:** no non-finite loss in any training run.
+- **C3:** conversion-training throughput and peak memory reported.
+- **Descriptive only:** language-model loss of six models (teacher; all layers converted; 22 converted with the highest-error 8 layers kept as attention; random 22/8 split; all converted from random initialisation; all converted but untrained).
+- **Expectation, written before the run:** C1 is a strict bar and may fail, because the converted layer has no rotary positions and is trained on 65k tokens for 300 steps. A fail would say the strict bar is too high for this budget; it would not show the pipeline is broken. The inherit-versus-random comparison and the language-model losses carry the information.
+- **Local debug run (not a result):** 3 steps on CPU with a naive recurrence, three-step errors near 1; this checked only that the hooks, the grouped-query weight mapping (verified exact against the teacher's projections), training loop and hybrid assembly run.
