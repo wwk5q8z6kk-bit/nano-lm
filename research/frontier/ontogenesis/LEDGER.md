@@ -271,3 +271,9 @@ Full write-ups with registered predictions are in `INVESTIGATION.md`.
 | SmolLM2 scoring: laptop | none |
 
 All machines and Cloud Scheduler jobs are deleted (checked 2026-11-23, 14:25 UTC).
+
+## Source-pinned review, 2026-11-23 (proposed, not an experimental result)
+
+The separate [2026-11-23 evidence and decision review](reviews/2026-11-23-evidence-and-decisions.md) reconciles Q13's one-seed 386M/7.7B-token result, the registered **mixed** nested learning-rate decision, Q14's failed fused-attention speed gate with unmeasured quality arms, the G04 **withdrawn** narrow-router interpretation after correction, and G06's scoped bilinear local-protection result. It also records modern-model comparator limitations, alternative explanations, source paths, directly relevant primary research and the next lowest-cost tests. This is an additive source audit **not** a new independent training rerun, formal approval of the architecture, or permission to merge draft research PRs.
+
+**Decision posture:** strengthen the tuned dense baseline; retain every positive, negative, partial, withdrawn and superseded result in its original context. No raw protocol/result changes, no architecture promotion and no paid compute were made by this review. For current experiment facts, consult the original records above and the linked exact files rather than treating this summary as an additional replication.
