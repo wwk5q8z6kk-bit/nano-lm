@@ -136,13 +136,18 @@ def forward(params, tok, cfg, policy=None, M=None, oracle=None):
                 score = jnp.broadcast_to(jnp.arange(T, dtype=jnp.float32), tok.shape)
             elif policy == "oracle":
                 score = oracle.astype(jnp.float32) + 1e-3 * jnp.arange(T)  # oracle tokens first, then the most recent
+            elif policy == "given":                                       # caller supplies the write scores (float)
+                score = oracle.astype(jnp.float32)
+            elif policy == "given-only":                                  # only positions with score > 0.5, no filler
+                allow = jnp.tril(jnp.ones((T, T), bool), -1)[None] & (oracle > 0.5)[:, None, :]
+                score = None
             elif policy == "learned":
                 raw = (rms(x, p["n1"]) @ p["w"])[..., 0]
                 aux["write"] = raw
                 score = jax.lax.stop_gradient(raw)
             else:
                 raise ValueError(policy)
-            allow = topm_allow(score, M)
+            if allow is None: allow = topm_allow(score, M)
         x, a = block(p, x, kind, cfg["H"], allow)
         if "attn" in a: aux["attn"].append(a["attn"])
     return rms(x, params["nf"]) @ params["emb"].T, aux
