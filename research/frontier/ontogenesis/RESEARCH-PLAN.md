@@ -708,8 +708,33 @@ Raw results: `results/compat-t4/compat.json`; script `tpu/compat_t4.py` (commit 
 | Stage | Question | Smallest experiment that can answer it | Success criterion (registered before running) | Cost | Limits stated in advance |
 |---|---|---|---|---|---|
 | **A. Execution and correctness** | Does the conversion pipeline run and train stably? | Convert layer 0, then all 30 layers of SmolLM2-135M (Apache 2.0, already on disk) into Gated DeltaNet layers (inherited projections), align hidden states per layer on 20M tokens, then run a short end-to-end pass. Reuse today's kernel check | Per-layer output error falls below the error of an untrained layer by ≥ 10×; no non-finite loss; measured tokens/s and memory at the 135M size | Free (T4); about 2 hours | Does not show capability. A 20M-token alignment only shows that the pipeline functions |
-| **B. Learning mechanism** | Does inherited initialisation plus staged alignment recover capability faster per token than random initialisation, at equal student tokens? | SmolLM2-135M → hybrid (about 75% of attention layers converted; the rest kept), 250M student tokens, same-model teacher; controls: (1) the same hybrid from random initialisation, same tokens; (2) the unconverted parent. 3 seeds for converted and for control | Converted reaches ≥ 90% of the parent's average over the 7-task suite *and* beats the random-initialised control by ≥ 10 points on the average. Reliability reported as in cycle 1b: every seed, success rate, conditional accuracy | Free (T4); each run about 5–7 hours (estimate), 6 runs total | Learning can be delayed (cycles 1 and 2): if neither arm resolves by 250M tokens, extend once to 500M; if still unresolved, record inconclusive. Same-size teacher is the Llamba setting: it cannot show *beating* a larger teacher |
+| **B. Learning mechanism** | Does inherited initialisation plus staged alignment recover capability faster per token than random initialisation, at equal student tokens? | SmolLM2-135M → hybrid (about 75% of attention layers converted; the rest kept), 250M student tokens, same-model teacher; controls and criterion: **amended before any stage-B run, see 20.5a** | **see 20.5a** (the first version of this criterion was too easy and is withdrawn) Reliability reported as in cycle 1b: every seed, success rate, conditional accuracy | Free (T4); each run about 5–7 hours (estimate), 6 runs total | Learning can be delayed (cycles 1 and 2): if neither arm resolves by 250M tokens, extend once to 500M; if still unresolved, record inconclusive. Same-size teacher is the Llamba setting: it cannot show *beating* a larger teacher |
 | **C. Capability and scaling** | Does the advantage persist at a larger size, with a larger teacher, and on broader tasks? | Qwen2.5-0.5B-shaped student from a Qwen2.5-1.5B teacher, 1B tokens, full suite plus generative reasoning, second scale (1.5B from 7B) later | Registered after B. At least the stage-B criterion at 0.5B | $15–70 on a rented H100 *if* throughput is 15–35% (projection); more otherwise | Needs the throughput measurement in §20.6 first |
+
+### 20.5a Stage B amendment, made before any stage-B run (2026-11-24), after a reviewer's note
+
+**What was wrong.** The first stage-B design compared the converted model with "the same hybrid from random initialisation". Read literally, that control restarts every weight, including the embeddings and feed-forward layers that hold what the teacher learned from about 2T tokens. It would lose by a wide margin even if the inherited starting weights of the *new* layers gave no benefit, so passing it would not support the claim it was meant to test. The criterion "≥ 90% of the parent's average accuracy" also has a floor problem: accuracy on small-model benchmarks sits near chance, so a model that has learned almost nothing can still retain most of the parent's raw average. Both are withdrawn.
+
+**Fair arms (every arm keeps the teacher's embeddings, feed-forward layers and norms; only the 22 converted mixers differ):**
+
+| Arm | What differs | Role |
+|---|---|---|
+| T (treatment) | mixers initialised from the teacher's projections, layer-wise alignment, then end-to-end distillation | the claim under test |
+| C1 (fair control) | mixers at random initialisation, the same layer-wise alignment and the same end-to-end distillation, same tokens | isolates the effect of inherited starting weights, as stage A did |
+| C2 (ablation) | mixers at random initialisation, no layer-wise alignment, same end-to-end distillation | shows whether the alignment stage matters |
+| R (labelled reference only) | *all* weights random, same tokens | shows how much the teacher's other layers contribute; not part of any criterion |
+| P (reference) | the unconverted parent | ceiling |
+
+Seeds: 3 for T and C1 (mixer initialisation and data order), 1 for C2 and R. Equal student tokens for all trained arms: 250M, one extension to 500M allowed if neither T nor C1 has resolved.
+
+**Registered criteria** (paired by seed, held-out language-model loss in nats per token on text not used for training or for choosing which layers to keep):
+- **B1:** T has lower loss than C1 in all 3 seeds and the mean difference is at least 0.10 nats (about 10% lower perplexity).
+- **B2:** T closes at least 50% of the gap between the layer-aligned all-converted model (4.03 nats in stage A) and the parent (2.91 nats).
+- **B3 (secondary, reported either way):** the seven benchmark accuracies of T, C1 and P rescaled as (accuracy − chance) ÷ (parent − chance), so chance counts as zero. Benchmark standard errors and paired bootstrap intervals are reported; no pass/fail.
+- If T and C1 are both unresolved at 500M tokens, the outcome is "inconclusive", not a failure of inheritance.
+- **Funding link:** the F2 gate in 20.6 depends on B1 and B2 only. R is never used for any gate.
+
+**Why this still has a limit.** The parent is the teacher (same size). This is the Llamba-style setting and cannot show a student *beating* a larger teacher.
 
 ### 20.6 Funding without the circular dependency
 

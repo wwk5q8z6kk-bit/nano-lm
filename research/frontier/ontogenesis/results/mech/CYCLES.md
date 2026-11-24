@@ -220,3 +220,7 @@ Kaggle T4, `convert_stage_a2.py` (commit 02c01cc). It reruns the registered pipe
 - Keeping the layers whose *conversion alone hurts most* as attention gave the lowest loss, 0.25 nats below the random mean (about 2.5 random-draw standard deviations, but that spread comes from five draws) and 0.52 nats above the teacher against 0.77 for a random placement.
 - **This is exploratory and optimistic.** The importance ranking and the comparison use the same 16 held-out sequences, so selection on the evaluation tokens inflates the gap. The next step is a confirmatory test on fresh text with pre-registered criteria.
 - The kept layers cluster at the start (1–4) and end (21–24), the same stretches where a layer's replacement mattered most.
+
+## Stage B registration amended before any run (2026-11-24)
+
+A reviewer's note pointed out that the planned control (the whole hybrid from random weights) would lose trivially and that the "≥ 90% of the parent's average accuracy" criterion has a chance-level floor. Both were wrong designs and are replaced in `RESEARCH-PLAN.md` section 20.5a: the fair control keeps the teacher's embeddings and feed-forward layers and varies only the new mixers' starting weights (the stage-A design); the fully random hybrid is a labelled reference only; the primary criteria are paired held-out loss differences (≥ 0.10 nats in all 3 seeds, and ≥ 50% of the stage-A gap closed). No stage-B code or run existed when this was changed.
