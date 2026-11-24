@@ -2,7 +2,8 @@
 iterations at test time solve more steps than were trained? (Candidate 3, RESEARCH-PLAN.md section 8.)
 
 Task: pointer chasing. A sequence lists the C links of a random chain over C+1 distinct symbols (a->b as two tokens
-"a b"), in shuffled order, then a query "S x k": start at x and follow k links; the answer is the symbol reached.
+"a b"), in shuffled order, then QN queries "S x k a": start at x and follow k links; a is the symbol reached. Every
+answer position is supervised (version 2; version 1 supervised one answer per sequence and nothing learned).
 Each hop needs one sequential lookup, so a fixed-depth model should fail once k exceeds what its depth can chain.
 Train on k in 1..4; evaluate k in 1..8.
 
@@ -24,7 +25,11 @@ import nano_core as nc
 SYM, C = 40, 12                       # symbols, links per chain
 S_TOK, K0 = SYM, SYM + 1              # query marker; hop-count tokens K0..K0+8
 VOCAB = SYM + 1 + 9
-T = 2 * C + 4                         # links, then "S x k ans"
+QN = 6                                # queries per sequence (version 2)
+T = 2 * C + 4 * QN                    # links, then QN x "S x k ans"
+
+
+ANS = jnp.asarray([2 * C + 4 * q + 3 for q in range(QN)])   # answer positions
 
 
 def batch(rng, B, kmin, kmax):
@@ -32,9 +37,10 @@ def batch(rng, B, kmin, kmax):
     for b in range(B):
         nodes = rng.choice(SYM, C + 1, replace=False)
         links = np.stack([nodes[:-1], nodes[1:]], 1)[rng.permutation(C)]
-        k = rng.integers(kmin, kmax + 1); start = rng.integers(0, C + 1 - k)
         tok[b, :2 * C] = links.reshape(-1)
-        tok[b, 2 * C:] = [S_TOK, nodes[start], K0 + k, nodes[start + k]]
+        for q in range(QN):
+            k = rng.integers(kmin, kmax + 1); start = rng.integers(0, C + 1 - k)
+            tok[b, 2 * C + 4 * q: 2 * C + 4 * q + 4] = [S_TOK, nodes[start], K0 + k, nodes[start + k]]
         ks[b] = k
     return jnp.asarray(tok), ks
 
@@ -62,7 +68,8 @@ def run(arm, seed, steps):
         if R not in steps_fn:
             def loss_fn(p, tok):
                 lg, _ = logits_of(arm, p, tok[:, :-1], cfg, R)
-                return optax.softmax_cross_entropy_with_integer_labels(lg[:, -1], tok[:, -1]).mean()
+                ce = optax.softmax_cross_entropy_with_integer_labels(lg[:, ANS - 1], tok[:, ANS])
+                return ce.mean()
             @jax.jit
             def step(p, st, tok):
                 l, g = jax.value_and_grad(loss_fn)(p, tok); u, st = opt.update(g, st, p)
@@ -83,7 +90,7 @@ def run(arm, seed, steps):
         f = jax.jit(lambda p, tok, R=R, eps=eps: logits_of(arm, p, tok[:, :-1], cfg, R, eps))
         accs, its = [], []
         for tok in toks:
-            lg, it = f(p, tok); accs.append(float((lg[:, -1].argmax(-1) == tok[:, -1]).mean())); its.append(float(it))
+            lg, it = f(p, tok); accs.append(float((lg[:, ANS - 1].argmax(-1) == tok[:, ANS]).mean())); its.append(float(it))
         evals[name] = {"acc_by_k": [round(a, 4) for a in accs], "mean_iters_by_k": [round(i, 2) for i in its]}
     return {"arm": arm, "seed": seed, "steps": steps, "evals": evals, "curve": curve, "seconds": round(time.time() - t0),
             "params": int(sum(x.size for x in jax.tree_util.tree_leaves(p)))}
