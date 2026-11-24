@@ -1,0 +1,12 @@
+#!/bin/zsh
+cd /Volumes/Express1M2/Scratch/builds/memsat-factorial/src/research/frontier/ontogenesis
+for s in 4101 4102 4103 4104 4105; do
+  for spec in "16 em" "32 em" "16 typed"; do
+    set -- ${=spec}
+    out="results/memory_rule_recluster/k$1-$2-s$s.json"
+    [[ -s $out ]] && continue
+    [[ -e $out ]] && rm -f -- "$out"
+    nice -n 10 /Users/mac/Projects/nano-lm/.venv/bin/python memory_rule_recluster.py $s $out $1 5 1000 $2 || echo "FAIL $1 $2 $s"
+  done
+done
+echo DONE

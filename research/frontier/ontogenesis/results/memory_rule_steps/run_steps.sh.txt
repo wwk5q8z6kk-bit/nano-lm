@@ -1,0 +1,9 @@
+#!/bin/zsh
+cd /Volumes/Express1M2/Scratch/builds/memsat-factorial/src/research/frontier/ontogenesis
+for s in 4101 4102 4103 4104 4105; do
+  out="results/memory_rule_steps/shared_only-lr1e-3-steps1000-s$s.json"
+  [[ -s $out ]] && continue
+  [[ -e $out ]] && rm -f -- "$out"
+  nice -n 10 /Users/mac/Projects/nano-lm/.venv/bin/python memory_rule_dual.py shared_only $s $out 1e-3 1000 || echo "FAIL $s"
+done
+echo DONE

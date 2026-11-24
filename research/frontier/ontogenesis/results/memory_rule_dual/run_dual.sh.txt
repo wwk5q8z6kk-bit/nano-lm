@@ -1,0 +1,12 @@
+#!/bin/zsh
+cd /Volumes/Express1M2/Scratch/builds/memsat-factorial/src/research/frontier/ontogenesis
+for s in 4101 4102 4103 4104 4105; do
+  for spec in "dual_pool 1e-3" "dual_pool 1e-2" "shared_only 1e-2"; do
+    set -- ${=spec}
+    out="results/memory_rule_dual/$1-lr$2-s$s.json"
+    [[ -s $out ]] && continue
+    [[ -e $out ]] && rm -f -- "$out"
+    nice -n 10 /Users/mac/Projects/nano-lm/.venv/bin/python memory_rule_dual.py $1 $s $out $2 || echo "FAIL $1 $2 $s"
+  done
+done
+echo DONE

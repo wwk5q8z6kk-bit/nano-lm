@@ -1,0 +1,11 @@
+#!/bin/zsh
+cd /Volumes/Express1M2/Scratch/builds/memsat-factorial/src/research/frontier/ontogenesis
+for s in 4101 4102 4103 4104 4105; do
+  for m in drop transport; do
+    out="results/memory_rule_transport/$m-s$s.json"
+    [[ -s $out ]] && continue
+    [[ -e $out ]] && rm -f -- "$out"
+    nice -n 10 /Users/mac/Projects/nano-lm/.venv/bin/python memory_rule_transport.py $m $s $out || echo "FAIL $m $s"
+  done
+done
+echo DONE

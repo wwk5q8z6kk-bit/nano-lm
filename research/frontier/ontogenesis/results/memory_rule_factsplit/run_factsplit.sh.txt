@@ -1,0 +1,11 @@
+#!/bin/zsh
+cd /Volumes/Express1M2/Scratch/builds/memsat-factorial/src/research/frontier/ontogenesis
+PY=/Users/mac/Projects/nano-lm/.venv/bin/python
+for s in 4101 4102 4103 4104 4105; do
+  for m in drop transport; do
+    out="results/memory_rule_factsplit/$m-s$s.json"; [[ -s $out ]] || { rm -f -- "$out"; nice -n 10 $PY memory_rule_transport.py $m $s $out || echo "FAIL $m $s"; }
+  done
+  out="results/memory_rule_factsplit/full-k32-s$s.json"; [[ -s $out ]] || { rm -f -- "$out"; nice -n 10 $PY memory_rule_recluster.py $s $out 32 5 1000 em || echo "FAIL full $s"; }
+  out="results/memory_rule_factsplit/typed-noreindex-s$s.json"; [[ -s $out ]] || { rm -f -- "$out"; nice -n 10 $PY memory_rule_recluster.py $s $out 16 1000000 1000 typed || echo "FAIL typed $s"; }
+done
+echo DONE

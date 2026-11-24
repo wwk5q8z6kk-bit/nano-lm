@@ -1,0 +1,24 @@
+"""Driver for PROTOCOL-MEMSAT-SHARING.md. Three runs at a time; never overwrites a result."""
+import pathlib, subprocess
+from concurrent.futures import ThreadPoolExecutor
+
+PY = "/Users/mac/Projects/nano-lm/.venv/bin/python"
+SRC = pathlib.Path("/Volumes/Express1M2/Scratch/builds/memsat-factorial/src/research/frontier/ontogenesis")
+OUT = SRC / "results" / "memory_saturation_sharing"
+OUT.mkdir(parents=True, exist_ok=True)
+
+
+def job(m, seed):
+    out = OUT / f"m{m}-adam_reset-s{seed}.json"
+    if out.exists() and out.stat().st_size > 0:
+        return
+    if out.exists():
+        out.unlink()  # empty file left by a killed run: no result was ever written
+    p = subprocess.run([PY, "memory_saturation_sharing.py", "train", str(m), str(seed), str(out)], cwd=SRC, capture_output=True, text=True)
+    print(out.stem, p.returncode, p.stdout.strip()[:230], p.stderr.strip()[-300:], flush=True)
+
+
+jobs = [(m, s) for m in (8, 2, 4, 6) for s in (3101, 3102, 3103, 3104, 3105)]
+with ThreadPoolExecutor(3) as ex:
+    list(ex.map(lambda a: job(*a), jobs))
+print("DONE", flush=True)
