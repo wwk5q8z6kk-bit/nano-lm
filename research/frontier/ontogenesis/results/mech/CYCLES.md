@@ -52,3 +52,34 @@ Checkpoint `scale1-v6e/dense-L-lr0.001-s1000-tok8e+08-dp4-hs-v2.npz` (sha256 874
 - Score reference comparisons in float32.
 - Score our models both with and without the prefix when comparing with public models.
 - Report acc_norm with the lm-eval length rule.
+
+## E0a, combined condition (no end-of-text prefix + float32 + lm-eval lengths)
+
+Compared with the default, every task moves by at most 0.010, except LAMBADA: accuracy −0.010 and perplexity +10.7, which comes almost entirely from the prefix. This is the configuration that matches how the public models were scored, and it is the one to use for comparisons with them.
+
+## Cycle 1c: oracle-memory diagnostic (exploratory), 2026-11-23
+
+Kaggle T4, JAX 0.11.1, optax 0.2.8. 8 seeds (0–7), 4,000 steps; task and model as cycle 1. "Learned" means evaluation accuracy > 0.9; intervals are Wilson 95% over seeds. Raw files: `kaggle-cycle1c/mqar-diag.json`.
+
+| Arm | Learned | Mean, all seeds | Mean, learned seeds only | First step with batch accuracy > 0.9 |
+|---|---|---|---|---|
+| oracle-only (8 readable tokens) | 7/8 (0.53–0.98) | 0.917 | 1.000 | 268–1,407; one never |
+| oracle-recency-8 | 7/8 (0.53–0.98) | 0.917 | 1.000 | 265–1,407; one never (same seed) |
+| oracle-recency-16 | 7/8 (0.53–0.98) | 0.894 | 0.987 | 928–3,288; one never |
+| oracle-recency-32 | 3/8 (0.14–0.69) | 0.607 | 0.972 | 2,022–3,504; five never |
+| oracle-random-32 | 3/8 (0.14–0.69) | 0.631 | 0.954 | 2,538–3,083; five never |
+
+Per-seed accuracies are in the raw file.
+
+- **The distraction hypothesis is rejected.** Random filler fails as often as recent filler.
+- **The slot-count hypothesis is supported but not settled.** Success falls 7/8 → 3/8 from 8 to 32 readable slots, and time to learn rises. On 8 seeds, 7/8 vs 3/8 is about p ≈ 0.1, so "luck" is not excluded.
+- **Implementation check passed.** oracle-only and oracle-recency-8 select identical tokens and gave identical outcomes, seed for seed.
+- **Design consequence (hypothesis to test):** read layers over many slots learn slowly and unreliably. Next test: a curriculum on the memory budget (start M small, grow it), or a sharper read (top-k sparse read), against fixed M = 32.
+
+## Cycle 2: looped reasoning (pointer chasing), first attempt: no arm learned (task failure, not a result)
+
+Kaggle T4, 3 seeds, 4,000 steps. Every arm, including the untied baseline, stayed at chance (accuracy about 0.08 for every hop count, k = 1 included). Loss settled near 2.67 ≈ ln 13, so the models learned only "the answer is one of the 13 chain nodes", not the lookup.
+
+Cause: one supervised answer per sequence (64 per step) is too sparse a signal for this task in this budget. **No conclusion about looping can be drawn.**
+
+Fix: six supervised queries per sequence, with the same 1–4 hop training range. Re-run after a pilot shows the untied baseline learns k = 1.
