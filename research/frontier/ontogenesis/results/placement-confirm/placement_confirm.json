@@ -1,0 +1,365 @@
+{
+ "config": {
+  "T": 1024,
+  "n_fresh": 32,
+  "n_selection": 16,
+  "local": false
+ },
+ "weights_loaded": true,
+ "weights_file": "/kaggle/input/notebooks/hassaneljesr/nanolm-stage-a2/inherit_layers.pt",
+ "results": {
+  "teacher": {
+   "fresh": 2.7992965086697366,
+   "selection": 2.910056911255957
+  },
+  "all_converted": {
+   "fresh": 3.9803955734417005,
+   "selection": 4.031308827628605
+  },
+  "most_harmful": {
+   "kept": [
+    1,
+    2,
+    3,
+    4,
+    21,
+    22,
+    23,
+    24
+   ],
+   "fresh": 3.3452,
+   "selection": 3.4322
+  },
+  "highest_error": {
+   "kept": [
+    5,
+    6,
+    7,
+    8,
+    9,
+    20,
+    23,
+    26
+   ],
+   "fresh": 3.6163,
+   "selection": 3.741
+  },
+  "least_harmful": {
+   "kept": [
+    0,
+    6,
+    7,
+    10,
+    11,
+    12,
+    28,
+    29
+   ],
+   "fresh": 3.7407,
+   "selection": 3.8075
+  },
+  "random_00": {
+   "kept": [
+    0,
+    1,
+    4,
+    6,
+    19,
+    22,
+    23,
+    28
+   ],
+   "fresh": 3.4766,
+   "selection": 3.5768
+  },
+  "random_01": {
+   "kept": [
+    0,
+    2,
+    9,
+    10,
+    13,
+    22,
+    24,
+    27
+   ],
+   "fresh": 3.532,
+   "selection": 3.5906
+  },
+  "random_02": {
+   "kept": [
+    6,
+    12,
+    13,
+    15,
+    20,
+    21,
+    24,
+    29
+   ],
+   "fresh": 3.5994,
+   "selection": 3.6661
+  },
+  "random_03": {
+   "kept": [
+    0,
+    1,
+    2,
+    6,
+    15,
+    19,
+    25,
+    26
+   ],
+   "fresh": 3.5772,
+   "selection": 3.6549
+  },
+  "random_04": {
+   "kept": [
+    2,
+    4,
+    6,
+    12,
+    13,
+    15,
+    18,
+    27
+   ],
+   "fresh": 3.5758,
+   "selection": 3.6455
+  },
+  "random_05": {
+   "kept": [
+    3,
+    13,
+    14,
+    15,
+    17,
+    22,
+    23,
+    28
+   ],
+   "fresh": 3.5508,
+   "selection": 3.6464
+  },
+  "random_06": {
+   "kept": [
+    0,
+    2,
+    4,
+    7,
+    9,
+    23,
+    25,
+    26
+   ],
+   "fresh": 3.5588,
+   "selection": 3.6217
+  },
+  "random_07": {
+   "kept": [
+    0,
+    5,
+    7,
+    16,
+    19,
+    21,
+    23,
+    28
+   ],
+   "fresh": 3.6857,
+   "selection": 3.7577
+  },
+  "random_08": {
+   "kept": [
+    1,
+    6,
+    8,
+    16,
+    18,
+    24,
+    27,
+    29
+   ],
+   "fresh": 3.4265,
+   "selection": 3.5134
+  },
+  "random_09": {
+   "kept": [
+    0,
+    2,
+    5,
+    9,
+    17,
+    18,
+    20,
+    21
+   ],
+   "fresh": 3.5424,
+   "selection": 3.6216
+  },
+  "random_10": {
+   "kept": [
+    0,
+    5,
+    12,
+    21,
+    22,
+    23,
+    28,
+    29
+   ],
+   "fresh": 3.5775,
+   "selection": 3.6508
+  },
+  "random_11": {
+   "kept": [
+    0,
+    7,
+    10,
+    11,
+    17,
+    18,
+    20,
+    23
+   ],
+   "fresh": 3.5326,
+   "selection": 3.6403
+  },
+  "random_12": {
+   "kept": [
+    1,
+    9,
+    12,
+    17,
+    18,
+    19,
+    22,
+    27
+   ],
+   "fresh": 3.4495,
+   "selection": 3.5553
+  },
+  "random_13": {
+   "kept": [
+    0,
+    4,
+    6,
+    7,
+    9,
+    13,
+    17,
+    28
+   ],
+   "fresh": 3.6599,
+   "selection": 3.7297
+  },
+  "random_14": {
+   "kept": [
+    9,
+    11,
+    13,
+    14,
+    16,
+    17,
+    20,
+    23
+   ],
+   "fresh": 3.5274,
+   "selection": 3.6187
+  },
+  "random_15": {
+   "kept": [
+    1,
+    2,
+    3,
+    7,
+    9,
+    10,
+    20,
+    21
+   ],
+   "fresh": 3.4689,
+   "selection": 3.5543
+  },
+  "random_16": {
+   "kept": [
+    0,
+    5,
+    6,
+    15,
+    20,
+    22,
+    24,
+    27
+   ],
+   "fresh": 3.584,
+   "selection": 3.6526
+  },
+  "random_17": {
+   "kept": [
+    3,
+    5,
+    7,
+    8,
+    9,
+    10,
+    22,
+    28
+   ],
+   "fresh": 3.6818,
+   "selection": 3.767
+  },
+  "random_18": {
+   "kept": [
+    3,
+    5,
+    6,
+    9,
+    10,
+    11,
+    19,
+    24
+   ],
+   "fresh": 3.6583,
+   "selection": 3.736
+  },
+  "random_19": {
+   "kept": [
+    1,
+    3,
+    10,
+    16,
+    20,
+    22,
+    27,
+    29
+   ],
+   "fresh": 3.4609,
+   "selection": 3.5475
+  }
+ },
+ "predictions": {
+  "P1": {
+   "held": true,
+   "most_harmful": 3.3452,
+   "random_mean": 3.5563,
+   "random_sd": 0.0745,
+   "draws_beaten": 20,
+   "of": 20
+  },
+  "P2": {
+   "held": true,
+   "least_harmful": 3.7407,
+   "random_mean": 3.5563
+  },
+  "P3": {
+   "held": true,
+   "highest_error": 3.6163,
+   "random_range": [
+    3.4265,
+    3.6857
+   ]
+  }
+ }
+}
