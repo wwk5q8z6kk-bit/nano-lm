@@ -1,0 +1,54 @@
+[{"stream_name":"stderr","time":33.2605742,"data":"Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.\n"}
+,{"stream_name":"stderr","time":35.467035524,"data":"[transformers] `torch_dtype` is deprecated! Use `dtype` instead!\n"}
+,{"stream_name":"stderr","time":39.838286379,"data":"\rLoading weights:   0%|          | 0/272 [00:00\u003c?, ?it/s]\rLoading weights:  44%|████▍     | 119/272 [00:00\u003c00:00, 1185.46it/s]\rLoading weights: 100%|██████████| 272/272 [00:00\u003c00:00, 1406.30it/s]\n"}
+,{"stream_name":"stdout","time":366.705000173,"data":"layer 0 {'inherit': (0.989, 0.016), 'random': (1.0, 0.013)}\n"}
+,{"stream_name":"stdout","time":398.147921712,"data":"layer 1 {'inherit': (1.018, 0.061), 'random': (1.0, 0.063)}\n"}
+,{"stream_name":"stdout","time":429.687817308,"data":"layer 2 {'inherit': (1.047, 0.208), 'random': (1.0, 0.23)}\n"}
+,{"stream_name":"stdout","time":461.38720795,"data":"layer 3 {'inherit': (1.152, 0.34), 'random': (1.001, 0.423)}\n"}
+,{"stream_name":"stdout","time":492.962655066,"data":"layer 4 {'inherit': (1.083, 0.362), 'random': (1.0, 0.465)}\n"}
+,{"stream_name":"stdout","time":524.592471807,"data":"layer 5 {'inherit': (1.065, 0.374), 'random': (1.001, 0.491)}\n"}
+,{"stream_name":"stdout","time":556.25979,"data":"layer 6 {'inherit': (1.14, 0.414), 'random': (1.0, 0.463)}\n"}
+,{"stream_name":"stdout","time":587.889434968,"data":"layer 7 {'inherit': (1.245, 0.404), 'random': (1.001, 0.517)}\n"}
+,{"stream_name":"stdout","time":619.523278952,"data":"layer 8 {'inherit': (1.117, 0.385), 'random': (1.0, 0.431)}\n"}
+,{"stream_name":"stdout","time":651.213348682,"data":"layer 9 {'inherit': (1.12, 0.367), 'random': (1.0, 0.434)}\n"}
+,{"stream_name":"stdout","time":682.890344985,"data":"layer 10 {'inherit': (1.057, 0.323), 'random': (1.0, 0.402)}\n"}
+,{"stream_name":"stdout","time":714.591047167,"data":"layer 11 {'inherit': (1.017, 0.24), 'random': (1.0, 0.292)}\n"}
+,{"stream_name":"stdout","time":746.25661949,"data":"layer 12 {'inherit': (1.11, 0.282), 'random': (1.001, 0.371)}\n"}
+,{"stream_name":"stdout","time":777.919742473,"data":"layer 13 {'inherit': (1.063, 0.319), 'random': (1.0, 0.386)}\n"}
+,{"stream_name":"stdout","time":809.618018808,"data":"layer 14 {'inherit': (1.11, 0.351), 'random': (1.001, 0.422)}\n"}
+,{"stream_name":"stdout","time":841.302763044,"data":"layer 15 {'inherit': (1.09, 0.221), 'random': (1.0, 0.285)}\n"}
+,{"stream_name":"stdout","time":872.977244057,"data":"layer 16 {'inherit': (1.016, 0.191), 'random': (1.0, 0.233)}\n"}
+,{"stream_name":"stdout","time":904.664965079,"data":"layer 17 {'inherit': (1.137, 0.348), 'random': (1.0, 0.349)}\n"}
+,{"stream_name":"stdout","time":936.378827892,"data":"layer 18 {'inherit': (1.094, 0.321), 'random': (1.001, 0.389)}\n"}
+,{"stream_name":"stdout","time":968.084489163,"data":"layer 19 {'inherit': (1.056, 0.202), 'random': (1.0, 0.255)}\n"}
+,{"stream_name":"stdout","time":999.777023799,"data":"layer 20 {'inherit': (1.091, 0.388), 'random': (1.0, 0.47)}\n"}
+,{"stream_name":"stdout","time":1031.507571354,"data":"layer 21 {'inherit': (1.039, 0.22), 'random': (1.0, 0.314)}\n"}
+,{"stream_name":"stdout","time":1063.197413598,"data":"layer 22 {'inherit': (1.038, 0.363), 'random': (1.0, 0.468)}\n"}
+,{"stream_name":"stdout","time":1094.881898236,"data":"layer 23 {'inherit': (1.043, 0.577), 'random': (1.0, 0.791)}\n"}
+,{"stream_name":"stdout","time":1126.60677455,"data":"layer 24 {'inherit': (0.998, 0.046), 'random': (1.0, 0.044)}\n"}
+,{"stream_name":"stdout","time":1158.228860579,"data":"layer 25 {'inherit': (1.028, 0.329), 'random': (1.0, 0.388)}\n"}
+,{"stream_name":"stdout","time":1189.890411789,"data":"layer 26 {'inherit': (1.055, 0.416), 'random': (1.0, 0.518)}\n"}
+,{"stream_name":"stdout","time":1221.567981504,"data":"layer 27 {'inherit': (1.002, 0.169), 'random': (1.0, 0.233)}\n"}
+,{"stream_name":"stdout","time":1253.252669112,"data":"layer 28 {'inherit': (1.031, 0.251), 'random': (1.0, 0.323)}\n"}
+,{"stream_name":"stdout","time":1284.962670972,"data":"layer 29 {'inherit': (1.02, 0.219), 'random': (1.0, 0.352)}\n"}
+,{"stream_name":"stdout","time":1284.968876462,"data":"{\"C1_fraction_layers_ratio_le_0.1\": 0.1, \"C1_pass\": false, \"C2_nonfinite_total\": 0, \"C3_median_train_tokens_per_s\": 157092, \"C3_peak_mem_GiB\": 1.18, \"median_err\": {\"inherit_untrained\": 1.0564332529280926, \"inherit_trained\": 0.3223370889758022, \"random_untrained\": 1.0001598338442002, \"random_trained\": 0.3866819151829093}}\n"}
+,{"stream_name":"stdout","time":1287.264597162,"data":"lm teacher {'nats_per_token': 2.9101, 'converted_layers': 0}\n"}
+,{"stream_name":"stdout","time":1288.901711972,"data":"lm all_inherit_trained {'nats_per_token': 4.0313, 'converted_layers': 30}\n"}
+,{"stream_name":"stdout","time":1290.612795265,"data":"lm keep_highest_error_attention {'nats_per_token': 3.741, 'converted_layers': 22}\n"}
+,{"stream_name":"stdout","time":1292.310821392,"data":"lm keep_random_attention {'nats_per_token': 3.5056, 'converted_layers': 22}\n"}
+,{"stream_name":"stdout","time":1293.936382916,"data":"lm all_random_trained {'nats_per_token': 4.5137, 'converted_layers': 30}\n"}
+,{"stream_name":"stdout","time":1295.55954269,"data":"lm all_inherit_untrained {'nats_per_token': 13.1872, 'converted_layers': 30}\n"}
+,{"stream_name":"stdout","time":1355.624049343,"data":"placement keep_most_harmful_to_convert 3.4322\n"}
+,{"stream_name":"stdout","time":1357.339599082,"data":"placement keep_least_harmful_to_convert 3.8075\n"}
+,{"stream_name":"stdout","time":1359.059140958,"data":"placement keep_random_draw0 3.7558\n"}
+,{"stream_name":"stdout","time":1360.766194002,"data":"placement keep_random_draw1 3.5364\n"}
+,{"stream_name":"stdout","time":1362.470759525,"data":"placement keep_random_draw2 3.8336\n"}
+,{"stream_name":"stdout","time":1364.174987247,"data":"placement keep_random_draw3 3.6482\n"}
+,{"stream_name":"stdout","time":1365.877696053,"data":"placement keep_random_draw4 3.6484\n"}
+,{"stream_name":"stderr","time":1372.995894459,"data":"/usr/local/lib/python3.13/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":1372.995924,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":1373.23973829,"data":"/usr/local/lib/python3.13/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":1373.239763942,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":1374.028969498,"data":"[NbConvertApp] Converting notebook __script__.ipynb to html\n"}
+,{"stream_name":"stderr","time":1375.106093011,"data":"[NbConvertApp] Writing 364197 bytes to __results__.html\n"}
+]

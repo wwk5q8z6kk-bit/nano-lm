@@ -195,3 +195,28 @@ Kaggle T4, fla 0.6.0, `convert_stage_a.py` at commit 64a4b7d; 30 layers; per lay
 `mech_hops.py --curriculum`, untied baseline, one seed, 20,000 steps, hops 1 → 1–2 → 1–3 → 1–4 by quarters; registered success: accuracy ≥ 0.9 at k = 2, 3 and 4.
 - One-hop accuracy reached 0.84; accuracy for **k = 2…8 stayed at chance (0.07–0.09)**, including the trained range 2–4. Training loss fell to 0.36 during the one-hop phase and returned to about 1.97 once multi-hop queries entered.
 - **Criterion failed**, so under the rule written in advance the task is **replaced, not tuned further**. The looping hypothesis moves to the registered BINDINGS task, where delayed learning is already characterised (looped and whole-block reuse learned two-step chains within 26,000 steps). This was one seed on a 0.3M-parameter model; that scope limits the conclusion to "this task and model size do not support a baseline", not to anything about looping.
+
+## Stage A2 (exploratory): leave-one-out importance and placement, 2026-11-24
+
+Kaggle T4, `convert_stage_a2.py` (commit 02c01cc). It reruns the registered pipeline with the same seeds, data and settings, then adds leave-one-out layer importance and placement comparisons. Raw: `results/stage-a2/stage_a.json`; the inherit-trained layer weights are in `inherit_layers.pt` there.
+
+**Rerun check.** Every per-layer error and every language-model loss is identical to stage A (differences 0.0000), so the pipeline is deterministic for fixed seed, data and GPU type. This says nothing about variation across *seeds*, which remains unmeasured.
+
+**Leave-one-out importance** (loss increase when only one layer is converted, 16,384 held-out tokens): most harmful to convert are layers 1 (+0.083 nats), 23 (+0.051), 24 (+0.026), 3 (+0.025), 21 (+0.021), 22 (+0.017), 2 (+0.017) and 4 (+0.017); least harmful are 7, 6, 12, 29, 28, 11, 10 and 0 (+0.005 to +0.012). The single-layer deltas sum to 0.527 nats but converting all layers costs 1.121, so errors compound beyond additivity.
+
+**Placement, 22 converted layers and 8 kept as attention** (nats per token, same 16,384 tokens):
+
+| Kept as attention | Loss | Kept layers |
+|---|---|---|
+| the 8 most harmful to convert (leave-one-out) | **3.432** | 1, 2, 3, 4, 21, 22, 23, 24 |
+| the 8 highest alignment error (stage A) | 3.741 | 5, 6, 7, 8, 9, 20, 23, 26 |
+| the 8 least harmful to convert | 3.808 | 0, 6, 7, 10, 11, 12, 28, 29 |
+| five random draws | 3.536, 3.648, 3.648, 3.756, 3.834 (mean 3.684, sd 0.102) | — |
+| stage A's single random draw | 3.506 | 1, 8, 12, 13, 15, 16, 24, 27 |
+
+**Correction to my stage-A reading.** I wrote that keeping the highest-error layers did *worse* than random. With six random draws the spread is 3.51 to 3.83, and the highest-error placement (3.741) sits inside it: it is no better than random, not worse. The stage-A comparison used the most favourable single draw.
+
+**Reading.**
+- Keeping the layers whose *conversion alone hurts most* as attention gave the lowest loss, 0.25 nats below the random mean (about 2.5 random-draw standard deviations, but that spread comes from five draws) and 0.52 nats above the teacher against 0.77 for a random placement.
+- **This is exploratory and optimistic.** The importance ranking and the comparison use the same 16 held-out sequences, so selection on the evaluation tokens inflates the gap. The next step is a confirmatory test on fresh text with pre-registered criteria.
+- The kept layers cluster at the start (1–4) and end (21–24), the same stretches where a layer's replacement mattered most.
