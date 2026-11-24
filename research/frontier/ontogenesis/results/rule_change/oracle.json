@@ -1,0 +1,38 @@
+[
+ {
+  "arm": "oracle",
+  "seed": 7101,
+  "acquire_now": 1.0,
+  "infer_stable": 0.9872,
+  "revise_next5": 0.5035,
+  "revise_next10": 0.5638,
+  "revise_old": 0.6439,
+  "exception_kept": 1.0,
+  "noise_resisted": 0.9824,
+  "store_size": 405
+ },
+ {
+  "arm": "oracle",
+  "seed": 7102,
+  "acquire_now": 1.0,
+  "infer_stable": 0.9927,
+  "revise_next5": 0.6456,
+  "revise_next10": 0.6618,
+  "revise_old": 0.6104,
+  "exception_kept": 1.0,
+  "noise_resisted": 0.9956,
+  "store_size": 395
+ },
+ {
+  "arm": "oracle",
+  "seed": 7103,
+  "acquire_now": 1.0,
+  "infer_stable": 0.9935,
+  "revise_next5": 0.5517,
+  "revise_next10": 0.5857,
+  "revise_old": 0.5937,
+  "exception_kept": 1.0,
+  "noise_resisted": 0.9774,
+  "store_size": 397
+ }
+]

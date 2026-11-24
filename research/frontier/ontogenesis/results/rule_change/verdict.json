@@ -1,0 +1,129 @@
+{
+ "predictions": {
+  "X1": {
+   "held": true,
+   "noise_resisted": [
+    0.1145,
+    0.0929,
+    0.0995
+   ],
+   "exception_kept": [
+    0.8026,
+    0.7837,
+    0.7172
+   ],
+   "revise_next5": [
+    0.6525,
+    0.6962,
+    0.7172
+   ]
+  },
+  "X2": {
+   "held": true,
+   "noise_resisted": [
+    0.9604,
+    0.9513,
+    0.9548
+   ],
+   "exception_kept": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "revise_next5": [
+    0.7163,
+    0.7595,
+    0.7586
+   ],
+   "revise_old": [
+    0.5192,
+    0.5461,
+    0.4948
+   ]
+  },
+  "X3": {
+   "held": true,
+   "revise_next5": [
+    0.9929,
+    0.9937,
+    1.0
+   ],
+   "revise_old": [
+    0.9606,
+    0.9772,
+    0.9627
+   ],
+   "exception_kept": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "noise_resisted": [
+    0.9868,
+    1.0,
+    0.991
+   ]
+  },
+  "X4": {
+   "held": true,
+   "revise_old": [
+    0.6439,
+    0.6104,
+    0.5937
+   ]
+  },
+  "X5": {
+   "held": true,
+   "gap": 0.4468
+  },
+  "X6": {
+   "held": true,
+   "plain": 0.9096,
+   "seen2": 0.9433,
+   "oracle": 0.9911,
+   "oracle_dec": 0.9897
+  }
+ },
+ "table": {
+  "plain": {
+   "acquire_now": 1.0,
+   "infer_stable": 0.9096,
+   "revise_next5": 0.6886,
+   "revise_next10": 0.7242,
+   "revise_old": 0.4844,
+   "exception_kept": 0.7678,
+   "noise_resisted": 0.1023,
+   "store_size": 0.0
+  },
+  "seen2": {
+   "acquire_now": 1.0,
+   "infer_stable": 0.9433,
+   "revise_next5": 0.7448,
+   "revise_next10": 0.7811,
+   "revise_old": 0.52,
+   "exception_kept": 1.0,
+   "noise_resisted": 0.9555,
+   "store_size": 386.0
+  },
+  "oracle": {
+   "acquire_now": 1.0,
+   "infer_stable": 0.9911,
+   "revise_next5": 0.5669,
+   "revise_next10": 0.6038,
+   "revise_old": 0.616,
+   "exception_kept": 1.0,
+   "noise_resisted": 0.9851,
+   "store_size": 399.0
+  },
+  "oracle_dec": {
+   "acquire_now": 1.0,
+   "infer_stable": 0.9897,
+   "revise_next5": 0.9955,
+   "revise_next10": 0.9933,
+   "revise_old": 0.9668,
+   "exception_kept": 1.0,
+   "noise_resisted": 0.9926,
+   "store_size": 399.0
+  }
+ }
+}

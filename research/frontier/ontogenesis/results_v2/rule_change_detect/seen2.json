@@ -1,0 +1,50 @@
+[
+ {
+  "arm": "seen2",
+  "seed": 7201,
+  "acquire_now": 1.0,
+  "infer_stable": 0.9525,
+  "revise_next5": 0.634,
+  "revise_next10": 0.6875,
+  "revise_old": 0.4966,
+  "exception_kept": 1.0,
+  "noise_resisted": 0.9772,
+  "store_size": 389,
+  "flags": 0,
+  "false_alarms": 0,
+  "missed": 12,
+  "delay_mean": null
+ },
+ {
+  "arm": "seen2",
+  "seed": 7202,
+  "acquire_now": 1.0,
+  "infer_stable": 0.9557,
+  "revise_next5": 0.7926,
+  "revise_next10": 0.7947,
+  "revise_old": 0.5757,
+  "exception_kept": 1.0,
+  "noise_resisted": 0.968,
+  "store_size": 359,
+  "flags": 0,
+  "false_alarms": 0,
+  "missed": 12,
+  "delay_mean": null
+ },
+ {
+  "arm": "seen2",
+  "seed": 7203,
+  "acquire_now": 1.0,
+  "infer_stable": 0.9674,
+  "revise_next5": 0.7975,
+  "revise_next10": 0.8472,
+  "revise_old": 0.7517,
+  "exception_kept": 1.0,
+  "noise_resisted": 0.9865,
+  "store_size": 342,
+  "flags": 0,
+  "false_alarms": 0,
+  "missed": 12,
+  "delay_mean": null
+ }
+]

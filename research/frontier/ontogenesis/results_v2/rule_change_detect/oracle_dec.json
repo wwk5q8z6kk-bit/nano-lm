@@ -1,0 +1,50 @@
+[
+ {
+  "arm": "oracle_dec",
+  "seed": 7201,
+  "acquire_now": 1.0,
+  "infer_stable": 0.9918,
+  "revise_next5": 0.9216,
+  "revise_next10": 0.8984,
+  "revise_old": 0.9632,
+  "exception_kept": 1.0,
+  "noise_resisted": 1.0,
+  "store_size": 400,
+  "flags": 0,
+  "false_alarms": 0,
+  "missed": 12,
+  "delay_mean": null
+ },
+ {
+  "arm": "oracle_dec",
+  "seed": 7202,
+  "acquire_now": 1.0,
+  "infer_stable": 0.9934,
+  "revise_next5": 0.9704,
+  "revise_next10": 0.9801,
+  "revise_old": 0.9703,
+  "exception_kept": 1.0,
+  "noise_resisted": 0.9954,
+  "store_size": 367,
+  "flags": 0,
+  "false_alarms": 0,
+  "missed": 12,
+  "delay_mean": null
+ },
+ {
+  "arm": "oracle_dec",
+  "seed": 7203,
+  "acquire_now": 1.0,
+  "infer_stable": 0.9983,
+  "revise_next5": 0.9241,
+  "revise_next10": 0.9167,
+  "revise_old": 0.979,
+  "exception_kept": 1.0,
+  "noise_resisted": 0.9865,
+  "store_size": 353,
+  "flags": 0,
+  "false_alarms": 0,
+  "missed": 12,
+  "delay_mean": null
+ }
+]

@@ -1,0 +1,68 @@
+{
+ "predictions": {
+  "C1": {
+   "held_on_mean": true,
+   "seeds_meeting_bound": 5
+  },
+  "C2": {
+   "held_on_mean": true,
+   "seeds_meeting_bound": 5
+  },
+  "C3": {
+   "held_on_mean": true,
+   "seeds_meeting_bound": 5
+  },
+  "C4": {
+   "held_on_mean": true,
+   "seeds_meeting_bound": 5
+  },
+  "C5": {
+   "held_on_mean": false,
+   "seeds_meeting_bound": 3
+  }
+ },
+ "table": {
+  "none": {
+   "infer_stable": 0.8167,
+   "infer_stable_shared_only": 0.8222,
+   "revise_old": 0.1811,
+   "exception_kept": 0.3749,
+   "noise_resisted": 0.9316
+  },
+  "oracle": {
+   "infer_stable": 0.6652,
+   "infer_stable_shared_only": 0.6941,
+   "revise_old": 0.9784,
+   "exception_kept": 0.9986,
+   "noise_resisted": 0.8864
+  },
+  "oracle_x16": {
+   "infer_stable": 0.6915,
+   "infer_stable_shared_only": 0.6938,
+   "revise_old": 0.9801,
+   "exception_kept": 0.9986,
+   "noise_resisted": 0.9027
+  },
+  "oracle_nochange": {
+   "infer_stable": 0.7691,
+   "infer_stable_shared_only": 0.8151,
+   "revise_old": null,
+   "exception_kept": 0.9993,
+   "noise_resisted": 0.9556
+  },
+  "threeway": {
+   "infer_stable": 0.7175,
+   "infer_stable_shared_only": 0.7429,
+   "revise_old": 0.7111,
+   "exception_kept": 0.8898,
+   "noise_resisted": 0.9081
+  },
+  "threeway_x16": {
+   "infer_stable": 0.7364,
+   "infer_stable_shared_only": 0.738,
+   "revise_old": 0.7257,
+   "exception_kept": 0.871,
+   "noise_resisted": 0.9233
+  }
+ }
+}
