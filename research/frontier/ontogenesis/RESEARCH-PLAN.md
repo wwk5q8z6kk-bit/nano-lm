@@ -639,3 +639,103 @@ That turns the teacher from a per-experiment cost into a one-time cost.
 - **Stage 2:** at 1.5B, likely needs about $600–1,000 of rented compute, or credit. The flagship needs TRC or other funding.
 - **What justifies asking for more.** A demonstrated result at 0.5B: (a) a converted student meeting T0 at a measured token cost, and (b) at least one of the memory or depth mechanisms showing a registered gain.
 - **TRC terms (programme pages; GitHub repository archived April 2026, live status to confirm).** TPUs are free. Other Google Cloud services are charged. Participants share feedback with Google and follow the Google AI Principles. TRC quota does not work with Vertex workflows; use Compute Engine. An application draft will be prepared from the results.
+
+---
+
+## 20. Execution decision (2026-11-24; supersedes the timing in §19.6)
+
+**Plain summary.**
+- **The conversion route runs on a free Kaggle T4.** The recurrent kernels compile and agree with a reference. But our implementation reaches only 8% of the T4's peak speed, against the 40% I had assumed. A 0.5B student on 1B tokens would take about 86 hours on two T4s (172 GPU-hours), not the 30–65 I quoted.
+- **The next decision does not need that run.** Whether inherited weights beat random initialisation per training token can be tested at 135M parameters on free hardware, in about 5–7 hours per run. The 0.5B run answers a different question (does it scale) and belongs after that.
+- **The only paid request now is about $6:** one hour on a rented H100 to measure the real throughput, which decides whether the 0.5B stage costs about $15–70 or much more.
+
+### 20.1 FLOP reconciliation
+
+My earlier "6e18–1.2e19 FLOPs" for the 0.5B pilot was the student training cost **plus one pass of teacher-signal generation** (Qwen2.5-1.5B), added together, but I labelled it as the student cost alone. It matches that sum to 1% (6.08e18 and 1.22e19), though I cannot reconstruct my original reasoning beyond that match.
+
+| Item | 1B student tokens | 2B student tokens | How computed |
+|---|---|---|---|
+| Student training | 3.0e18 | 6.0e18 | 6 × 0.5e9 × D |
+| Teacher signal generation, once (if cached) | 3.1e18 | 6.2e18 | 2 × 1.54e9 × D |
+| of which: conversion stages 1–2, teacher internals online, first 240M tokens | 0.74e18 | 0.74e18 | 2 × N_teacher × 240M (MOHAWK used 80M + 160M tokens for these stages) |
+| Evaluation, 7 tasks, one model | 6.8e15 | 6.8e15 | about 6.8M tokens × 2 × 0.5e9 |
+| Controls and seeds (one from-scratch control of equal student compute, plus a second seed of the converted student) | +2 × student | +2 × student | design choice |
+
+**Not in the table:** the extra compute of the recurrent layers beyond the 6N rule, activation recomputation if memory forces it, and repeated runs after failures. These are why measured utilisation matters more than the formula.
+
+### 20.2 Verified execution stack (Kaggle T4 ×2, run 2026-11-24)
+
+Raw results: `results/compat-t4/compat.json`; script `tpu/compat_t4.py` (commit 71b41b5).
+
+| Check | Result | Scope and limits |
+|---|---|---|
+| Kernels on the T4 (compute capability 7.5) | **Run.** `fla` 0.6.0 with Triton 3.6.0, torch 2.11 + CUDA 13.0: `chunk_gated_delta_rule` and the `GatedDeltaNet` layer compile and execute forward and backward | The concern that Triton's README lists compute capability 8.0 or higher did not block this kernel on this stack. Other fla kernels were not tested |
+| Numerical agreement with a float32 reference | float32: relative error ≤ 7.1e-7 on the output and all five gradients; float16: ≤ 8.3e-4 | One shape (batch 2, length 256, 4 heads, key and value dimension 64). The reference matches the paper's recurrence to 1e-16 |
+| fp16 training stability | 300 steps on the real corpus slice: no non-finite loss; the loss scaler skipped 7 steps and backed off from 32,768 to 512; loss 12.1 → 7.5 | A short run only. It does not show that long runs are stable |
+| Memory per GPU | 547M-parameter model (24 layers, width 896, 151,936-token vocabulary): **13.0 GiB of 14.6** at micro-batch 2 × 1,024. **4 × 1,024 ran out of memory** for both the recurrent and the attention model | Memory is dominated by fp32 weights, gradients and Adam state (about 8.7 GB). Layer recomputation was not reached |
+| Throughput, recurrent model | **1,614 tokens/s per GPU = 8.1% of the 65 TFLOPS fp16 peak** | Micro-batch 2 × 1,024, no layer recomputation; includes warm-up exclusion over 20 steps |
+| Throughput, same model with softmax attention | 2,582 tokens/s per GPU = 12.6% of peak; 11.8 GiB | In-kernel attention path of torch SDPA on Turing |
+| Two-GPU all-reduce (gradient synchronisation) | **Failed**, cause not captured, so two-GPU scaling is unmeasured | Needs a rerun with the error output kept |
+| Teacher-cache reading | 183 MiB per 1M tokens (top-32 logits); read speed far above what is needed (0.6 MB/s at 3,228 tokens/s) | The test file was freshly written, so it measures the page cache; the conclusion rests on the tiny required rate |
+
+**Not tested:** bf16 speed (the T4 has no native bf16), the conversion code itself, longer sequences, and any real teacher.
+
+### 20.3 What the measured speed means (these figures are projections from one measurement)
+
+| Student, tokens | Student FLOPs | Two T4s at the measured 3,228 tokens/s (perfect scaling assumed) |
+|---|---|---|
+| 0.5B (547M with the 152k vocabulary), 1B | 3.3e18 | **86 hours elapsed, 172 GPU-hours** |
+| same, 2B | 6.6e18 | 172 hours elapsed, 344 GPU-hours |
+| same, stages 1–2 only (240M tokens) | 0.79e18 | 21 hours elapsed, 41 GPU-hours |
+| 135M-class student, 250M tokens (my estimate: throughput scales inversely with parameters, **not measured**) | 2.0e17 | about 5–7 hours elapsed, 10–14 GPU-hours |
+
+**On an H100 (every figure here is an assumption):** 3e18 FLOPs at 15–35% of its dense bf16 peak (989 TFLOPS) is 2.4–5.6 hours, about $6–17 at $2.5–3 per hour. The 15–35% range is a guess: our TPU run got 36%, this T4 run got 8%, and we have no H100 measurement.
+
+### 20.4 Account quota and hardware: what is verified
+
+| Item | Status |
+|---|---|
+| Accelerators this account gets via the Kaggle command line | **Verified today:** two T4 (14.6 GiB each). A TPU request ran on a plain CPU, in two forms (script kernel and notebook kernel) |
+| Weekly quota amount and unit (per elapsed hour or per device-hour) | **Unknown.** Third-party pages say about 30 GPU-hours a week, reset time varies; the command line has no quota query. The owner can read it on the Kaggle account page |
+| Session limits | Third-party sources say 12 hours for GPU and 9 for TPU, one says 9 for GPU; unverified. This compat run took about 23 minutes of elapsed time |
+| Resume path | Not needed for runs under the limit. Any longer run needs checkpoints written to a Kaggle dataset version and a restart script |
+| TPU route | **Not available to this account through the command line** (two tries). Whether the web interface grants one is unknown |
+
+### 20.5 E1 split into three stages
+
+**Why not the 0.5B, 1–2B-token run first.** It would answer *"does it scale to a useful size?"* before we know *"does inherited initialisation beat random initialisation per token?"*, and it costs 86–172 hours on the free hardware. The smaller question has the same structure at a smaller size, so test it there.
+
+| Stage | Question | Smallest experiment that can answer it | Success criterion (registered before running) | Cost | Limits stated in advance |
+|---|---|---|---|---|---|
+| **A. Execution and correctness** | Does the conversion pipeline run and train stably? | Convert layer 0, then all 30 layers of SmolLM2-135M (Apache 2.0, already on disk) into Gated DeltaNet layers (inherited projections), align hidden states per layer on 20M tokens, then run a short end-to-end pass. Reuse today's kernel check | Per-layer output error falls below the error of an untrained layer by ≥ 10×; no non-finite loss; measured tokens/s and memory at the 135M size | Free (T4); about 2 hours | Does not show capability. A 20M-token alignment only shows that the pipeline functions |
+| **B. Learning mechanism** | Does inherited initialisation plus staged alignment recover capability faster per token than random initialisation, at equal student tokens? | SmolLM2-135M → hybrid (about 75% of attention layers converted; the rest kept), 250M student tokens, same-model teacher; controls: (1) the same hybrid from random initialisation, same tokens; (2) the unconverted parent. 3 seeds for converted and for control | Converted reaches ≥ 90% of the parent's average over the 7-task suite *and* beats the random-initialised control by ≥ 10 points on the average. Reliability reported as in cycle 1b: every seed, success rate, conditional accuracy | Free (T4); each run about 5–7 hours (estimate), 6 runs total | Learning can be delayed (cycles 1 and 2): if neither arm resolves by 250M tokens, extend once to 500M; if still unresolved, record inconclusive. Same-size teacher is the Llamba setting: it cannot show *beating* a larger teacher |
+| **C. Capability and scaling** | Does the advantage persist at a larger size, with a larger teacher, and on broader tasks? | Qwen2.5-0.5B-shaped student from a Qwen2.5-1.5B teacher, 1B tokens, full suite plus generative reasoning, second scale (1.5B from 7B) later | Registered after B. At least the stage-B criterion at 0.5B | $15–70 on a rented H100 *if* throughput is 15–35% (projection); more otherwise | Needs the throughput measurement in §20.6 first |
+
+### 20.6 Funding without the circular dependency
+
+The dependency was real in my earlier plan and is resolved by moving the first funding gate onto evidence we already have or can produce for free.
+
+| Funding stage | Evidence required | Status |
+|---|---|---|
+| **F0, free** | Working kernels, correctness check, measured throughput, mechanism results with every seed | **In hand today** (§20.2, `CYCLES.md`) |
+| **F1, about $6** | A defined measurement: the throughput of the unchanged compatibility test on one rented H100 | Request below |
+| **F2, about $50** | Stage B result at 135M (free) shows the inherited initialisation helps | Waiting on stage B |
+| **F3, TRC or other funding** | Stage C result at two scales plus a TPU-capable implementation | See below |
+
+**TRC (verified on the programme page, 2026-11-24).** Free Cloud TPUs for accepted researchers on TensorFlow, PyTorch, Julia or JAX; participants must share their TRC-supported research (publications, open-source code, blog posts or other means), give Google detailed feedback, accept the Terms and Privacy Policy, and follow the Google AI Principles. The page has an "Express interest" form. Not verified from primary sources: the size and duration of a grant, approval criteria, and the VM/storage charges (reported by an earlier secondary search). Application materials: `TRC-APPLICATION-DRAFT.md`, with the applicant fields left blank because they need the owner's identity. TRC supplies TPUs only, and our recurrent layer has no TPU kernel: a chunked JAX/Pallas implementation is a prerequisite and a risk, stated in the draft.
+
+**Bounded paid request R0, awaiting approval:**
+
+| Field | Content |
+|---|---|
+| Experiment and decision | Run `tpu/compat_t4.py` unchanged except for bf16 on one rented H100 (RunPod) to measure tokens/s, utilisation and memory for the 547M recurrent and attention models. Decides whether stage C costs about $15–70 or much more |
+| Runtime and amount | Bounded at 60 minutes; ceiling **$6** at an assumed $3 per hour, including a few minutes of setup |
+| Stopping and continuation | Stop at the script's own end or at 60 minutes. If utilisation ≥ 15%: plan stage C at ≤ $70. If < 15%: investigate kernels and a smaller student before any larger request |
+| If the hypothesis fails | If the recurrent kernels run below 8% of peak on the H100 as well, the conversion route is compute-bound by our implementation, and stage C moves to a 135M–360M student |
+| Currently on hold | Yes. No paid runs start until approved |
+
+### 20.7 Implementation under way (this cycle)
+
+- **Done:** mechanism library and tests (`nano_core.py`, 4 tests pass); scorer flags; the compatibility test; the hop curriculum option in `mech_hops.py`.
+- **Running:** the untied-baseline difficulty pilot for pointer chasing (20,000 steps with a hop curriculum, success defined as accuracy ≥ 0.9 at 2–4 hops).
+- **Next:** (1) the stage-A conversion script for SmolLM2-135M; (2) the salience-marked recall test, pre-registered; (3) a chunked JAX implementation of the recurrent layer for TPU.

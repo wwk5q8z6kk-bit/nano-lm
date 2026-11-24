@@ -57,7 +57,7 @@ def logits_of(arm, p, tok, cfg, R, eps=None):
     return nc.forward_looped(p, tok, cfg, R, eps)
 
 
-def run(arm, seed, steps):
+def run(arm, seed, steps, curriculum=False):
     cfg = cfg_of(arm)
     p = nc.init_model(jax.random.PRNGKey(seed), cfg) if arm == "untied-6" else nc.init_looped(jax.random.PRNGKey(seed), cfg)
     opt = optax.adamw(optax.warmup_cosine_decay_schedule(0, 2e-3, max(1, min(200, steps // 10)), steps, 2e-4), weight_decay=0.01)
@@ -79,7 +79,8 @@ def run(arm, seed, steps):
 
     rng = np.random.default_rng(2000 + seed); t0 = time.time(); curve = []
     for i in range(steps):
-        tok, _ = batch(rng, 64, 1, 4)
+        kmax = 1 + min(3, (4 * i) // steps) if curriculum else 4          # curriculum: hops 1, then 1-2, 1-3, 1-4 by quarters
+        tok, _ = batch(rng, 64, 1, kmax)
         R = int(rng.integers(2, 9)) if arm == "looped-rnd" else 6
         p, st, l = get_step(R)(p, st, tok)
         if (i + 1) % 500 == 0: curve.append([i + 1, float(l)])
@@ -92,13 +93,13 @@ def run(arm, seed, steps):
         for tok in toks:
             lg, it = f(p, tok); accs.append(float((lg[:, ANS - 1].argmax(-1) == tok[:, ANS]).mean())); its.append(float(it))
         evals[name] = {"acc_by_k": [round(a, 4) for a in accs], "mean_iters_by_k": [round(i, 2) for i in its]}
-    return {"arm": arm, "seed": seed, "steps": steps, "evals": evals, "curve": curve, "seconds": round(time.time() - t0),
+    return {"arm": arm, "seed": seed, "steps": steps, "curriculum": curriculum, "evals": evals, "curve": curve, "seconds": round(time.time() - t0),
             "params": int(sum(x.size for x in jax.tree_util.tree_leaves(p)))}
 
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(); ap.add_argument("--out", required=True); ap.add_argument("--steps", type=int, default=4000)
-    ap.add_argument("--seeds", default="0,1,2"); a = ap.parse_args(); rows = []
+    ap.add_argument("--seeds", default="0,1,2"); ap.add_argument("--arms", default="untied-6,looped-6,looped-rnd"); ap.add_argument("--curriculum", action="store_true"); a = ap.parse_args(); rows = []
     for seed in [int(s) for s in a.seeds.split(",")]:
-        for arm in ("untied-6", "looped-6", "looped-rnd"):
-            r = run(arm, seed, a.steps); rows.append(r); print(json.dumps(r), flush=True); json.dump(rows, open(a.out, "w"), indent=1)
+        for arm in a.arms.split(","):
+            r = run(arm, seed, a.steps, a.curriculum); rows.append(r); print(json.dumps(r), flush=True); json.dump(rows, open(a.out, "w"), indent=1)

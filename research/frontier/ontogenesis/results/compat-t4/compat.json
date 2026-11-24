@@ -1,0 +1,248 @@
+{
+ "stages": {
+  "install": {
+   "ok": true,
+   "result": {
+    "rc": 0,
+    "tail": ""
+   },
+   "seconds": 3.3
+  },
+  "env": {
+   "ok": true,
+   "result": {
+    "torch": "2.11.0+cu130",
+    "cuda": "13.0",
+    "n_gpu": 2,
+    "bf16_supported": true,
+    "gpus": [
+     {
+      "name": "Tesla T4",
+      "capability": [
+       7,
+       5
+      ],
+      "memory_gib": 14.6
+     },
+     {
+      "name": "Tesla T4",
+      "capability": [
+       7,
+       5
+      ],
+      "memory_gib": 14.6
+     }
+    ],
+    "triton": "3.6.0",
+    "fla-core": "0.6.0",
+    "flash-linear-attention": "0.6.0",
+    "transformers": "5.20.2",
+    "einops": "0.8.2"
+   },
+   "seconds": 8.4
+  },
+  "import_fla": {
+   "ok": true,
+   "result": {
+    "imported": [
+     "fla.ops.gated_delta_rule.chunk_gated_delta_rule",
+     "fla.layers.GatedDeltaNet"
+    ]
+   },
+   "seconds": 30.1
+  },
+  "correct": {
+   "ok": true,
+   "result": [
+    {
+     "dtype": "torch.float32",
+     "output_rel_err": 5.53206916720228e-07,
+     "output_has_nan": false,
+     "grad_q_rel_err": 7.145171139200102e-07,
+     "grad_q_nan": false,
+     "grad_k_rel_err": 5.380303491619998e-07,
+     "grad_k_nan": false,
+     "grad_v_rel_err": 5.786852170786005e-07,
+     "grad_v_nan": false,
+     "grad_g_rel_err": 5.45415844044328e-07,
+     "grad_g_nan": false,
+     "grad_b_rel_err": 5.568332426264533e-07,
+     "grad_b_nan": false
+    },
+    {
+     "dtype": "torch.float16",
+     "output_rel_err": 0.0005673851701430976,
+     "output_has_nan": false,
+     "grad_q_rel_err": 0.0005172420060262084,
+     "grad_q_nan": false,
+     "grad_k_rel_err": 0.0007832883275114,
+     "grad_k_nan": false,
+     "grad_v_rel_err": 0.0008304987568408251,
+     "grad_v_nan": false,
+     "grad_g_rel_err": 0.00037105404771864414,
+     "grad_g_nan": false,
+     "grad_b_rel_err": 0.0005005378043279052,
+     "grad_b_nan": false
+    }
+   ],
+   "seconds": 422.9
+  },
+  "bench_gdn": {
+   "ok": true,
+   "result": [
+    {
+     "kind": "gdn",
+     "micro_batch": "4x1024",
+     "layer_checkpointing": false,
+     "oom": true
+    },
+    {
+     "kind": "gdn",
+     "params_M": 546.9,
+     "micro_batch": "2x1024",
+     "layer_checkpointing": false,
+     "sec_per_step": 1.269,
+     "tokens_per_s": 1614,
+     "peak_mem_GiB": 13.03,
+     "model_flops_utilisation_vs_65TF": 0.081,
+     "last_loss": 12.088
+    }
+   ],
+   "seconds": 337.6
+  },
+  "bench_attn": {
+   "ok": true,
+   "result": [
+    {
+     "kind": "attn",
+     "micro_batch": "4x1024",
+     "layer_checkpointing": false,
+     "oom": true
+    },
+    {
+     "kind": "attn",
+     "params_M": 527.0,
+     "micro_batch": "2x1024",
+     "layer_checkpointing": false,
+     "sec_per_step": 0.793,
+     "tokens_per_s": 2582,
+     "peak_mem_GiB": 11.84,
+     "model_flops_utilisation_vs_65TF": 0.126,
+     "last_loss": 11.683
+    }
+   ],
+   "seconds": 33.5
+  },
+  "stability": {
+   "ok": true,
+   "result": {
+    "used_corpus_slice": true,
+    "steps": 300,
+    "nonfinite_loss_steps": 0,
+    "scaler_skipped_steps": 7,
+    "log[step,loss,gradnorm,scale]": [
+     [
+      0,
+      12.111,
+      NaN,
+      32768.0
+     ],
+     [
+      25,
+      11.243,
+      34.473,
+      4096.0
+     ],
+     [
+      50,
+      8.752,
+      2.403,
+      4096.0
+     ],
+     [
+      75,
+      7.614,
+      2.249,
+      4096.0
+     ],
+     [
+      100,
+      7.889,
+      3.351,
+      4096.0
+     ],
+     [
+      125,
+      7.393,
+      2.204,
+      4096.0
+     ],
+     [
+      150,
+      7.401,
+      2.129,
+      4096.0
+     ],
+     [
+      175,
+      7.643,
+      2.171,
+      4096.0
+     ],
+     [
+      200,
+      7.457,
+      1.834,
+      2048.0
+     ],
+     [
+      225,
+      6.462,
+      2.503,
+      2048.0
+     ],
+     [
+      250,
+      7.217,
+      NaN,
+      1024.0
+     ],
+     [
+      275,
+      7.141,
+      1.416,
+      1024.0
+     ],
+     [
+      299,
+      7.495,
+      2.862,
+      512.0
+     ]
+    ],
+    "loss_start": 12.111,
+    "loss_end": 7.495,
+    "peak_mem_GiB": 13.04
+   },
+   "seconds": 535.5
+  },
+  "allreduce": {
+   "ok": true,
+   "result": {
+    "failed": "es:\n[1]:\n  time      : 2026-11-24_03:15:53\n  host      : 348a94ac78f9\n  rank      : 1 (local_rank: 1)\n  exitcode  : -15 (pid: 436)\n  error_file: <N/A>\n  traceback : Signal 15 (SIGTERM) received by PID 436\n------------------------------------------------------------\nRoot Cause (first observed failure):\n[0]:\n  time      : 2026-11-24_03:15:53\n  host      : 348a94ac78f9\n  rank      : 0 (local_rank: 0)\n  exitcode  : 1 (pid: 435)\n  error_file: <N/A>\n  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html\n============================================================\n",
+    "gradient_bytes_for_0.5B_fp16_MiB": 953
+   },
+   "seconds": 8.0
+  },
+  "cache_io": {
+   "ok": true,
+   "result": {
+    "cache_MiB_per_1M_tokens": 183,
+    "sequential_read_MiB_per_s": 2864,
+    "random_4096_token_reads_per_s": 199254,
+    "tokens_per_s_supported_at_random_reads": 816145804
+   },
+   "seconds": 0.4
+  }
+ }
+}
