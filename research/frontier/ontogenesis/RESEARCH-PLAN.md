@@ -629,6 +629,13 @@ That turns the teacher from a per-experiment cost into a one-time cost.
 
 ### 19.6 Funding case
 
-- **Current gap.** Stages 0–1 fit free resources (Kaggle T4s and the laptop) once teacher signals are cached. Stage 2, at 1.5B, likely needs about $600–1,000 of rented compute, or credit. The flagship needs TRC or other funding.
+- **Current gap.** Stage 0 and the small mechanism tests fit free resources (Kaggle T4 ×2 and the laptop).
+- **Correction, 2026-11-23: the 0.5B conversion pilot (E1) does not fit comfortably.**
+  - It needs about 6e18–1.2e19 FLOPs (1B or 2B student tokens, cached teacher signals): about 30–65 hours on two T4s at an assumed 40% of their fp16 peak.
+  - At roughly 30 GPU-hours per week (quota unverified), that is 1–3 weeks per pilot.
+  - T4s have no bf16, so training needs fp16 with loss scaling.
+  - Support for the fla recurrent kernels on Turing is unverified.
+  - E1 therefore realistically needs a small paid budget or TRC.
+- **Stage 2, at 1.5B, likely needs about $600–1,000 of rented compute, or credit. The flagship needs TRC or other funding.
 - **What justifies asking for more.** A demonstrated result at 0.5B: (a) a converted student meeting T0 at a measured token cost, and (b) at least one of the memory or depth mechanisms showing a registered gain.
 - **TRC terms (programme pages; GitHub repository archived April 2026, live status to confirm).** TPUs are free. Other Google Cloud services are charged. Participants share feedback with Google and follow the Google AI Principles. TRC quota does not work with Vertex workflows; use Compute Engine. An application draft will be prepared from the results.
