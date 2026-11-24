@@ -83,3 +83,38 @@ Kaggle T4, 3 seeds, 4,000 steps. Every arm, including the untied baseline, staye
 Cause: one supervised answer per sequence (64 per step) is too sparse a signal for this task in this budget. **No conclusion about looping can be drawn.**
 
 Fix: six supervised queries per sequence, with the same 1–4 hop training range. Re-run after a pilot shows the untied baseline learns k = 1.
+
+## Cycle 1b: learned memory against recency, 8 seeds (exploratory), 2026-11-23
+
+`mech_mqar.py`, commit 83c54dc. 8 new seeds (10–17), 8,000 steps (twice cycle 1), M ∈ {8, 16}, same task and models as cycle 1. All 64 runs completed. Success = evaluation accuracy > 0.9 (the threshold written in the cycle-1 log before this run). Raw files: `mqar-cycle1b.json`, `.log`.
+
+| Arm | M | Learned | 95% interval | Mean accuracy, all seeds | Mean accuracy, learned seeds only | First checkpoint with batch accuracy > 0.9 (per seed, steps) |
+|---|---|---|---|---|---|---|
+| attention (no budget) | — | 8/8 | 0.68–1.0 | 1.000 | 1.000 | 500–1,500 |
+| Gated DeltaNet, no memory | — | 3/8 | 0.14–0.69 | 0.586 | 0.964 | 3 learners at 3,000, 4,000 and 6,000; five never |
+| memory, recency | 8 | 7/8 | 0.53–0.98 | 0.848 | 0.956 | 2,000–5,500; one never |
+| memory, recency | 16 | 6/8 | 0.41–0.93 | 0.762 | 0.962 | 2,500–4,000; two never |
+| memory, learned (teacher-guided) | 8 | 8/8 | 0.68–1.0 | 0.985 | 0.985 | 1,500–2,500 |
+| memory, learned (teacher-guided) | 16 | 8/8 | 0.68–1.0 | 0.982 | 0.982 | 1,000–5,500 |
+| memory, oracle (uses future queries) | 8 | 8/8 | 0.68–1.0 | 0.999 | 0.999 | 500–5,000 |
+| memory, oracle | 16 | 8/8 | 0.68–1.0 | 0.999 | 0.999 | 1,500–3,500 |
+
+Per-seed accuracies are in the raw file. The 8 runs left unresolved at 8,000 steps: gdn seeds 11, 13, 14, 16 and 17 (five), recency M=8 seed 15, recency M=16 seeds 12 and 13.
+
+**Comparisons (all exploratory; budgets pooled, so the 16 runs per arm come from only 8 seeds and are not independent):**
+- Learned against recency, success rate: 16/16 vs 13/16, Fisher p = 0.23. **Not distinguishable.**
+- Learned against recency, time to first checkpoint above 0.9: median 2,000 vs 3,500 steps. Paired by seed and budget, learned is faster in 12 pairs, slower in 2, tied in 2 (sign test p = 0.013). Resolution is 500 steps. **Suggestive of faster learning, not of higher reliability.**
+- Learned against oracle: identical success (16/16), time to learn indistinguishable (permutation p = 0.69).
+- Any memory arm against Gated DeltaNet alone: learned 16/16 vs 3/8 (Fisher p = 0.001); recency 13/16 vs 3/8 (p = 0.065). A readable memory makes learning more reliable. Cycle 1's pilot "recurrent gap" (8%) was one unlucky seed; at this size the gap is a learning-reliability gap, not a capability ceiling: successful runs score 0.96.
+- Cycle 1 (4,000 steps, 3 seeds) and this run (8,000 steps, 8 seeds) cannot be pooled. Longer training resolved many of cycle 1's failures, which supports the delayed-learning explanation.
+
+**Why this run does not show the teacher-guided write rule works (limits, stated before anyone cites it):**
+1. **The task gives a causal write policy nothing to learn.** Queried pairs are drawn at random after all pairs are written. At write time no causal policy can know which pair will be asked about, so it cannot beat chance on selection. The oracle sees future queries, so it is an upper bound, not a usable policy.
+2. **Selection precision is not demonstrated.** The learned head kept value tokens in 49–91% of slots (M=8: 0.51, 0.49, 0.58, 0.80, 0.53, 0.61, 0.55, 0.91; M=16: 0.52–0.68), which is indifference for most seeds. A pair needs only one of its two tokens kept, because the convolution and the recurrent layer carry the other.
+3. **The recurrent layer shares the storage burden.** M=8 slots cannot hold 8 random queried values from 16 pairs, yet accuracy is 0.985, so the recurrent state and the memory together answer.
+
+**What changed in the design:** the next test needs a task where salience is predictable at write time.
+- **Salience-marked MQAR:** a marker token precedes every pair that will later be queried; unmarked pairs are never queried and make up half of the pairs, placed so that recency discards the marked ones.
+- **Arms:** recency; learned from teacher attention; learned from random targets (control); oracle; no memory.
+- **Prediction:** recency fails whenever unmarked pairs arrive last, and learned-from-teacher succeeds only if the teacher's future attention carries salience. Learned-from-random-targets must fail, or the teacher signal adds nothing.
+- Pre-register the success threshold (0.9), seeds (≥ 8) and steps (8,000) before running.
