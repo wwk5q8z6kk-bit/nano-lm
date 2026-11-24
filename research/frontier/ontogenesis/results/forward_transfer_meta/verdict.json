@@ -1,0 +1,165 @@
+{
+ "predictions": {
+  "V1": {
+   "held": true,
+   "dense": [
+    1.0,
+    [
+     1.0,
+     1.0,
+     1.0
+    ]
+   ],
+   "loop": [
+    0.9861,
+    [
+     0.9833,
+     1.0,
+     0.975
+    ]
+   ],
+   "menu": [
+    0.8555,
+    [
+     0.8083,
+     0.8583,
+     0.9
+    ]
+   ]
+  },
+  "V2": {
+   "held": true,
+   "dense": [
+    0.0444,
+    [
+     0.0333,
+     0.0583,
+     0.0417
+    ]
+   ]
+  },
+  "V3": {
+   "held": false,
+   "loop": [
+    0.05,
+    [
+     0.0667,
+     0.0333,
+     0.05
+    ]
+   ]
+  },
+  "V4": {
+   "held": false,
+   "menu": [
+    0.0639,
+    [
+     0.0667,
+     0.05,
+     0.075
+    ]
+   ]
+  },
+  "V5": {
+   "held": true,
+   "max_over_k": {
+    "dense": 0.1191,
+    "loop": 0.0476,
+    "menu": 0.0833
+   }
+  }
+ },
+ "table": {
+  "dense": {
+   "meta_probe/trained/k2": 0.9048,
+   "meta_probe/trained/k4": 0.9912,
+   "meta_probe/trained/k8": 1.0,
+   "meta_probe/trained/k16": 1.0,
+   "meta_probe/novel_comp/k2": 0.0179,
+   "meta_probe/novel_comp/k4": 0.0373,
+   "meta_probe/novel_comp/k8": 0.0444,
+   "meta_probe/novel_comp/k16": 0.0417,
+   "meta_probe/novel_prim/k2": 0.0397,
+   "meta_probe/novel_prim/k4": 0.0439,
+   "meta_probe/novel_prim/k8": 0.0278,
+   "meta_probe/novel_prim/k16": 0.1191,
+   "registered_probe/novel_comp/k2": 0.0179,
+   "registered_probe/novel_comp/k4": 0.0197,
+   "registered_probe/novel_comp/k8": 0.0194,
+   "registered_probe/novel_comp/k16": 0.0238,
+   "registered_probe/novel_prim/k2": 0.0397,
+   "registered_probe/novel_prim/k4": 0.0307,
+   "registered_probe/novel_prim/k8": 0.0333,
+   "registered_probe/novel_prim/k16": 0.0119
+  },
+  "loop": {
+   "meta_probe/trained/k2": 0.7163,
+   "meta_probe/trained/k4": 0.9342,
+   "meta_probe/trained/k8": 0.9861,
+   "meta_probe/trained/k16": 1.0,
+   "meta_probe/novel_comp/k2": 0.0437,
+   "meta_probe/novel_comp/k4": 0.0482,
+   "meta_probe/novel_comp/k8": 0.05,
+   "meta_probe/novel_comp/k16": 0.0417,
+   "meta_probe/novel_prim/k2": 0.0278,
+   "meta_probe/novel_prim/k4": 0.0263,
+   "meta_probe/novel_prim/k8": 0.0278,
+   "meta_probe/novel_prim/k16": 0.0476,
+   "registered_probe/novel_comp/k2": 0.0397,
+   "registered_probe/novel_comp/k4": 0.0636,
+   "registered_probe/novel_comp/k8": 0.0222,
+   "registered_probe/novel_comp/k16": 0.0357,
+   "registered_probe/novel_prim/k2": 0.0357,
+   "registered_probe/novel_prim/k4": 0.022,
+   "registered_probe/novel_prim/k8": 0.0167,
+   "registered_probe/novel_prim/k16": 0.0833
+  },
+  "menu": {
+   "meta_probe/trained/k2": 0.748,
+   "meta_probe/trained/k4": 0.8487,
+   "meta_probe/trained/k8": 0.8555,
+   "meta_probe/trained/k16": 0.8631,
+   "meta_probe/novel_comp/k2": 0.0357,
+   "meta_probe/novel_comp/k4": 0.0483,
+   "meta_probe/novel_comp/k8": 0.0639,
+   "meta_probe/novel_comp/k16": 0.0476,
+   "meta_probe/novel_prim/k2": 0.0357,
+   "meta_probe/novel_prim/k4": 0.0526,
+   "meta_probe/novel_prim/k8": 0.0778,
+   "meta_probe/novel_prim/k16": 0.0833,
+   "registered_probe/novel_comp/k2": 0.0397,
+   "registered_probe/novel_comp/k4": 0.0373,
+   "registered_probe/novel_comp/k8": 0.05,
+   "registered_probe/novel_comp/k16": 0.0417,
+   "registered_probe/novel_prim/k2": 0.0754,
+   "registered_probe/novel_prim/k4": 0.057,
+   "registered_probe/novel_prim/k8": 0.0722,
+   "registered_probe/novel_prim/k16": 0.0833
+  }
+ },
+ "novel_comp_shown_fit": {
+  "dense": {
+   "novel_comp/k2": 0.7083,
+   "novel_comp/k4": 0.3438,
+   "novel_comp/k8": 0.1562,
+   "novel_comp/k16": 0.112
+  },
+  "loop": {
+   "novel_comp/k2": 0.625,
+   "novel_comp/k4": 0.3438,
+   "novel_comp/k8": 0.1458,
+   "novel_comp/k16": 0.1198
+  },
+  "menu": {
+   "novel_comp/k2": 0.625,
+   "novel_comp/k4": 0.375,
+   "novel_comp/k8": 0.2344,
+   "novel_comp/k16": 0.1458
+  }
+ },
+ "params": {
+  "dense": 24615,
+  "loop": 20647,
+  "menu": 8480
+ }
+}
