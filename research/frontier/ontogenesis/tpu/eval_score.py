@@ -51,6 +51,7 @@ if __name__ == "__main__":
     ap.add_argument("--size", required=True); ap.add_argument("--ckpt", required=True); ap.add_argument("--tasks", required=True)
     ap.add_argument("--only", default=""); ap.add_argument("--control", default="", choices=("", "random", "nocontext"))
     ap.add_argument("--batch", type=int, default=16); ap.add_argument("--limit", type=int, default=0); ap.add_argument("--out", default="")
+    ap.add_argument("--dump", default="", help="also write per-item choice scores (json) for flip analysis");
     ap.add_argument("--no-eos", action="store_true"); ap.add_argument("--f32", action="store_true"); ap.add_argument("--bare-len", action="store_true")
     a = ap.parse_args(); c = SIZES[a.size]; t0 = time.time()
     params = init(jax.random.PRNGKey(0), c) if a.control == "random" else load_params(a.ckpt); data = json.load(open(a.tasks))
@@ -74,6 +75,8 @@ if __name__ == "__main__":
         for r, x in enumerate(b):
             S[x[:3]] = (float(lp[r, x[4]:x[5]].sum()), bool(ok[r, x[4]:x[5]].all()))
     res = {}
+    if a.dump:
+        json.dump({f"{t}|{e}|{j}": v[0] for (t, e, j), v in S.items()}, open(a.dump, "w"))
     for task, rows in data.items():
         if task == "lambada":
             ll = np.array([S[(task, e, 0)][0] for e in range(len(rows))])

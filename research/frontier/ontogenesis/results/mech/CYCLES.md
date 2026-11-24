@@ -26,3 +26,29 @@ Learned policy, share of kept tokens that are value tokens (0.5 = indifferent): 
 - Success rates must be measured with many seeds.
 - The memory read layer needs an easier optimisation path.
 - **Next (cycle 1b):** 8 seeds, 8,000 steps, M in {8, 16}; report the success rate (with a Wilson interval) and accuracy among successful runs.
+
+## E0a: scorer conditions on our 101M checkpoint (2026-11-23)
+
+Checkpoint `scale1-v6e/dense-L-lr0.001-s1000-tok8e+08-dp4-hs-v2.npz` (sha256 8745652c49cf…). Task file sha256 ec09b3fca312…, the same file as on the bucket (CRC32C match). Run on the laptop CPU with JAX 0.6.2; the stored reference was scored on a TPU. Raw files: `results/e0a/`.
+
+| Change | Largest effect observed | Scope |
+|---|---|---|
+| CPU against TPU, both bf16 | ≤ 0.003 accuracy; LAMBADA perplexity 141.69 vs 141.76 | this checkpoint, these 7 tasks |
+| float32 against bf16, same CPU | up to 0.008 (WinoGrande +0.008; ARC-C acc_norm −0.005) | same |
+| No end-of-text prefix | LAMBADA accuracy −0.012 and perplexity 141.7 → 152.6; other tasks ≤ 0.004 | same |
+| lm-eval length rule (choice without leading space) | ARC-E acc_norm −0.008; OBQA acc_norm +0.006 | acc_norm only |
+
+**Item-level, bf16 against float32:**
+- WinoGrande: 22 of 1,267 items (1.7%) change their argmax. ARC-Challenge: 7 of 1,172 (0.6%).
+- The flipped items are near-ties: median float32 margin 0.028 and 0.012 nats, against medians of 0.51 and 1.93 nats over all items.
+- bf16 shifts log-probabilities by a median of about 0.03 nats (99th percentile about 0.13).
+
+**Reading:**
+- **Hardware is not the main source.** The earlier "0.003 floor" is withdrawn. Precision moves scores more than hardware does, and how much depends on how many near-ties a benchmark has.
+- **The end-of-text prefix is a real bias in our favour** on LAMBADA (about 1.2 points of accuracy) when comparing with the Hugging Face models, which were scored without it.
+- **Sources of uncertainty stay separate:** implementation and precision (this table), seed variation (measured per experiment), benchmark sampling (bootstrap), and evaluation configuration (prefix, length rule).
+
+**Decisions:**
+- Score reference comparisons in float32.
+- Score our models both with and without the prefix when comparing with public models.
+- Report acc_norm with the lm-eval length rule.

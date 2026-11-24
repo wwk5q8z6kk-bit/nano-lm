@@ -1,0 +1,53 @@
+{
+ "size": "L",
+ "ckpt": "/Volumes/Express1M2/nanolm-lab/ckpt/e0a/dense-L-lr0.001-s1000-tok8e+08-dp4-hs-v2.npz",
+ "control": "none",
+ "tasks": {
+  "hellaswag": {
+   "acc": 0.2803,
+   "n": 10042,
+   "chance": 0.25,
+   "acc_norm": 0.294
+  },
+  "arc_easy": {
+   "acc": 0.4651,
+   "n": 2376,
+   "chance": 0.25,
+   "acc_norm": 0.4322
+  },
+  "arc_challenge": {
+   "acc": 0.198,
+   "n": 1172,
+   "chance": 0.25,
+   "acc_norm": 0.2372
+  },
+  "piqa": {
+   "acc": 0.6045,
+   "n": 1838,
+   "chance": 0.5,
+   "acc_norm": 0.6045
+  },
+  "winogrande": {
+   "acc": 0.5272,
+   "n": 1267,
+   "chance": 0.5
+  },
+  "openbookqa": {
+   "acc": 0.168,
+   "n": 500,
+   "chance": 0.25,
+   "acc_norm": 0.276
+  },
+  "lambada": {
+   "acc": 0.2371,
+   "ppl": 141.69,
+   "n": 5153
+  }
+ },
+ "seconds": 3371,
+ "eos_prefix": true,
+ "logits": "bfloat16",
+ "norm_length": "with_space",
+ "ckpt_sha256": "8745652c49cf62018e4e1625507ff96882abdfa7a4ad8663b71af1df9d87fa4c",
+ "tasks_sha256": "ec09b3fca3121e5781ea2f77a6abfeac9d89286f45d7379ff53a894f9c06a424"
+}
