@@ -1,0 +1,141 @@
+{
+ "predictions": {
+  "N1": {
+   "held": true,
+   "none": [
+    0.2243,
+    0.2383,
+    0.1815
+   ],
+   "recorded": [
+    0.2243,
+    0.2383,
+    0.1815
+   ]
+  },
+  "N2": {
+   "held": false,
+   "corrected_old": [
+    0.989,
+    0.9892,
+    0.9852
+   ],
+   "rule_old_corrected": [
+    0.9559,
+    0.9373,
+    0.926
+   ]
+  },
+  "N3": {
+   "held": false,
+   "owm_1e-4": [
+    0.9595,
+    0.9423,
+    0.9344
+   ],
+   "none": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  "N4": {
+   "held": false,
+   "owm_1e-4": [
+    0.5672,
+    0.5806,
+    0.5341
+   ],
+   "none": [
+    0.9966,
+    0.9972,
+    0.9969
+   ]
+  },
+  "N5": {
+   "held": true,
+   "corrected_old": [
+    0.9743,
+    0.9747,
+    0.9741
+   ],
+   "acquire_now": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  "N6": {
+   "held": true,
+   "room_end": {
+    "none": [
+     null,
+     null,
+     null
+    ],
+    "owm_1": [
+     0.0003,
+     0.0004,
+     0.0003
+    ],
+    "owm_1e-2": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "owm_1e-4": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "corr_replay": [
+     null,
+     null,
+     null
+    ]
+   }
+  }
+ },
+ "table": {
+  "none": {
+   "acquire_now": 1.0,
+   "corrected_now": 0.9984,
+   "corrected_old": 0.2147,
+   "rule_old_corrected": 0.8345,
+   "rule_old_clean": 0.9993,
+   "infer_late": 0.9969
+  },
+  "owm_1": {
+   "acquire_now": 0.9993,
+   "corrected_now": 0.9872,
+   "corrected_old": 0.9854,
+   "rule_old_corrected": 0.9996,
+   "rule_old_clean": 0.9997,
+   "infer_late": 0.6625
+  },
+  "owm_1e-2": {
+   "acquire_now": 0.9484,
+   "corrected_now": 0.9888,
+   "corrected_old": 0.9878,
+   "rule_old_corrected": 0.9406,
+   "rule_old_clean": 0.947,
+   "infer_late": 0.562
+  },
+  "owm_1e-4": {
+   "acquire_now": 0.9454,
+   "corrected_now": 0.9888,
+   "corrected_old": 0.9878,
+   "rule_old_corrected": 0.9397,
+   "rule_old_clean": 0.944,
+   "infer_late": 0.5606
+  },
+  "corr_replay": {
+   "acquire_now": 1.0,
+   "corrected_now": 0.9679,
+   "corrected_old": 0.9744,
+   "rule_old_corrected": 0.4035,
+   "rule_old_clean": 0.9993,
+   "infer_late": 0.9835
+  }
+ }
+}

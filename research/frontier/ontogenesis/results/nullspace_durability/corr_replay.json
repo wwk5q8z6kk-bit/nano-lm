@@ -1,0 +1,38 @@
+[
+ {
+  "arm": "corr_replay",
+  "seed": 8001,
+  "acquire_now": 1.0,
+  "corrected_now": 0.9696,
+  "rule_old_corrected": 0.4219,
+  "rule_old_clean": 0.9996,
+  "corrected_old": 0.9743,
+  "infer_late": 0.9784,
+  "room_end": null,
+  "in_store": 19
+ },
+ {
+  "arm": "corr_replay",
+  "seed": 8002,
+  "acquire_now": 1.0,
+  "corrected_now": 0.9679,
+  "rule_old_corrected": 0.3836,
+  "rule_old_clean": 0.9996,
+  "corrected_old": 0.9747,
+  "infer_late": 0.9875,
+  "room_end": null,
+  "in_store": 20
+ },
+ {
+  "arm": "corr_replay",
+  "seed": 8003,
+  "acquire_now": 1.0,
+  "corrected_now": 0.9663,
+  "rule_old_corrected": 0.4051,
+  "rule_old_clean": 0.9988,
+  "corrected_old": 0.9741,
+  "infer_late": 0.9847,
+  "room_end": null,
+  "in_store": 21
+ }
+]
