@@ -271,3 +271,21 @@ Full write-ups with registered predictions are in `INVESTIGATION.md`.
 | SmolLM2 scoring: laptop | none |
 
 All machines and Cloud Scheduler jobs are deleted (checked 2026-11-23, 14:25 UTC).
+
+## Independent evidence audit — 2026-11-24 (proposed, additive)
+
+See [dated evidence and decisions](reviews/2026-11-24-evidence-and-decisions.md), pinned to research head `f9c6debc5b32e5a04568efc4288a1ea729e5bc3d` and separate PR heads. Earlier findings, corrections and verdicts remain intact. Source-reported results are not fresh reruns.
+
+| Item | Scoped status / new evidence |
+|---|---|
+| Layer conversion | Stage A C1 failed (3/30 versus 27/30); inherited mixers improved loss versus random. Fixed-seed A2 reproduction reported; no adoption. |
+| Attention placement | P1–P3 source-reported pass on separate conversion-evaluation text (3.3452 vs 3.5563 random mean, 20/20 layouts); one trained mixer set; registration chronology and data hashes still to audit. |
+| Stage B | Fair-control amendment before reported run; no completion verified. B2 reference gap may credit retained attention; report pre/post recovery descriptively without changing registration. |
+| Scorer | Universal 0.003 floor withdrawn; compare float32/no-prefix/bare lengths with identical tasks and paired uncertainty. |
+| G07 forward transfer | Merged pilot and draft few-shot follow-up fail novel composition despite recognition; hold-out combination/factorisation control next. |
+| Mechanisms | MQAR exploratory, write-policy benefit unproven; pointer-chasing baseline fails, switch to registered BINDINGS. |
+| Hardware | T4 kernel executes; recurrent training slower than dense in tested configurations, all-reduce failed; R0 authorization-gated. |
+| V6 #195 | Instrument receipt PASS 10/10; native model NOT_RUN on instrument, contamination NOT_CHECKED, adoption NOT_DECIDED; draft and divergent. |
+| Separate draft studies | #203 seven-scalar value residual promising at 14M only; registered routing/coda decisions retained. #205/#206 duplicate 40M baseline; #209 copy head CPU checks only. |
+
+Priority: source/chronology and scorer audit, frozen contextual evaluation, then independent value-res and hybrid-placement checks. FlashMorph2 is directly relevant prior art for post-recovery layer selection. No raw results or prior ledger rows changed.
