@@ -156,3 +156,42 @@ If the baseline cannot learn k = 2 within 20,000 steps with the curriculum, the 
 - **Descriptive only:** language-model loss of six models (teacher; all layers converted; 22 converted with the highest-error 8 layers kept as attention; random 22/8 split; all converted from random initialisation; all converted but untrained).
 - **Expectation, written before the run:** C1 is a strict bar and may fail, because the converted layer has no rotary positions and is trained on 65k tokens for 300 steps. A fail would say the strict bar is too high for this budget; it would not show the pipeline is broken. The inherit-versus-random comparison and the language-model losses carry the information.
 - **Local debug run (not a result):** 3 steps on CPU with a naive recurrence, three-step errors near 1; this checked only that the hooks, the grouped-query weight mapping (verified exact against the teacher's projections), training loop and hybrid assembly run.
+
+## Stage A result: SmolLM2-135M attention → Gated DeltaNet, layer by layer (2026-11-24)
+
+Kaggle T4, fla 0.6.0, `convert_stage_a.py` at commit 64a4b7d; 30 layers; per layer 300 steps on 65,536 teacher-tokenised training tokens, 16,384 held-out tokens; error = ||y − t||² / ||t||². One seed per layer and arm. Raw: `results/stage-a/stage_a.json`.
+
+**Registered criteria**
+- **C1: FAIL.** 3 of 30 layers (0, 1 and 24) reached ≤ 0.1 × the untrained-random error; the bar was 27 of 30.
+- **C2: pass.** No non-finite loss in any of the 60 training runs.
+- **C3:** conversion training ran at a median 154,535 tokens/s per layer module, peak memory 1.18 GiB (single-layer training, not a full model).
+
+**Per-layer fit (descriptive)**
+- Median relative error after training: inherited initialisation **0.323**, random initialisation **0.388**; untrained errors are 1.06 and 1.00.
+- Inheriting is better in **28 of 30 layers** (one-sided sign test p ≈ 4×10⁻⁸). The advantage is modest, a median 17% lower error, and both arms are far from exact.
+- 17 of 30 inherited layers start *worse than outputting zero* (error > 1.05): copying the projections does not reproduce the attention layer, as expected without positional encoding, with normalised keys and with the recurrent update.
+- Errors vary a lot by depth: layers 0, 1 and 24 are easy (0.016, 0.061, 0.046); layer 23 is the hardest (0.577); most others sit between 0.2 and 0.42.
+
+**Language-model loss without any end-to-end training** (nats per token, 16,384 held-out tokens, paired on the same tokens, one seed):
+
+| Model | Layers converted | Loss | Perplexity | Gap to teacher |
+|---|---|---|---|---|
+| Teacher | 0 | 2.910 | 18.4 | — |
+| 22 converted, 8 *random* layers kept as attention (one draw) | 22 | 3.506 | 33.3 | +0.595 |
+| 22 converted, the 8 *highest-error* layers kept as attention | 22 | 3.741 | 42.1 | +0.831 |
+| All converted, inherited, trained | 30 | 4.031 | 56.3 | +1.121 |
+| All converted, random init, trained | 30 | 4.514 | 91.3 | +1.604 |
+| All converted, inherited, untrained | 30 | 13.187 | 533,492 | +10.277 |
+
+**Reading, scoped to this run:**
+- **Inheritance helps both ways it was measured:** lower per-layer error in 28 of 30 layers, and 0.48 nats lower language-model loss for the all-converted model (4.03 vs 4.51). This is layer-wise alignment only, one seed, and says nothing yet about equal-token end-to-end training (stage B).
+- **The pipeline works,** but layer-wise alignment alone leaves a large gap (0.6 to 1.1 nats), so end-to-end training is needed, as expected.
+- **Data-driven placement by alignment error is not supported:** keeping the highest-error layers as attention (3.74) did *worse* than one random draw (3.51). One random draw has unknown variance, so this is "not supported", not "refuted". Layer-wise relative error on teacher-forced inputs is a poor guide to which layers matter for the model's loss.
+
+**What changed in the design:** placement is measured directly by *leave-one-out importance* (convert one layer, measure the loss change) with several random draws for the baseline spread. That extension, plus a rerun that reproduces the stage-A numbers (a check on run-to-run variation), is in `convert_stage_a2.py`. It is exploratory and does not alter the registered criteria above.
+
+## Pointer chasing: baseline difficulty pilot, result (2026-11-24)
+
+`mech_hops.py --curriculum`, untied baseline, one seed, 20,000 steps, hops 1 → 1–2 → 1–3 → 1–4 by quarters; registered success: accuracy ≥ 0.9 at k = 2, 3 and 4.
+- One-hop accuracy reached 0.84; accuracy for **k = 2…8 stayed at chance (0.07–0.09)**, including the trained range 2–4. Training loss fell to 0.36 during the one-hop phase and returned to about 1.97 once multi-hop queries entered.
+- **Criterion failed**, so under the rule written in advance the task is **replaced, not tuned further**. The looping hypothesis moves to the registered BINDINGS task, where delayed learning is already characterised (looped and whole-block reuse learned two-step chains within 26,000 steps). This was one seed on a 0.3M-parameter model; that scope limits the conclusion to "this task and model size do not support a baseline", not to anything about looping.
