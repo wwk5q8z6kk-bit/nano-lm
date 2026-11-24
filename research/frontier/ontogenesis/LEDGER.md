@@ -271,3 +271,12 @@ Full write-ups with registered predictions are in `INVESTIGATION.md`.
 | SmolLM2 scoring: laptop | none |
 
 All machines and Cloud Scheduler jobs are deleted (checked 2026-11-23, 14:25 UTC).
+
+## Proposed P0 second-pass audit — 2026-11-24 (unmerged, not a verdict promotion)
+
+[Full source-pinned provenance, reproduction and prior-art review](reviews/2026-11-24-p0-registration-value-residual-prior-art.md), prepared separately from draft reviews #201/#207/#210. Research head `f9c6debc5b32e5a04568efc4288a1ea729e5bc3d` has **no new commits** since the first November 24 cutoff. This addendum supplies new *verification and literature context*, not a new completed experiment.
+
+- **Placement:** GitHub commit order confirms pre-result registration (`f938f665` 04:15:53Z; result `f9c6debc` 04:40:03Z). P1–P3 recorded values recalculate as reported. However training weights, dataset split and teacher revision are not independently content-pinned, 20 random layouts share one mixer-training seed, and no recovery gain is established.
+- **Value residual / PR #203:** all 15 arm/seed records report `completed: true` and step 3000. The raw, paired 3-seed values reproduce **+0.016633 BPB** over dense; this exceeds preregistered P3's upper **+0.006** bound (positive surprise, not an interval-confirming forecast). The existing D1/D2 mechanical verdicts and negative architecture findings remain unchanged. The scorer lacks completion enforcement and equal-wall-clock significance gating; both unresolved review comments warrant future separate versioned checks, not retrospective score changes.
+- **Prior art/novelty:** First-layer **value residual connections** predate Nano LM (ResFormer, ACL 2025, arXiv:2410.17897); Bank of Values (EMNLP 2026) and Depth-Attention (arXiv:2606.05014) are important comparators. Value residual is an encouraging **local result using prior-art-related machinery**, not a demonstrated new primitive. External author results are not Nano replications.
+- **Review status:** PR #210 has no submitted review; Bugbot reported a usage-limit failure. No automated check is scientific approval. Retain all prior rows and failed predictions; no architecture promotion or merge.
