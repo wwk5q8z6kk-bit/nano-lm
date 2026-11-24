@@ -1,0 +1,618 @@
+/snap/google-cloud-cli/519/lib/third_party/google/api_core/_python_version_support.py:237: FutureWarning: You are using a non-supported Python version (3.10.12). Google will not post any further updates to google.api_core supporting this Python version. Please upgrade to the latest Python version, or at least Python 3.11, and then update google.api_core.
+  warnings.warn(message, FutureWarning)
+Copying gs://nanolm-lab-eu-0478806098/corpus/v2/manifest.json to file:///home/mac/data2/manifest.json
+Copying gs://nanolm-lab-eu-0478806098/corpus/v2/tokenizer_32k.json to file:///home/mac/data2/tokenizer_32k.json
+  
+Copying gs://nanolm-lab-eu-0478806098/corpus/v2/train.bin to file:///home/mac/data2/train.bin
+Copying gs://nanolm-lab-eu-0478806098/corpus/v2/val_code.bin to file:///home/mac/data2/val_code.bin
+Copying gs://nanolm-lab-eu-0478806098/corpus/v2/val_math.bin to file:///home/mac/data2/val_math.bin
+Copying gs://nanolm-lab-eu-0478806098/corpus/v2/val_textbook.bin to file:///home/mac/data2/val_textbook.bin
+Copying gs://nanolm-lab-eu-0478806098/corpus/v2/val_web.bin to file:///home/mac/data2/val_web.bin
+.....................................................................................................................................................................................................................................................................................
+
+Average throughput: 349.8MiB/s
+17:32:43 rate for 386M: 0.002
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "name": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "cfg": {"d": 1280, "layers": 20, "ffn": 3456, "heads": 20, "kv": 4}, "lr": 0.002, "warmup": 500, "bs": 64, "seq": 512, "micro": 1, "seed": 1000, "steps": 234950, "train_tokens": 7698841600, "corpus_tokens": 10000000000, "dtype": "bfloat16", "sampler": "uniform crops drawn on the host with numpy default_rng(seed + 1)", "jax": "0.6.2", "device": "TPU_0(process=0,(0,0,0,0))", "device_kind": "TPU v5 lite", "code_sha256": "547d5610d3a760c1", "n_devices": 4, "wd": 0.1, "wd_on": "all", "lr_floor": 0.01, "opt": "muon", "dp": 4, "objective": "cross-entropy", "params": 386062080}
+jax.errors.SimplifiedTraceback: For simplicity, JAX has removed its internal frames from the traceback of the following exception. Set JAX_TRACEBACK_FILTERING=off to include these.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mac/onto/tpu/train_jax.py", line 339, in <module>
+    if not a.multi: raise SystemExit(run(a))
+  File "/home/mac/onto/tpu/train_jax.py", line 291, in run
+    t = time.time(); params, st, ls = chunk(params, st, put_toks(toks), tp); ls = np.asarray(ls); dtc = time.time() - t
+jaxlib._jax.XlaRuntimeError: RESOURCE_EXHAUSTED: Error loading program: Attempting to reserve 9.71G at the bottom of memory. That was not possible. There are 9.68G free, 0B reserved, and 9.68G reservable.: while running replica 0 and partition 0 of a replicated computation (other replicas may have failed as well).
+17:33:49 XXL micro 1 exit 1
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "name": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "cfg": {"d": 1280, "layers": 20, "ffn": 3456, "heads": 20, "kv": 4}, "lr": 0.002, "warmup": 500, "bs": 64, "seq": 512, "micro": 2, "seed": 1000, "steps": 234950, "train_tokens": 7698841600, "corpus_tokens": 10000000000, "dtype": "bfloat16", "sampler": "uniform crops drawn on the host with numpy default_rng(seed + 1)", "jax": "0.6.2", "device": "TPU_0(process=0,(0,0,0,0))", "device_kind": "TPU v5 lite", "code_sha256": "547d5610d3a760c1", "n_devices": 4, "wd": 0.1, "wd_on": "all", "lr_floor": 0.01, "opt": "muon", "dp": 4, "objective": "cross-entropy", "params": 386062080}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 500, "loss": 4.4483, "tok_s": 105904}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 1000, "loss": 3.86, "tok_s": 105905}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 1500, "loss": 3.6297, "tok_s": 105904}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 2000, "loss": 3.5308, "tok_s": 105904}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 2000, "tokens": 65536000, "hours": 0.1846, "train_loss": 3.5308, "tokens_per_second": 105904, "web": 1.2254, "textbook": 0.9339, "math": 1.3419, "code": 1.0619, "mix": 1.1831, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 2500, "loss": 3.4463, "tok_s": 105904}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 3000, "loss": 3.3558, "tok_s": 105904}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 3500, "loss": 3.3359, "tok_s": 105904}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 4000, "loss": 3.2818, "tok_s": 105903}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 4000, "tokens": 131072000, "hours": 0.3605, "train_loss": 3.2818, "tokens_per_second": 105903, "web": 1.1614, "textbook": 0.8579, "math": 1.2573, "code": 0.9693, "mix": 1.1114, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 4500, "loss": 3.2463, "tok_s": 105903}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 5000, "loss": 3.2342, "tok_s": 105903}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 5500, "loss": 3.2316, "tok_s": 105903}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 6000, "loss": 3.1934, "tok_s": 105903}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 6000, "tokens": 196608000, "hours": 0.534, "train_loss": 3.1934, "tokens_per_second": 105903, "web": 1.135, "textbook": 0.8263, "math": 1.217, "code": 0.9156, "mix": 1.0792, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 6500, "loss": 3.2093, "tok_s": 105903}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 7000, "loss": 3.1607, "tok_s": 105903}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 7500, "loss": 3.1551, "tok_s": 105903}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 8000, "loss": 3.1592, "tok_s": 105903}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 8000, "tokens": 262144000, "hours": 0.7073, "train_loss": 3.1592, "tokens_per_second": 105903, "web": 1.1192, "textbook": 0.8077, "math": 1.1907, "code": 0.9041, "mix": 1.0622, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 8500, "loss": 3.1482, "tok_s": 105903}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 9000, "loss": 3.1429, "tok_s": 105903}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 9500, "loss": 3.1402, "tok_s": 105903}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 10000, "loss": 3.1154, "tok_s": 105903}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 10000, "tokens": 327680000, "hours": 0.8807, "train_loss": 3.1154, "tokens_per_second": 105903, "web": 1.1108, "textbook": 0.7957, "math": 1.1833, "code": 0.8903, "mix": 1.0528, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 10500, "loss": 3.1255, "tok_s": 105903}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 11000, "loss": 3.1117, "tok_s": 105903}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 11500, "loss": 3.1011, "tok_s": 105903}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 12000, "loss": 3.1102, "tok_s": 105903}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 12000, "tokens": 393216000, "hours": 1.0599, "train_loss": 3.1102, "tokens_per_second": 105903, "web": 1.1055, "textbook": 0.7873, "math": 1.169, "code": 0.8771, "mix": 1.045, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 12500, "loss": 3.0885, "tok_s": 105903}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 13000, "loss": 3.0888, "tok_s": 105903}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 13500, "loss": 3.1169, "tok_s": 105903}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 14000, "loss": 3.0933, "tok_s": 105903}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 14000, "tokens": 458752000, "hours": 1.2333, "train_loss": 3.0933, "tokens_per_second": 105903, "web": 1.098, "textbook": 0.7812, "math": 1.1574, "code": 0.8789, "mix": 1.0382, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 14500, "loss": 3.066, "tok_s": 105903}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 15000, "loss": 3.091, "tok_s": 105903}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 15500, "loss": 3.0861, "tok_s": 105903}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 16000, "loss": 3.0952, "tok_s": 105903}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 16000, "tokens": 524288000, "hours": 1.4067, "train_loss": 3.0952, "tokens_per_second": 105903, "web": 1.0954, "textbook": 0.7762, "math": 1.1553, "code": 0.878, "mix": 1.0356, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 16500, "loss": 3.091, "tok_s": 105903}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 17000, "loss": 3.0785, "tok_s": 105903}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 17500, "loss": 3.0719, "tok_s": 105904}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 18000, "loss": 3.0725, "tok_s": 105904}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 18000, "tokens": 589824000, "hours": 1.5801, "train_loss": 3.0725, "tokens_per_second": 105904, "web": 1.0915, "textbook": 0.7711, "math": 1.1515, "code": 0.8641, "mix": 1.0304, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 18500, "loss": 3.0753, "tok_s": 105904}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 19000, "loss": 3.0388, "tok_s": 105904}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 19500, "loss": 3.0595, "tok_s": 105904}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 20000, "loss": 3.0674, "tok_s": 105904}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 20000, "tokens": 655360000, "hours": 1.7535, "train_loss": 3.0674, "tokens_per_second": 105904, "web": 1.0903, "textbook": 0.7695, "math": 1.148, "code": 0.8593, "mix": 1.0284, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 20500, "loss": 3.0605, "tok_s": 105904}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 21000, "loss": 3.034, "tok_s": 105904}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 21500, "loss": 3.0748, "tok_s": 105904}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 22000, "loss": 3.0563, "tok_s": 105904}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 22000, "tokens": 720896000, "hours": 1.9401, "train_loss": 3.0563, "tokens_per_second": 105904, "web": 1.0869, "textbook": 0.7672, "math": 1.1416, "code": 0.8579, "mix": 1.025, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 22500, "loss": 3.0674, "tok_s": 105904}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 23000, "loss": 3.058, "tok_s": 105904}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 23500, "loss": 3.0324, "tok_s": 105904}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 24000, "loss": 3.0079, "tok_s": 105904}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 24000, "tokens": 786432000, "hours": 2.1135, "train_loss": 3.0079, "tokens_per_second": 105904, "web": 1.0853, "textbook": 0.764, "math": 1.1434, "code": 0.8532, "mix": 1.0232, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 24500, "loss": 3.0545, "tok_s": 105904}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 25000, "loss": 3.0451, "tok_s": 105904}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 25500, "loss": 3.0405, "tok_s": 105904}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 26000, "loss": 3.0287, "tok_s": 105904}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 26000, "tokens": 851968000, "hours": 2.2869, "train_loss": 3.0287, "tokens_per_second": 105904, "web": 1.0828, "textbook": 0.7628, "math": 1.141, "code": 0.8538, "mix": 1.0213, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 26500, "loss": 3.0323, "tok_s": 105904}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 27000, "loss": 3.0114, "tok_s": 105904}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 27500, "loss": 3.0321, "tok_s": 105904}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 28000, "loss": 3.0048, "tok_s": 105904}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 28000, "tokens": 917504000, "hours": 2.4603, "train_loss": 3.0048, "tokens_per_second": 105904, "web": 1.0796, "textbook": 0.7575, "math": 1.135, "code": 0.8501, "mix": 1.0174, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 28500, "loss": 3.032, "tok_s": 105904}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 29000, "loss": 3.0396, "tok_s": 105904}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 29500, "loss": 3.007, "tok_s": 105904}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 30000, "loss": 3.0339, "tok_s": 105904}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 30000, "tokens": 983040000, "hours": 2.6335, "train_loss": 3.0339, "tokens_per_second": 105904, "web": 1.0784, "textbook": 0.756, "math": 1.1324, "code": 0.8471, "mix": 1.0157, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 30500, "loss": 3.022, "tok_s": 105904}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 31000, "loss": 3.0227, "tok_s": 105904}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 31500, "loss": 3.0199, "tok_s": 105904}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 32000, "loss": 3.0295, "tok_s": 105904}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 32000, "tokens": 1048576000, "hours": 2.8194, "train_loss": 3.0295, "tokens_per_second": 105904, "web": 1.078, "textbook": 0.7534, "math": 1.1327, "code": 0.8484, "mix": 1.0154, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 32500, "loss": 3.0036, "tok_s": 105904}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 33000, "loss": 3.0037, "tok_s": 105904}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 33500, "loss": 3.0033, "tok_s": 105904}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 34000, "loss": 3.0124, "tok_s": 105904}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 34000, "tokens": 1114112000, "hours": 2.9927, "train_loss": 3.0124, "tokens_per_second": 105904, "web": 1.0769, "textbook": 0.7532, "math": 1.1326, "code": 0.8421, "mix": 1.0139, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 34500, "loss": 2.9817, "tok_s": 105904}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 35000, "loss": 3.004, "tok_s": 105904}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 35500, "loss": 3.0087, "tok_s": 105904}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 36000, "loss": 3.0073, "tok_s": 105904}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 36000, "tokens": 1179648000, "hours": 3.1661, "train_loss": 3.0073, "tokens_per_second": 105904, "web": 1.0738, "textbook": 0.7526, "math": 1.1288, "code": 0.8395, "mix": 1.0111, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 36500, "loss": 2.9931, "tok_s": 105904}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 37000, "loss": 3.0057, "tok_s": 105904}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 37500, "loss": 2.9976, "tok_s": 105904}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 38000, "loss": 3.0002, "tok_s": 105904}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 38000, "tokens": 1245184000, "hours": 3.3395, "train_loss": 3.0002, "tokens_per_second": 105904, "web": 1.0735, "textbook": 0.7493, "math": 1.1232, "code": 0.8359, "mix": 1.0093, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 38500, "loss": 2.99, "tok_s": 105904}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 39000, "loss": 3.012, "tok_s": 105904}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 39500, "loss": 3.0005, "tok_s": 105904}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 40000, "loss": 3.0022, "tok_s": 105904}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 40000, "tokens": 1310720000, "hours": 3.5129, "train_loss": 3.0022, "tokens_per_second": 105904, "web": 1.0716, "textbook": 0.7475, "math": 1.1224, "code": 0.8372, "mix": 1.0079, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 40500, "loss": 3.0014, "tok_s": 105904}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 41000, "loss": 3.0052, "tok_s": 105903}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 41500, "loss": 2.9837, "tok_s": 105903}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 42000, "loss": 3.0037, "tok_s": 105903}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 42000, "tokens": 1376256000, "hours": 3.6995, "train_loss": 3.0037, "tokens_per_second": 105903, "web": 1.0696, "textbook": 0.7473, "math": 1.1199, "code": 0.8336, "mix": 1.0059, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 42500, "loss": 2.9949, "tok_s": 105903}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 43000, "loss": 2.9988, "tok_s": 105903}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 43500, "loss": 2.9779, "tok_s": 105902}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 44000, "loss": 3.0043, "tok_s": 105902}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 44000, "tokens": 1441792000, "hours": 3.8735, "train_loss": 3.0043, "tokens_per_second": 105902, "web": 1.0682, "textbook": 0.7446, "math": 1.1236, "code": 0.8345, "mix": 1.0053, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 44500, "loss": 2.9792, "tok_s": 105902}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 45000, "loss": 2.9615, "tok_s": 105902}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 45500, "loss": 2.9883, "tok_s": 105902}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 46000, "loss": 2.9713, "tok_s": 105902}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 46000, "tokens": 1507328000, "hours": 4.0475, "train_loss": 2.9713, "tokens_per_second": 105902, "web": 1.067, "textbook": 0.7438, "math": 1.115, "code": 0.8341, "mix": 1.0032, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 46500, "loss": 2.95, "tok_s": 105901}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 47000, "loss": 2.9707, "tok_s": 105901}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 47500, "loss": 2.9788, "tok_s": 105901}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 48000, "loss": 2.9893, "tok_s": 105901}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 48000, "tokens": 1572864000, "hours": 4.2215, "train_loss": 2.9893, "tokens_per_second": 105901, "web": 1.0664, "textbook": 0.7402, "math": 1.1183, "code": 0.8423, "mix": 1.0039, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 48500, "loss": 2.9677, "tok_s": 105901}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 49000, "loss": 2.9773, "tok_s": 105901}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 49500, "loss": 2.9732, "tok_s": 105901}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 50000, "loss": 2.9862, "tok_s": 105901}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 50000, "tokens": 1638400000, "hours": 4.3955, "train_loss": 2.9862, "tokens_per_second": 105901, "web": 1.0654, "textbook": 0.7406, "math": 1.1145, "code": 0.8354, "mix": 1.002, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 50500, "loss": 2.9664, "tok_s": 105900}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 51000, "loss": 2.9551, "tok_s": 105900}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 51500, "loss": 2.9554, "tok_s": 105900}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 52000, "loss": 2.9925, "tok_s": 105900}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 52000, "tokens": 1703936000, "hours": 4.5848, "train_loss": 2.9925, "tokens_per_second": 105900, "web": 1.0636, "textbook": 0.7395, "math": 1.117, "code": 0.8273, "mix": 1.0001, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 52500, "loss": 2.9802, "tok_s": 105900}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 53000, "loss": 2.9795, "tok_s": 105900}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 53500, "loss": 2.9877, "tok_s": 105900}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 54000, "loss": 2.96, "tok_s": 105900}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 54000, "tokens": 1769472000, "hours": 4.7588, "train_loss": 2.96, "tokens_per_second": 105900, "web": 1.0622, "textbook": 0.7375, "math": 1.115, "code": 0.8316, "mix": 0.9992, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 54500, "loss": 2.9833, "tok_s": 105900}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 55000, "loss": 2.9777, "tok_s": 105899}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 55500, "loss": 2.961, "tok_s": 105899}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 56000, "loss": 2.9683, "tok_s": 105899}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 56000, "tokens": 1835008000, "hours": 4.9328, "train_loss": 2.9683, "tokens_per_second": 105899, "web": 1.0625, "textbook": 0.7356, "math": 1.1138, "code": 0.8266, "mix": 0.9984, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 56500, "loss": 2.9742, "tok_s": 105899}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 57000, "loss": 2.9525, "tok_s": 105899}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 57500, "loss": 2.9616, "tok_s": 105899}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 58000, "loss": 2.9551, "tok_s": 105899}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 58000, "tokens": 1900544000, "hours": 5.1067, "train_loss": 2.9551, "tokens_per_second": 105899, "web": 1.0603, "textbook": 0.7352, "math": 1.1098, "code": 0.8195, "mix": 0.9956, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 58500, "loss": 2.9643, "tok_s": 105899}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 59000, "loss": 2.9507, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 59500, "loss": 2.9625, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 60000, "loss": 2.9735, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 60000, "tokens": 1966080000, "hours": 5.2808, "train_loss": 2.9735, "tokens_per_second": 105898, "web": 1.0585, "textbook": 0.7328, "math": 1.1091, "code": 0.821, "mix": 0.9942, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 60500, "loss": 2.9572, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 61000, "loss": 2.9707, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 61500, "loss": 2.9693, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 62000, "loss": 2.9286, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 62000, "tokens": 2031616000, "hours": 5.4699, "train_loss": 2.9286, "tokens_per_second": 105898, "web": 1.0587, "textbook": 0.7304, "math": 1.1061, "code": 0.8142, "mix": 0.9928, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 62500, "loss": 2.9477, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 63000, "loss": 2.9527, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 63500, "loss": 2.9606, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 64000, "loss": 2.9493, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 64000, "tokens": 2097152000, "hours": 5.6439, "train_loss": 2.9493, "tokens_per_second": 105897, "web": 1.0573, "textbook": 0.7308, "math": 1.106, "code": 0.8184, "mix": 0.9925, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 64500, "loss": 2.9306, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 65000, "loss": 2.9366, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 65500, "loss": 2.9446, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 66000, "loss": 2.9546, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 66000, "tokens": 2162688000, "hours": 5.8179, "train_loss": 2.9546, "tokens_per_second": 105897, "web": 1.0537, "textbook": 0.7294, "math": 1.0982, "code": 0.8229, "mix": 0.9897, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 66500, "loss": 2.9463, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 67000, "loss": 2.9358, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 67500, "loss": 2.9374, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 68000, "loss": 2.9442, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 68000, "tokens": 2228224000, "hours": 5.9917, "train_loss": 2.9442, "tokens_per_second": 105897, "web": 1.0554, "textbook": 0.7283, "math": 1.0993, "code": 0.8115, "mix": 0.9893, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 68500, "loss": 2.9526, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 69000, "loss": 2.9424, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 69500, "loss": 2.9283, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 70000, "loss": 2.9314, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 70000, "tokens": 2293760000, "hours": 6.1658, "train_loss": 2.9314, "tokens_per_second": 105897, "web": 1.0543, "textbook": 0.7259, "math": 1.0943, "code": 0.8107, "mix": 0.9876, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 70500, "loss": 2.9229, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 71000, "loss": 2.9243, "tok_s": 105896}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 71500, "loss": 2.9311, "tok_s": 105896}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 72000, "loss": 2.9398, "tok_s": 105896}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 72000, "tokens": 2359296000, "hours": 6.3542, "train_loss": 2.9398, "tokens_per_second": 105896, "web": 1.0513, "textbook": 0.7256, "math": 1.0905, "code": 0.8205, "mix": 0.9864, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 72500, "loss": 2.9248, "tok_s": 105896}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 73000, "loss": 2.9205, "tok_s": 105896}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 73500, "loss": 2.9363, "tok_s": 105896}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 74000, "loss": 2.9411, "tok_s": 105896}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 74000, "tokens": 2424832000, "hours": 6.5281, "train_loss": 2.9411, "tokens_per_second": 105896, "web": 1.0503, "textbook": 0.7232, "math": 1.0947, "code": 0.8125, "mix": 0.985, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 74500, "loss": 2.9298, "tok_s": 105896}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 75000, "loss": 2.932, "tok_s": 105896}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 75500, "loss": 2.9075, "tok_s": 105896}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 76000, "loss": 2.9177, "tok_s": 105896}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 76000, "tokens": 2490368000, "hours": 6.702, "train_loss": 2.9177, "tokens_per_second": 105896, "web": 1.0495, "textbook": 0.7221, "math": 1.0931, "code": 0.807, "mix": 0.9835, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 76500, "loss": 2.9357, "tok_s": 105896}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 77000, "loss": 2.9215, "tok_s": 105896}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 77500, "loss": 2.9204, "tok_s": 105896}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 78000, "loss": 2.9172, "tok_s": 105896}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 78000, "tokens": 2555904000, "hours": 6.8756, "train_loss": 2.9172, "tokens_per_second": 105896, "web": 1.0488, "textbook": 0.7204, "math": 1.0904, "code": 0.8025, "mix": 0.982, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 78500, "loss": 2.9146, "tok_s": 105896}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 79000, "loss": 2.9257, "tok_s": 105896}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 79500, "loss": 2.9206, "tok_s": 105896}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 80000, "loss": 2.9174, "tok_s": 105895}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 80000, "tokens": 2621440000, "hours": 7.0497, "train_loss": 2.9174, "tokens_per_second": 105895, "web": 1.0469, "textbook": 0.7201, "math": 1.0933, "code": 0.8076, "mix": 0.9817, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 80500, "loss": 2.9239, "tok_s": 105895}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 81000, "loss": 2.9277, "tok_s": 105895}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 81500, "loss": 2.9111, "tok_s": 105895}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 82000, "loss": 2.9119, "tok_s": 105895}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 82000, "tokens": 2686976000, "hours": 7.2378, "train_loss": 2.9119, "tokens_per_second": 105895, "web": 1.0454, "textbook": 0.7188, "math": 1.0861, "code": 0.8065, "mix": 0.9796, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 82500, "loss": 2.9173, "tok_s": 105895}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 83000, "loss": 2.8851, "tok_s": 105895}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 83500, "loss": 2.9249, "tok_s": 105895}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 84000, "loss": 2.8997, "tok_s": 105895}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 84000, "tokens": 2752512000, "hours": 7.4118, "train_loss": 2.8997, "tokens_per_second": 105895, "web": 1.0434, "textbook": 0.7161, "math": 1.0856, "code": 0.7983, "mix": 0.977, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 84500, "loss": 2.8902, "tok_s": 105895}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 85000, "loss": 2.9191, "tok_s": 105895}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 85500, "loss": 2.8967, "tok_s": 105895}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 86000, "loss": 2.8876, "tok_s": 105895}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 86000, "tokens": 2818048000, "hours": 7.5856, "train_loss": 2.8876, "tokens_per_second": 105895, "web": 1.0424, "textbook": 0.7139, "math": 1.0848, "code": 0.7974, "mix": 0.9758, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 86500, "loss": 2.8959, "tok_s": 105895}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 87000, "loss": 2.8714, "tok_s": 105895}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 87500, "loss": 2.8902, "tok_s": 105895}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 88000, "loss": 2.9051, "tok_s": 105895}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 88000, "tokens": 2883584000, "hours": 7.7596, "train_loss": 2.9051, "tokens_per_second": 105895, "web": 1.0412, "textbook": 0.7136, "math": 1.0815, "code": 0.8005, "mix": 0.975, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 88500, "loss": 2.9006, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 89000, "loss": 2.8921, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 89500, "loss": 2.9022, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 90000, "loss": 2.8947, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 90000, "tokens": 2949120000, "hours": 7.9335, "train_loss": 2.8947, "tokens_per_second": 105894, "web": 1.0403, "textbook": 0.7115, "math": 1.0812, "code": 0.7915, "mix": 0.973, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 90500, "loss": 2.9064, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 91000, "loss": 2.8809, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 91500, "loss": 2.883, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 92000, "loss": 2.8916, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 92000, "tokens": 3014656000, "hours": 8.1216, "train_loss": 2.8916, "tokens_per_second": 105894, "web": 1.0365, "textbook": 0.7097, "math": 1.077, "code": 0.7908, "mix": 0.9698, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 92500, "loss": 2.8804, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 93000, "loss": 2.8906, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 93500, "loss": 2.8891, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 94000, "loss": 2.8689, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 94000, "tokens": 3080192000, "hours": 8.2955, "train_loss": 2.8689, "tokens_per_second": 105894, "web": 1.0372, "textbook": 0.7065, "math": 1.0784, "code": 0.7922, "mix": 0.9702, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 94500, "loss": 2.8872, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 95000, "loss": 2.8642, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 95500, "loss": 2.8873, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 96000, "loss": 2.8956, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 96000, "tokens": 3145728000, "hours": 8.4693, "train_loss": 2.8956, "tokens_per_second": 105894, "web": 1.037, "textbook": 0.7054, "math": 1.0727, "code": 0.7964, "mix": 0.9697, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 96500, "loss": 2.8719, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 97000, "loss": 2.8774, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 97500, "loss": 2.8627, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 98000, "loss": 2.8815, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 98000, "tokens": 3211264000, "hours": 8.6432, "train_loss": 2.8815, "tokens_per_second": 105894, "web": 1.0333, "textbook": 0.7037, "math": 1.0759, "code": 0.7916, "mix": 0.967, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 98500, "loss": 2.872, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 99000, "loss": 2.861, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 99500, "loss": 2.8709, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 100000, "loss": 2.8648, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 100000, "tokens": 3276800000, "hours": 8.8172, "train_loss": 2.8648, "tokens_per_second": 105894, "web": 1.0324, "textbook": 0.7022, "math": 1.0734, "code": 0.7842, "mix": 0.965, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 100500, "loss": 2.9071, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 101000, "loss": 2.8745, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 101500, "loss": 2.8908, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 102000, "loss": 2.8679, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 102000, "tokens": 3342336000, "hours": 9.0048, "train_loss": 2.8679, "tokens_per_second": 105894, "web": 1.033, "textbook": 0.7028, "math": 1.0715, "code": 0.7885, "mix": 0.9657, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 102500, "loss": 2.8684, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 103000, "loss": 2.8832, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 103500, "loss": 2.8731, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 104000, "loss": 2.8728, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 104000, "tokens": 3407872000, "hours": 9.1785, "train_loss": 2.8728, "tokens_per_second": 105894, "web": 1.0289, "textbook": 0.6994, "math": 1.0694, "code": 0.7867, "mix": 0.9623, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 104500, "loss": 2.8548, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 105000, "loss": 2.8514, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 105500, "loss": 2.8727, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 106000, "loss": 2.8644, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 106000, "tokens": 3473408000, "hours": 9.3521, "train_loss": 2.8644, "tokens_per_second": 105894, "web": 1.0287, "textbook": 0.6971, "math": 1.0636, "code": 0.781, "mix": 0.9604, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 106500, "loss": 2.8658, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 107000, "loss": 2.8579, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 107500, "loss": 2.8361, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 108000, "loss": 2.8397, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 108000, "tokens": 3538944000, "hours": 9.5255, "train_loss": 2.8397, "tokens_per_second": 105894, "web": 1.0275, "textbook": 0.6943, "math": 1.0668, "code": 0.7828, "mix": 0.9599, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 108500, "loss": 2.8501, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 109000, "loss": 2.8487, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 109500, "loss": 2.8637, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 110000, "loss": 2.8407, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 110000, "tokens": 3604480000, "hours": 9.699, "train_loss": 2.8407, "tokens_per_second": 105894, "web": 1.0265, "textbook": 0.6942, "math": 1.0606, "code": 0.7793, "mix": 0.9581, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 110500, "loss": 2.8461, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 111000, "loss": 2.8313, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 111500, "loss": 2.8655, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 112000, "loss": 2.8432, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 112000, "tokens": 3670016000, "hours": 9.8853, "train_loss": 2.8432, "tokens_per_second": 105894, "web": 1.0246, "textbook": 0.6923, "math": 1.0574, "code": 0.7733, "mix": 0.9555, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 112500, "loss": 2.8292, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 113000, "loss": 2.8311, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 113500, "loss": 2.819, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 114000, "loss": 2.8287, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 114000, "tokens": 3735552000, "hours": 10.0588, "train_loss": 2.8287, "tokens_per_second": 105894, "web": 1.0236, "textbook": 0.6891, "math": 1.0585, "code": 0.7724, "mix": 0.9545, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 114500, "loss": 2.8239, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 115000, "loss": 2.8411, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 115500, "loss": 2.8231, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 116000, "loss": 2.8135, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 116000, "tokens": 3801088000, "hours": 10.2323, "train_loss": 2.8135, "tokens_per_second": 105894, "web": 1.0209, "textbook": 0.6878, "math": 1.0528, "code": 0.7673, "mix": 0.9513, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 116500, "loss": 2.8106, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 117000, "loss": 2.8612, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 117500, "loss": 2.8084, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 118000, "loss": 2.8348, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 118000, "tokens": 3866624000, "hours": 10.4058, "train_loss": 2.8348, "tokens_per_second": 105894, "web": 1.0181, "textbook": 0.6858, "math": 1.049, "code": 0.769, "mix": 0.949, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 118500, "loss": 2.8227, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 119000, "loss": 2.8107, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 119500, "loss": 2.8005, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 120000, "loss": 2.8338, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 120000, "tokens": 3932160000, "hours": 10.5793, "train_loss": 2.8338, "tokens_per_second": 105894, "web": 1.0175, "textbook": 0.6829, "math": 1.045, "code": 0.7655, "mix": 0.9474, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 120500, "loss": 2.7915, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 121000, "loss": 2.8145, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 121500, "loss": 2.7978, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 122000, "loss": 2.8294, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 122000, "tokens": 3997696000, "hours": 10.7658, "train_loss": 2.8294, "tokens_per_second": 105894, "web": 1.0148, "textbook": 0.6829, "math": 1.0501, "code": 0.766, "mix": 0.9464, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 122500, "loss": 2.7738, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 123000, "loss": 2.8243, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 123500, "loss": 2.7918, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 124000, "loss": 2.8037, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 124000, "tokens": 4063232000, "hours": 10.9392, "train_loss": 2.8037, "tokens_per_second": 105894, "web": 1.014, "textbook": 0.6769, "math": 1.0414, "code": 0.7587, "mix": 0.9431, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 124500, "loss": 2.8045, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 125000, "loss": 2.8049, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 125500, "loss": 2.8052, "tok_s": 105894}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 126000, "loss": 2.8025, "tok_s": 105895}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 126000, "tokens": 4128768000, "hours": 11.1127, "train_loss": 2.8025, "tokens_per_second": 105895, "web": 1.0114, "textbook": 0.6778, "math": 1.0441, "code": 0.7584, "mix": 0.9419, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 126500, "loss": 2.7969, "tok_s": 105895}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 127000, "loss": 2.7947, "tok_s": 105895}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 127500, "loss": 2.8017, "tok_s": 105895}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 128000, "loss": 2.7806, "tok_s": 105895}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 128000, "tokens": 4194304000, "hours": 11.2861, "train_loss": 2.7806, "tokens_per_second": 105895, "web": 1.0093, "textbook": 0.6745, "math": 1.0368, "code": 0.7536, "mix": 0.9387, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 128500, "loss": 2.7654, "tok_s": 105895}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 129000, "loss": 2.8125, "tok_s": 105895}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 129500, "loss": 2.7928, "tok_s": 105895}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 130000, "loss": 2.7709, "tok_s": 105895}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 130000, "tokens": 4259840000, "hours": 11.4596, "train_loss": 2.7709, "tokens_per_second": 105895, "web": 1.0087, "textbook": 0.6728, "math": 1.0335, "code": 0.7535, "mix": 0.9376, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 130500, "loss": 2.785, "tok_s": 105895}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 131000, "loss": 2.8065, "tok_s": 105895}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 131500, "loss": 2.7843, "tok_s": 105895}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 132000, "loss": 2.7875, "tok_s": 105895}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 132000, "tokens": 4325376000, "hours": 11.6462, "train_loss": 2.7875, "tokens_per_second": 105895, "web": 1.0068, "textbook": 0.6705, "math": 1.0302, "code": 0.7547, "mix": 0.9359, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 132500, "loss": 2.7723, "tok_s": 105895}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 133000, "loss": 2.781, "tok_s": 105895}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 133500, "loss": 2.7971, "tok_s": 105895}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 134000, "loss": 2.7716, "tok_s": 105895}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 134000, "tokens": 4390912000, "hours": 11.8194, "train_loss": 2.7716, "tokens_per_second": 105895, "web": 1.0032, "textbook": 0.6678, "math": 1.0304, "code": 0.7502, "mix": 0.9328, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 134500, "loss": 2.771, "tok_s": 105895}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 135000, "loss": 2.7498, "tok_s": 105895}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 135500, "loss": 2.7803, "tok_s": 105895}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 136000, "loss": 2.7541, "tok_s": 105895}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 136000, "tokens": 4456448000, "hours": 11.9928, "train_loss": 2.7541, "tokens_per_second": 105895, "web": 1.0015, "textbook": 0.6665, "math": 1.0261, "code": 0.7451, "mix": 0.9304, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 136500, "loss": 2.7713, "tok_s": 105895}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 137000, "loss": 2.7722, "tok_s": 105895}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 137500, "loss": 2.7611, "tok_s": 105895}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 138000, "loss": 2.7762, "tok_s": 105895}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 138000, "tokens": 4521984000, "hours": 12.1661, "train_loss": 2.7762, "tokens_per_second": 105895, "web": 0.9999, "textbook": 0.6635, "math": 1.0268, "code": 0.7403, "mix": 0.9285, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 138500, "loss": 2.7584, "tok_s": 105895}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 139000, "loss": 2.7588, "tok_s": 105895}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 139500, "loss": 2.7472, "tok_s": 105895}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 140000, "loss": 2.7543, "tok_s": 105895}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 140000, "tokens": 4587520000, "hours": 12.3395, "train_loss": 2.7543, "tokens_per_second": 105895, "web": 0.9981, "textbook": 0.6605, "math": 1.0233, "code": 0.743, "mix": 0.9269, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 140500, "loss": 2.7506, "tok_s": 105895}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 141000, "loss": 2.738, "tok_s": 105895}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 141500, "loss": 2.7492, "tok_s": 105895}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 142000, "loss": 2.747, "tok_s": 105895}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 142000, "tokens": 4653056000, "hours": 12.5258, "train_loss": 2.747, "tokens_per_second": 105895, "web": 0.9959, "textbook": 0.6573, "math": 1.0183, "code": 0.7358, "mix": 0.9236, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 142500, "loss": 2.748, "tok_s": 105895}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 143000, "loss": 2.7442, "tok_s": 105895}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 143500, "loss": 2.7442, "tok_s": 105895}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 144000, "loss": 2.7391, "tok_s": 105895}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 144000, "tokens": 4718592000, "hours": 12.6992, "train_loss": 2.7391, "tokens_per_second": 105895, "web": 0.995, "textbook": 0.6561, "math": 1.0142, "code": 0.7356, "mix": 0.9223, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 144500, "loss": 2.7474, "tok_s": 105895}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 145000, "loss": 2.7441, "tok_s": 105895}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 145500, "loss": 2.7334, "tok_s": 105895}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 146000, "loss": 2.7186, "tok_s": 105896}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 146000, "tokens": 4784128000, "hours": 12.8726, "train_loss": 2.7186, "tokens_per_second": 105896, "web": 0.9922, "textbook": 0.653, "math": 1.0142, "code": 0.7364, "mix": 0.9203, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 146500, "loss": 2.7244, "tok_s": 105896}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 147000, "loss": 2.7315, "tok_s": 105896}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 147500, "loss": 2.7345, "tok_s": 105896}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 148000, "loss": 2.7426, "tok_s": 105896}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 148000, "tokens": 4849664000, "hours": 13.046, "train_loss": 2.7426, "tokens_per_second": 105896, "web": 0.9892, "textbook": 0.6514, "math": 1.0099, "code": 0.7301, "mix": 0.9169, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 148500, "loss": 2.7225, "tok_s": 105896}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 149000, "loss": 2.7291, "tok_s": 105896}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 149500, "loss": 2.7154, "tok_s": 105896}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 150000, "loss": 2.7615, "tok_s": 105896}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 150000, "tokens": 4915200000, "hours": 13.2194, "train_loss": 2.7615, "tokens_per_second": 105896, "web": 0.9865, "textbook": 0.6474, "math": 1.0087, "code": 0.7289, "mix": 0.9144, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 150500, "loss": 2.7279, "tok_s": 105896}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 151000, "loss": 2.7286, "tok_s": 105896}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 151500, "loss": 2.7159, "tok_s": 105896}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 152000, "loss": 2.7179, "tok_s": 105896}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 152000, "tokens": 4980736000, "hours": 13.4058, "train_loss": 2.7179, "tokens_per_second": 105896, "web": 0.9853, "textbook": 0.6457, "math": 1.0026, "code": 0.7269, "mix": 0.9124, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 152500, "loss": 2.7093, "tok_s": 105896}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 153000, "loss": 2.7141, "tok_s": 105896}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 153500, "loss": 2.7158, "tok_s": 105896}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 154000, "loss": 2.7213, "tok_s": 105896}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 154000, "tokens": 5046272000, "hours": 13.5792, "train_loss": 2.7213, "tokens_per_second": 105896, "web": 0.9822, "textbook": 0.6427, "math": 1.0028, "code": 0.7256, "mix": 0.91, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 154500, "loss": 2.7099, "tok_s": 105896}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 155000, "loss": 2.6877, "tok_s": 105896}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 155500, "loss": 2.6864, "tok_s": 105896}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 156000, "loss": 2.7058, "tok_s": 105896}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 156000, "tokens": 5111808000, "hours": 13.7526, "train_loss": 2.7058, "tokens_per_second": 105896, "web": 0.9812, "textbook": 0.6394, "math": 1.0007, "code": 0.7188, "mix": 0.9078, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 156500, "loss": 2.6816, "tok_s": 105896}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 157000, "loss": 2.6785, "tok_s": 105896}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 157500, "loss": 2.6883, "tok_s": 105896}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 158000, "loss": 2.7012, "tok_s": 105896}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 158000, "tokens": 5177344000, "hours": 13.926, "train_loss": 2.7012, "tokens_per_second": 105896, "web": 0.9766, "textbook": 0.6349, "math": 0.9945, "code": 0.7209, "mix": 0.9038, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 158500, "loss": 2.6823, "tok_s": 105896}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 159000, "loss": 2.6803, "tok_s": 105896}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 159500, "loss": 2.7048, "tok_s": 105896}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 160000, "loss": 2.6768, "tok_s": 105896}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 160000, "tokens": 5242880000, "hours": 14.0994, "train_loss": 2.6768, "tokens_per_second": 105896, "web": 0.9749, "textbook": 0.6335, "math": 0.9897, "code": 0.7108, "mix": 0.9008, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 160500, "loss": 2.6867, "tok_s": 105896}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 161000, "loss": 2.6725, "tok_s": 105896}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 161500, "loss": 2.69, "tok_s": 105896}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 162000, "loss": 2.6662, "tok_s": 105896}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 162000, "tokens": 5308416000, "hours": 14.2858, "train_loss": 2.6662, "tokens_per_second": 105896, "web": 0.9734, "textbook": 0.6306, "math": 0.9855, "code": 0.7063, "mix": 0.8983, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 162500, "loss": 2.6875, "tok_s": 105896}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 163000, "loss": 2.6678, "tok_s": 105896}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 163500, "loss": 2.6796, "tok_s": 105896}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 164000, "loss": 2.6569, "tok_s": 105896}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 164000, "tokens": 5373952000, "hours": 14.4592, "train_loss": 2.6569, "tokens_per_second": 105896, "web": 0.9695, "textbook": 0.6274, "math": 0.9824, "code": 0.7063, "mix": 0.8951, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 164500, "loss": 2.6798, "tok_s": 105896}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 165000, "loss": 2.6543, "tok_s": 105896}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 165500, "loss": 2.6743, "tok_s": 105896}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 166000, "loss": 2.6471, "tok_s": 105896}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 166000, "tokens": 5439488000, "hours": 14.6326, "train_loss": 2.6471, "tokens_per_second": 105896, "web": 0.9684, "textbook": 0.6255, "math": 0.9791, "code": 0.7032, "mix": 0.8934, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 166500, "loss": 2.6662, "tok_s": 105896}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 167000, "loss": 2.6399, "tok_s": 105896}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 167500, "loss": 2.6364, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 168000, "loss": 2.6604, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 168000, "tokens": 5505024000, "hours": 14.806, "train_loss": 2.6604, "tokens_per_second": 105897, "web": 0.9653, "textbook": 0.6217, "math": 0.9744, "code": 0.7033, "mix": 0.8904, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 168500, "loss": 2.6298, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 169000, "loss": 2.6295, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 169500, "loss": 2.6365, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 170000, "loss": 2.635, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 170000, "tokens": 5570560000, "hours": 14.9794, "train_loss": 2.635, "tokens_per_second": 105897, "web": 0.9617, "textbook": 0.6175, "math": 0.9725, "code": 0.6943, "mix": 0.8863, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 170500, "loss": 2.6475, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 171000, "loss": 2.6498, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 171500, "loss": 2.6324, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 172000, "loss": 2.6147, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 172000, "tokens": 5636096000, "hours": 15.1656, "train_loss": 2.6147, "tokens_per_second": 105897, "web": 0.9598, "textbook": 0.6153, "math": 0.9712, "code": 0.6901, "mix": 0.8841, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 172500, "loss": 2.6072, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 173000, "loss": 2.625, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 173500, "loss": 2.6198, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 174000, "loss": 2.6304, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 174000, "tokens": 5701632000, "hours": 15.339, "train_loss": 2.6304, "tokens_per_second": 105897, "web": 0.957, "textbook": 0.6134, "math": 0.9623, "code": 0.6894, "mix": 0.8809, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 174500, "loss": 2.6201, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 175000, "loss": 2.6034, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 175500, "loss": 2.6095, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 176000, "loss": 2.6286, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 176000, "tokens": 5767168000, "hours": 15.5123, "train_loss": 2.6286, "tokens_per_second": 105897, "web": 0.9543, "textbook": 0.6088, "math": 0.9608, "code": 0.6871, "mix": 0.8782, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 176500, "loss": 2.606, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 177000, "loss": 2.6096, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 177500, "loss": 2.5886, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 178000, "loss": 2.6111, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 178000, "tokens": 5832704000, "hours": 15.6857, "train_loss": 2.6111, "tokens_per_second": 105897, "web": 0.9516, "textbook": 0.6051, "math": 0.9597, "code": 0.6853, "mix": 0.8756, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 178500, "loss": 2.5685, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 179000, "loss": 2.6234, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 179500, "loss": 2.6047, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 180000, "loss": 2.6036, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 180000, "tokens": 5898240000, "hours": 15.8591, "train_loss": 2.6036, "tokens_per_second": 105897, "web": 0.9488, "textbook": 0.603, "math": 0.9542, "code": 0.6771, "mix": 0.872, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 180500, "loss": 2.589, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 181000, "loss": 2.5944, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 181500, "loss": 2.5862, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 182000, "loss": 2.5616, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 182000, "tokens": 5963776000, "hours": 16.0453, "train_loss": 2.5616, "tokens_per_second": 105897, "web": 0.9447, "textbook": 0.5987, "math": 0.9509, "code": 0.6764, "mix": 0.8683, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 182500, "loss": 2.5826, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 183000, "loss": 2.5698, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 183500, "loss": 2.5567, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 184000, "loss": 2.5592, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 184000, "tokens": 6029312000, "hours": 16.2187, "train_loss": 2.5592, "tokens_per_second": 105897, "web": 0.9427, "textbook": 0.5954, "math": 0.9461, "code": 0.671, "mix": 0.8654, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 184500, "loss": 2.5462, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 185000, "loss": 2.5586, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 185500, "loss": 2.5638, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 186000, "loss": 2.5505, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 186000, "tokens": 6094848000, "hours": 16.3921, "train_loss": 2.5505, "tokens_per_second": 105897, "web": 0.9402, "textbook": 0.5916, "math": 0.946, "code": 0.669, "mix": 0.8631, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 186500, "loss": 2.5548, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 187000, "loss": 2.5715, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 187500, "loss": 2.5351, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 188000, "loss": 2.5621, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 188000, "tokens": 6160384000, "hours": 16.5654, "train_loss": 2.5621, "tokens_per_second": 105897, "web": 0.9379, "textbook": 0.5886, "math": 0.9383, "code": 0.664, "mix": 0.8597, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 188500, "loss": 2.5325, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 189000, "loss": 2.5413, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 189500, "loss": 2.5471, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 190000, "loss": 2.5381, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 190000, "tokens": 6225920000, "hours": 16.7387, "train_loss": 2.5381, "tokens_per_second": 105897, "web": 0.9337, "textbook": 0.5847, "math": 0.9349, "code": 0.6606, "mix": 0.8557, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 190500, "loss": 2.5356, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 191000, "loss": 2.5545, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 191500, "loss": 2.5014, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 192000, "loss": 2.5325, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 192000, "tokens": 6291456000, "hours": 16.9249, "train_loss": 2.5325, "tokens_per_second": 105897, "web": 0.9307, "textbook": 0.5808, "math": 0.929, "code": 0.6535, "mix": 0.8517, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 192500, "loss": 2.5337, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 193000, "loss": 2.508, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 193500, "loss": 2.5294, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 194000, "loss": 2.5393, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 194000, "tokens": 6356992000, "hours": 17.0983, "train_loss": 2.5393, "tokens_per_second": 105897, "web": 0.928, "textbook": 0.5762, "math": 0.9257, "code": 0.6531, "mix": 0.849, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 194500, "loss": 2.5042, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 195000, "loss": 2.5334, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 195500, "loss": 2.5026, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 196000, "loss": 2.528, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 196000, "tokens": 6422528000, "hours": 17.2717, "train_loss": 2.528, "tokens_per_second": 105897, "web": 0.9252, "textbook": 0.5737, "math": 0.9232, "code": 0.6464, "mix": 0.8458, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 196500, "loss": 2.5225, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 197000, "loss": 2.4921, "tok_s": 105897}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 197500, "loss": 2.501, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 198000, "loss": 2.5, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 198000, "tokens": 6488064000, "hours": 17.445, "train_loss": 2.5, "tokens_per_second": 105898, "web": 0.922, "textbook": 0.5712, "math": 0.9181, "code": 0.6467, "mix": 0.8429, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 198500, "loss": 2.5075, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 199000, "loss": 2.5061, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 199500, "loss": 2.4947, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 200000, "loss": 2.4913, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 200000, "tokens": 6553600000, "hours": 17.6184, "train_loss": 2.4913, "tokens_per_second": 105898, "web": 0.9197, "textbook": 0.5689, "math": 0.9132, "code": 0.6409, "mix": 0.8398, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 200500, "loss": 2.4889, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 201000, "loss": 2.4817, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 201500, "loss": 2.4711, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 202000, "loss": 2.4785, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 202000, "tokens": 6619136000, "hours": 17.8048, "train_loss": 2.4785, "tokens_per_second": 105898, "web": 0.9169, "textbook": 0.5646, "math": 0.91, "code": 0.6374, "mix": 0.8367, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 202500, "loss": 2.4669, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 203000, "loss": 2.4811, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 203500, "loss": 2.4811, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 204000, "loss": 2.4626, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 204000, "tokens": 6684672000, "hours": 17.9782, "train_loss": 2.4626, "tokens_per_second": 105898, "web": 0.9136, "textbook": 0.5609, "math": 0.905, "code": 0.6334, "mix": 0.833, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 204500, "loss": 2.4577, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 205000, "loss": 2.4445, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 205500, "loss": 2.4656, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 206000, "loss": 2.4521, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 206000, "tokens": 6750208000, "hours": 18.1515, "train_loss": 2.4521, "tokens_per_second": 105898, "web": 0.9112, "textbook": 0.5578, "math": 0.9013, "code": 0.6297, "mix": 0.8302, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 206500, "loss": 2.4329, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 207000, "loss": 2.4714, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 207500, "loss": 2.4497, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 208000, "loss": 2.4579, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 208000, "tokens": 6815744000, "hours": 18.3249, "train_loss": 2.4579, "tokens_per_second": 105898, "web": 0.9084, "textbook": 0.555, "math": 0.8983, "code": 0.6262, "mix": 0.8273, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 208500, "loss": 2.4585, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 209000, "loss": 2.4423, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 209500, "loss": 2.4288, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 210000, "loss": 2.4539, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 210000, "tokens": 6881280000, "hours": 18.4983, "train_loss": 2.4539, "tokens_per_second": 105898, "web": 0.9065, "textbook": 0.5522, "math": 0.8958, "code": 0.6246, "mix": 0.8252, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 210500, "loss": 2.4309, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 211000, "loss": 2.4549, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 211500, "loss": 2.4487, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 212000, "loss": 2.4397, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 212000, "tokens": 6946816000, "hours": 18.6847, "train_loss": 2.4397, "tokens_per_second": 105898, "web": 0.9038, "textbook": 0.5497, "math": 0.8917, "code": 0.6211, "mix": 0.8223, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 212500, "loss": 2.4356, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 213000, "loss": 2.4226, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 213500, "loss": 2.4273, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 214000, "loss": 2.4327, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 214000, "tokens": 7012352000, "hours": 18.8581, "train_loss": 2.4327, "tokens_per_second": 105898, "web": 0.9013, "textbook": 0.5468, "math": 0.8901, "code": 0.6176, "mix": 0.8197, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 214500, "loss": 2.4264, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 215000, "loss": 2.4102, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 215500, "loss": 2.4044, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 216000, "loss": 2.4024, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 216000, "tokens": 7077888000, "hours": 19.0315, "train_loss": 2.4024, "tokens_per_second": 105898, "web": 0.8996, "textbook": 0.5444, "math": 0.887, "code": 0.6172, "mix": 0.8179, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 216500, "loss": 2.4368, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 217000, "loss": 2.4257, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 217500, "loss": 2.4269, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 218000, "loss": 2.4306, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 218000, "tokens": 7143424000, "hours": 19.2049, "train_loss": 2.4306, "tokens_per_second": 105898, "web": 0.8975, "textbook": 0.5424, "math": 0.8838, "code": 0.6135, "mix": 0.8155, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 218500, "loss": 2.4052, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 219000, "loss": 2.4169, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 219500, "loss": 2.4124, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 220000, "loss": 2.4272, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 220000, "tokens": 7208960000, "hours": 19.3782, "train_loss": 2.4272, "tokens_per_second": 105898, "web": 0.8954, "textbook": 0.5404, "math": 0.8824, "code": 0.6122, "mix": 0.8136, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 220500, "loss": 2.427, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 221000, "loss": 2.4143, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 221500, "loss": 2.4029, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 222000, "loss": 2.3959, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 222000, "tokens": 7274496000, "hours": 19.5647, "train_loss": 2.3959, "tokens_per_second": 105898, "web": 0.8941, "textbook": 0.5383, "math": 0.8797, "code": 0.6099, "mix": 0.8119, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 222500, "loss": 2.4068, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 223000, "loss": 2.4028, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 223500, "loss": 2.4056, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 224000, "loss": 2.4091, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 224000, "tokens": 7340032000, "hours": 19.7381, "train_loss": 2.4091, "tokens_per_second": 105898, "web": 0.8926, "textbook": 0.5364, "math": 0.8777, "code": 0.6076, "mix": 0.8102, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 224500, "loss": 2.4044, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 225000, "loss": 2.3974, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 225500, "loss": 2.3966, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 226000, "loss": 2.4077, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 226000, "tokens": 7405568000, "hours": 19.9115, "train_loss": 2.4077, "tokens_per_second": 105898, "web": 0.8912, "textbook": 0.5348, "math": 0.8765, "code": 0.6063, "mix": 0.8087, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 226500, "loss": 2.3867, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 227000, "loss": 2.4001, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 227500, "loss": 2.3877, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 228000, "loss": 2.3952, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 228000, "tokens": 7471104000, "hours": 20.0849, "train_loss": 2.3952, "tokens_per_second": 105898, "web": 0.8902, "textbook": 0.5334, "math": 0.875, "code": 0.6057, "mix": 0.8077, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 228500, "loss": 2.3771, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 229000, "loss": 2.3898, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 229500, "loss": 2.3825, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 230000, "loss": 2.3912, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 230000, "tokens": 7536640000, "hours": 20.2582, "train_loss": 2.3912, "tokens_per_second": 105898, "web": 0.8891, "textbook": 0.5325, "math": 0.8731, "code": 0.6049, "mix": 0.8066, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 230500, "loss": 2.3723, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 231000, "loss": 2.3718, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 231500, "loss": 2.4015, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 232000, "loss": 2.3979, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 232000, "tokens": 7602176000, "hours": 20.4447, "train_loss": 2.3979, "tokens_per_second": 105898, "web": 0.8883, "textbook": 0.5317, "math": 0.8725, "code": 0.6043, "mix": 0.8058, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 232500, "loss": 2.3954, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 233000, "loss": 2.3839, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 233500, "loss": 2.3854, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 234000, "loss": 2.3908, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 234000, "tokens": 7667712000, "hours": 20.618, "train_loss": 2.3908, "tokens_per_second": 105898, "web": 0.888, "textbook": 0.531, "math": 0.8717, "code": 0.6035, "mix": 0.8053, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 234500, "loss": 2.3662, "tok_s": 105898}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "step": 234950, "tokens": 7698841600, "hours": 20.7011, "train_loss": 2.3951, "tokens_per_second": 105898, "web": 0.8877, "textbook": 0.5307, "math": 0.8713, "code": 0.6024, "mix": 0.8049, "device_gb_in_use": 3.2}
+{"run": "dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2", "finished": true, "wall_hours": 20.708, "steps_this_session": 234950, "uploads_ok": true}
+14:16:37 XXL micro 2 exit 0
+14:18:15 benchmarks exit 0 for dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2.npz
+14:19:19 no-context control exit 0

@@ -1,0 +1,40 @@
+{
+ "model": "HuggingFaceTB/SmolLM2-135M",
+ "tasks": {
+  "hellaswag": {
+   "acc": 0.3548,
+   "n": 10042,
+   "acc_norm": 0.4322
+  },
+  "arc_easy": {
+   "acc": 0.6444,
+   "n": 2376,
+   "acc_norm": 0.5972
+  },
+  "arc_challenge": {
+   "acc": 0.2807,
+   "n": 1172,
+   "acc_norm": 0.2944
+  },
+  "piqa": {
+   "acc": 0.6844,
+   "n": 1838,
+   "acc_norm": 0.6872
+  },
+  "winogrande": {
+   "acc": 0.5296,
+   "n": 1267
+  },
+  "openbookqa": {
+   "acc": 0.218,
+   "n": 500,
+   "acc_norm": 0.332
+  },
+  "lambada": {
+   "acc": 0.4289,
+   "ppl": 19.26,
+   "n": 5153
+  }
+ },
+ "seconds": 478
+}

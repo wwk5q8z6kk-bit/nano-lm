@@ -1,0 +1,4677 @@
+{
+  "schema_version": 1,
+  "experiment_id": "native-update-allocation-v1",
+  "scope": "Exploratory synthetic native mechanism comparison; not preregistered/confirmatory G03b or a language benchmark.",
+  "protocol": {
+    "schema_version": 1,
+    "experiment_id": "native-update-allocation-v1",
+    "classification": "Exploratory synthetic native mechanism comparison; not preregistered/confirmatory G03b or a language benchmark.",
+    "local_recipe_frozen_at_utc": "2026-11-22T02:21:42Z",
+    "freeze_scope": "Recipe written before the first local execution. This timestamp/hash is not an independent prior Git preregistration or proof of execution custody.",
+    "seeds": [
+      9201,
+      9202,
+      9203
+    ],
+    "world": {
+      "phases": 7,
+      "entities_per_phase": 2,
+      "relations": 3,
+      "shown_relations": 2,
+      "values": 4,
+      "assignments_per_phase": 2
+    },
+    "model": {
+      "vocab_size": 22,
+      "d_model": 8,
+      "n_heads": 2,
+      "d_ff": 16,
+      "logical_layers": 2,
+      "unique_layers": 1,
+      "max_context": 3,
+      "rms_eps": 1e-06,
+      "rope_base": 10000.0
+    },
+    "model_seed_rule": "world seed + 10000; separate initialization generator; replay is deterministic",
+    "optimizer": {
+      "learning_rate": 0.01,
+      "beta1": 0.9,
+      "beta2": 0.95,
+      "epsilon": 1e-08,
+      "weight_decay": 0.01,
+      "max_grad_norm": 1.0
+    },
+    "codec": {
+      "entity_tokens": [
+        0,
+        13
+      ],
+      "relation_tokens": [
+        14,
+        16
+      ],
+      "query_marker": 17,
+      "value_tokens": [
+        18,
+        21
+      ],
+      "document": "entity, relation, marker, observed value",
+      "scored_mask": [
+        false,
+        false,
+        true
+      ],
+      "decoding": "Full22-token native argmax; non-value token is explicit abstention"
+    },
+    "common_prefix": {
+      "phase": 0,
+      "observed_facts": 4,
+      "steps": 40,
+      "batch_size": 4,
+      "scored_target_presentations": 160,
+      "branch_state": "Identical copied model weights, Adam first/second moments, step and hyperparameters; no optimizer reset"
+    },
+    "arms": {
+      "current_only": {
+        "current_steps_per_event": 2,
+        "replay_steps_per_event": 0,
+        "frozen": false
+      },
+      "replay_matched_total": {
+        "current_steps_per_event": 1,
+        "replay_steps_per_event": 1,
+        "frozen": false
+      },
+      "replay_additive": {
+        "current_steps_per_event": 2,
+        "replay_steps_per_event": 1,
+        "frozen": false
+      },
+      "frozen": {
+        "current_steps_per_event": 0,
+        "replay_steps_per_event": 0,
+        "frozen": true
+      }
+    },
+    "update_schedule": "For every post-prefix event, train current target the declared number of times, then latest observed replay target if the arm requests it. Initial observations and same-value assignments consume exposure.",
+    "replay_policy": "Exclude current key. Choose latest-visible target on same entity if available, then lowest latest-event order/key. Otherwise choose lowest latest-event order/key across other visible facts. If no other key exists, repeat current event and label fallback explicitly. No future labels or stale superseded replay targets.",
+    "negative_control": "Each introduced entity has one permanently unobserved relation. Coordinator-only PCG64(SeedSequence([seed,5129033])) supplies random labels in fixed key order. Targets never reach learner, event generator, initialization or replay. This is an unlearnable-random-label diagnostic, not a language/generalization metric.",
+    "censor_policy": "new_revision",
+    "horizons": [
+      0,
+      1,
+      5,
+      10,
+      20
+    ],
+    "primary_descriptive_endpoint": "all-assignment phase-end horizon1 accuracy, retaining failed acquisition and explicit censored/not-yet-due/missing counts",
+    "other_endpoints": [
+      "individual assignment acquisition",
+      "post-prefix new-fact acquisition immediately after its event",
+      "phase-end current observed-fact accuracy",
+      "phase-end previously observed current facts (latest observation before current phase)",
+      "never-revised common-prefix facts",
+      "coordinator-only unobserved-relation negative control",
+      "semantic-change and same-value assignment strata",
+      "all horizons and acquired-only secondary rates"
+    ],
+    "cost_contract": "Report exact current/replay target presentations, optimizer calls, query inputs, algorithmic replay payload bytes, instrumentation history bytes, parameter/Adam array bytes. Matched-total arms equate updates and total targets only; additive replay spends50% more post-branch updates. No measured FLOPs, runtime or energy comparison. Frozen is a no-learning reference, not matched cost.",
+    "aggregation": "Three paired seeds; all per-seed values and denominators. Descriptive paired differences/means/min/max only. No p-values, confidence intervals, winner threshold or confirmatory efficacy claim; do not average away undefined endpoints.",
+    "limits": [
+      "All data synthetic and generated; no corpus, tokenizer or natural-language claims.",
+      "No hyperparameter tuning, outcome-dependent seed selection or early stop.",
+      "A replay improvement can trade against current-event learning; report both matched-total and same-current-exposure additive controls.",
+      "Shared common-prefix pretraining is executed once per seed and attributed transparently to each arm.",
+      "Frozen state may answer a changed label by chance; it cannot acquire through training.",
+      "Small instance and three seeds do not establish useful scale or a general retention mechanism."
+    ]
+  },
+  "protocol_sha256": "4cd9bdabedd2b507663f5d5d368dab34c037c2b078b386d872d9238b23f18425",
+  "environment": {
+    "python": "3.12.14",
+    "numpy": "2.3.5",
+    "dtype": "float64",
+    "device": "CPU"
+  },
+  "source_sha256": {
+    "comparison": "1540a68e526dad7097b2b5ee3d9cc5bb0e740049782dcae05a8575a95927a189",
+    "protocol": "4cd9bdabedd2b507663f5d5d368dab34c037c2b078b386d872d9238b23f18425",
+    "measurement": "f7339939059c8337a2257c9064c3073522b63fb5744cb6a464e7423c15b86087",
+    "trainable": "34f65e06d9251066363d3969fc47cfdb17a0fa5b1877e6da20087fb6651852ed",
+    "native": "bbcbf1d87f0495e18cce28ea2df125450dd36f3af84d061e95135e39ce487462"
+  },
+  "parameter_inventory": {
+    "embedding_and_tied_head": 176,
+    "unique_attention_projections": 256,
+    "unique_swiglu_projections": 384,
+    "unique_block_norm_gains": 16,
+    "final_norm_gain": 8,
+    "total": 840
+  },
+  "descriptive_seed_summary": {
+    "current_only": {
+      "assignment_immediate_accuracy": {
+        "values": [
+          0.5,
+          0.3333333333333333,
+          0.4166666666666667
+        ],
+        "available_seed_count": 3,
+        "mean": 0.4166666666666667,
+        "min": 0.3333333333333333,
+        "max": 0.5,
+        "complete": true
+      },
+      "assignment_horizon1_accuracy": {
+        "values": [
+          0.6666666666666666,
+          0.42857142857142855,
+          0.4444444444444444
+        ],
+        "available_seed_count": 3,
+        "mean": 0.5132275132275131,
+        "min": 0.42857142857142855,
+        "max": 0.6666666666666666,
+        "complete": true
+      },
+      "new_fact_immediate_accuracy": {
+        "values": [
+          0.2916666666666667,
+          0.3333333333333333,
+          0.25
+        ],
+        "available_seed_count": 3,
+        "mean": 0.2916666666666667,
+        "min": 0.25,
+        "max": 0.3333333333333333,
+        "complete": true
+      },
+      "final_current_observed_accuracy": {
+        "values": [
+          0.35714285714285715,
+          0.32142857142857145,
+          0.42857142857142855
+        ],
+        "available_seed_count": 3,
+        "mean": 0.36904761904761907,
+        "min": 0.32142857142857145,
+        "max": 0.42857142857142855,
+        "complete": true
+      },
+      "final_previous_current_accuracy": {
+        "values": [
+          0.36363636363636365,
+          0.2727272727272727,
+          0.3181818181818182
+        ],
+        "available_seed_count": 3,
+        "mean": 0.3181818181818182,
+        "min": 0.2727272727272727,
+        "max": 0.36363636363636365,
+        "complete": true
+      },
+      "final_never_revised_common_accuracy": {
+        "values": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "available_seed_count": 3,
+        "mean": 0.0,
+        "min": 0.0,
+        "max": 0.0,
+        "complete": true
+      },
+      "final_unobserved_random_label_accuracy": {
+        "values": [
+          0.0,
+          0.42857142857142855,
+          0.07142857142857142
+        ],
+        "available_seed_count": 3,
+        "mean": 0.16666666666666666,
+        "min": 0.0,
+        "max": 0.42857142857142855,
+        "complete": true
+      }
+    },
+    "replay_matched_total": {
+      "assignment_immediate_accuracy": {
+        "values": [
+          0.3333333333333333,
+          0.4166666666666667,
+          0.5833333333333334
+        ],
+        "available_seed_count": 3,
+        "mean": 0.4444444444444445,
+        "min": 0.3333333333333333,
+        "max": 0.5833333333333334,
+        "complete": true
+      },
+      "assignment_horizon1_accuracy": {
+        "values": [
+          0.5,
+          0.2857142857142857,
+          0.5555555555555556
+        ],
+        "available_seed_count": 3,
+        "mean": 0.44708994708994715,
+        "min": 0.2857142857142857,
+        "max": 0.5555555555555556,
+        "complete": true
+      },
+      "new_fact_immediate_accuracy": {
+        "values": [
+          0.4166666666666667,
+          0.3333333333333333,
+          0.375
+        ],
+        "available_seed_count": 3,
+        "mean": 0.375,
+        "min": 0.3333333333333333,
+        "max": 0.4166666666666667,
+        "complete": true
+      },
+      "final_current_observed_accuracy": {
+        "values": [
+          0.35714285714285715,
+          0.35714285714285715,
+          0.5
+        ],
+        "available_seed_count": 3,
+        "mean": 0.4047619047619048,
+        "min": 0.35714285714285715,
+        "max": 0.5,
+        "complete": true
+      },
+      "final_previous_current_accuracy": {
+        "values": [
+          0.36363636363636365,
+          0.22727272727272727,
+          0.4090909090909091
+        ],
+        "available_seed_count": 3,
+        "mean": 0.3333333333333333,
+        "min": 0.22727272727272727,
+        "max": 0.4090909090909091,
+        "complete": true
+      },
+      "final_never_revised_common_accuracy": {
+        "values": [
+          1.0,
+          0.0,
+          1.0
+        ],
+        "available_seed_count": 3,
+        "mean": 0.6666666666666666,
+        "min": 0.0,
+        "max": 1.0,
+        "complete": true
+      },
+      "final_unobserved_random_label_accuracy": {
+        "values": [
+          0.14285714285714285,
+          0.21428571428571427,
+          0.07142857142857142
+        ],
+        "available_seed_count": 3,
+        "mean": 0.14285714285714282,
+        "min": 0.07142857142857142,
+        "max": 0.21428571428571427,
+        "complete": true
+      }
+    },
+    "replay_additive": {
+      "assignment_immediate_accuracy": {
+        "values": [
+          0.5,
+          0.3333333333333333,
+          0.6666666666666666
+        ],
+        "available_seed_count": 3,
+        "mean": 0.5,
+        "min": 0.3333333333333333,
+        "max": 0.6666666666666666,
+        "complete": true
+      },
+      "assignment_horizon1_accuracy": {
+        "values": [
+          0.5,
+          0.14285714285714285,
+          0.6666666666666666
+        ],
+        "available_seed_count": 3,
+        "mean": 0.43650793650793646,
+        "min": 0.14285714285714285,
+        "max": 0.6666666666666666,
+        "complete": true
+      },
+      "new_fact_immediate_accuracy": {
+        "values": [
+          0.4166666666666667,
+          0.4166666666666667,
+          0.375
+        ],
+        "available_seed_count": 3,
+        "mean": 0.40277777777777785,
+        "min": 0.375,
+        "max": 0.4166666666666667,
+        "complete": true
+      },
+      "final_current_observed_accuracy": {
+        "values": [
+          0.39285714285714285,
+          0.39285714285714285,
+          0.5
+        ],
+        "available_seed_count": 3,
+        "mean": 0.42857142857142855,
+        "min": 0.39285714285714285,
+        "max": 0.5,
+        "complete": true
+      },
+      "final_previous_current_accuracy": {
+        "values": [
+          0.4090909090909091,
+          0.2727272727272727,
+          0.4090909090909091
+        ],
+        "available_seed_count": 3,
+        "mean": 0.3636363636363637,
+        "min": 0.2727272727272727,
+        "max": 0.4090909090909091,
+        "complete": true
+      },
+      "final_never_revised_common_accuracy": {
+        "values": [
+          1.0,
+          0.0,
+          1.0
+        ],
+        "available_seed_count": 3,
+        "mean": 0.6666666666666666,
+        "min": 0.0,
+        "max": 1.0,
+        "complete": true
+      },
+      "final_unobserved_random_label_accuracy": {
+        "values": [
+          0.07142857142857142,
+          0.21428571428571427,
+          0.07142857142857142
+        ],
+        "available_seed_count": 3,
+        "mean": 0.11904761904761903,
+        "min": 0.07142857142857142,
+        "max": 0.21428571428571427,
+        "complete": true
+      }
+    },
+    "frozen": {
+      "assignment_immediate_accuracy": {
+        "values": [
+          0.16666666666666666,
+          0.25,
+          0.25
+        ],
+        "available_seed_count": 3,
+        "mean": 0.2222222222222222,
+        "min": 0.16666666666666666,
+        "max": 0.25,
+        "complete": true
+      },
+      "assignment_horizon1_accuracy": {
+        "values": [
+          0.3333333333333333,
+          0.0,
+          0.3333333333333333
+        ],
+        "available_seed_count": 3,
+        "mean": 0.2222222222222222,
+        "min": 0.0,
+        "max": 0.3333333333333333,
+        "complete": true
+      },
+      "new_fact_immediate_accuracy": {
+        "values": [
+          0.0,
+          0.20833333333333334,
+          0.041666666666666664
+        ],
+        "available_seed_count": 3,
+        "mean": 0.08333333333333333,
+        "min": 0.0,
+        "max": 0.20833333333333334,
+        "complete": true
+      },
+      "final_current_observed_accuracy": {
+        "values": [
+          0.10714285714285714,
+          0.17857142857142858,
+          0.17857142857142858
+        ],
+        "available_seed_count": 3,
+        "mean": 0.15476190476190477,
+        "min": 0.10714285714285714,
+        "max": 0.17857142857142858,
+        "complete": true
+      },
+      "final_previous_current_accuracy": {
+        "values": [
+          0.13636363636363635,
+          0.18181818181818182,
+          0.22727272727272727
+        ],
+        "available_seed_count": 3,
+        "mean": 0.1818181818181818,
+        "min": 0.13636363636363635,
+        "max": 0.22727272727272727,
+        "complete": true
+      },
+      "final_never_revised_common_accuracy": {
+        "values": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "available_seed_count": 3,
+        "mean": 1.0,
+        "min": 1.0,
+        "max": 1.0,
+        "complete": true
+      },
+      "final_unobserved_random_label_accuracy": {
+        "values": [
+          0.0,
+          0.07142857142857142,
+          0.2857142857142857
+        ],
+        "available_seed_count": 3,
+        "mean": 0.11904761904761903,
+        "min": 0.0,
+        "max": 0.2857142857142857,
+        "complete": true
+      }
+    }
+  },
+  "paired_seed_differences": {
+    "replay_matched_total_minus_current_only": {
+      "assignment_immediate_accuracy": {
+        "values": [
+          -0.16666666666666669,
+          0.08333333333333337,
+          0.16666666666666669
+        ],
+        "available_seed_count": 3,
+        "mean": 0.02777777777777779,
+        "min": -0.16666666666666669,
+        "max": 0.16666666666666669,
+        "complete": true
+      },
+      "assignment_horizon1_accuracy": {
+        "values": [
+          -0.16666666666666663,
+          -0.14285714285714285,
+          0.11111111111111116
+        ],
+        "available_seed_count": 3,
+        "mean": -0.0661375661375661,
+        "min": -0.16666666666666663,
+        "max": 0.11111111111111116,
+        "complete": true
+      },
+      "new_fact_immediate_accuracy": {
+        "values": [
+          0.125,
+          0.0,
+          0.125
+        ],
+        "available_seed_count": 3,
+        "mean": 0.08333333333333333,
+        "min": 0.0,
+        "max": 0.125,
+        "complete": true
+      },
+      "final_current_observed_accuracy": {
+        "values": [
+          0.0,
+          0.0357142857142857,
+          0.07142857142857145
+        ],
+        "available_seed_count": 3,
+        "mean": 0.03571428571428572,
+        "min": 0.0,
+        "max": 0.07142857142857145,
+        "complete": true
+      },
+      "final_previous_current_accuracy": {
+        "values": [
+          0.0,
+          -0.04545454545454544,
+          0.09090909090909094
+        ],
+        "available_seed_count": 3,
+        "mean": 0.015151515151515166,
+        "min": -0.04545454545454544,
+        "max": 0.09090909090909094,
+        "complete": true
+      },
+      "final_never_revised_common_accuracy": {
+        "values": [
+          1.0,
+          0.0,
+          1.0
+        ],
+        "available_seed_count": 3,
+        "mean": 0.6666666666666666,
+        "min": 0.0,
+        "max": 1.0,
+        "complete": true
+      },
+      "final_unobserved_random_label_accuracy": {
+        "values": [
+          0.14285714285714285,
+          -0.21428571428571427,
+          0.0
+        ],
+        "available_seed_count": 3,
+        "mean": -0.023809523809523808,
+        "min": -0.21428571428571427,
+        "max": 0.14285714285714285,
+        "complete": true
+      }
+    },
+    "replay_additive_minus_current_only": {
+      "assignment_immediate_accuracy": {
+        "values": [
+          0.0,
+          0.0,
+          0.24999999999999994
+        ],
+        "available_seed_count": 3,
+        "mean": 0.08333333333333331,
+        "min": 0.0,
+        "max": 0.24999999999999994,
+        "complete": true
+      },
+      "assignment_horizon1_accuracy": {
+        "values": [
+          -0.16666666666666663,
+          -0.2857142857142857,
+          0.2222222222222222
+        ],
+        "available_seed_count": 3,
+        "mean": -0.0767195767195767,
+        "min": -0.2857142857142857,
+        "max": 0.2222222222222222,
+        "complete": true
+      },
+      "new_fact_immediate_accuracy": {
+        "values": [
+          0.125,
+          0.08333333333333337,
+          0.125
+        ],
+        "available_seed_count": 3,
+        "mean": 0.11111111111111112,
+        "min": 0.08333333333333337,
+        "max": 0.125,
+        "complete": true
+      },
+      "final_current_observed_accuracy": {
+        "values": [
+          0.0357142857142857,
+          0.0714285714285714,
+          0.07142857142857145
+        ],
+        "available_seed_count": 3,
+        "mean": 0.059523809523809514,
+        "min": 0.0357142857142857,
+        "max": 0.07142857142857145,
+        "complete": true
+      },
+      "final_previous_current_accuracy": {
+        "values": [
+          0.04545454545454547,
+          0.0,
+          0.09090909090909094
+        ],
+        "available_seed_count": 3,
+        "mean": 0.04545454545454547,
+        "min": 0.0,
+        "max": 0.09090909090909094,
+        "complete": true
+      },
+      "final_never_revised_common_accuracy": {
+        "values": [
+          1.0,
+          0.0,
+          1.0
+        ],
+        "available_seed_count": 3,
+        "mean": 0.6666666666666666,
+        "min": 0.0,
+        "max": 1.0,
+        "complete": true
+      },
+      "final_unobserved_random_label_accuracy": {
+        "values": [
+          0.07142857142857142,
+          -0.21428571428571427,
+          0.0
+        ],
+        "available_seed_count": 3,
+        "mean": -0.047619047619047616,
+        "min": -0.21428571428571427,
+        "max": 0.07142857142857142,
+        "complete": true
+      }
+    },
+    "frozen_minus_current_only": {
+      "assignment_immediate_accuracy": {
+        "values": [
+          -0.33333333333333337,
+          -0.08333333333333331,
+          -0.16666666666666669
+        ],
+        "available_seed_count": 3,
+        "mean": -0.19444444444444445,
+        "min": -0.33333333333333337,
+        "max": -0.08333333333333331,
+        "complete": true
+      },
+      "assignment_horizon1_accuracy": {
+        "values": [
+          -0.3333333333333333,
+          -0.42857142857142855,
+          -0.1111111111111111
+        ],
+        "available_seed_count": 3,
+        "mean": -0.291005291005291,
+        "min": -0.42857142857142855,
+        "max": -0.1111111111111111,
+        "complete": true
+      },
+      "new_fact_immediate_accuracy": {
+        "values": [
+          -0.2916666666666667,
+          -0.12499999999999997,
+          -0.20833333333333334
+        ],
+        "available_seed_count": 3,
+        "mean": -0.20833333333333334,
+        "min": -0.2916666666666667,
+        "max": -0.12499999999999997,
+        "complete": true
+      },
+      "final_current_observed_accuracy": {
+        "values": [
+          -0.25,
+          -0.14285714285714288,
+          -0.24999999999999997
+        ],
+        "available_seed_count": 3,
+        "mean": -0.2142857142857143,
+        "min": -0.25,
+        "max": -0.14285714285714288,
+        "complete": true
+      },
+      "final_previous_current_accuracy": {
+        "values": [
+          -0.2272727272727273,
+          -0.09090909090909088,
+          -0.09090909090909091
+        ],
+        "available_seed_count": 3,
+        "mean": -0.13636363636363635,
+        "min": -0.2272727272727273,
+        "max": -0.09090909090909088,
+        "complete": true
+      },
+      "final_never_revised_common_accuracy": {
+        "values": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "available_seed_count": 3,
+        "mean": 1.0,
+        "min": 1.0,
+        "max": 1.0,
+        "complete": true
+      },
+      "final_unobserved_random_label_accuracy": {
+        "values": [
+          0.0,
+          -0.3571428571428571,
+          0.21428571428571427
+        ],
+        "available_seed_count": 3,
+        "mean": -0.04761904761904761,
+        "min": -0.3571428571428571,
+        "max": 0.21428571428571427,
+        "complete": true
+      }
+    }
+  },
+  "total_executed": {
+    "common_pretraining_optimizer_steps": 120,
+    "post_branch_optimizer_steps": 756,
+    "common_pretraining_scored_targets": 480,
+    "post_branch_scored_targets": 756
+  },
+  "claim_boundaries": [
+    "All data synthetic and generated; no corpus, tokenizer or natural-language claims.",
+    "No hyperparameter tuning, outcome-dependent seed selection or early stop.",
+    "A replay improvement can trade against current-event learning; report both matched-total and same-current-exposure additive controls.",
+    "Shared common-prefix pretraining is executed once per seed and attributed transparently to each arm.",
+    "Frozen state may answer a changed label by chance; it cannot acquire through training.",
+    "Small instance and three seeds do not establish useful scale or a general retention mechanism.",
+    "Seed summaries are descriptive; undefined seed endpoints prevent a complete aggregate.",
+    "Update/target matching is not a measured FLOP, latency, energy or peak-memory comparison.",
+    "Arm-level common pretraining is shared once per seed, not re-executed four times.",
+    "No failed acquisition or unfavorable seed is filtered from primary results."
+  ],
+  "full_receipt": {
+    "path": "native_update_comparison_v5.json.gz",
+    "encoding": "gzip of the exact original UTF-8 JSON output",
+    "sha256_gzip": "7bcbe0b22d2ba1930e435db80e635396e135fa44c31f295f0e0f66d5eb0f2bab",
+    "sha256_uncompressed": "75df20be30342b30664da2f656026b9bc8eb2b57c9ca816c3267605fea8e9911",
+    "compressed_bytes": 1088605,
+    "uncompressed_bytes": 8453400,
+    "scope": "The full per-event logs, logits, checkpoints, cohorts and exposure records are preserved losslessly. This summary is a view, not an independently executed experiment."
+  },
+  "per_seed": [
+    {
+      "seed": 9201,
+      "arms": {
+        "current_only": {
+          "branch_checkpoint": {
+            "model_sha256": "3deedff2fa42d01f86ae8ed92a55bbe7a2534854f44e38116ce0439e1e119fb9",
+            "optimizer_state_sha256": "de13744e0a070b865489a1c89f0193c7a4ecd2f16ac1489d74287ff1327d97dc",
+            "optimizer_step": 40,
+            "delivered_prefix_sha256": "32fef4e4fbeb0258bddb271856a4ce9988a1eec18dc58f942d166f8c318aee55",
+            "last_delivered_event_id": "event-00000003"
+          },
+          "final_checkpoint": {
+            "model_sha256": "63d28342beeee7f6242e0ef5ff6b7efc8db87ae9aaa6e44f9069efda2061013e",
+            "optimizer_state_sha256": "bf670a40ca9f0aac0390ebd84437a049c6b2e662ee903f00ae9ddc9ad06db141",
+            "optimizer_step": 112,
+            "delivered_prefix_sha256": "ef5c06561fcc19ff19c47a8950322b184aa4b2da9c6818efba870119ade7dd76",
+            "last_delivered_event_id": "event-00000039"
+          },
+          "counts": {
+            "post_prefix_events": 36,
+            "optimizer_steps": 72,
+            "current_target_presentations": 72,
+            "replay_target_presentations": 0,
+            "scored_target_presentations": 72,
+            "training_documents": 72,
+            "training_input_tokens": 216,
+            "masked_out_target_positions": 144,
+            "inference_forward_calls": 204,
+            "evaluation_query_tokens": 612,
+            "same_entity_replay_steps": 0,
+            "other_entity_replay_steps": 0,
+            "current_event_replay_fallback_steps": 0,
+            "parameter_array_bytes": 6720,
+            "adam_moment_array_bytes": 13440,
+            "maximum_algorithmic_replay_payload_json_bytes": 0,
+            "instrumentation_delivered_history_json_bytes": 5387
+          },
+          "correction_metrics": {
+            "manifest_sha256": "9d5fba2ba2d236fd1f4b48666e4be0551ad7af2d5dfc1f22bbddf4608f335ae1",
+            "through_phase": 6,
+            "censor_policy": "new_revision",
+            "cohorts": {
+              "all_assignments": {
+                "immediately_after_write": {
+                  "events": 12,
+                  "measured": 12,
+                  "correct": 6,
+                  "missing": 0,
+                  "accuracy": 0.5
+                },
+                "phase_end_horizons": {
+                  "0": {
+                    "total_events": 12,
+                    "eligible": 12,
+                    "censored": 0,
+                    "not_yet_due": 0,
+                    "measured": 12,
+                    "missing_measurement": 0,
+                    "correct": 6,
+                    "failed_initial_acquisition_eligible": 6,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 6,
+                    "acquired_only_measured": 6,
+                    "acquired_only_correct": 6,
+                    "accuracy": 0.5,
+                    "acquired_only_accuracy": 1.0
+                  },
+                  "1": {
+                    "total_events": 12,
+                    "eligible": 6,
+                    "censored": 4,
+                    "not_yet_due": 2,
+                    "measured": 6,
+                    "missing_measurement": 0,
+                    "correct": 4,
+                    "failed_initial_acquisition_eligible": 1,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 5,
+                    "acquired_only_measured": 5,
+                    "acquired_only_correct": 4,
+                    "accuracy": 0.6666666666666666,
+                    "acquired_only_accuracy": 0.8
+                  },
+                  "5": {
+                    "total_events": 12,
+                    "eligible": 1,
+                    "censored": 5,
+                    "not_yet_due": 6,
+                    "measured": 1,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 1,
+                    "acquired_only_measured": 1,
+                    "acquired_only_correct": 0,
+                    "accuracy": 0.0,
+                    "acquired_only_accuracy": 0.0
+                  },
+                  "10": {
+                    "total_events": 12,
+                    "eligible": 0,
+                    "censored": 5,
+                    "not_yet_due": 7,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  },
+                  "20": {
+                    "total_events": 12,
+                    "eligible": 0,
+                    "censored": 5,
+                    "not_yet_due": 7,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  }
+                }
+              },
+              "semantic_value_changes": {
+                "immediately_after_write": {
+                  "events": 9,
+                  "measured": 9,
+                  "correct": 4,
+                  "missing": 0,
+                  "accuracy": 0.4444444444444444
+                },
+                "phase_end_horizons": {
+                  "0": {
+                    "total_events": 9,
+                    "eligible": 9,
+                    "censored": 0,
+                    "not_yet_due": 0,
+                    "measured": 9,
+                    "missing_measurement": 0,
+                    "correct": 4,
+                    "failed_initial_acquisition_eligible": 5,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 4,
+                    "acquired_only_measured": 4,
+                    "acquired_only_correct": 4,
+                    "accuracy": 0.4444444444444444,
+                    "acquired_only_accuracy": 1.0
+                  },
+                  "1": {
+                    "total_events": 9,
+                    "eligible": 4,
+                    "censored": 4,
+                    "not_yet_due": 1,
+                    "measured": 4,
+                    "missing_measurement": 0,
+                    "correct": 2,
+                    "failed_initial_acquisition_eligible": 1,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 3,
+                    "acquired_only_measured": 3,
+                    "acquired_only_correct": 2,
+                    "accuracy": 0.5,
+                    "acquired_only_accuracy": 0.6666666666666666
+                  },
+                  "5": {
+                    "total_events": 9,
+                    "eligible": 0,
+                    "censored": 5,
+                    "not_yet_due": 4,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  },
+                  "10": {
+                    "total_events": 9,
+                    "eligible": 0,
+                    "censored": 5,
+                    "not_yet_due": 4,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  },
+                  "20": {
+                    "total_events": 9,
+                    "eligible": 0,
+                    "censored": 5,
+                    "not_yet_due": 4,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  }
+                }
+              },
+              "same_value_assignments": {
+                "immediately_after_write": {
+                  "events": 3,
+                  "measured": 3,
+                  "correct": 2,
+                  "missing": 0,
+                  "accuracy": 0.6666666666666666
+                },
+                "phase_end_horizons": {
+                  "0": {
+                    "total_events": 3,
+                    "eligible": 3,
+                    "censored": 0,
+                    "not_yet_due": 0,
+                    "measured": 3,
+                    "missing_measurement": 0,
+                    "correct": 2,
+                    "failed_initial_acquisition_eligible": 1,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 2,
+                    "acquired_only_measured": 2,
+                    "acquired_only_correct": 2,
+                    "accuracy": 0.6666666666666666,
+                    "acquired_only_accuracy": 1.0
+                  },
+                  "1": {
+                    "total_events": 3,
+                    "eligible": 2,
+                    "censored": 0,
+                    "not_yet_due": 1,
+                    "measured": 2,
+                    "missing_measurement": 0,
+                    "correct": 2,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 2,
+                    "acquired_only_measured": 2,
+                    "acquired_only_correct": 2,
+                    "accuracy": 1.0,
+                    "acquired_only_accuracy": 1.0
+                  },
+                  "5": {
+                    "total_events": 3,
+                    "eligible": 1,
+                    "censored": 0,
+                    "not_yet_due": 2,
+                    "measured": 1,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 1,
+                    "acquired_only_measured": 1,
+                    "acquired_only_correct": 0,
+                    "accuracy": 0.0,
+                    "acquired_only_accuracy": 0.0
+                  },
+                  "10": {
+                    "total_events": 3,
+                    "eligible": 0,
+                    "censored": 0,
+                    "not_yet_due": 3,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  },
+                  "20": {
+                    "total_events": 3,
+                    "eligible": 0,
+                    "censored": 0,
+                    "not_yet_due": 3,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  }
+                }
+              }
+            },
+            "scope": "Observed assignment-event measurements, not independent samples or a model-quality claim. Horizon0 means phase end; immediate acquisition is reported separately."
+          },
+          "post_prefix_new_fact_acquisition": {
+            "correct": 7,
+            "total": 24,
+            "missing": 0,
+            "accuracy": 0.2916666666666667
+          },
+          "memory_scope": "Array bytes and canonical replay/history payload sizes only; excludes Python overhead, temporary activations, kernel workspace and allocator peaks. Every arm retains audit history; replay payload is an algorithmic inventory, not incremental measured RAM."
+        },
+        "replay_matched_total": {
+          "branch_checkpoint": {
+            "model_sha256": "3deedff2fa42d01f86ae8ed92a55bbe7a2534854f44e38116ce0439e1e119fb9",
+            "optimizer_state_sha256": "de13744e0a070b865489a1c89f0193c7a4ecd2f16ac1489d74287ff1327d97dc",
+            "optimizer_step": 40,
+            "delivered_prefix_sha256": "32fef4e4fbeb0258bddb271856a4ce9988a1eec18dc58f942d166f8c318aee55",
+            "last_delivered_event_id": "event-00000003"
+          },
+          "final_checkpoint": {
+            "model_sha256": "0ccea8c757e81ecf8681c71812ece7426c727b2b1798de480101b2ea2d4ce52c",
+            "optimizer_state_sha256": "5d4845395a37d961806ce512054472450381dbf3afc94a1d7aa08c43a8130c39",
+            "optimizer_step": 112,
+            "delivered_prefix_sha256": "ef5c06561fcc19ff19c47a8950322b184aa4b2da9c6818efba870119ade7dd76",
+            "last_delivered_event_id": "event-00000039"
+          },
+          "counts": {
+            "post_prefix_events": 36,
+            "optimizer_steps": 72,
+            "current_target_presentations": 36,
+            "replay_target_presentations": 36,
+            "scored_target_presentations": 72,
+            "training_documents": 72,
+            "training_input_tokens": 216,
+            "masked_out_target_positions": 144,
+            "inference_forward_calls": 204,
+            "evaluation_query_tokens": 612,
+            "same_entity_replay_steps": 24,
+            "other_entity_replay_steps": 12,
+            "current_event_replay_fallback_steps": 0,
+            "parameter_array_bytes": 6720,
+            "adam_moment_array_bytes": 13440,
+            "maximum_algorithmic_replay_payload_json_bytes": 1768,
+            "instrumentation_delivered_history_json_bytes": 5387
+          },
+          "correction_metrics": {
+            "manifest_sha256": "9d5fba2ba2d236fd1f4b48666e4be0551ad7af2d5dfc1f22bbddf4608f335ae1",
+            "through_phase": 6,
+            "censor_policy": "new_revision",
+            "cohorts": {
+              "all_assignments": {
+                "immediately_after_write": {
+                  "events": 12,
+                  "measured": 12,
+                  "correct": 4,
+                  "missing": 0,
+                  "accuracy": 0.3333333333333333
+                },
+                "phase_end_horizons": {
+                  "0": {
+                    "total_events": 12,
+                    "eligible": 12,
+                    "censored": 0,
+                    "not_yet_due": 0,
+                    "measured": 12,
+                    "missing_measurement": 0,
+                    "correct": 4,
+                    "failed_initial_acquisition_eligible": 8,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 4,
+                    "acquired_only_measured": 4,
+                    "acquired_only_correct": 4,
+                    "accuracy": 0.3333333333333333,
+                    "acquired_only_accuracy": 1.0
+                  },
+                  "1": {
+                    "total_events": 12,
+                    "eligible": 6,
+                    "censored": 4,
+                    "not_yet_due": 2,
+                    "measured": 6,
+                    "missing_measurement": 0,
+                    "correct": 3,
+                    "failed_initial_acquisition_eligible": 2,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 4,
+                    "acquired_only_measured": 4,
+                    "acquired_only_correct": 3,
+                    "accuracy": 0.5,
+                    "acquired_only_accuracy": 0.75
+                  },
+                  "5": {
+                    "total_events": 12,
+                    "eligible": 1,
+                    "censored": 5,
+                    "not_yet_due": 6,
+                    "measured": 1,
+                    "missing_measurement": 0,
+                    "correct": 1,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 1,
+                    "acquired_only_measured": 1,
+                    "acquired_only_correct": 1,
+                    "accuracy": 1.0,
+                    "acquired_only_accuracy": 1.0
+                  },
+                  "10": {
+                    "total_events": 12,
+                    "eligible": 0,
+                    "censored": 5,
+                    "not_yet_due": 7,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  },
+                  "20": {
+                    "total_events": 12,
+                    "eligible": 0,
+                    "censored": 5,
+                    "not_yet_due": 7,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  }
+                }
+              },
+              "semantic_value_changes": {
+                "immediately_after_write": {
+                  "events": 9,
+                  "measured": 9,
+                  "correct": 2,
+                  "missing": 0,
+                  "accuracy": 0.2222222222222222
+                },
+                "phase_end_horizons": {
+                  "0": {
+                    "total_events": 9,
+                    "eligible": 9,
+                    "censored": 0,
+                    "not_yet_due": 0,
+                    "measured": 9,
+                    "missing_measurement": 0,
+                    "correct": 2,
+                    "failed_initial_acquisition_eligible": 7,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 2,
+                    "acquired_only_measured": 2,
+                    "acquired_only_correct": 2,
+                    "accuracy": 0.2222222222222222,
+                    "acquired_only_accuracy": 1.0
+                  },
+                  "1": {
+                    "total_events": 9,
+                    "eligible": 4,
+                    "censored": 4,
+                    "not_yet_due": 1,
+                    "measured": 4,
+                    "missing_measurement": 0,
+                    "correct": 1,
+                    "failed_initial_acquisition_eligible": 2,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 2,
+                    "acquired_only_measured": 2,
+                    "acquired_only_correct": 1,
+                    "accuracy": 0.25,
+                    "acquired_only_accuracy": 0.5
+                  },
+                  "5": {
+                    "total_events": 9,
+                    "eligible": 0,
+                    "censored": 5,
+                    "not_yet_due": 4,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  },
+                  "10": {
+                    "total_events": 9,
+                    "eligible": 0,
+                    "censored": 5,
+                    "not_yet_due": 4,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  },
+                  "20": {
+                    "total_events": 9,
+                    "eligible": 0,
+                    "censored": 5,
+                    "not_yet_due": 4,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  }
+                }
+              },
+              "same_value_assignments": {
+                "immediately_after_write": {
+                  "events": 3,
+                  "measured": 3,
+                  "correct": 2,
+                  "missing": 0,
+                  "accuracy": 0.6666666666666666
+                },
+                "phase_end_horizons": {
+                  "0": {
+                    "total_events": 3,
+                    "eligible": 3,
+                    "censored": 0,
+                    "not_yet_due": 0,
+                    "measured": 3,
+                    "missing_measurement": 0,
+                    "correct": 2,
+                    "failed_initial_acquisition_eligible": 1,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 2,
+                    "acquired_only_measured": 2,
+                    "acquired_only_correct": 2,
+                    "accuracy": 0.6666666666666666,
+                    "acquired_only_accuracy": 1.0
+                  },
+                  "1": {
+                    "total_events": 3,
+                    "eligible": 2,
+                    "censored": 0,
+                    "not_yet_due": 1,
+                    "measured": 2,
+                    "missing_measurement": 0,
+                    "correct": 2,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 2,
+                    "acquired_only_measured": 2,
+                    "acquired_only_correct": 2,
+                    "accuracy": 1.0,
+                    "acquired_only_accuracy": 1.0
+                  },
+                  "5": {
+                    "total_events": 3,
+                    "eligible": 1,
+                    "censored": 0,
+                    "not_yet_due": 2,
+                    "measured": 1,
+                    "missing_measurement": 0,
+                    "correct": 1,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 1,
+                    "acquired_only_measured": 1,
+                    "acquired_only_correct": 1,
+                    "accuracy": 1.0,
+                    "acquired_only_accuracy": 1.0
+                  },
+                  "10": {
+                    "total_events": 3,
+                    "eligible": 0,
+                    "censored": 0,
+                    "not_yet_due": 3,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  },
+                  "20": {
+                    "total_events": 3,
+                    "eligible": 0,
+                    "censored": 0,
+                    "not_yet_due": 3,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  }
+                }
+              }
+            },
+            "scope": "Observed assignment-event measurements, not independent samples or a model-quality claim. Horizon0 means phase end; immediate acquisition is reported separately."
+          },
+          "post_prefix_new_fact_acquisition": {
+            "correct": 10,
+            "total": 24,
+            "missing": 0,
+            "accuracy": 0.4166666666666667
+          },
+          "memory_scope": "Array bytes and canonical replay/history payload sizes only; excludes Python overhead, temporary activations, kernel workspace and allocator peaks. Every arm retains audit history; replay payload is an algorithmic inventory, not incremental measured RAM."
+        },
+        "replay_additive": {
+          "branch_checkpoint": {
+            "model_sha256": "3deedff2fa42d01f86ae8ed92a55bbe7a2534854f44e38116ce0439e1e119fb9",
+            "optimizer_state_sha256": "de13744e0a070b865489a1c89f0193c7a4ecd2f16ac1489d74287ff1327d97dc",
+            "optimizer_step": 40,
+            "delivered_prefix_sha256": "32fef4e4fbeb0258bddb271856a4ce9988a1eec18dc58f942d166f8c318aee55",
+            "last_delivered_event_id": "event-00000003"
+          },
+          "final_checkpoint": {
+            "model_sha256": "b6a30d5cbb3b69f3fcb57f3f23900d9c00209b1db071bbf016d700d7f39dc190",
+            "optimizer_state_sha256": "5cc451e08e1249681b0995aadf3ee074f118f4ac04ded656367fe121a3f9ecbd",
+            "optimizer_step": 148,
+            "delivered_prefix_sha256": "ef5c06561fcc19ff19c47a8950322b184aa4b2da9c6818efba870119ade7dd76",
+            "last_delivered_event_id": "event-00000039"
+          },
+          "counts": {
+            "post_prefix_events": 36,
+            "optimizer_steps": 108,
+            "current_target_presentations": 72,
+            "replay_target_presentations": 36,
+            "scored_target_presentations": 108,
+            "training_documents": 108,
+            "training_input_tokens": 324,
+            "masked_out_target_positions": 216,
+            "inference_forward_calls": 204,
+            "evaluation_query_tokens": 612,
+            "same_entity_replay_steps": 24,
+            "other_entity_replay_steps": 12,
+            "current_event_replay_fallback_steps": 0,
+            "parameter_array_bytes": 6720,
+            "adam_moment_array_bytes": 13440,
+            "maximum_algorithmic_replay_payload_json_bytes": 1768,
+            "instrumentation_delivered_history_json_bytes": 5387
+          },
+          "correction_metrics": {
+            "manifest_sha256": "9d5fba2ba2d236fd1f4b48666e4be0551ad7af2d5dfc1f22bbddf4608f335ae1",
+            "through_phase": 6,
+            "censor_policy": "new_revision",
+            "cohorts": {
+              "all_assignments": {
+                "immediately_after_write": {
+                  "events": 12,
+                  "measured": 12,
+                  "correct": 6,
+                  "missing": 0,
+                  "accuracy": 0.5
+                },
+                "phase_end_horizons": {
+                  "0": {
+                    "total_events": 12,
+                    "eligible": 12,
+                    "censored": 0,
+                    "not_yet_due": 0,
+                    "measured": 12,
+                    "missing_measurement": 0,
+                    "correct": 5,
+                    "failed_initial_acquisition_eligible": 6,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 6,
+                    "acquired_only_measured": 6,
+                    "acquired_only_correct": 5,
+                    "accuracy": 0.4166666666666667,
+                    "acquired_only_accuracy": 0.8333333333333334
+                  },
+                  "1": {
+                    "total_events": 12,
+                    "eligible": 6,
+                    "censored": 4,
+                    "not_yet_due": 2,
+                    "measured": 6,
+                    "missing_measurement": 0,
+                    "correct": 3,
+                    "failed_initial_acquisition_eligible": 1,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 5,
+                    "acquired_only_measured": 5,
+                    "acquired_only_correct": 3,
+                    "accuracy": 0.5,
+                    "acquired_only_accuracy": 0.6
+                  },
+                  "5": {
+                    "total_events": 12,
+                    "eligible": 1,
+                    "censored": 5,
+                    "not_yet_due": 6,
+                    "measured": 1,
+                    "missing_measurement": 0,
+                    "correct": 1,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 1,
+                    "acquired_only_measured": 1,
+                    "acquired_only_correct": 1,
+                    "accuracy": 1.0,
+                    "acquired_only_accuracy": 1.0
+                  },
+                  "10": {
+                    "total_events": 12,
+                    "eligible": 0,
+                    "censored": 5,
+                    "not_yet_due": 7,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  },
+                  "20": {
+                    "total_events": 12,
+                    "eligible": 0,
+                    "censored": 5,
+                    "not_yet_due": 7,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  }
+                }
+              },
+              "semantic_value_changes": {
+                "immediately_after_write": {
+                  "events": 9,
+                  "measured": 9,
+                  "correct": 4,
+                  "missing": 0,
+                  "accuracy": 0.4444444444444444
+                },
+                "phase_end_horizons": {
+                  "0": {
+                    "total_events": 9,
+                    "eligible": 9,
+                    "censored": 0,
+                    "not_yet_due": 0,
+                    "measured": 9,
+                    "missing_measurement": 0,
+                    "correct": 3,
+                    "failed_initial_acquisition_eligible": 5,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 4,
+                    "acquired_only_measured": 4,
+                    "acquired_only_correct": 3,
+                    "accuracy": 0.3333333333333333,
+                    "acquired_only_accuracy": 0.75
+                  },
+                  "1": {
+                    "total_events": 9,
+                    "eligible": 4,
+                    "censored": 4,
+                    "not_yet_due": 1,
+                    "measured": 4,
+                    "missing_measurement": 0,
+                    "correct": 1,
+                    "failed_initial_acquisition_eligible": 1,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 3,
+                    "acquired_only_measured": 3,
+                    "acquired_only_correct": 1,
+                    "accuracy": 0.25,
+                    "acquired_only_accuracy": 0.3333333333333333
+                  },
+                  "5": {
+                    "total_events": 9,
+                    "eligible": 0,
+                    "censored": 5,
+                    "not_yet_due": 4,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  },
+                  "10": {
+                    "total_events": 9,
+                    "eligible": 0,
+                    "censored": 5,
+                    "not_yet_due": 4,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  },
+                  "20": {
+                    "total_events": 9,
+                    "eligible": 0,
+                    "censored": 5,
+                    "not_yet_due": 4,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  }
+                }
+              },
+              "same_value_assignments": {
+                "immediately_after_write": {
+                  "events": 3,
+                  "measured": 3,
+                  "correct": 2,
+                  "missing": 0,
+                  "accuracy": 0.6666666666666666
+                },
+                "phase_end_horizons": {
+                  "0": {
+                    "total_events": 3,
+                    "eligible": 3,
+                    "censored": 0,
+                    "not_yet_due": 0,
+                    "measured": 3,
+                    "missing_measurement": 0,
+                    "correct": 2,
+                    "failed_initial_acquisition_eligible": 1,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 2,
+                    "acquired_only_measured": 2,
+                    "acquired_only_correct": 2,
+                    "accuracy": 0.6666666666666666,
+                    "acquired_only_accuracy": 1.0
+                  },
+                  "1": {
+                    "total_events": 3,
+                    "eligible": 2,
+                    "censored": 0,
+                    "not_yet_due": 1,
+                    "measured": 2,
+                    "missing_measurement": 0,
+                    "correct": 2,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 2,
+                    "acquired_only_measured": 2,
+                    "acquired_only_correct": 2,
+                    "accuracy": 1.0,
+                    "acquired_only_accuracy": 1.0
+                  },
+                  "5": {
+                    "total_events": 3,
+                    "eligible": 1,
+                    "censored": 0,
+                    "not_yet_due": 2,
+                    "measured": 1,
+                    "missing_measurement": 0,
+                    "correct": 1,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 1,
+                    "acquired_only_measured": 1,
+                    "acquired_only_correct": 1,
+                    "accuracy": 1.0,
+                    "acquired_only_accuracy": 1.0
+                  },
+                  "10": {
+                    "total_events": 3,
+                    "eligible": 0,
+                    "censored": 0,
+                    "not_yet_due": 3,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  },
+                  "20": {
+                    "total_events": 3,
+                    "eligible": 0,
+                    "censored": 0,
+                    "not_yet_due": 3,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  }
+                }
+              }
+            },
+            "scope": "Observed assignment-event measurements, not independent samples or a model-quality claim. Horizon0 means phase end; immediate acquisition is reported separately."
+          },
+          "post_prefix_new_fact_acquisition": {
+            "correct": 10,
+            "total": 24,
+            "missing": 0,
+            "accuracy": 0.4166666666666667
+          },
+          "memory_scope": "Array bytes and canonical replay/history payload sizes only; excludes Python overhead, temporary activations, kernel workspace and allocator peaks. Every arm retains audit history; replay payload is an algorithmic inventory, not incremental measured RAM."
+        },
+        "frozen": {
+          "branch_checkpoint": {
+            "model_sha256": "3deedff2fa42d01f86ae8ed92a55bbe7a2534854f44e38116ce0439e1e119fb9",
+            "optimizer_state_sha256": "de13744e0a070b865489a1c89f0193c7a4ecd2f16ac1489d74287ff1327d97dc",
+            "optimizer_step": 40,
+            "delivered_prefix_sha256": "32fef4e4fbeb0258bddb271856a4ce9988a1eec18dc58f942d166f8c318aee55",
+            "last_delivered_event_id": "event-00000003"
+          },
+          "final_checkpoint": {
+            "model_sha256": "3deedff2fa42d01f86ae8ed92a55bbe7a2534854f44e38116ce0439e1e119fb9",
+            "optimizer_state_sha256": "de13744e0a070b865489a1c89f0193c7a4ecd2f16ac1489d74287ff1327d97dc",
+            "optimizer_step": 40,
+            "delivered_prefix_sha256": "ef5c06561fcc19ff19c47a8950322b184aa4b2da9c6818efba870119ade7dd76",
+            "last_delivered_event_id": "event-00000039"
+          },
+          "counts": {
+            "post_prefix_events": 36,
+            "optimizer_steps": 0,
+            "current_target_presentations": 0,
+            "replay_target_presentations": 0,
+            "scored_target_presentations": 0,
+            "training_documents": 0,
+            "training_input_tokens": 0,
+            "masked_out_target_positions": 0,
+            "inference_forward_calls": 204,
+            "evaluation_query_tokens": 612,
+            "same_entity_replay_steps": 0,
+            "other_entity_replay_steps": 0,
+            "current_event_replay_fallback_steps": 0,
+            "parameter_array_bytes": 6720,
+            "adam_moment_array_bytes": 13440,
+            "maximum_algorithmic_replay_payload_json_bytes": 0,
+            "instrumentation_delivered_history_json_bytes": 5387
+          },
+          "correction_metrics": {
+            "manifest_sha256": "9d5fba2ba2d236fd1f4b48666e4be0551ad7af2d5dfc1f22bbddf4608f335ae1",
+            "through_phase": 6,
+            "censor_policy": "new_revision",
+            "cohorts": {
+              "all_assignments": {
+                "immediately_after_write": {
+                  "events": 12,
+                  "measured": 12,
+                  "correct": 2,
+                  "missing": 0,
+                  "accuracy": 0.16666666666666666
+                },
+                "phase_end_horizons": {
+                  "0": {
+                    "total_events": 12,
+                    "eligible": 12,
+                    "censored": 0,
+                    "not_yet_due": 0,
+                    "measured": 12,
+                    "missing_measurement": 0,
+                    "correct": 2,
+                    "failed_initial_acquisition_eligible": 10,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 2,
+                    "acquired_only_measured": 2,
+                    "acquired_only_correct": 2,
+                    "accuracy": 0.16666666666666666,
+                    "acquired_only_accuracy": 1.0
+                  },
+                  "1": {
+                    "total_events": 12,
+                    "eligible": 6,
+                    "censored": 4,
+                    "not_yet_due": 2,
+                    "measured": 6,
+                    "missing_measurement": 0,
+                    "correct": 2,
+                    "failed_initial_acquisition_eligible": 4,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 2,
+                    "acquired_only_measured": 2,
+                    "acquired_only_correct": 2,
+                    "accuracy": 0.3333333333333333,
+                    "acquired_only_accuracy": 1.0
+                  },
+                  "5": {
+                    "total_events": 12,
+                    "eligible": 1,
+                    "censored": 5,
+                    "not_yet_due": 6,
+                    "measured": 1,
+                    "missing_measurement": 0,
+                    "correct": 1,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 1,
+                    "acquired_only_measured": 1,
+                    "acquired_only_correct": 1,
+                    "accuracy": 1.0,
+                    "acquired_only_accuracy": 1.0
+                  },
+                  "10": {
+                    "total_events": 12,
+                    "eligible": 0,
+                    "censored": 5,
+                    "not_yet_due": 7,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  },
+                  "20": {
+                    "total_events": 12,
+                    "eligible": 0,
+                    "censored": 5,
+                    "not_yet_due": 7,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  }
+                }
+              },
+              "semantic_value_changes": {
+                "immediately_after_write": {
+                  "events": 9,
+                  "measured": 9,
+                  "correct": 1,
+                  "missing": 0,
+                  "accuracy": 0.1111111111111111
+                },
+                "phase_end_horizons": {
+                  "0": {
+                    "total_events": 9,
+                    "eligible": 9,
+                    "censored": 0,
+                    "not_yet_due": 0,
+                    "measured": 9,
+                    "missing_measurement": 0,
+                    "correct": 1,
+                    "failed_initial_acquisition_eligible": 8,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 1,
+                    "acquired_only_measured": 1,
+                    "acquired_only_correct": 1,
+                    "accuracy": 0.1111111111111111,
+                    "acquired_only_accuracy": 1.0
+                  },
+                  "1": {
+                    "total_events": 9,
+                    "eligible": 4,
+                    "censored": 4,
+                    "not_yet_due": 1,
+                    "measured": 4,
+                    "missing_measurement": 0,
+                    "correct": 1,
+                    "failed_initial_acquisition_eligible": 3,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 1,
+                    "acquired_only_measured": 1,
+                    "acquired_only_correct": 1,
+                    "accuracy": 0.25,
+                    "acquired_only_accuracy": 1.0
+                  },
+                  "5": {
+                    "total_events": 9,
+                    "eligible": 0,
+                    "censored": 5,
+                    "not_yet_due": 4,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  },
+                  "10": {
+                    "total_events": 9,
+                    "eligible": 0,
+                    "censored": 5,
+                    "not_yet_due": 4,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  },
+                  "20": {
+                    "total_events": 9,
+                    "eligible": 0,
+                    "censored": 5,
+                    "not_yet_due": 4,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  }
+                }
+              },
+              "same_value_assignments": {
+                "immediately_after_write": {
+                  "events": 3,
+                  "measured": 3,
+                  "correct": 1,
+                  "missing": 0,
+                  "accuracy": 0.3333333333333333
+                },
+                "phase_end_horizons": {
+                  "0": {
+                    "total_events": 3,
+                    "eligible": 3,
+                    "censored": 0,
+                    "not_yet_due": 0,
+                    "measured": 3,
+                    "missing_measurement": 0,
+                    "correct": 1,
+                    "failed_initial_acquisition_eligible": 2,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 1,
+                    "acquired_only_measured": 1,
+                    "acquired_only_correct": 1,
+                    "accuracy": 0.3333333333333333,
+                    "acquired_only_accuracy": 1.0
+                  },
+                  "1": {
+                    "total_events": 3,
+                    "eligible": 2,
+                    "censored": 0,
+                    "not_yet_due": 1,
+                    "measured": 2,
+                    "missing_measurement": 0,
+                    "correct": 1,
+                    "failed_initial_acquisition_eligible": 1,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 1,
+                    "acquired_only_measured": 1,
+                    "acquired_only_correct": 1,
+                    "accuracy": 0.5,
+                    "acquired_only_accuracy": 1.0
+                  },
+                  "5": {
+                    "total_events": 3,
+                    "eligible": 1,
+                    "censored": 0,
+                    "not_yet_due": 2,
+                    "measured": 1,
+                    "missing_measurement": 0,
+                    "correct": 1,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 1,
+                    "acquired_only_measured": 1,
+                    "acquired_only_correct": 1,
+                    "accuracy": 1.0,
+                    "acquired_only_accuracy": 1.0
+                  },
+                  "10": {
+                    "total_events": 3,
+                    "eligible": 0,
+                    "censored": 0,
+                    "not_yet_due": 3,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  },
+                  "20": {
+                    "total_events": 3,
+                    "eligible": 0,
+                    "censored": 0,
+                    "not_yet_due": 3,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  }
+                }
+              }
+            },
+            "scope": "Observed assignment-event measurements, not independent samples or a model-quality claim. Horizon0 means phase end; immediate acquisition is reported separately."
+          },
+          "post_prefix_new_fact_acquisition": {
+            "correct": 0,
+            "total": 24,
+            "missing": 0,
+            "accuracy": 0.0
+          },
+          "memory_scope": "Array bytes and canonical replay/history payload sizes only; excludes Python overhead, temporary activations, kernel workspace and allocator peaks. Every arm retains audit history; replay payload is an algorithmic inventory, not incremental measured RAM."
+        }
+      }
+    },
+    {
+      "seed": 9202,
+      "arms": {
+        "current_only": {
+          "branch_checkpoint": {
+            "model_sha256": "f84095ecca0f821b2ddf828706796735398e775553b8e58644535b7b8ffbab99",
+            "optimizer_state_sha256": "11a70f14a4e5e30b9b9dd118cb1765f2ce9c4782a78fe993f988816f9523ff29",
+            "optimizer_step": 40,
+            "delivered_prefix_sha256": "9de9ae92ccc47383ab04a77141bf9c0def1151dffb6313b0c2bce117f76bb504",
+            "last_delivered_event_id": "event-00000003"
+          },
+          "final_checkpoint": {
+            "model_sha256": "f706d08b645730da8b4a91d812260b2ea72944507b5e2d618ba2e4910995befc",
+            "optimizer_state_sha256": "7cc4a694ac4700e8c9abe0b1bdbf3c3033ec120d12637fd3c89e0e8e10b3d805",
+            "optimizer_step": 112,
+            "delivered_prefix_sha256": "3ce93ed78173387b8ba83c3e126d32af2c6ccf3799983ffa4f72f0e70d05032e",
+            "last_delivered_event_id": "event-00000039"
+          },
+          "counts": {
+            "post_prefix_events": 36,
+            "optimizer_steps": 72,
+            "current_target_presentations": 72,
+            "replay_target_presentations": 0,
+            "scored_target_presentations": 72,
+            "training_documents": 72,
+            "training_input_tokens": 216,
+            "masked_out_target_positions": 144,
+            "inference_forward_calls": 204,
+            "evaluation_query_tokens": 612,
+            "same_entity_replay_steps": 0,
+            "other_entity_replay_steps": 0,
+            "current_event_replay_fallback_steps": 0,
+            "parameter_array_bytes": 6720,
+            "adam_moment_array_bytes": 13440,
+            "maximum_algorithmic_replay_payload_json_bytes": 0,
+            "instrumentation_delivered_history_json_bytes": 5388
+          },
+          "correction_metrics": {
+            "manifest_sha256": "30618d5fb29984d6aa8dab5cb128138f3c8983aa019b10506c047fec9a432b32",
+            "through_phase": 6,
+            "censor_policy": "new_revision",
+            "cohorts": {
+              "all_assignments": {
+                "immediately_after_write": {
+                  "events": 12,
+                  "measured": 12,
+                  "correct": 4,
+                  "missing": 0,
+                  "accuracy": 0.3333333333333333
+                },
+                "phase_end_horizons": {
+                  "0": {
+                    "total_events": 12,
+                    "eligible": 12,
+                    "censored": 0,
+                    "not_yet_due": 0,
+                    "measured": 12,
+                    "missing_measurement": 0,
+                    "correct": 5,
+                    "failed_initial_acquisition_eligible": 8,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 4,
+                    "acquired_only_measured": 4,
+                    "acquired_only_correct": 4,
+                    "accuracy": 0.4166666666666667,
+                    "acquired_only_accuracy": 1.0
+                  },
+                  "1": {
+                    "total_events": 12,
+                    "eligible": 7,
+                    "censored": 3,
+                    "not_yet_due": 2,
+                    "measured": 7,
+                    "missing_measurement": 0,
+                    "correct": 3,
+                    "failed_initial_acquisition_eligible": 6,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 1,
+                    "acquired_only_measured": 1,
+                    "acquired_only_correct": 1,
+                    "accuracy": 0.42857142857142855,
+                    "acquired_only_accuracy": 1.0
+                  },
+                  "5": {
+                    "total_events": 12,
+                    "eligible": 0,
+                    "censored": 4,
+                    "not_yet_due": 8,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  },
+                  "10": {
+                    "total_events": 12,
+                    "eligible": 0,
+                    "censored": 4,
+                    "not_yet_due": 8,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  },
+                  "20": {
+                    "total_events": 12,
+                    "eligible": 0,
+                    "censored": 4,
+                    "not_yet_due": 8,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  }
+                }
+              },
+              "semantic_value_changes": {
+                "immediately_after_write": {
+                  "events": 9,
+                  "measured": 9,
+                  "correct": 2,
+                  "missing": 0,
+                  "accuracy": 0.2222222222222222
+                },
+                "phase_end_horizons": {
+                  "0": {
+                    "total_events": 9,
+                    "eligible": 9,
+                    "censored": 0,
+                    "not_yet_due": 0,
+                    "measured": 9,
+                    "missing_measurement": 0,
+                    "correct": 3,
+                    "failed_initial_acquisition_eligible": 7,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 2,
+                    "acquired_only_measured": 2,
+                    "acquired_only_correct": 2,
+                    "accuracy": 0.3333333333333333,
+                    "acquired_only_accuracy": 1.0
+                  },
+                  "1": {
+                    "total_events": 9,
+                    "eligible": 7,
+                    "censored": 1,
+                    "not_yet_due": 1,
+                    "measured": 7,
+                    "missing_measurement": 0,
+                    "correct": 3,
+                    "failed_initial_acquisition_eligible": 6,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 1,
+                    "acquired_only_measured": 1,
+                    "acquired_only_correct": 1,
+                    "accuracy": 0.42857142857142855,
+                    "acquired_only_accuracy": 1.0
+                  },
+                  "5": {
+                    "total_events": 9,
+                    "eligible": 0,
+                    "censored": 2,
+                    "not_yet_due": 7,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  },
+                  "10": {
+                    "total_events": 9,
+                    "eligible": 0,
+                    "censored": 2,
+                    "not_yet_due": 7,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  },
+                  "20": {
+                    "total_events": 9,
+                    "eligible": 0,
+                    "censored": 2,
+                    "not_yet_due": 7,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  }
+                }
+              },
+              "same_value_assignments": {
+                "immediately_after_write": {
+                  "events": 3,
+                  "measured": 3,
+                  "correct": 2,
+                  "missing": 0,
+                  "accuracy": 0.6666666666666666
+                },
+                "phase_end_horizons": {
+                  "0": {
+                    "total_events": 3,
+                    "eligible": 3,
+                    "censored": 0,
+                    "not_yet_due": 0,
+                    "measured": 3,
+                    "missing_measurement": 0,
+                    "correct": 2,
+                    "failed_initial_acquisition_eligible": 1,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 2,
+                    "acquired_only_measured": 2,
+                    "acquired_only_correct": 2,
+                    "accuracy": 0.6666666666666666,
+                    "acquired_only_accuracy": 1.0
+                  },
+                  "1": {
+                    "total_events": 3,
+                    "eligible": 0,
+                    "censored": 2,
+                    "not_yet_due": 1,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  },
+                  "5": {
+                    "total_events": 3,
+                    "eligible": 0,
+                    "censored": 2,
+                    "not_yet_due": 1,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  },
+                  "10": {
+                    "total_events": 3,
+                    "eligible": 0,
+                    "censored": 2,
+                    "not_yet_due": 1,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  },
+                  "20": {
+                    "total_events": 3,
+                    "eligible": 0,
+                    "censored": 2,
+                    "not_yet_due": 1,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  }
+                }
+              }
+            },
+            "scope": "Observed assignment-event measurements, not independent samples or a model-quality claim. Horizon0 means phase end; immediate acquisition is reported separately."
+          },
+          "post_prefix_new_fact_acquisition": {
+            "correct": 8,
+            "total": 24,
+            "missing": 0,
+            "accuracy": 0.3333333333333333
+          },
+          "memory_scope": "Array bytes and canonical replay/history payload sizes only; excludes Python overhead, temporary activations, kernel workspace and allocator peaks. Every arm retains audit history; replay payload is an algorithmic inventory, not incremental measured RAM."
+        },
+        "replay_matched_total": {
+          "branch_checkpoint": {
+            "model_sha256": "f84095ecca0f821b2ddf828706796735398e775553b8e58644535b7b8ffbab99",
+            "optimizer_state_sha256": "11a70f14a4e5e30b9b9dd118cb1765f2ce9c4782a78fe993f988816f9523ff29",
+            "optimizer_step": 40,
+            "delivered_prefix_sha256": "9de9ae92ccc47383ab04a77141bf9c0def1151dffb6313b0c2bce117f76bb504",
+            "last_delivered_event_id": "event-00000003"
+          },
+          "final_checkpoint": {
+            "model_sha256": "e233310526ec18c14d75437d79c4ebf21d8a552b58a4d4a8f5402f1c0647cd06",
+            "optimizer_state_sha256": "c04f296ea519fcd11589d3260aa0d6e882167514891f2e28d57e850df0c09a49",
+            "optimizer_step": 112,
+            "delivered_prefix_sha256": "3ce93ed78173387b8ba83c3e126d32af2c6ccf3799983ffa4f72f0e70d05032e",
+            "last_delivered_event_id": "event-00000039"
+          },
+          "counts": {
+            "post_prefix_events": 36,
+            "optimizer_steps": 72,
+            "current_target_presentations": 36,
+            "replay_target_presentations": 36,
+            "scored_target_presentations": 72,
+            "training_documents": 72,
+            "training_input_tokens": 216,
+            "masked_out_target_positions": 144,
+            "inference_forward_calls": 204,
+            "evaluation_query_tokens": 612,
+            "same_entity_replay_steps": 24,
+            "other_entity_replay_steps": 12,
+            "current_event_replay_fallback_steps": 0,
+            "parameter_array_bytes": 6720,
+            "adam_moment_array_bytes": 13440,
+            "maximum_algorithmic_replay_payload_json_bytes": 1769,
+            "instrumentation_delivered_history_json_bytes": 5388
+          },
+          "correction_metrics": {
+            "manifest_sha256": "30618d5fb29984d6aa8dab5cb128138f3c8983aa019b10506c047fec9a432b32",
+            "through_phase": 6,
+            "censor_policy": "new_revision",
+            "cohorts": {
+              "all_assignments": {
+                "immediately_after_write": {
+                  "events": 12,
+                  "measured": 12,
+                  "correct": 5,
+                  "missing": 0,
+                  "accuracy": 0.4166666666666667
+                },
+                "phase_end_horizons": {
+                  "0": {
+                    "total_events": 12,
+                    "eligible": 12,
+                    "censored": 0,
+                    "not_yet_due": 0,
+                    "measured": 12,
+                    "missing_measurement": 0,
+                    "correct": 5,
+                    "failed_initial_acquisition_eligible": 7,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 5,
+                    "acquired_only_measured": 5,
+                    "acquired_only_correct": 5,
+                    "accuracy": 0.4166666666666667,
+                    "acquired_only_accuracy": 1.0
+                  },
+                  "1": {
+                    "total_events": 12,
+                    "eligible": 7,
+                    "censored": 3,
+                    "not_yet_due": 2,
+                    "measured": 7,
+                    "missing_measurement": 0,
+                    "correct": 2,
+                    "failed_initial_acquisition_eligible": 6,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 1,
+                    "acquired_only_measured": 1,
+                    "acquired_only_correct": 1,
+                    "accuracy": 0.2857142857142857,
+                    "acquired_only_accuracy": 1.0
+                  },
+                  "5": {
+                    "total_events": 12,
+                    "eligible": 0,
+                    "censored": 4,
+                    "not_yet_due": 8,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  },
+                  "10": {
+                    "total_events": 12,
+                    "eligible": 0,
+                    "censored": 4,
+                    "not_yet_due": 8,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  },
+                  "20": {
+                    "total_events": 12,
+                    "eligible": 0,
+                    "censored": 4,
+                    "not_yet_due": 8,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  }
+                }
+              },
+              "semantic_value_changes": {
+                "immediately_after_write": {
+                  "events": 9,
+                  "measured": 9,
+                  "correct": 3,
+                  "missing": 0,
+                  "accuracy": 0.3333333333333333
+                },
+                "phase_end_horizons": {
+                  "0": {
+                    "total_events": 9,
+                    "eligible": 9,
+                    "censored": 0,
+                    "not_yet_due": 0,
+                    "measured": 9,
+                    "missing_measurement": 0,
+                    "correct": 3,
+                    "failed_initial_acquisition_eligible": 6,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 3,
+                    "acquired_only_measured": 3,
+                    "acquired_only_correct": 3,
+                    "accuracy": 0.3333333333333333,
+                    "acquired_only_accuracy": 1.0
+                  },
+                  "1": {
+                    "total_events": 9,
+                    "eligible": 7,
+                    "censored": 1,
+                    "not_yet_due": 1,
+                    "measured": 7,
+                    "missing_measurement": 0,
+                    "correct": 2,
+                    "failed_initial_acquisition_eligible": 6,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 1,
+                    "acquired_only_measured": 1,
+                    "acquired_only_correct": 1,
+                    "accuracy": 0.2857142857142857,
+                    "acquired_only_accuracy": 1.0
+                  },
+                  "5": {
+                    "total_events": 9,
+                    "eligible": 0,
+                    "censored": 2,
+                    "not_yet_due": 7,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  },
+                  "10": {
+                    "total_events": 9,
+                    "eligible": 0,
+                    "censored": 2,
+                    "not_yet_due": 7,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  },
+                  "20": {
+                    "total_events": 9,
+                    "eligible": 0,
+                    "censored": 2,
+                    "not_yet_due": 7,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  }
+                }
+              },
+              "same_value_assignments": {
+                "immediately_after_write": {
+                  "events": 3,
+                  "measured": 3,
+                  "correct": 2,
+                  "missing": 0,
+                  "accuracy": 0.6666666666666666
+                },
+                "phase_end_horizons": {
+                  "0": {
+                    "total_events": 3,
+                    "eligible": 3,
+                    "censored": 0,
+                    "not_yet_due": 0,
+                    "measured": 3,
+                    "missing_measurement": 0,
+                    "correct": 2,
+                    "failed_initial_acquisition_eligible": 1,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 2,
+                    "acquired_only_measured": 2,
+                    "acquired_only_correct": 2,
+                    "accuracy": 0.6666666666666666,
+                    "acquired_only_accuracy": 1.0
+                  },
+                  "1": {
+                    "total_events": 3,
+                    "eligible": 0,
+                    "censored": 2,
+                    "not_yet_due": 1,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  },
+                  "5": {
+                    "total_events": 3,
+                    "eligible": 0,
+                    "censored": 2,
+                    "not_yet_due": 1,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  },
+                  "10": {
+                    "total_events": 3,
+                    "eligible": 0,
+                    "censored": 2,
+                    "not_yet_due": 1,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  },
+                  "20": {
+                    "total_events": 3,
+                    "eligible": 0,
+                    "censored": 2,
+                    "not_yet_due": 1,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  }
+                }
+              }
+            },
+            "scope": "Observed assignment-event measurements, not independent samples or a model-quality claim. Horizon0 means phase end; immediate acquisition is reported separately."
+          },
+          "post_prefix_new_fact_acquisition": {
+            "correct": 8,
+            "total": 24,
+            "missing": 0,
+            "accuracy": 0.3333333333333333
+          },
+          "memory_scope": "Array bytes and canonical replay/history payload sizes only; excludes Python overhead, temporary activations, kernel workspace and allocator peaks. Every arm retains audit history; replay payload is an algorithmic inventory, not incremental measured RAM."
+        },
+        "replay_additive": {
+          "branch_checkpoint": {
+            "model_sha256": "f84095ecca0f821b2ddf828706796735398e775553b8e58644535b7b8ffbab99",
+            "optimizer_state_sha256": "11a70f14a4e5e30b9b9dd118cb1765f2ce9c4782a78fe993f988816f9523ff29",
+            "optimizer_step": 40,
+            "delivered_prefix_sha256": "9de9ae92ccc47383ab04a77141bf9c0def1151dffb6313b0c2bce117f76bb504",
+            "last_delivered_event_id": "event-00000003"
+          },
+          "final_checkpoint": {
+            "model_sha256": "07bd79a314be4e76b2322bab5f7e43e0270da2e5e33f477f1dddc61836c44535",
+            "optimizer_state_sha256": "661ba5742d4773972669feb0d544e6ae91ca3afd5b00402a7ba8d0d3d313722a",
+            "optimizer_step": 148,
+            "delivered_prefix_sha256": "3ce93ed78173387b8ba83c3e126d32af2c6ccf3799983ffa4f72f0e70d05032e",
+            "last_delivered_event_id": "event-00000039"
+          },
+          "counts": {
+            "post_prefix_events": 36,
+            "optimizer_steps": 108,
+            "current_target_presentations": 72,
+            "replay_target_presentations": 36,
+            "scored_target_presentations": 108,
+            "training_documents": 108,
+            "training_input_tokens": 324,
+            "masked_out_target_positions": 216,
+            "inference_forward_calls": 204,
+            "evaluation_query_tokens": 612,
+            "same_entity_replay_steps": 24,
+            "other_entity_replay_steps": 12,
+            "current_event_replay_fallback_steps": 0,
+            "parameter_array_bytes": 6720,
+            "adam_moment_array_bytes": 13440,
+            "maximum_algorithmic_replay_payload_json_bytes": 1769,
+            "instrumentation_delivered_history_json_bytes": 5388
+          },
+          "correction_metrics": {
+            "manifest_sha256": "30618d5fb29984d6aa8dab5cb128138f3c8983aa019b10506c047fec9a432b32",
+            "through_phase": 6,
+            "censor_policy": "new_revision",
+            "cohorts": {
+              "all_assignments": {
+                "immediately_after_write": {
+                  "events": 12,
+                  "measured": 12,
+                  "correct": 4,
+                  "missing": 0,
+                  "accuracy": 0.3333333333333333
+                },
+                "phase_end_horizons": {
+                  "0": {
+                    "total_events": 12,
+                    "eligible": 12,
+                    "censored": 0,
+                    "not_yet_due": 0,
+                    "measured": 12,
+                    "missing_measurement": 0,
+                    "correct": 4,
+                    "failed_initial_acquisition_eligible": 8,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 4,
+                    "acquired_only_measured": 4,
+                    "acquired_only_correct": 4,
+                    "accuracy": 0.3333333333333333,
+                    "acquired_only_accuracy": 1.0
+                  },
+                  "1": {
+                    "total_events": 12,
+                    "eligible": 7,
+                    "censored": 3,
+                    "not_yet_due": 2,
+                    "measured": 7,
+                    "missing_measurement": 0,
+                    "correct": 1,
+                    "failed_initial_acquisition_eligible": 6,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 1,
+                    "acquired_only_measured": 1,
+                    "acquired_only_correct": 0,
+                    "accuracy": 0.14285714285714285,
+                    "acquired_only_accuracy": 0.0
+                  },
+                  "5": {
+                    "total_events": 12,
+                    "eligible": 0,
+                    "censored": 4,
+                    "not_yet_due": 8,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  },
+                  "10": {
+                    "total_events": 12,
+                    "eligible": 0,
+                    "censored": 4,
+                    "not_yet_due": 8,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  },
+                  "20": {
+                    "total_events": 12,
+                    "eligible": 0,
+                    "censored": 4,
+                    "not_yet_due": 8,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  }
+                }
+              },
+              "semantic_value_changes": {
+                "immediately_after_write": {
+                  "events": 9,
+                  "measured": 9,
+                  "correct": 2,
+                  "missing": 0,
+                  "accuracy": 0.2222222222222222
+                },
+                "phase_end_horizons": {
+                  "0": {
+                    "total_events": 9,
+                    "eligible": 9,
+                    "censored": 0,
+                    "not_yet_due": 0,
+                    "measured": 9,
+                    "missing_measurement": 0,
+                    "correct": 2,
+                    "failed_initial_acquisition_eligible": 7,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 2,
+                    "acquired_only_measured": 2,
+                    "acquired_only_correct": 2,
+                    "accuracy": 0.2222222222222222,
+                    "acquired_only_accuracy": 1.0
+                  },
+                  "1": {
+                    "total_events": 9,
+                    "eligible": 7,
+                    "censored": 1,
+                    "not_yet_due": 1,
+                    "measured": 7,
+                    "missing_measurement": 0,
+                    "correct": 1,
+                    "failed_initial_acquisition_eligible": 6,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 1,
+                    "acquired_only_measured": 1,
+                    "acquired_only_correct": 0,
+                    "accuracy": 0.14285714285714285,
+                    "acquired_only_accuracy": 0.0
+                  },
+                  "5": {
+                    "total_events": 9,
+                    "eligible": 0,
+                    "censored": 2,
+                    "not_yet_due": 7,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  },
+                  "10": {
+                    "total_events": 9,
+                    "eligible": 0,
+                    "censored": 2,
+                    "not_yet_due": 7,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  },
+                  "20": {
+                    "total_events": 9,
+                    "eligible": 0,
+                    "censored": 2,
+                    "not_yet_due": 7,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  }
+                }
+              },
+              "same_value_assignments": {
+                "immediately_after_write": {
+                  "events": 3,
+                  "measured": 3,
+                  "correct": 2,
+                  "missing": 0,
+                  "accuracy": 0.6666666666666666
+                },
+                "phase_end_horizons": {
+                  "0": {
+                    "total_events": 3,
+                    "eligible": 3,
+                    "censored": 0,
+                    "not_yet_due": 0,
+                    "measured": 3,
+                    "missing_measurement": 0,
+                    "correct": 2,
+                    "failed_initial_acquisition_eligible": 1,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 2,
+                    "acquired_only_measured": 2,
+                    "acquired_only_correct": 2,
+                    "accuracy": 0.6666666666666666,
+                    "acquired_only_accuracy": 1.0
+                  },
+                  "1": {
+                    "total_events": 3,
+                    "eligible": 0,
+                    "censored": 2,
+                    "not_yet_due": 1,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  },
+                  "5": {
+                    "total_events": 3,
+                    "eligible": 0,
+                    "censored": 2,
+                    "not_yet_due": 1,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  },
+                  "10": {
+                    "total_events": 3,
+                    "eligible": 0,
+                    "censored": 2,
+                    "not_yet_due": 1,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  },
+                  "20": {
+                    "total_events": 3,
+                    "eligible": 0,
+                    "censored": 2,
+                    "not_yet_due": 1,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  }
+                }
+              }
+            },
+            "scope": "Observed assignment-event measurements, not independent samples or a model-quality claim. Horizon0 means phase end; immediate acquisition is reported separately."
+          },
+          "post_prefix_new_fact_acquisition": {
+            "correct": 10,
+            "total": 24,
+            "missing": 0,
+            "accuracy": 0.4166666666666667
+          },
+          "memory_scope": "Array bytes and canonical replay/history payload sizes only; excludes Python overhead, temporary activations, kernel workspace and allocator peaks. Every arm retains audit history; replay payload is an algorithmic inventory, not incremental measured RAM."
+        },
+        "frozen": {
+          "branch_checkpoint": {
+            "model_sha256": "f84095ecca0f821b2ddf828706796735398e775553b8e58644535b7b8ffbab99",
+            "optimizer_state_sha256": "11a70f14a4e5e30b9b9dd118cb1765f2ce9c4782a78fe993f988816f9523ff29",
+            "optimizer_step": 40,
+            "delivered_prefix_sha256": "9de9ae92ccc47383ab04a77141bf9c0def1151dffb6313b0c2bce117f76bb504",
+            "last_delivered_event_id": "event-00000003"
+          },
+          "final_checkpoint": {
+            "model_sha256": "f84095ecca0f821b2ddf828706796735398e775553b8e58644535b7b8ffbab99",
+            "optimizer_state_sha256": "11a70f14a4e5e30b9b9dd118cb1765f2ce9c4782a78fe993f988816f9523ff29",
+            "optimizer_step": 40,
+            "delivered_prefix_sha256": "3ce93ed78173387b8ba83c3e126d32af2c6ccf3799983ffa4f72f0e70d05032e",
+            "last_delivered_event_id": "event-00000039"
+          },
+          "counts": {
+            "post_prefix_events": 36,
+            "optimizer_steps": 0,
+            "current_target_presentations": 0,
+            "replay_target_presentations": 0,
+            "scored_target_presentations": 0,
+            "training_documents": 0,
+            "training_input_tokens": 0,
+            "masked_out_target_positions": 0,
+            "inference_forward_calls": 204,
+            "evaluation_query_tokens": 612,
+            "same_entity_replay_steps": 0,
+            "other_entity_replay_steps": 0,
+            "current_event_replay_fallback_steps": 0,
+            "parameter_array_bytes": 6720,
+            "adam_moment_array_bytes": 13440,
+            "maximum_algorithmic_replay_payload_json_bytes": 0,
+            "instrumentation_delivered_history_json_bytes": 5388
+          },
+          "correction_metrics": {
+            "manifest_sha256": "30618d5fb29984d6aa8dab5cb128138f3c8983aa019b10506c047fec9a432b32",
+            "through_phase": 6,
+            "censor_policy": "new_revision",
+            "cohorts": {
+              "all_assignments": {
+                "immediately_after_write": {
+                  "events": 12,
+                  "measured": 12,
+                  "correct": 3,
+                  "missing": 0,
+                  "accuracy": 0.25
+                },
+                "phase_end_horizons": {
+                  "0": {
+                    "total_events": 12,
+                    "eligible": 12,
+                    "censored": 0,
+                    "not_yet_due": 0,
+                    "measured": 12,
+                    "missing_measurement": 0,
+                    "correct": 3,
+                    "failed_initial_acquisition_eligible": 9,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 3,
+                    "acquired_only_measured": 3,
+                    "acquired_only_correct": 3,
+                    "accuracy": 0.25,
+                    "acquired_only_accuracy": 1.0
+                  },
+                  "1": {
+                    "total_events": 12,
+                    "eligible": 7,
+                    "censored": 3,
+                    "not_yet_due": 2,
+                    "measured": 7,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 7,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": 0.0,
+                    "acquired_only_accuracy": null
+                  },
+                  "5": {
+                    "total_events": 12,
+                    "eligible": 0,
+                    "censored": 4,
+                    "not_yet_due": 8,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  },
+                  "10": {
+                    "total_events": 12,
+                    "eligible": 0,
+                    "censored": 4,
+                    "not_yet_due": 8,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  },
+                  "20": {
+                    "total_events": 12,
+                    "eligible": 0,
+                    "censored": 4,
+                    "not_yet_due": 8,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  }
+                }
+              },
+              "semantic_value_changes": {
+                "immediately_after_write": {
+                  "events": 9,
+                  "measured": 9,
+                  "correct": 0,
+                  "missing": 0,
+                  "accuracy": 0.0
+                },
+                "phase_end_horizons": {
+                  "0": {
+                    "total_events": 9,
+                    "eligible": 9,
+                    "censored": 0,
+                    "not_yet_due": 0,
+                    "measured": 9,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 9,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": 0.0,
+                    "acquired_only_accuracy": null
+                  },
+                  "1": {
+                    "total_events": 9,
+                    "eligible": 7,
+                    "censored": 1,
+                    "not_yet_due": 1,
+                    "measured": 7,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 7,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": 0.0,
+                    "acquired_only_accuracy": null
+                  },
+                  "5": {
+                    "total_events": 9,
+                    "eligible": 0,
+                    "censored": 2,
+                    "not_yet_due": 7,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  },
+                  "10": {
+                    "total_events": 9,
+                    "eligible": 0,
+                    "censored": 2,
+                    "not_yet_due": 7,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  },
+                  "20": {
+                    "total_events": 9,
+                    "eligible": 0,
+                    "censored": 2,
+                    "not_yet_due": 7,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  }
+                }
+              },
+              "same_value_assignments": {
+                "immediately_after_write": {
+                  "events": 3,
+                  "measured": 3,
+                  "correct": 3,
+                  "missing": 0,
+                  "accuracy": 1.0
+                },
+                "phase_end_horizons": {
+                  "0": {
+                    "total_events": 3,
+                    "eligible": 3,
+                    "censored": 0,
+                    "not_yet_due": 0,
+                    "measured": 3,
+                    "missing_measurement": 0,
+                    "correct": 3,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 3,
+                    "acquired_only_measured": 3,
+                    "acquired_only_correct": 3,
+                    "accuracy": 1.0,
+                    "acquired_only_accuracy": 1.0
+                  },
+                  "1": {
+                    "total_events": 3,
+                    "eligible": 0,
+                    "censored": 2,
+                    "not_yet_due": 1,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  },
+                  "5": {
+                    "total_events": 3,
+                    "eligible": 0,
+                    "censored": 2,
+                    "not_yet_due": 1,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  },
+                  "10": {
+                    "total_events": 3,
+                    "eligible": 0,
+                    "censored": 2,
+                    "not_yet_due": 1,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  },
+                  "20": {
+                    "total_events": 3,
+                    "eligible": 0,
+                    "censored": 2,
+                    "not_yet_due": 1,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  }
+                }
+              }
+            },
+            "scope": "Observed assignment-event measurements, not independent samples or a model-quality claim. Horizon0 means phase end; immediate acquisition is reported separately."
+          },
+          "post_prefix_new_fact_acquisition": {
+            "correct": 5,
+            "total": 24,
+            "missing": 0,
+            "accuracy": 0.20833333333333334
+          },
+          "memory_scope": "Array bytes and canonical replay/history payload sizes only; excludes Python overhead, temporary activations, kernel workspace and allocator peaks. Every arm retains audit history; replay payload is an algorithmic inventory, not incremental measured RAM."
+        }
+      }
+    },
+    {
+      "seed": 9203,
+      "arms": {
+        "current_only": {
+          "branch_checkpoint": {
+            "model_sha256": "3317a5ddceeadebb64ddafad75a54f0bfd1509135b96e0fc1b6bcc1091164c75",
+            "optimizer_state_sha256": "fea9b28aaae0ff60886c9f8ef3aff24da42287f9bdbea6225b3d14c96c49807e",
+            "optimizer_step": 40,
+            "delivered_prefix_sha256": "645ea1ced2814f2d90e20667323899068191aa3891e7fc7be25a9bb537a963dd",
+            "last_delivered_event_id": "event-00000003"
+          },
+          "final_checkpoint": {
+            "model_sha256": "18626c0f7fe284fb6b38150859e3aa028c962e8209969c80188620daec5e514e",
+            "optimizer_state_sha256": "d342a17f992a0f818ca0fbfb42c70530f553d5dc99495034ba1608e79191540d",
+            "optimizer_step": 112,
+            "delivered_prefix_sha256": "ea508a494839789fec50ddb9d1c60dd1df7eca0f4100a3a959b4008435e926ec",
+            "last_delivered_event_id": "event-00000039"
+          },
+          "counts": {
+            "post_prefix_events": 36,
+            "optimizer_steps": 72,
+            "current_target_presentations": 72,
+            "replay_target_presentations": 0,
+            "scored_target_presentations": 72,
+            "training_documents": 72,
+            "training_input_tokens": 216,
+            "masked_out_target_positions": 144,
+            "inference_forward_calls": 204,
+            "evaluation_query_tokens": 612,
+            "same_entity_replay_steps": 0,
+            "other_entity_replay_steps": 0,
+            "current_event_replay_fallback_steps": 0,
+            "parameter_array_bytes": 6720,
+            "adam_moment_array_bytes": 13440,
+            "maximum_algorithmic_replay_payload_json_bytes": 0,
+            "instrumentation_delivered_history_json_bytes": 5388
+          },
+          "correction_metrics": {
+            "manifest_sha256": "46124381b37d02624dfa1b3aaa7dd8a7d916b237caabbda6565ff0c6dd1d0c64",
+            "through_phase": 6,
+            "censor_policy": "new_revision",
+            "cohorts": {
+              "all_assignments": {
+                "immediately_after_write": {
+                  "events": 12,
+                  "measured": 12,
+                  "correct": 5,
+                  "missing": 0,
+                  "accuracy": 0.4166666666666667
+                },
+                "phase_end_horizons": {
+                  "0": {
+                    "total_events": 12,
+                    "eligible": 12,
+                    "censored": 0,
+                    "not_yet_due": 0,
+                    "measured": 12,
+                    "missing_measurement": 0,
+                    "correct": 5,
+                    "failed_initial_acquisition_eligible": 7,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 5,
+                    "acquired_only_measured": 5,
+                    "acquired_only_correct": 5,
+                    "accuracy": 0.4166666666666667,
+                    "acquired_only_accuracy": 1.0
+                  },
+                  "1": {
+                    "total_events": 12,
+                    "eligible": 9,
+                    "censored": 1,
+                    "not_yet_due": 2,
+                    "measured": 9,
+                    "missing_measurement": 0,
+                    "correct": 4,
+                    "failed_initial_acquisition_eligible": 7,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 2,
+                    "acquired_only_measured": 2,
+                    "acquired_only_correct": 1,
+                    "accuracy": 0.4444444444444444,
+                    "acquired_only_accuracy": 0.5
+                  },
+                  "5": {
+                    "total_events": 12,
+                    "eligible": 1,
+                    "censored": 2,
+                    "not_yet_due": 9,
+                    "measured": 1,
+                    "missing_measurement": 0,
+                    "correct": 1,
+                    "failed_initial_acquisition_eligible": 1,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": 1.0,
+                    "acquired_only_accuracy": null
+                  },
+                  "10": {
+                    "total_events": 12,
+                    "eligible": 0,
+                    "censored": 2,
+                    "not_yet_due": 10,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  },
+                  "20": {
+                    "total_events": 12,
+                    "eligible": 0,
+                    "censored": 2,
+                    "not_yet_due": 10,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  }
+                }
+              },
+              "semantic_value_changes": {
+                "immediately_after_write": {
+                  "events": 9,
+                  "measured": 9,
+                  "correct": 3,
+                  "missing": 0,
+                  "accuracy": 0.3333333333333333
+                },
+                "phase_end_horizons": {
+                  "0": {
+                    "total_events": 9,
+                    "eligible": 9,
+                    "censored": 0,
+                    "not_yet_due": 0,
+                    "measured": 9,
+                    "missing_measurement": 0,
+                    "correct": 3,
+                    "failed_initial_acquisition_eligible": 6,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 3,
+                    "acquired_only_measured": 3,
+                    "acquired_only_correct": 3,
+                    "accuracy": 0.3333333333333333,
+                    "acquired_only_accuracy": 1.0
+                  },
+                  "1": {
+                    "total_events": 9,
+                    "eligible": 7,
+                    "censored": 1,
+                    "not_yet_due": 1,
+                    "measured": 7,
+                    "missing_measurement": 0,
+                    "correct": 4,
+                    "failed_initial_acquisition_eligible": 6,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 1,
+                    "acquired_only_measured": 1,
+                    "acquired_only_correct": 1,
+                    "accuracy": 0.5714285714285714,
+                    "acquired_only_accuracy": 1.0
+                  },
+                  "5": {
+                    "total_events": 9,
+                    "eligible": 1,
+                    "censored": 2,
+                    "not_yet_due": 6,
+                    "measured": 1,
+                    "missing_measurement": 0,
+                    "correct": 1,
+                    "failed_initial_acquisition_eligible": 1,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": 1.0,
+                    "acquired_only_accuracy": null
+                  },
+                  "10": {
+                    "total_events": 9,
+                    "eligible": 0,
+                    "censored": 2,
+                    "not_yet_due": 7,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  },
+                  "20": {
+                    "total_events": 9,
+                    "eligible": 0,
+                    "censored": 2,
+                    "not_yet_due": 7,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  }
+                }
+              },
+              "same_value_assignments": {
+                "immediately_after_write": {
+                  "events": 3,
+                  "measured": 3,
+                  "correct": 2,
+                  "missing": 0,
+                  "accuracy": 0.6666666666666666
+                },
+                "phase_end_horizons": {
+                  "0": {
+                    "total_events": 3,
+                    "eligible": 3,
+                    "censored": 0,
+                    "not_yet_due": 0,
+                    "measured": 3,
+                    "missing_measurement": 0,
+                    "correct": 2,
+                    "failed_initial_acquisition_eligible": 1,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 2,
+                    "acquired_only_measured": 2,
+                    "acquired_only_correct": 2,
+                    "accuracy": 0.6666666666666666,
+                    "acquired_only_accuracy": 1.0
+                  },
+                  "1": {
+                    "total_events": 3,
+                    "eligible": 2,
+                    "censored": 0,
+                    "not_yet_due": 1,
+                    "measured": 2,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 1,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 1,
+                    "acquired_only_measured": 1,
+                    "acquired_only_correct": 0,
+                    "accuracy": 0.0,
+                    "acquired_only_accuracy": 0.0
+                  },
+                  "5": {
+                    "total_events": 3,
+                    "eligible": 0,
+                    "censored": 0,
+                    "not_yet_due": 3,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  },
+                  "10": {
+                    "total_events": 3,
+                    "eligible": 0,
+                    "censored": 0,
+                    "not_yet_due": 3,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  },
+                  "20": {
+                    "total_events": 3,
+                    "eligible": 0,
+                    "censored": 0,
+                    "not_yet_due": 3,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  }
+                }
+              }
+            },
+            "scope": "Observed assignment-event measurements, not independent samples or a model-quality claim. Horizon0 means phase end; immediate acquisition is reported separately."
+          },
+          "post_prefix_new_fact_acquisition": {
+            "correct": 6,
+            "total": 24,
+            "missing": 0,
+            "accuracy": 0.25
+          },
+          "memory_scope": "Array bytes and canonical replay/history payload sizes only; excludes Python overhead, temporary activations, kernel workspace and allocator peaks. Every arm retains audit history; replay payload is an algorithmic inventory, not incremental measured RAM."
+        },
+        "replay_matched_total": {
+          "branch_checkpoint": {
+            "model_sha256": "3317a5ddceeadebb64ddafad75a54f0bfd1509135b96e0fc1b6bcc1091164c75",
+            "optimizer_state_sha256": "fea9b28aaae0ff60886c9f8ef3aff24da42287f9bdbea6225b3d14c96c49807e",
+            "optimizer_step": 40,
+            "delivered_prefix_sha256": "645ea1ced2814f2d90e20667323899068191aa3891e7fc7be25a9bb537a963dd",
+            "last_delivered_event_id": "event-00000003"
+          },
+          "final_checkpoint": {
+            "model_sha256": "1cbfe8170d0560a721ffeb1def54e5d5af8d5267a7242d0933ef9aab1ff27433",
+            "optimizer_state_sha256": "3034c35a8c2ee8ec619735762773c6a6cc09373fad8756acfb52284e09de0b6e",
+            "optimizer_step": 112,
+            "delivered_prefix_sha256": "ea508a494839789fec50ddb9d1c60dd1df7eca0f4100a3a959b4008435e926ec",
+            "last_delivered_event_id": "event-00000039"
+          },
+          "counts": {
+            "post_prefix_events": 36,
+            "optimizer_steps": 72,
+            "current_target_presentations": 36,
+            "replay_target_presentations": 36,
+            "scored_target_presentations": 72,
+            "training_documents": 72,
+            "training_input_tokens": 216,
+            "masked_out_target_positions": 144,
+            "inference_forward_calls": 204,
+            "evaluation_query_tokens": 612,
+            "same_entity_replay_steps": 24,
+            "other_entity_replay_steps": 12,
+            "current_event_replay_fallback_steps": 0,
+            "parameter_array_bytes": 6720,
+            "adam_moment_array_bytes": 13440,
+            "maximum_algorithmic_replay_payload_json_bytes": 1769,
+            "instrumentation_delivered_history_json_bytes": 5388
+          },
+          "correction_metrics": {
+            "manifest_sha256": "46124381b37d02624dfa1b3aaa7dd8a7d916b237caabbda6565ff0c6dd1d0c64",
+            "through_phase": 6,
+            "censor_policy": "new_revision",
+            "cohorts": {
+              "all_assignments": {
+                "immediately_after_write": {
+                  "events": 12,
+                  "measured": 12,
+                  "correct": 7,
+                  "missing": 0,
+                  "accuracy": 0.5833333333333334
+                },
+                "phase_end_horizons": {
+                  "0": {
+                    "total_events": 12,
+                    "eligible": 12,
+                    "censored": 0,
+                    "not_yet_due": 0,
+                    "measured": 12,
+                    "missing_measurement": 0,
+                    "correct": 7,
+                    "failed_initial_acquisition_eligible": 5,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 7,
+                    "acquired_only_measured": 7,
+                    "acquired_only_correct": 7,
+                    "accuracy": 0.5833333333333334,
+                    "acquired_only_accuracy": 1.0
+                  },
+                  "1": {
+                    "total_events": 12,
+                    "eligible": 9,
+                    "censored": 1,
+                    "not_yet_due": 2,
+                    "measured": 9,
+                    "missing_measurement": 0,
+                    "correct": 5,
+                    "failed_initial_acquisition_eligible": 5,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 4,
+                    "acquired_only_measured": 4,
+                    "acquired_only_correct": 3,
+                    "accuracy": 0.5555555555555556,
+                    "acquired_only_accuracy": 0.75
+                  },
+                  "5": {
+                    "total_events": 12,
+                    "eligible": 1,
+                    "censored": 2,
+                    "not_yet_due": 9,
+                    "measured": 1,
+                    "missing_measurement": 0,
+                    "correct": 1,
+                    "failed_initial_acquisition_eligible": 1,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": 1.0,
+                    "acquired_only_accuracy": null
+                  },
+                  "10": {
+                    "total_events": 12,
+                    "eligible": 0,
+                    "censored": 2,
+                    "not_yet_due": 10,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  },
+                  "20": {
+                    "total_events": 12,
+                    "eligible": 0,
+                    "censored": 2,
+                    "not_yet_due": 10,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  }
+                }
+              },
+              "semantic_value_changes": {
+                "immediately_after_write": {
+                  "events": 9,
+                  "measured": 9,
+                  "correct": 4,
+                  "missing": 0,
+                  "accuracy": 0.4444444444444444
+                },
+                "phase_end_horizons": {
+                  "0": {
+                    "total_events": 9,
+                    "eligible": 9,
+                    "censored": 0,
+                    "not_yet_due": 0,
+                    "measured": 9,
+                    "missing_measurement": 0,
+                    "correct": 4,
+                    "failed_initial_acquisition_eligible": 5,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 4,
+                    "acquired_only_measured": 4,
+                    "acquired_only_correct": 4,
+                    "accuracy": 0.4444444444444444,
+                    "acquired_only_accuracy": 1.0
+                  },
+                  "1": {
+                    "total_events": 9,
+                    "eligible": 7,
+                    "censored": 1,
+                    "not_yet_due": 1,
+                    "measured": 7,
+                    "missing_measurement": 0,
+                    "correct": 4,
+                    "failed_initial_acquisition_eligible": 5,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 2,
+                    "acquired_only_measured": 2,
+                    "acquired_only_correct": 2,
+                    "accuracy": 0.5714285714285714,
+                    "acquired_only_accuracy": 1.0
+                  },
+                  "5": {
+                    "total_events": 9,
+                    "eligible": 1,
+                    "censored": 2,
+                    "not_yet_due": 6,
+                    "measured": 1,
+                    "missing_measurement": 0,
+                    "correct": 1,
+                    "failed_initial_acquisition_eligible": 1,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": 1.0,
+                    "acquired_only_accuracy": null
+                  },
+                  "10": {
+                    "total_events": 9,
+                    "eligible": 0,
+                    "censored": 2,
+                    "not_yet_due": 7,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  },
+                  "20": {
+                    "total_events": 9,
+                    "eligible": 0,
+                    "censored": 2,
+                    "not_yet_due": 7,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  }
+                }
+              },
+              "same_value_assignments": {
+                "immediately_after_write": {
+                  "events": 3,
+                  "measured": 3,
+                  "correct": 3,
+                  "missing": 0,
+                  "accuracy": 1.0
+                },
+                "phase_end_horizons": {
+                  "0": {
+                    "total_events": 3,
+                    "eligible": 3,
+                    "censored": 0,
+                    "not_yet_due": 0,
+                    "measured": 3,
+                    "missing_measurement": 0,
+                    "correct": 3,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 3,
+                    "acquired_only_measured": 3,
+                    "acquired_only_correct": 3,
+                    "accuracy": 1.0,
+                    "acquired_only_accuracy": 1.0
+                  },
+                  "1": {
+                    "total_events": 3,
+                    "eligible": 2,
+                    "censored": 0,
+                    "not_yet_due": 1,
+                    "measured": 2,
+                    "missing_measurement": 0,
+                    "correct": 1,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 2,
+                    "acquired_only_measured": 2,
+                    "acquired_only_correct": 1,
+                    "accuracy": 0.5,
+                    "acquired_only_accuracy": 0.5
+                  },
+                  "5": {
+                    "total_events": 3,
+                    "eligible": 0,
+                    "censored": 0,
+                    "not_yet_due": 3,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  },
+                  "10": {
+                    "total_events": 3,
+                    "eligible": 0,
+                    "censored": 0,
+                    "not_yet_due": 3,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  },
+                  "20": {
+                    "total_events": 3,
+                    "eligible": 0,
+                    "censored": 0,
+                    "not_yet_due": 3,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  }
+                }
+              }
+            },
+            "scope": "Observed assignment-event measurements, not independent samples or a model-quality claim. Horizon0 means phase end; immediate acquisition is reported separately."
+          },
+          "post_prefix_new_fact_acquisition": {
+            "correct": 9,
+            "total": 24,
+            "missing": 0,
+            "accuracy": 0.375
+          },
+          "memory_scope": "Array bytes and canonical replay/history payload sizes only; excludes Python overhead, temporary activations, kernel workspace and allocator peaks. Every arm retains audit history; replay payload is an algorithmic inventory, not incremental measured RAM."
+        },
+        "replay_additive": {
+          "branch_checkpoint": {
+            "model_sha256": "3317a5ddceeadebb64ddafad75a54f0bfd1509135b96e0fc1b6bcc1091164c75",
+            "optimizer_state_sha256": "fea9b28aaae0ff60886c9f8ef3aff24da42287f9bdbea6225b3d14c96c49807e",
+            "optimizer_step": 40,
+            "delivered_prefix_sha256": "645ea1ced2814f2d90e20667323899068191aa3891e7fc7be25a9bb537a963dd",
+            "last_delivered_event_id": "event-00000003"
+          },
+          "final_checkpoint": {
+            "model_sha256": "b4cda77cc193e4547b94fc40503142885de311c18eb8ad023a2ea09340d344fb",
+            "optimizer_state_sha256": "5fbf9f02e71e5aff13e8d13dd8bd989b18934a599af93ae52a404ddf52160046",
+            "optimizer_step": 148,
+            "delivered_prefix_sha256": "ea508a494839789fec50ddb9d1c60dd1df7eca0f4100a3a959b4008435e926ec",
+            "last_delivered_event_id": "event-00000039"
+          },
+          "counts": {
+            "post_prefix_events": 36,
+            "optimizer_steps": 108,
+            "current_target_presentations": 72,
+            "replay_target_presentations": 36,
+            "scored_target_presentations": 108,
+            "training_documents": 108,
+            "training_input_tokens": 324,
+            "masked_out_target_positions": 216,
+            "inference_forward_calls": 204,
+            "evaluation_query_tokens": 612,
+            "same_entity_replay_steps": 24,
+            "other_entity_replay_steps": 12,
+            "current_event_replay_fallback_steps": 0,
+            "parameter_array_bytes": 6720,
+            "adam_moment_array_bytes": 13440,
+            "maximum_algorithmic_replay_payload_json_bytes": 1769,
+            "instrumentation_delivered_history_json_bytes": 5388
+          },
+          "correction_metrics": {
+            "manifest_sha256": "46124381b37d02624dfa1b3aaa7dd8a7d916b237caabbda6565ff0c6dd1d0c64",
+            "through_phase": 6,
+            "censor_policy": "new_revision",
+            "cohorts": {
+              "all_assignments": {
+                "immediately_after_write": {
+                  "events": 12,
+                  "measured": 12,
+                  "correct": 8,
+                  "missing": 0,
+                  "accuracy": 0.6666666666666666
+                },
+                "phase_end_horizons": {
+                  "0": {
+                    "total_events": 12,
+                    "eligible": 12,
+                    "censored": 0,
+                    "not_yet_due": 0,
+                    "measured": 12,
+                    "missing_measurement": 0,
+                    "correct": 7,
+                    "failed_initial_acquisition_eligible": 4,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 8,
+                    "acquired_only_measured": 8,
+                    "acquired_only_correct": 7,
+                    "accuracy": 0.5833333333333334,
+                    "acquired_only_accuracy": 0.875
+                  },
+                  "1": {
+                    "total_events": 12,
+                    "eligible": 9,
+                    "censored": 1,
+                    "not_yet_due": 2,
+                    "measured": 9,
+                    "missing_measurement": 0,
+                    "correct": 6,
+                    "failed_initial_acquisition_eligible": 4,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 5,
+                    "acquired_only_measured": 5,
+                    "acquired_only_correct": 5,
+                    "accuracy": 0.6666666666666666,
+                    "acquired_only_accuracy": 1.0
+                  },
+                  "5": {
+                    "total_events": 12,
+                    "eligible": 1,
+                    "censored": 2,
+                    "not_yet_due": 9,
+                    "measured": 1,
+                    "missing_measurement": 0,
+                    "correct": 1,
+                    "failed_initial_acquisition_eligible": 1,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": 1.0,
+                    "acquired_only_accuracy": null
+                  },
+                  "10": {
+                    "total_events": 12,
+                    "eligible": 0,
+                    "censored": 2,
+                    "not_yet_due": 10,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  },
+                  "20": {
+                    "total_events": 12,
+                    "eligible": 0,
+                    "censored": 2,
+                    "not_yet_due": 10,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  }
+                }
+              },
+              "semantic_value_changes": {
+                "immediately_after_write": {
+                  "events": 9,
+                  "measured": 9,
+                  "correct": 6,
+                  "missing": 0,
+                  "accuracy": 0.6666666666666666
+                },
+                "phase_end_horizons": {
+                  "0": {
+                    "total_events": 9,
+                    "eligible": 9,
+                    "censored": 0,
+                    "not_yet_due": 0,
+                    "measured": 9,
+                    "missing_measurement": 0,
+                    "correct": 5,
+                    "failed_initial_acquisition_eligible": 3,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 6,
+                    "acquired_only_measured": 6,
+                    "acquired_only_correct": 5,
+                    "accuracy": 0.5555555555555556,
+                    "acquired_only_accuracy": 0.8333333333333334
+                  },
+                  "1": {
+                    "total_events": 9,
+                    "eligible": 7,
+                    "censored": 1,
+                    "not_yet_due": 1,
+                    "measured": 7,
+                    "missing_measurement": 0,
+                    "correct": 5,
+                    "failed_initial_acquisition_eligible": 3,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 4,
+                    "acquired_only_measured": 4,
+                    "acquired_only_correct": 4,
+                    "accuracy": 0.7142857142857143,
+                    "acquired_only_accuracy": 1.0
+                  },
+                  "5": {
+                    "total_events": 9,
+                    "eligible": 1,
+                    "censored": 2,
+                    "not_yet_due": 6,
+                    "measured": 1,
+                    "missing_measurement": 0,
+                    "correct": 1,
+                    "failed_initial_acquisition_eligible": 1,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": 1.0,
+                    "acquired_only_accuracy": null
+                  },
+                  "10": {
+                    "total_events": 9,
+                    "eligible": 0,
+                    "censored": 2,
+                    "not_yet_due": 7,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  },
+                  "20": {
+                    "total_events": 9,
+                    "eligible": 0,
+                    "censored": 2,
+                    "not_yet_due": 7,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  }
+                }
+              },
+              "same_value_assignments": {
+                "immediately_after_write": {
+                  "events": 3,
+                  "measured": 3,
+                  "correct": 2,
+                  "missing": 0,
+                  "accuracy": 0.6666666666666666
+                },
+                "phase_end_horizons": {
+                  "0": {
+                    "total_events": 3,
+                    "eligible": 3,
+                    "censored": 0,
+                    "not_yet_due": 0,
+                    "measured": 3,
+                    "missing_measurement": 0,
+                    "correct": 2,
+                    "failed_initial_acquisition_eligible": 1,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 2,
+                    "acquired_only_measured": 2,
+                    "acquired_only_correct": 2,
+                    "accuracy": 0.6666666666666666,
+                    "acquired_only_accuracy": 1.0
+                  },
+                  "1": {
+                    "total_events": 3,
+                    "eligible": 2,
+                    "censored": 0,
+                    "not_yet_due": 1,
+                    "measured": 2,
+                    "missing_measurement": 0,
+                    "correct": 1,
+                    "failed_initial_acquisition_eligible": 1,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 1,
+                    "acquired_only_measured": 1,
+                    "acquired_only_correct": 1,
+                    "accuracy": 0.5,
+                    "acquired_only_accuracy": 1.0
+                  },
+                  "5": {
+                    "total_events": 3,
+                    "eligible": 0,
+                    "censored": 0,
+                    "not_yet_due": 3,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  },
+                  "10": {
+                    "total_events": 3,
+                    "eligible": 0,
+                    "censored": 0,
+                    "not_yet_due": 3,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  },
+                  "20": {
+                    "total_events": 3,
+                    "eligible": 0,
+                    "censored": 0,
+                    "not_yet_due": 3,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  }
+                }
+              }
+            },
+            "scope": "Observed assignment-event measurements, not independent samples or a model-quality claim. Horizon0 means phase end; immediate acquisition is reported separately."
+          },
+          "post_prefix_new_fact_acquisition": {
+            "correct": 9,
+            "total": 24,
+            "missing": 0,
+            "accuracy": 0.375
+          },
+          "memory_scope": "Array bytes and canonical replay/history payload sizes only; excludes Python overhead, temporary activations, kernel workspace and allocator peaks. Every arm retains audit history; replay payload is an algorithmic inventory, not incremental measured RAM."
+        },
+        "frozen": {
+          "branch_checkpoint": {
+            "model_sha256": "3317a5ddceeadebb64ddafad75a54f0bfd1509135b96e0fc1b6bcc1091164c75",
+            "optimizer_state_sha256": "fea9b28aaae0ff60886c9f8ef3aff24da42287f9bdbea6225b3d14c96c49807e",
+            "optimizer_step": 40,
+            "delivered_prefix_sha256": "645ea1ced2814f2d90e20667323899068191aa3891e7fc7be25a9bb537a963dd",
+            "last_delivered_event_id": "event-00000003"
+          },
+          "final_checkpoint": {
+            "model_sha256": "3317a5ddceeadebb64ddafad75a54f0bfd1509135b96e0fc1b6bcc1091164c75",
+            "optimizer_state_sha256": "fea9b28aaae0ff60886c9f8ef3aff24da42287f9bdbea6225b3d14c96c49807e",
+            "optimizer_step": 40,
+            "delivered_prefix_sha256": "ea508a494839789fec50ddb9d1c60dd1df7eca0f4100a3a959b4008435e926ec",
+            "last_delivered_event_id": "event-00000039"
+          },
+          "counts": {
+            "post_prefix_events": 36,
+            "optimizer_steps": 0,
+            "current_target_presentations": 0,
+            "replay_target_presentations": 0,
+            "scored_target_presentations": 0,
+            "training_documents": 0,
+            "training_input_tokens": 0,
+            "masked_out_target_positions": 0,
+            "inference_forward_calls": 204,
+            "evaluation_query_tokens": 612,
+            "same_entity_replay_steps": 0,
+            "other_entity_replay_steps": 0,
+            "current_event_replay_fallback_steps": 0,
+            "parameter_array_bytes": 6720,
+            "adam_moment_array_bytes": 13440,
+            "maximum_algorithmic_replay_payload_json_bytes": 0,
+            "instrumentation_delivered_history_json_bytes": 5388
+          },
+          "correction_metrics": {
+            "manifest_sha256": "46124381b37d02624dfa1b3aaa7dd8a7d916b237caabbda6565ff0c6dd1d0c64",
+            "through_phase": 6,
+            "censor_policy": "new_revision",
+            "cohorts": {
+              "all_assignments": {
+                "immediately_after_write": {
+                  "events": 12,
+                  "measured": 12,
+                  "correct": 3,
+                  "missing": 0,
+                  "accuracy": 0.25
+                },
+                "phase_end_horizons": {
+                  "0": {
+                    "total_events": 12,
+                    "eligible": 12,
+                    "censored": 0,
+                    "not_yet_due": 0,
+                    "measured": 12,
+                    "missing_measurement": 0,
+                    "correct": 3,
+                    "failed_initial_acquisition_eligible": 9,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 3,
+                    "acquired_only_measured": 3,
+                    "acquired_only_correct": 3,
+                    "accuracy": 0.25,
+                    "acquired_only_accuracy": 1.0
+                  },
+                  "1": {
+                    "total_events": 12,
+                    "eligible": 9,
+                    "censored": 1,
+                    "not_yet_due": 2,
+                    "measured": 9,
+                    "missing_measurement": 0,
+                    "correct": 3,
+                    "failed_initial_acquisition_eligible": 6,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 3,
+                    "acquired_only_measured": 3,
+                    "acquired_only_correct": 3,
+                    "accuracy": 0.3333333333333333,
+                    "acquired_only_accuracy": 1.0
+                  },
+                  "5": {
+                    "total_events": 12,
+                    "eligible": 1,
+                    "censored": 2,
+                    "not_yet_due": 9,
+                    "measured": 1,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 1,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": 0.0,
+                    "acquired_only_accuracy": null
+                  },
+                  "10": {
+                    "total_events": 12,
+                    "eligible": 0,
+                    "censored": 2,
+                    "not_yet_due": 10,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  },
+                  "20": {
+                    "total_events": 12,
+                    "eligible": 0,
+                    "censored": 2,
+                    "not_yet_due": 10,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  }
+                }
+              },
+              "semantic_value_changes": {
+                "immediately_after_write": {
+                  "events": 9,
+                  "measured": 9,
+                  "correct": 2,
+                  "missing": 0,
+                  "accuracy": 0.2222222222222222
+                },
+                "phase_end_horizons": {
+                  "0": {
+                    "total_events": 9,
+                    "eligible": 9,
+                    "censored": 0,
+                    "not_yet_due": 0,
+                    "measured": 9,
+                    "missing_measurement": 0,
+                    "correct": 2,
+                    "failed_initial_acquisition_eligible": 7,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 2,
+                    "acquired_only_measured": 2,
+                    "acquired_only_correct": 2,
+                    "accuracy": 0.2222222222222222,
+                    "acquired_only_accuracy": 1.0
+                  },
+                  "1": {
+                    "total_events": 9,
+                    "eligible": 7,
+                    "censored": 1,
+                    "not_yet_due": 1,
+                    "measured": 7,
+                    "missing_measurement": 0,
+                    "correct": 2,
+                    "failed_initial_acquisition_eligible": 5,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 2,
+                    "acquired_only_measured": 2,
+                    "acquired_only_correct": 2,
+                    "accuracy": 0.2857142857142857,
+                    "acquired_only_accuracy": 1.0
+                  },
+                  "5": {
+                    "total_events": 9,
+                    "eligible": 1,
+                    "censored": 2,
+                    "not_yet_due": 6,
+                    "measured": 1,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 1,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": 0.0,
+                    "acquired_only_accuracy": null
+                  },
+                  "10": {
+                    "total_events": 9,
+                    "eligible": 0,
+                    "censored": 2,
+                    "not_yet_due": 7,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  },
+                  "20": {
+                    "total_events": 9,
+                    "eligible": 0,
+                    "censored": 2,
+                    "not_yet_due": 7,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  }
+                }
+              },
+              "same_value_assignments": {
+                "immediately_after_write": {
+                  "events": 3,
+                  "measured": 3,
+                  "correct": 1,
+                  "missing": 0,
+                  "accuracy": 0.3333333333333333
+                },
+                "phase_end_horizons": {
+                  "0": {
+                    "total_events": 3,
+                    "eligible": 3,
+                    "censored": 0,
+                    "not_yet_due": 0,
+                    "measured": 3,
+                    "missing_measurement": 0,
+                    "correct": 1,
+                    "failed_initial_acquisition_eligible": 2,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 1,
+                    "acquired_only_measured": 1,
+                    "acquired_only_correct": 1,
+                    "accuracy": 0.3333333333333333,
+                    "acquired_only_accuracy": 1.0
+                  },
+                  "1": {
+                    "total_events": 3,
+                    "eligible": 2,
+                    "censored": 0,
+                    "not_yet_due": 1,
+                    "measured": 2,
+                    "missing_measurement": 0,
+                    "correct": 1,
+                    "failed_initial_acquisition_eligible": 1,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 1,
+                    "acquired_only_measured": 1,
+                    "acquired_only_correct": 1,
+                    "accuracy": 0.5,
+                    "acquired_only_accuracy": 1.0
+                  },
+                  "5": {
+                    "total_events": 3,
+                    "eligible": 0,
+                    "censored": 0,
+                    "not_yet_due": 3,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  },
+                  "10": {
+                    "total_events": 3,
+                    "eligible": 0,
+                    "censored": 0,
+                    "not_yet_due": 3,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  },
+                  "20": {
+                    "total_events": 3,
+                    "eligible": 0,
+                    "censored": 0,
+                    "not_yet_due": 3,
+                    "measured": 0,
+                    "missing_measurement": 0,
+                    "correct": 0,
+                    "failed_initial_acquisition_eligible": 0,
+                    "initial_acquisition_unknown_eligible": 0,
+                    "acquired_only_eligible": 0,
+                    "acquired_only_measured": 0,
+                    "acquired_only_correct": 0,
+                    "accuracy": null,
+                    "acquired_only_accuracy": null
+                  }
+                }
+              }
+            },
+            "scope": "Observed assignment-event measurements, not independent samples or a model-quality claim. Horizon0 means phase end; immediate acquisition is reported separately."
+          },
+          "post_prefix_new_fact_acquisition": {
+            "correct": 1,
+            "total": 24,
+            "missing": 0,
+            "accuracy": 0.041666666666666664
+          },
+          "memory_scope": "Array bytes and canonical replay/history payload sizes only; excludes Python overhead, temporary activations, kernel workspace and allocator peaks. Every arm retains audit history; replay payload is an algorithmic inventory, not incremental measured RAM."
+        }
+      }
+    }
+  ]
+}

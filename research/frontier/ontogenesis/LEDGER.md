@@ -1,5 +1,7 @@
 # ONTOGENESIS research ledger
 
+Sections written by the memory-line session (research/memory-saturation-factorial, PR #195) were moved verbatim on 2026-11-22 to [LEDGER-FIRST-PRINCIPLES.md](LEDGER-FIRST-PRINCIPLES.md), so that this file has one writer.
+
 The one authoritative status list. Updated 2026-11-21 (see the dated section at the end; it overrides earlier rows where they conflict). Status values: Established (published elsewhere), Derived (mathematics checked here), Demonstrated (measured here under a committed protocol), Pilot (measured, not confirmatory), Unverified, Disproven, Abandoned, Open.
 
 ## Measured in this repository

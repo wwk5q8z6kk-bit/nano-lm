@@ -1,0 +1,11 @@
+{
+  "date": "2026-11-21",
+  "document": "/mnt/data/NanoLM_Unified_Architecture_Ledger_V2_2026-11-21.md",
+  "zip": "/mnt/data/NanoLM_Architecture_Ledger_V2_2026-11-21.zip",
+  "master_bytes": 121324,
+  "zip_crc": "PASS",
+  "ledger_ids": "D-001\u2013D-033 (D-024\u2013D-033 structured)",
+  "gap_items": 18,
+  "existing_gates": 18,
+  "master_sha256": "f419597869e83f3e6c162b1b9cf5e694463b1a8eb4ebdcdbfbecf16423353b34"
+}

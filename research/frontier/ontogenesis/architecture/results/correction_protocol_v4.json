@@ -1,0 +1,8 @@
+{
+  "suite": "G03b correction measurement contracts",
+  "tests_run": 26,
+  "passed": 26,
+  "failures": 0,
+  "errors": 0,
+  "scope": "Measurement, chronology, provenance and numerical-validation fixtures only; no model training or architecture comparison."
+}

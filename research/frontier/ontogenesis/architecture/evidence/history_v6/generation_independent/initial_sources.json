@@ -1,0 +1,26 @@
+[
+  {
+    "path": "work_v6/architecture/experiments/generative_reasoning_v6.py",
+    "snapshot": "v6_review/generation_independent/initial_snapshot/generative_reasoning_v6.py",
+    "bytes": 43916,
+    "sha256": "6f79b8f606bc7fa780c9724ad199a44628dfa886e762783292f4fba19ef14c73"
+  },
+  {
+    "path": "work_v6/architecture/experiments/generative_reasoning_protocol_v6.json",
+    "snapshot": "v6_review/generation_independent/initial_snapshot/generative_reasoning_protocol_v6.json",
+    "bytes": 8023,
+    "sha256": "1d86c0b00d4c6db8974fd2bb3f739ba54809daedaa8a839109521c2184fd49b6"
+  },
+  {
+    "path": "work_v6/architecture/experiments/generative_reasoning_protocol_v6.md",
+    "snapshot": "v6_review/generation_independent/initial_snapshot/generative_reasoning_protocol_v6.md",
+    "bytes": 7444,
+    "sha256": "f089a7ae15e3530e5f62f73011e102e2c4686ce77b325dc909bec47352d648ad"
+  },
+  {
+    "path": "work_v6/architecture/experiments/test_generative_reasoning_v6.py",
+    "snapshot": "v6_review/generation_independent/initial_snapshot/test_generative_reasoning_v6.py",
+    "bytes": 19594,
+    "sha256": "db843e3c11eed5f7c301ea0a2ba8b7c6b3f56579e0d308e757c6755039a905ae"
+  }
+]

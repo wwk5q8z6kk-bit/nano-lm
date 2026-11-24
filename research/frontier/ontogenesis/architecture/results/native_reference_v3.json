@@ -1,0 +1,63 @@
+{
+  "suite": "Nano LM forward reference behavioral contracts",
+  "scope": "Small deterministic correctness examples, not training, formal verification or quality benchmarks",
+  "numpy_version": "2.3.5",
+  "passed": 12,
+  "total": 12,
+  "checks": [
+    {
+      "check": "full_prefix_equals_incremental_unique_4",
+      "max_abs_logit_error": 6.140921104957897e-16,
+      "passed": true
+    },
+    {
+      "check": "future_suffix_noninterference_unique_4",
+      "passed": true
+    },
+    {
+      "check": "fresh_request_and_batch_isolation_unique_4",
+      "passed": true
+    },
+    {
+      "check": "unique_parameters_distinct_logical_caches_unique_4",
+      "parameters": 10896,
+      "kv_bytes": 22528,
+      "passed": true
+    },
+    {
+      "check": "full_prefix_equals_incremental_unique_2",
+      "max_abs_logit_error": 1.4155343563970746e-15,
+      "passed": true
+    },
+    {
+      "check": "future_suffix_noninterference_unique_2",
+      "passed": true
+    },
+    {
+      "check": "fresh_request_and_batch_isolation_unique_2",
+      "passed": true
+    },
+    {
+      "check": "unique_parameters_distinct_logical_caches_unique_2",
+      "parameters": 5712,
+      "kv_bytes": 22528,
+      "passed": true
+    },
+    {
+      "check": "nominal_parameter_counts_without_allocation",
+      "passed": true
+    },
+    {
+      "check": "masked_cross_entropy_known_answer",
+      "passed": true
+    },
+    {
+      "check": "bounds_token_and_checkpoint_mismatch_rejected",
+      "passed": true
+    },
+    {
+      "check": "exclusive_output_preserves_existing_file",
+      "passed": true
+    }
+  ]
+}

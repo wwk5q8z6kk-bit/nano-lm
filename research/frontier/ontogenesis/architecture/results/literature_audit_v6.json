@@ -1,0 +1,739 @@
+{
+  "audit_date_user_timezone": "2026-11-23",
+  "timezone": "America/New_York",
+  "scope": "48 primary identities:43 unchanged historical records plus5 narrowly inspected V6 additions. No independent paper-result replication.",
+  "prior_audit": "literature_audit_v5.json",
+  "records": [
+    {
+      "id": "P-01",
+      "authors": "Qwen Team / Hugging Face Transformers maintainers",
+      "year": 2026,
+      "title": "Qwen3.5 model documentation",
+      "url": "https://huggingface.co/docs/transformers/en/model_doc/qwen3_5",
+      "inspection_depth": "official_documentation",
+      "retrieval_refs": [
+        "turn881477854view0"
+      ],
+      "identity_status": "verified_primary",
+      "supported_claim": "Verified 3:1 Gated DeltaNet/full attention stack in the current documentation.",
+      "limitation": "Current docs also cover Qwen3.6 and several checkpoints; pin an exact package/config revision before implementation. A family ratio is not an optimum theorem.",
+      "independently_replicated": false
+    },
+    {
+      "id": "P-02",
+      "authors": "Lahoti et al.",
+      "year": 2026,
+      "title": "Mamba-3: Improved Sequence Modeling using State Space Principles",
+      "url": "https://proceedings.iclr.cc/paper_files/paper/2026/hash/8abd2043b71a074278d5f687947bff9c-Abstract-Conference.html",
+      "inspection_depth": "conference_abstract",
+      "retrieval_refs": [
+        "turn791158767view3"
+      ],
+      "identity_status": "verified_primary",
+      "supported_claim": "ICLR proceedings identify recurrence, complex state updates and MIMO; reported LM/state-tracking results exist.",
+      "limitation": "Author-reported quality and latency are tested-scale/hardware results. No automatic advantage for a Nano implementation.",
+      "independently_replicated": false
+    },
+    {
+      "id": "P-03",
+      "authors": "Kimi Team",
+      "year": 2025,
+      "title": "Kimi Linear: An Expressive, Efficient Attention Architecture",
+      "url": "https://arxiv.org/abs/2510.26692v2",
+      "inspection_depth": "preprint_abstract",
+      "retrieval_refs": [
+        "turn761736165view2"
+      ],
+      "identity_status": "verified_primary",
+      "supported_claim": "KDA/MLA hybrid; abstract explicitly distinguishes 48B total from 3B active parameters.",
+      "limitation": "Charge all weights, kernels, cache and training. It is not a 3B-total model. v2 is the retrieved revision.",
+      "independently_replicated": false
+    },
+    {
+      "id": "P-04",
+      "authors": "Xiaowei Ye, Xiaoyu He, Chao Liao, Chen Wu, Pinyan Lu",
+      "year": 2026,
+      "title": "A Provable Expressiveness Hierarchy in Hybrid Linear-Full Attention",
+      "url": "https://proceedings.mlr.press/v306/ye26h.html",
+      "inspection_depth": "conference_abstract",
+      "retrieval_refs": [
+        "turn791158767view2"
+      ],
+      "identity_status": "verified_primary",
+      "supported_claim": "ICML2026 abstract describes a sequential function-composition separation between bounded-depth full and hybrid attention families.",
+      "limitation": "Full theorem assumptions and appendix were not audited; PDF retrieval through the linked raw endpoint failed. Do not extrapolate to arbitrary task, width, precision or training cost.",
+      "independently_replicated": false
+    },
+    {
+      "id": "P-05",
+      "authors": "Ying Fan, Anej Svete, Kangwook Lee",
+      "year": 2026,
+      "title": "Bridging the Gap Between Latent and Explicit Reasoning with Looped Transformers",
+      "url": "https://arxiv.org/abs/2606.31779v2",
+      "inspection_depth": "preprint_abstract",
+      "retrieval_refs": [
+        "turn791158767view0"
+      ],
+      "identity_status": "verified_primary",
+      "supported_claim": "LOTUS uses recurrent-depth computation with gold intermediate CoT-token supervision and reports 3B-scale results.",
+      "limitation": "This is not evidence for unsupervised looping alone. Teacher/gold-trace construction, supervision, padding and thought-phase latency must be accounted for separately.",
+      "independently_replicated": false
+    },
+    {
+      "id": "P-06",
+      "authors": "Kimi Team",
+      "year": 2026,
+      "title": "Attention Residuals",
+      "url": "https://arxiv.org/abs/2603.15031v1",
+      "inspection_depth": "preprint_abstract",
+      "retrieval_refs": [
+        "turn791158767view4"
+      ],
+      "identity_status": "verified_primary",
+      "supported_claim": "Depth-wise attention over previous layer outputs; block form targets memory/communication cost. Large-scale report uses Kimi Linear.",
+      "limitation": "Treat as a controlled residual-routing comparator. It does not establish small-model or hardware-independent superiority.",
+      "independently_replicated": false
+    },
+    {
+      "id": "P-07",
+      "authors": "Artidoro Pagnoni et al.",
+      "year": 2025,
+      "title": "Byte Latent Transformer: Patches Scale Better Than Tokens",
+      "url": "https://aclanthology.org/2025.acl-long.453/",
+      "inspection_depth": "conference_abstract",
+      "retrieval_refs": [
+        "turn142130479view0"
+      ],
+      "identity_status": "verified_primary",
+      "supported_claim": "ACL paper describes entropy-based byte patches and FLOP-controlled scaling up to 8B parameters and 4T training bytes.",
+      "limitation": "Compare the same scored byte strings and count all encoder, patcher and decoder work. Cross-tokenizer bits/token are not comparable.",
+      "independently_replicated": false
+    },
+    {
+      "id": "P-08",
+      "authors": "Jinghui Zhang, Lang Gao, Zongfang Liu, Ruihong Zeng, Zirui Song, Rui Yan, Kentaro Inui, Xiuying Chen",
+      "year": 2026,
+      "title": "When Copying Is Hard: Copy-Constrained Decoding for Exact Span Reproduction",
+      "url": "https://arxiv.org/abs/2610.28393",
+      "inspection_depth": "primary_search_and_author_repository",
+      "retrieval_refs": [
+        "turn881477854academia5",
+        "turn794650228view4"
+      ],
+      "identity_status": "verified_primary",
+      "supported_claim": "Identity and abstract recovered by primary arXiv search; official CopyGen repository documents frozen backbone plus trained decoding plugin.",
+      "limitation": "Direct arXiv open failed (DisabledError). Author repo https://github.com/mbzuai-nlp/CopyGen confirms plugin training and plugin.pt. Frozen backbone does not mean training-free system; include plugin parameters, training, calibration and runtime.",
+      "independently_replicated": false
+    },
+    {
+      "id": "P-09",
+      "authors": "Vincent-Pierre Berges, Barlas Oguz, Daniel Haziza, Wen-Tau Yih, Luke Zettlemoyer, Gargi Ghosh",
+      "year": 2025,
+      "title": "Memory Layers at Scale",
+      "url": "https://proceedings.mlr.press/v267/berges25a.html",
+      "inspection_depth": "conference_abstract",
+      "retrieval_refs": [
+        "turn588111323view4"
+      ],
+      "identity_status": "verified_primary",
+      "supported_claim": "ICML paper reports trainable sparse key/value memory scaling and capacity/compute comparisons.",
+      "limitation": "Reported experiments include up to 128B memory parameters. Sparse activation does not remove storage, retrieval or update costs; no lifelong-learning guarantee.",
+      "independently_replicated": false
+    },
+    {
+      "id": "P-10",
+      "authors": "Ali Behrouz, Peilin Zhong, Vahab Mirrokni",
+      "year": 2025,
+      "title": "Titans: Learning to Memorize at Test Time",
+      "url": "https://research.google/pubs/titans-learning-to-memorize-at-test-time-2/",
+      "inspection_depth": "author_publication_page",
+      "retrieval_refs": [
+        "turn881477854view2"
+      ],
+      "identity_status": "verified_primary",
+      "supported_claim": "Google publication page confirms NeurIPS2025 and neural test-time memory combined with attention.",
+      "limitation": "Published long-context performance is not indefinite continual learning. Specify reset semantics and charge test-time updates.",
+      "independently_replicated": false
+    },
+    {
+      "id": "P-11",
+      "authors": "Ali Behrouz, Meisam Razaviyayn, Peilin Zhong, Vahab Mirrokni",
+      "year": 2025,
+      "title": "Nested Learning: The Illusion of Deep Learning Architectures",
+      "url": "https://proceedings.neurips.cc/paper_files/paper/2025/hash/4309616aaed8e848009bc4a7ef73b493-Abstract-Conference.html",
+      "inspection_depth": "conference_abstract",
+      "retrieval_refs": [
+        "turn761736165view4"
+      ],
+      "identity_status": "verified_primary",
+      "supported_claim": "NeurIPS abstract gives nested optimization, learned update rules and Hope as a tested module.",
+      "limitation": "Framework and promising reported experiments are not a universal theorem, nor proof that Nano's current learner implements those mechanisms.",
+      "independently_replicated": false
+    },
+    {
+      "id": "P-12",
+      "authors": "Joonkyu Kim, Yejin Kim, Jy-Yong Sohn",
+      "year": 2025,
+      "title": "Measuring Representational Shifts in Continual Learning: A Linear Transformation Perspective",
+      "url": "https://proceedings.mlr.press/v267/kim25p.html",
+      "inspection_depth": "conference_abstract",
+      "retrieval_refs": [
+        "turn588111323view0"
+      ],
+      "identity_status": "verified_primary",
+      "supported_claim": "Representation discrepancy metric and theoretical/empirical analysis on image continual-learning datasets.",
+      "limitation": "Relevant to measuring representational change. It does not certify prediction-preserving migration of an LM's parameters, caches or optimizer state.",
+      "independently_replicated": false
+    },
+    {
+      "id": "P-13",
+      "authors": "Shibhansh Dohare, J. Fernando Hernandez-Garcia, Qingfeng Lan, Parash Rahman, A. Rupam Mahmood, Richard S. Sutton",
+      "year": 2024,
+      "title": "Loss of plasticity in deep continual learning",
+      "url": "https://www.nature.com/articles/s41586-024-07711-7",
+      "inspection_depth": "publisher_search_and_pdf_excerpt",
+      "retrieval_refs": [
+        "turn688287559search0",
+        "turn688287559search3"
+      ],
+      "identity_status": "verified_primary",
+      "supported_claim": "Publisher search/PDF recover Nature632:768–774, published21Aug2024; loss of ability to acquire differs from loss of old performance.",
+      "limitation": "Publisher HTML open redirected to an inaccessible identity endpoint. Source findings are empirical within tested supervised/RL settings; no universal impossibility proof for gradient learners.",
+      "independently_replicated": false
+    },
+    {
+      "id": "P-14",
+      "authors": "Clare Lyle et al.",
+      "year": 2025,
+      "title": "Disentangling the Causes of Plasticity Loss in Neural Networks",
+      "url": "https://proceedings.mlr.press/v274/lyle25a.html",
+      "inspection_depth": "conference_abstract",
+      "retrieval_refs": [
+        "turn588111323view2"
+      ],
+      "identity_status": "verified_primary",
+      "supported_claim": "PMLR274 paper reports multiple mechanisms and effective layer-normalization-plus-weight-decay controls.",
+      "limitation": "Joint intervention does not isolate each factor. Maintaining learning speed is not factual retention.",
+      "independently_replicated": false
+    },
+    {
+      "id": "P-15",
+      "authors": "Giulia Lanzillotta, Damiano Meier, Thomas Hofmann",
+      "year": 2026,
+      "title": "Heads collapse, features stay: Why Replay needs big buffers",
+      "url": "https://proceedings.iclr.cc/paper_files/paper/2026/hash/9b9521a6c8ead802f1b5dbd8cca34918-Abstract-Conference.html",
+      "inspection_depth": "conference_abstract",
+      "retrieval_refs": [
+        "turn761736165view5"
+      ],
+      "identity_status": "verified_primary",
+      "supported_claim": "ICLR2026 source distinguishes representation separability from output/classifier forgetting.",
+      "limitation": "Its asymptotic/theoretical assumptions are not fully reviewed here. Probe recoverability is not operational native-model retention.",
+      "independently_replicated": false
+    },
+    {
+      "id": "P-16",
+      "authors": "Meng Ding, Jinhui Xu, Kaiyi Ji",
+      "year": 2026,
+      "title": "Provable Effects of Data Replay in Continual Learning: A Feature Learning Perspective",
+      "url": "https://proceedings.mlr.press/v300/ding26b.html",
+      "inspection_depth": "conference_abstract",
+      "retrieval_refs": [
+        "turn761736165view6"
+      ],
+      "identity_status": "verified_primary",
+      "supported_claim": "AISTATS2026 paper analyzes full replay in a multi-view task-incremental binary-classification model, including SNR and task order.",
+      "limitation": "This is a scoped theoretical counterexample/analysis, not proof replay cannot work generally. Linked raw-PDF endpoint was not retrievable.",
+      "independently_replicated": false
+    },
+    {
+      "id": "P-17",
+      "authors": "Ted Zadouri, Markus Hoehnerbach, Jay Shah, Vijay Thakkar, Tri Dao",
+      "year": 2026,
+      "title": "FlashAttention-4: Algorithm and Kernel Pipelining Co-Design for Asymmetric Hardware Scaling",
+      "url": "https://proceedings.mlsys.org/paper_files/paper/2026/hash/ae8b0b5838ba510daff1198474e7b984-Abstract-Conference.html",
+      "inspection_depth": "conference_abstract",
+      "retrieval_refs": [
+        "turn142130479view1"
+      ],
+      "identity_status": "verified_primary",
+      "supported_claim": "MLSys2026 source reports Blackwell-specific scheduling/pipelining and B200 BF16 comparisons.",
+      "limitation": "Exact title should be retained. Speed numbers are kernel/hardware/workload specific, not a Nano laptop or A100 claim.",
+      "independently_replicated": false
+    },
+    {
+      "id": "P-18",
+      "authors": "Woosuk Kwon et al.",
+      "year": 2023,
+      "title": "Efficient Memory Management for Large Language Model Serving with PagedAttention",
+      "url": "https://arxiv.org/abs/2309.06180v1",
+      "inspection_depth": "preprint_abstract",
+      "retrieval_refs": [
+        "turn688287559view0"
+      ],
+      "identity_status": "verified_primary",
+      "supported_claim": "Original author preprint identifies KV memory fragmentation/sharing and vLLM serving results; SOSP2023 noted.",
+      "limitation": "Original DOI returned403, so use accessible author preprint. Throughput depends on batch/workload and is distinct from model quality.",
+      "independently_replicated": false
+    },
+    {
+      "id": "P-19",
+      "authors": "Lianmin Zheng et al.",
+      "year": 2024,
+      "title": "SGLang: Efficient Execution of Structured Language Model Programs",
+      "url": "https://proceedings.nips.cc/paper_files/paper/2024/hash/724be4472168f31ba1c9ac630f15dec8-Abstract-Conference.html",
+      "inspection_depth": "conference_abstract",
+      "retrieval_refs": [
+        "turn142130479view3"
+      ],
+      "identity_status": "verified_primary",
+      "supported_claim": "NeurIPS2024 source identifies RadixAttention cache reuse and structured generation optimizations.",
+      "limitation": "Benchmark results are multi-call application throughput. Charge cache construction and report request distribution.",
+      "independently_replicated": false
+    },
+    {
+      "id": "P-20",
+      "authors": "OpenAI",
+      "year": 2026,
+      "title": "Why SWE-bench Verified no longer measures frontier coding capabilities",
+      "url": "https://openai.com/index/why-we-no-longer-evaluate-swe-bench-verified/",
+      "inspection_depth": "official_research_article",
+      "retrieval_refs": [
+        "turn142130479view4"
+      ],
+      "identity_status": "verified_primary",
+      "supported_claim": "Feb23 article reports flawed tests and contamination in audited samples.",
+      "limitation": "Use actual current article title. The59.4% figure concerns an audited27.6% subset selected for frequent failures, not the whole benchmark rate.",
+      "independently_replicated": false
+    },
+    {
+      "id": "P-21",
+      "authors": "OpenAI",
+      "year": 2026,
+      "title": "Separating signal from noise in coding evaluations",
+      "url": "https://openai.com/index/separating-signal-from-noise-coding-evaluations/",
+      "inspection_depth": "official_research_article",
+      "retrieval_refs": [
+        "turn935920129view0"
+      ],
+      "identity_status": "verified_primary",
+      "supported_claim": "Jul8 article reports agent/human audits of SWE-benchPro and explicitly retracts prior recommendation to adopt it.",
+      "limitation": "31-ish percent aggregate estimates are author-audit results, not every task invalid. Keep the later update with earlier reference; independently audit selected evaluation tasks.",
+      "independently_replicated": false
+    },
+    {
+      "id": "P-22",
+      "authors": "Hugging Face SmolLM team",
+      "year": 2025,
+      "title": "SmolLM3: smol, multilingual, long-context reasoner",
+      "url": "https://huggingface.co/blog/smollm3",
+      "inspection_depth": "author_technical_blog",
+      "retrieval_refs": [
+        "turn142130479view6"
+      ],
+      "identity_status": "verified_primary",
+      "supported_claim": "Jul8 2025 author release reports3B model and11T-token training.",
+      "limitation": "Useful scale/cost context, not an estimate of minimum tokens required for Nano or proof all data rights are settled.",
+      "independently_replicated": false
+    },
+    {
+      "id": "P-23",
+      "authors": "MoonshotAI",
+      "year": 2026,
+      "title": "Attention-Residuals implementation repository",
+      "url": "https://github.com/MoonshotAI/Attention-Residuals",
+      "inspection_depth": "author_repository",
+      "retrieval_refs": [
+        "turn142130479view7"
+      ],
+      "identity_status": "verified_primary",
+      "supported_claim": "Author repository exists and exposes implementation resources.",
+      "limitation": "No immutable commit or license file was audited. Availability on GitHub is not license clearance or reproduction.",
+      "independently_replicated": false
+    },
+    {
+      "id": "P-24",
+      "authors": "Qwen Team",
+      "year": 2026,
+      "title": "Qwen3.5-4B-Base model card",
+      "url": "https://huggingface.co/Qwen/Qwen3.5-4B-Base",
+      "inspection_depth": "official_model_card",
+      "retrieval_refs": [
+        "turn881477854view1"
+      ],
+      "identity_status": "verified_primary",
+      "supported_claim": "Card gives LM4B, width2560, padded vocabulary248320,32layers,3:1 stack and tied LM output.",
+      "limitation": "Card is multimodal; aggregate page displays5B Safetensors. Do not infer full checkpoint <4B total. Pin revision and inventory tensor counts. Generic card text describes pre/post-training despite Base name; resolve from exact release/config before claims.",
+      "independently_replicated": false
+    },
+    {
+      "id": "P-25",
+      "authors": "Daniel Anthes, Sushrut Thorat, Peter König, Tim C Kietzmann",
+      "year": 2025,
+      "title": "Keep moving: identifying task-relevant subspaces to maximise plasticity for newly learned tasks",
+      "url": "https://proceedings.mlr.press/v274/anthes25a.html",
+      "inspection_depth": "conference_abstract",
+      "retrieval_refs": [
+        "turn588111323view1"
+      ],
+      "identity_status": "verified_primary",
+      "supported_claim": "V2-P04/P04 source; studies readout-relevant versus null activation subspaces, linear interventions and nonlinear diagnostic approximation.",
+      "limitation": "Activation-space diagnostics are not the same as exact parameter-Jacobian update projection. Cite OGD as direct precedent for the latter.",
+      "independently_replicated": false
+    },
+    {
+      "id": "P-26",
+      "authors": "Yipeng Zhang, Laurent Charlin, Richard Zemel, Mengye Ren",
+      "year": 2025,
+      "title": "Integrating Present and Past in Unsupervised Continual Learning",
+      "url": "https://proceedings.mlr.press/v274/zhang25a.html",
+      "inspection_depth": "conference_abstract",
+      "retrieval_refs": [
+        "turn588111323view3"
+      ],
+      "identity_status": "verified_primary",
+      "supported_claim": "V2-P06/P06 source; distinguishes present/past/cross-task objectives and reports Osiris on unsupervised continual learning.",
+      "limitation": "Useful objective separation; no demonstrated Nano LM forward transfer or a theorem about all continual learners.",
+      "independently_replicated": false
+    },
+    {
+      "id": "P-27",
+      "authors": "Mehrdad Farajtabar, Navid Azizan, Alex Mott, Ang Li",
+      "year": 2020,
+      "title": "Orthogonal Gradient Descent for Continual Learning",
+      "url": "https://proceedings.mlr.press/v108/farajtabar20a.html",
+      "inspection_depth": "abstract_and_methods_excerpt",
+      "retrieval_refs": [
+        "turn771769418view1",
+        "turn935920129view1"
+      ],
+      "identity_status": "verified_primary",
+      "supported_claim": "Direct prior art for projecting updates against prior-output gradients. Methods section explicitly uses local linearization and stored gradients as current-gradient proxies.",
+      "limitation": "Add to theorem2 provenance. Old Jacobian drift and subset approximations matter; abstract language should not be promoted to global exact preservation. Only relevant methods sections inspected, not independent replication.",
+      "independently_replicated": false
+    },
+    {
+      "id": "P-28",
+      "authors": "Alex Graves",
+      "year": 2016,
+      "title": "Adaptive Computation Time for Recurrent Neural Networks",
+      "url": "https://arxiv.org/abs/1603.08983v6",
+      "inspection_depth": "preprint_abstract",
+      "retrieval_refs": [
+        "turn771769418view3"
+      ],
+      "identity_status": "verified_primary",
+      "supported_claim": "Introduces learned number of recurrent computation steps; publication revision in2017.",
+      "limitation": "Direct prior art for adaptive computation. Abstract itself reports no large character-LM performance gain; stopping flexibility alone is not sufficient.",
+      "independently_replicated": false
+    },
+    {
+      "id": "P-29",
+      "authors": "Mostafa Dehghani, Stephan Gouws, Oriol Vinyals, Jakob Uszkoreit, Łukasz Kaiser",
+      "year": 2019,
+      "title": "Universal Transformers",
+      "url": "https://arxiv.org/abs/1807.03819v3",
+      "inspection_depth": "preprint_abstract",
+      "retrieval_refs": [
+        "turn771769418view4"
+      ],
+      "identity_status": "verified_primary",
+      "supported_claim": "ICLR2019 paper identifies recurrent-depth attention and per-position halting.",
+      "limitation": "Direct precedent for looped attention; conditional expressivity is distinct from finite-resource training efficiency.2018 preprint,2019 conference.",
+      "independently_replicated": false
+    },
+    {
+      "id": "P-30",
+      "authors": "Andrea Banino, Jan Balaguer, Charles Blundell",
+      "year": 2021,
+      "title": "PonderNet: Learning to Ponder",
+      "url": "https://arxiv.org/abs/2107.05407v2",
+      "inspection_depth": "preprint_abstract",
+      "retrieval_refs": [
+        "turn771769418view2"
+      ],
+      "identity_status": "verified_primary",
+      "supported_claim": "Learns adaptive computation under accuracy/cost/generalization objectives.",
+      "limitation": "Relevant learned-halting baseline, not proof an optimal Bellman policy is available from current state or training labels.",
+      "independently_replicated": false
+    },
+    {
+      "id": "P-31",
+      "authors": "Solana Foundation",
+      "year": 2019,
+      "title": "Sealevel — Parallel Processing Thousands of Smart Contracts",
+      "url": "https://solana.com/id/news/sealevel---parallel-processing-thousands-of-smart-contracts",
+      "inspection_depth": "official_engineering_article",
+      "retrieval_refs": [
+        "turn688287559view2"
+      ],
+      "identity_status": "verified_primary",
+      "supported_claim": "Article explains parallel execution using declared transaction read/write sets.",
+      "limitation": "Retain only as a dependency-scheduling analogy. It is not evidence that neural gradients commute or updates are local.",
+      "independently_replicated": false
+    },
+    {
+      "id": "P-32",
+      "authors": "Akshat Gupta, Anurag Rao, Gopala Anumanchipalli",
+      "year": 2024,
+      "title": "Model Editing at Scale leads to Gradual and Catastrophic Forgetting",
+      "url": "https://aclanthology.org/2024.findings-acl.902/",
+      "inspection_depth": "conference_abstract",
+      "retrieval_refs": [
+        "turn927752014view0"
+      ],
+      "identity_status": "verified_primary",
+      "supported_claim": "Sequential ROME/MEMIT evaluation measures editability, earlier-edit forgetting and downstream capability degradation.",
+      "limitation": "A successful edit or immediate locality check is not a durable-update result. The tested editors/models do not imply every future editor must fail.",
+      "independently_replicated": false
+    },
+    {
+      "id": "P-33",
+      "authors": "Xin Ma, Wei Chen, Qi Liu, Derong Xu, Zhi Zheng, Tong Xu, Enhong Chen",
+      "year": 2026,
+      "title": "More Edits, More Stable: Understanding the Lifelong Normalization in Sequential Model Editing",
+      "url": "https://proceedings.mlr.press/v306/ma26f.html",
+      "inspection_depth": "conference_abstract",
+      "retrieval_refs": [
+        "turn927752014view1"
+      ],
+      "identity_status": "verified_primary",
+      "supported_claim": "ICML2026 paper derives StableEdit from running-statistic normalization and ridge-regression analysis and reports long-horizon editing results.",
+      "limitation": "Full theorem assumptions, source code and compute overhead were not independently audited. Lifelong normalization here is a method-specific update mechanism, not generic LayerNorm or universal lifelong-learning proof.",
+      "independently_replicated": false
+    },
+    {
+      "id": "P-34",
+      "authors": "Kevin Meng, David Bau, Alex Andonian, Yonatan Belinkov",
+      "year": 2022,
+      "title": "Locating and Editing Factual Associations in GPT",
+      "url": "https://arxiv.org/abs/2202.05262v5",
+      "inspection_depth": "preprint_abstract",
+      "retrieval_refs": [
+        "turn927752014view2"
+      ],
+      "identity_status": "verified_primary",
+      "supported_claim": "NeurIPS2022 ROME paper describes rank-one FFN edits and evaluates specificity/generalization for factual associations.",
+      "limitation": "A localized edit control is useful for update locality. Single-edit efficacy does not prove resistance to later edits or continued pretraining.",
+      "independently_replicated": false
+    },
+    {
+      "id": "P-35",
+      "authors": "Kevin Meng, Arnab Sen Sharma, Alex Andonian, Yonatan Belinkov, David Bau",
+      "year": 2023,
+      "title": "Mass-Editing Memory in a Transformer",
+      "url": "https://arxiv.org/abs/2210.07229v2",
+      "inspection_depth": "preprint_abstract",
+      "retrieval_refs": [
+        "turn927752014view3"
+      ],
+      "identity_status": "verified_primary",
+      "supported_claim": "MEMIT reports editing thousands of associations in GPT-J6B and GPT-NeoX20B.",
+      "limitation": "Large-batch editing is not indefinite continual acquisition. Exact training statistics, model sizes and edit budgets matter; the retrieved v2 is dated2023 after the2022 initial preprint.",
+      "independently_replicated": false
+    },
+    {
+      "id": "P-36",
+      "authors": "Junfeng Fang, Houcheng Jiang, Kun Wang, Yunshan Ma, Jie Shi, Xiang Wang, Xiangnan He, Tat-Seng Chua",
+      "year": 2025,
+      "title": "AlphaEdit: Null-Space Constrained Knowledge Editing for Language Models",
+      "url": "https://arxiv.org/html/2410.02355v4",
+      "inspection_depth": "abstract_and_methods_excerpt",
+      "retrieval_refs": [
+        "turn111065952view1",
+        "turn900814803view0"
+      ],
+      "identity_status": "verified_primary",
+      "supported_claim": "ICLR2025 paper provides direct nullspace-editing prior art; its ideal algebra preserves a linear layer's outputs on fixed protected keys.",
+      "limitation": "Practical projection retains covariance eigenvalues below1e-2, not an exact nullspace in general. Estimated keys, later upstream drift and sequential layer edits prevent upgrading the fixed-key identity to a universal whole-LM guarantee.",
+      "independently_replicated": false
+    },
+    {
+      "id": "P-37",
+      "authors": "Ilya Loshchilov and Frank Hutter",
+      "year": 2019,
+      "title": "Decoupled Weight Decay Regularization",
+      "url": "https://arxiv.org/html/1711.05101v3",
+      "inspection_depth": "primary_abstract_and_method",
+      "retrieval_refs": [
+        "turn335283563view0"
+      ],
+      "identity_status": "verified_primary",
+      "supported_claim": "Decouples weight decay from loss-gradient moments in Adam-like adaptive optimization.",
+      "limitation": "Implementation precedent, not proof of a good Nano training recipe or universal retention; initial preprint2017, v3Jan2019."
+    },
+    {
+      "id": "P-38",
+      "authors": "Biao Zhang and Rico Sennrich",
+      "year": 2019,
+      "title": "Root Mean Square Layer Normalization",
+      "url": "https://arxiv.org/abs/1910.07467v1",
+      "inspection_depth": "primary_abstract",
+      "retrieval_refs": [
+        "turn335283563view1"
+      ],
+      "identity_status": "verified_primary",
+      "supported_claim": "Introduces RMS-based normalization without LayerNorm recentering.",
+      "limitation": "Nano epsilon, gain, dtype and derivative conventions are specified and checked locally; paper speed claims are not transplanted."
+    },
+    {
+      "id": "P-39",
+      "authors": "Jianlin Su et al.",
+      "year": 2021,
+      "title": "RoFormer: Enhanced Transformer with Rotary Position Embedding",
+      "url": "https://arxiv.org/abs/2104.09864v5",
+      "inspection_depth": "primary_abstract",
+      "retrieval_refs": [
+        "turn335283563view2"
+      ],
+      "identity_status": "verified_primary",
+      "supported_claim": "Uses position-dependent rotations to introduce relative-position dependence in attention.",
+      "limitation": "Initial2021 preprint; retrieved v5Nov2023. It does not validate this implementation or context-length generalization."
+    },
+    {
+      "id": "P-40",
+      "authors": "Noam Shazeer",
+      "year": 2020,
+      "title": "GLU Variants Improve Transformer",
+      "url": "https://arxiv.org/abs/2002.05202v1",
+      "inspection_depth": "primary_abstract",
+      "retrieval_refs": [
+        "turn335283563view3"
+      ],
+      "identity_status": "verified_primary",
+      "supported_claim": "Studies gated feed-forward variants in Transformers; direct precedent for the SwiGLU component family.",
+      "limitation": "Author-reported benchmark gains do not show a Nano architecture advantage; local gradients are checked independently."
+    },
+    {
+      "id": "P-41",
+      "authors": "Edouard Grave, Armand Joulin, Nicolas Usunier",
+      "year": 2016,
+      "title": "Improving Neural Language Models with a Continuous Cache",
+      "url": "https://arxiv.org/abs/1612.04426v1",
+      "inspection_depth": "primary abstract and selected PDF pages1–3, cache context and equations",
+      "retrieval_refs": [
+        "turn436807269view0",
+        "turn620677065view0"
+      ],
+      "identity_status": "verified_primary",
+      "supported_claim": "A recent-history cache stores previous hidden-state/observed-follower pairs and interpolates its predictive distribution with the language model.",
+      "limitation": "2016 preprint submitted to ICLR2017; no full-method/code replication. Not evidence of NanoLM gain or of this n-gram implementation efficiency.",
+      "independently_replicated": false
+    },
+    {
+      "id": "P-42",
+      "authors": "Urvashi Khandelwal, Omer Levy, Dan Jurafsky, Luke Zettlemoyer, Mike Lewis",
+      "year": 2020,
+      "title": "Generalization through Memorization: Nearest Neighbor Language Models",
+      "url": "https://arxiv.org/abs/1911.00172v2",
+      "inspection_depth": "primary abstract and selected PDF pages1–3, datastore/interpolation/context convention",
+      "retrieval_refs": [
+        "turn436807269view1",
+        "turn620677065view1"
+      ],
+      "identity_status": "verified_primary",
+      "supported_claim": "A training datastore of context representations and targets supplies normalized nearest-neighbor probabilities, interpolated with a fixed LM; evaluation context is explicitly described.",
+      "limitation": "ICLR2020, firstpreprint2019. Semantic retrieval differs from n-gram counts and recent-document caches. No NanoLM result or independent replication is inferred.",
+      "independently_replicated": false
+    },
+    {
+      "id": "P-43",
+      "authors": "PyTorch contributors",
+      "year": 2026,
+      "title": "torch.Tensor.index_put_ — PyTorch 2.11 documentation",
+      "url": "https://docs.pytorch.org/docs/2.11/generated/torch.Tensor.index_put_.html",
+      "inspection_depth": "versioned official API contract",
+      "retrieval_refs": [
+        "turn238204338view0",
+        "turn436807269view2"
+      ],
+      "identity_status": "verified_primary",
+      "supported_claim": "Assignment via index_put_ without accumulation has undefined behavior for duplicate indices.",
+      "limitation": "No portable last-write-wins guarantee; documentation does not reconstruct historical execution order or establish which errors the defect caused. The correction result summaries omit their Torch version. Year denotes access year, not an inferred publication date.",
+      "independently_replicated": false
+    },
+    {
+      "id": "P-44",
+      "authors": "HuggingFaceTB",
+      "year": 2026,
+      "title": "SmolLM2-135M official model card",
+      "url": "https://huggingface.co/HuggingFaceTB/SmolLM2-135M",
+      "inspection_depth": "Official card model/training sections, verified through primary-domain search",
+      "retrieval_refs": [
+        "turn762002124search0",
+        "turn762002124search2"
+      ],
+      "supported_claim": "The 135M model card reports two trillion pretraining tokens.",
+      "limitation": "Access year, not a claim about original publication date. No downloaded weights, corpus or independently replicated model result; card leaderboard metrics are not substituted for Nano harness metrics.",
+      "identity_status": "verified_primary",
+      "independently_replicated": false,
+      "accessed": "2026-11-23"
+    },
+    {
+      "id": "P-45",
+      "authors": "HuggingFaceTB",
+      "year": 2026,
+      "title": "SmolLM2-360M official model card",
+      "url": "https://huggingface.co/HuggingFaceTB/SmolLM2-360M",
+      "inspection_depth": "Official card model/training sections, verified through primary-domain search",
+      "retrieval_refs": [
+        "turn762002124search1",
+        "turn762002124search3"
+      ],
+      "supported_claim": "The 360M model card reports four trillion pretraining tokens.",
+      "limitation": "Access year. Different model/data/tokenizer/training recipe; token-exposure difference does not identify the causal source of a quality gap.",
+      "identity_status": "verified_primary",
+      "independently_replicated": false,
+      "accessed": "2026-11-23"
+    },
+    {
+      "id": "P-46",
+      "authors": "Cheng-Ping Hsieh et al.",
+      "year": 2024,
+      "title": "RULER: What's the Real Context Size of Your Long-Context Language Models?",
+      "url": "https://arxiv.org/html/2404.06654v3",
+      "inspection_depth": "Abstract and selected benchmark-method excerpts, including variable tracking and configurable hops/noise",
+      "retrieval_refs": [
+        "turn370294578view2",
+        "turn762002124view0"
+      ],
+      "supported_claim": "Controlled synthetic evaluations can vary context length and task complexity and include retrieval, multi-hop tracing and aggregation.",
+      "limitation": "Method-design precedent only. Nano's short generated tasks are not RULER replication, long-context certification or a general reasoning benchmark.",
+      "identity_status": "verified_primary",
+      "independently_replicated": false,
+      "accessed": "2026-11-23"
+    },
+    {
+      "id": "P-47",
+      "authors": "Iman Mirzadeh et al.",
+      "year": 2024,
+      "title": "GSM-Symbolic: Understanding the Limitations of Mathematical Reasoning in Large Language Models",
+      "url": "https://arxiv.org/abs/2410.05229",
+      "inspection_depth": "Primary abstract",
+      "retrieval_refs": [
+        "turn370294578view3"
+      ],
+      "supported_claim": "Symbolic templates and controlled instantiations provide a way to inspect variation across related problem instances.",
+      "limitation": "No code or full methods replication. Author hypotheses about the absence of genuine reasoning are not treated as established facts; Nano's relation tasks do not reproduce GSM-Symbolic.",
+      "identity_status": "verified_primary",
+      "independently_replicated": false,
+      "accessed": "2026-11-23"
+    },
+    {
+      "id": "P-48",
+      "authors": "Stella Biderman et al.",
+      "year": 2023,
+      "title": "Pythia: A Suite for Analyzing Large Language Models Across Training and Scaling",
+      "url": "https://arxiv.org/abs/2304.01373",
+      "inspection_depth": "Primary abstract",
+      "retrieval_refs": [
+        "turn370294578view4"
+      ],
+      "supported_claim": "Pythia provides a controlled model suite with shared training-data order and many intermediate checkpoints for studying learning trajectories.",
+      "limitation": "A checkpoint-step comparison does not match optimizers, schedule completion, tokenizer, data or total compute. Nano's benchmark files remain distinct evidence from the paper.",
+      "identity_status": "verified_primary",
+      "independently_replicated": false,
+      "accessed": "2026-11-23"
+    }
+  ]
+}

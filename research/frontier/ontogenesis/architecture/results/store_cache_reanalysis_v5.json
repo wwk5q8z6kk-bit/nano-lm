@@ -1,0 +1,116 @@
+{
+  "schema": "store-cache-reanalysis-v1",
+  "research_cutoff": "0afd5629990b4e442fb3aa8f7c700b030d8faede",
+  "scope": "rounded committed summaries and synthetic source-function checks only",
+  "language_model_evaluation": false,
+  "verified_source_files": 10,
+  "store_S": {
+    "rows": [
+      {
+        "domain": "web",
+        "model_bpb": "1.1945",
+        "with_store_bpb": "1.1929",
+        "gain_from_rounded_rows": "0.0016",
+        "reported_gain": "0.0016",
+        "gain_agrees": true,
+        "baseline_difference": "0.0001",
+        "literal_four_decimal_baseline_equality": false
+      },
+      {
+        "domain": "textbook",
+        "model_bpb": "0.894",
+        "with_store_bpb": "0.8887",
+        "gain_from_rounded_rows": "0.0053",
+        "reported_gain": "0.0053",
+        "gain_agrees": true,
+        "baseline_difference": "0.000",
+        "literal_four_decimal_baseline_equality": true
+      },
+      {
+        "domain": "math",
+        "model_bpb": "1.2963",
+        "with_store_bpb": "1.2851",
+        "gain_from_rounded_rows": "0.0112",
+        "reported_gain": "0.0112",
+        "gain_agrees": true,
+        "baseline_difference": "0.0001",
+        "literal_four_decimal_baseline_equality": false
+      },
+      {
+        "domain": "code",
+        "model_bpb": "0.9903",
+        "with_store_bpb": "0.9798",
+        "gain_from_rounded_rows": "0.0105",
+        "reported_gain": "0.0105",
+        "gain_agrees": true,
+        "baseline_difference": "0.0001",
+        "literal_four_decimal_baseline_equality": false
+      },
+      {
+        "domain": "mix",
+        "model_bpb": "1.1442",
+        "with_store_bpb": "1.1398",
+        "gain_from_rounded_rows": "0.0044",
+        "reported_gain": "0.0044",
+        "gain_agrees": true,
+        "baseline_difference": "0.0001",
+        "literal_four_decimal_baseline_equality": false
+      }
+    ],
+    "store_bytes": 1022224980,
+    "store_GiB": 0.952021200209856,
+    "fit_token_positions": 1048576,
+    "relative_mix_bpb_reduction_percent": "0.3845481559167977626289110295",
+    "original_primary_rows_preserved": true,
+    "invalidated_old_shuffled_gain_mix": "0.1752",
+    "current_shifted_control_gain_mix": "0.0",
+    "weighted_mix_independently_recomputed": false,
+    "reason_mix_not_recomputed": "source corpus mix/byte manifest is not in this evidence set"
+  },
+  "source_crop_boundary_counterexample": {
+    "visible_crop": [
+      3,
+      4
+    ],
+    "target": 4,
+    "full_file_lookup_target_probabilities": [
+      1.0,
+      0.0
+    ],
+    "crop_local_lookup_target_probabilities": [
+      0.5,
+      0.5
+    ],
+    "violation_reproduced": true,
+    "crop_local_repair_agrees": true,
+    "classification": "causal extra pre-crop context; not future leakage"
+  },
+  "source_cache_identity_counterexample": {
+    "tokens": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "old_same_object_probabilities": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "old_distinct_equal_object_probabilities": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "repaired_probabilities": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "old_identity_bug_reproduced": true,
+    "repaired_equals_causal_old_path": true
+  },
+  "causal_cache_language_result_at_cutoff": "no committed valid rerun located in pinned repository tree",
+  "registered_store_101M_decision": "pending; S checkpoint cannot activate it",
+  "registered_cache_40M_decision": "pending"
+}

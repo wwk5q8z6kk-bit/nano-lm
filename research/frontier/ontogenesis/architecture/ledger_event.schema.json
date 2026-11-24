@@ -1,0 +1,277 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Nano LM append-only research decision event (legacy plus version 2)",
+  "description": "Frozen legacy prefix is accepted without backfilled provenance. New events use schema_version=2 and explicit prior-event linkage. Labels record claims; they do not grant permission or establish scientific truth.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "decision_id",
+    "event_id",
+    "recorded_at_utc",
+    "status",
+    "decision",
+    "rationale",
+    "alternatives_considered",
+    "evidence_type",
+    "source_refs",
+    "next_gate",
+    "supersedes_ids",
+    "affected_model",
+    "permission_class",
+    "outcome",
+    "open_questions"
+  ],
+  "properties": {
+    "decision_id": {
+      "type": "string",
+      "pattern": "^D-[0-9]{3,6}$"
+    },
+    "event_id": {
+      "type": "string",
+      "minLength": 8,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{7,159}$"
+    },
+    "recorded_at_utc": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d+)?Z$"
+    },
+    "status": {
+      "enum": [
+        "proposed",
+        "reviewed",
+        "mathematically_checked",
+        "preregistered",
+        "exploratory",
+        "confirmed",
+        "rejected",
+        "superseded",
+        "integrated"
+      ]
+    },
+    "decision": {
+      "type": "string",
+      "minLength": 10
+    },
+    "rationale": {
+      "type": "string",
+      "minLength": 12
+    },
+    "alternatives_considered": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 5
+      },
+      "uniqueItems": true
+    },
+    "evidence_type": {
+      "enum": [
+        "mathematical",
+        "repository",
+        "peer_reviewed",
+        "preprint",
+        "hypothesis",
+        "engineering"
+      ]
+    },
+    "source_refs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 5
+      },
+      "uniqueItems": true
+    },
+    "next_gate": {
+      "type": "string",
+      "minLength": 2
+    },
+    "supersedes_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^D-[0-9]{3,6}$"
+      },
+      "uniqueItems": true
+    },
+    "affected_model": {
+      "type": "string",
+      "minLength": 3
+    },
+    "permission_class": {
+      "enum": [
+        "review_only",
+        "free_exploratory",
+        "paid_authorized",
+        "merge_authorized"
+      ]
+    },
+    "outcome": {
+      "enum": [
+        "not_executed",
+        "document_only",
+        "pilot",
+        "confirmed",
+        "inconclusive",
+        "rejected"
+      ]
+    },
+    "open_questions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "schema_version": {
+      "const": 2
+    },
+    "previous_event_id": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "string",
+          "minLength": 8,
+          "maxLength": 160
+        }
+      ]
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_commit",
+        "actor",
+        "evidence_note"
+      ],
+      "properties": {
+        "source_commit": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "actor": {
+          "type": "string",
+          "minLength": 3
+        },
+        "evidence_note": {
+          "type": "string",
+          "minLength": 12
+        },
+        "evidence_artifacts": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "path",
+              "sha256"
+            ],
+            "properties": {
+              "path": {
+                "type": "string",
+                "minLength": 1
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "required": [
+          "schema_version"
+        ]
+      },
+      "then": {
+        "required": [
+          "previous_event_id",
+          "provenance"
+        ]
+      },
+      "else": {
+        "not": {
+          "anyOf": [
+            {
+              "required": [
+                "previous_event_id"
+              ]
+            },
+            {
+              "required": [
+                "provenance"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "confirmed"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "outcome": {
+            "const": "confirmed"
+          },
+          "evidence_type": {
+            "not": {
+              "const": "hypothesis"
+            }
+          },
+          "provenance": {
+            "required": [
+              "evidence_artifacts"
+            ],
+            "properties": {
+              "evidence_artifacts": {
+                "minItems": 1
+              }
+            }
+          }
+        },
+        "required": [
+          "provenance"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "outcome": {
+            "const": "confirmed"
+          }
+        },
+        "required": [
+          "outcome"
+        ]
+      },
+      "then": {
+        "properties": {
+          "status": {
+            "const": "confirmed"
+          }
+        }
+      }
+    }
+  ]
+}

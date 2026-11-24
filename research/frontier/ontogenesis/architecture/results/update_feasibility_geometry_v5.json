@@ -1,0 +1,118 @@
+{
+  "scope": "Exact diagnostics for one fixed linear two-relation, two-value example; no trained model, general capacity bound or optimization-method superiority result",
+  "initial": {
+    "point_exact": [
+      "2",
+      "1"
+    ],
+    "l1_edit_exact": "0",
+    "margins_exact": {
+      "target_B_minus_A": "-1",
+      "protected_C_minus_D": "8/5"
+    },
+    "protected_strict_winner": true,
+    "protected_tied": false
+  },
+  "ideal_target_gradient_hitting_point": {
+    "point_exact": [
+      "0",
+      "3"
+    ],
+    "l1_edit_exact": "4",
+    "margins_exact": {
+      "target_B_minus_A": "3",
+      "protected_C_minus_D": "-6/5"
+    },
+    "protected_strict_winner": false,
+    "protected_tied": false
+  },
+  "target_only_minimum_l1": {
+    "value_exact": "4",
+    "all_minimizers": "(x,x+3), -2 <= x <= 2",
+    "protected_margin_on_minimizers": "3*x/5 - 6/5 <= 0",
+    "tie_endpoint": {
+      "point_exact": [
+        "2",
+        "5"
+      ],
+      "l1_edit_exact": "4",
+      "margins_exact": {
+        "target_B_minus_A": "3",
+        "protected_C_minus_D": "0"
+      },
+      "protected_strict_winner": false,
+      "protected_tied": true
+    },
+    "tie_is_argmax_error_independent_of_tie_breaking": false,
+    "strict_preservation_at_minimum_possible": false
+  },
+  "protected_optima": [
+    {
+      "required_margin_exact": "0",
+      "point_exact": [
+        "2",
+        "5"
+      ],
+      "l1_edit_exact": "4",
+      "margins_exact": {
+        "target_B_minus_A": "3",
+        "protected_C_minus_D": "0"
+      },
+      "protected_strict_winner": false,
+      "protected_tied": true
+    },
+    {
+      "required_margin_exact": "1/10",
+      "point_exact": [
+        "13/6",
+        "31/6"
+      ],
+      "l1_edit_exact": "13/3",
+      "margins_exact": {
+        "target_B_minus_A": "3",
+        "protected_C_minus_D": "1/10"
+      },
+      "protected_strict_winner": true,
+      "protected_tied": false
+    },
+    {
+      "required_margin_exact": "1",
+      "point_exact": [
+        "11/3",
+        "20/3"
+      ],
+      "l1_edit_exact": "22/3",
+      "margins_exact": {
+        "target_B_minus_A": "3",
+        "protected_C_minus_D": "1"
+      },
+      "protected_strict_winner": true,
+      "protected_tied": false
+    },
+    {
+      "required_margin_exact": "8/5",
+      "point_exact": [
+        "14/3",
+        "23/3"
+      ],
+      "l1_edit_exact": "28/3",
+      "margins_exact": {
+        "target_B_minus_A": "3",
+        "protected_C_minus_D": "8/5"
+      },
+      "protected_strict_winner": true,
+      "protected_tied": false
+    }
+  ],
+  "tradeoff_formula": "minimum L1 = 4 + (10/3)*mu for mu >= 0",
+  "strict_only_problem": {
+    "infimum_exact": "4",
+    "minimum_attained": false
+  },
+  "limits": [
+    "The ideal gradient hitting point is a geometric construction, not a recorded optimizer trajectory.",
+    "A nonpositive protected margin excludes a strict winner; a zero margin alone does not determine a tie-broken argmax answer.",
+    "The L1 objective and its minimizers depend on coordinates and metric.",
+    "No assertion that every later update must replay the protected fact follows from this example."
+  ]
+}

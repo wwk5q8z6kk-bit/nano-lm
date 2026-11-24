@@ -1,0 +1,108 @@
+{
+  "large_initial_margin_can_be_overturned": {
+    "rivals": [
+      1
+    ],
+    "margins_before": [
+      20.0
+    ],
+    "margins_after": [
+      -20.0
+    ],
+    "signed_terms_state_decoder_interaction": [
+      [
+        0.0,
+        -40.0,
+        0.0
+      ]
+    ],
+    "norm_bounds_state_decoder_interaction": [
+      [
+        0.0,
+        40.0,
+        0.0
+      ]
+    ],
+    "total_bound": [
+      40.0
+    ],
+    "margin_lower_bound": [
+      -20.0
+    ],
+    "decomposition_max_abs_residual": 0.0,
+    "positive_lower_bound": false,
+    "actual_strict_target_winner_after": false,
+    "scope": "Float64 evaluation of a sufficient real-arithmetic inequality; not outward-rounded certification, causal evidence or a learned LM result."
+  },
+  "orthogonal_state_change_preserves_prediction": {
+    "rivals": [
+      1
+    ],
+    "margins_before": [
+      2.0
+    ],
+    "margins_after": [
+      2.0
+    ],
+    "signed_terms_state_decoder_interaction": [
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "norm_bounds_state_decoder_interaction": [
+      [
+        200.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "total_bound": [
+      200.0
+    ],
+    "margin_lower_bound": [
+      -198.0
+    ],
+    "decomposition_max_abs_residual": 0.0,
+    "positive_lower_bound": false,
+    "actual_strict_target_winner_after": true,
+    "scope": "Float64 evaluation of a sufficient real-arithmetic inequality; not outward-rounded certification, causal evidence or a learned LM result."
+  },
+  "coherent_transport_preserves_prediction_despite_loose_bound": {
+    "rivals": [
+      1
+    ],
+    "margins_before": [
+      2.0
+    ],
+    "margins_after": [
+      2.0
+    ],
+    "signed_terms_state_decoder_interaction": [
+      [
+        198.0,
+        -1.98,
+        -196.02
+      ]
+    ],
+    "norm_bounds_state_decoder_interaction": [
+      [
+        198.0,
+        1.98,
+        196.02
+      ]
+    ],
+    "total_bound": [
+      396.0
+    ],
+    "margin_lower_bound": [
+      -394.0
+    ],
+    "decomposition_max_abs_residual": 0.0,
+    "positive_lower_bound": false,
+    "actual_strict_target_winner_after": true,
+    "scope": "Float64 evaluation of a sufficient real-arithmetic inequality; not outward-rounded certification, causal evidence or a learned LM result."
+  },
+  "claim": "Constructed counterexamples and inequalities; no training or architecture comparison."
+}

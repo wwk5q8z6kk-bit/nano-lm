@@ -1,0 +1,117 @@
+{
+  "release": "Nano LM V6",
+  "classification": "BOUNDED_SOURCE_AND_INSTRUMENT_VALIDATION_NOT_MODEL_TRAINING",
+  "status": "PASS",
+  "created_at_utc": "2026-11-23T21:24:20.780829+00:00",
+  "runtime": {
+    "python": "3.12.14",
+    "platform": "Linux-6.18.57-x86_64-with-glibc2.41"
+  },
+  "group_count": 10,
+  "groups": {
+    "v5_preservation": {
+      "status": "PASS",
+      "prior_files": 208,
+      "byte_identical_files": 195,
+      "prior_result_files": 27,
+      "extended_historical_files": [
+        "01_ARCHITECTURE_AND_THEOREMS.md",
+        "02_DECISION_LEDGER.md",
+        "03_EXPERIMENTS_AND_EXECUTION.md",
+        "04_EVIDENCE_AND_REFERENCES.md",
+        "05_GAP_CLOSURE_AND_FORMAL_REVIEW.md",
+        "06_VALIDATION_AND_UNRESOLVED_WORK.md",
+        "07_IMPLEMENTATION_CONTRACT.md",
+        "08_LITERATURE_AUDIT.md",
+        "10_TRAINING_AND_CONTROLLED_UPDATE_CONTRACT.md",
+        "13_CAUSAL_MEMORY_AND_RESOURCE_FRONTIER.md",
+        "14_NATIVE_UPDATE_COMPARISON.md",
+        "ledger_events.jsonl"
+      ],
+      "first_principles_prefix_bytes": 65209,
+      "shared_ledger_bytes": 23049
+    },
+    "frozen_sources": {
+      "status": "PASS",
+      "copies": 231,
+      "distinct_commit_path_identities": 217,
+      "bytes": 1603517
+    },
+    "ledger": {
+      "status": "PASS",
+      "events": 58,
+      "human_ids": 73,
+      "machine_ids": 50,
+      "prior_prefix_events": 46,
+      "new_events": 12
+    },
+    "literature": {
+      "status": "PASS",
+      "identities": 48,
+      "preserved_prior_records": 43,
+      "new_primary_records": 5
+    },
+    "source_reanalysis": {
+      "native": {
+        "status": "PASS",
+        "saved_result_sha256": "65844b5a14616418dc53cccd12302464d8343741fb4ade7aa47a63924f777683"
+      },
+      "correction": {
+        "status": "PASS",
+        "saved_result_sha256": "b5952f5e3bce9e1621db8bb29a66d937486719adad380d3e22adaeeec50ba979"
+      },
+      "context": {
+        "status": "PASS",
+        "saved_result_sha256": "d9fad3970049357686c1682a4b4459babfe6015d0534b5d4b571a7c2257fc510"
+      },
+      "status": "PASS"
+    },
+    "generation": {
+      "status": "PASS",
+      "unit_tests": 31,
+      "worlds": 96,
+      "records": 480,
+      "dataset_sha256": "8cffe7ed4e5cd308cf675974cc30382462c82085720645502a0107c270b0706c",
+      "model_execution": "NOT_RUN",
+      "contamination": "NOT_CHECKED",
+      "all_saved_controls_identical": true
+    },
+    "independent_generation": {
+      "status": "PASS",
+      "checks": 21,
+      "source_sha256": "fb189cfdac616c3036f8bfe3e443bc39ff8bcaf746d0f09f145185d24eae2ff8"
+    },
+    "temporal": {
+      "status": "PASS",
+      "tests": 20,
+      "independent_tiny_history_plans": 1350,
+      "source_sha256": {
+        "implementation": "89f56cfc18e95a1cfea91b286efe5eae02d212877fde9bfddf51023e469c9e35",
+        "adversarial_checks": "c8e98f9c7bdd5d47545e2bd5b4bca2394cc3f618597e0773b130bceafb23b4a3",
+        "event_manifest_dependency": "f7339939059c8337a2257c9064c3073522b63fb5744cb6a464e7423c15b86087"
+      }
+    },
+    "architecture_math": {
+      "status": "PASS",
+      "native_parameters": 386062080,
+      "hypothetical_KV_bytes": 10485760,
+      "training_target_presentations": 7698841600,
+      "scope": "Integer accounting only; proof review recorded separately. No checkpoint load or serving-memory measurement."
+    },
+    "current_document_links": {
+      "status": "PASS",
+      "current_documents": 5,
+      "local_links": 42
+    }
+  },
+  "seconds": 7.579,
+  "read_only_default_verified": true,
+  "model_execution": "NOT_RUN",
+  "architecture_adoption": "NOT_DECIDED",
+  "validator_sha256": "73d84596123ba80dee0b14bf5022f2add23c99b1c7d15cbecf1b684fe404686f",
+  "limitations": [
+    "No complete historical V5 rerun. Unchanged sources/results are verified by exact preservation.",
+    "No trained checkpoint, actual tokenizer, corpus, model scoring, paid compute or remote CI execution.",
+    "Consistency checks and hashes are not independent backend attestation or proof of scientific truth."
+  ]
+}

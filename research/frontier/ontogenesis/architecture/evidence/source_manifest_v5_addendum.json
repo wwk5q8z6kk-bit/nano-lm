@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "late_cutoff": "c597d5fefdd378c3e5c66a51e7690cdb90853287",
+  "review_core_cutoff": "0afd5629990b4e442fb3aa8f7c700b030d8faede",
+  "scope": "Five separately reviewed late source copies; original85-copy manifest and all prior receipts unchanged. This addendum does not authenticate checkpoint payloads or reconstruct raw language-model losses.",
+  "source_manifest": "evidence/upstream_v5_store_late/source_manifest.json",
+  "source_manifest_sha256": "2f6a0b5c97eacdd1e44e877b4559853212aee7aa43d540dbd9fb81b112f9ddea",
+  "files": [
+    {
+      "local_path": "evidence/upstream_v5_store_late/research/frontier/ontogenesis/results/lm/cache-exchange-M.json",
+      "source_path": "research/frontier/ontogenesis/results/lm/cache-exchange-M.json",
+      "source_commit": "c597d5fefdd378c3e5c66a51e7690cdb90853287",
+      "git_blob_sha": "799c64b014c9f71fe40aa81bc1f5d5d64f3c21ab",
+      "sha256": "1e732d08c7fa2c6d037b5743e87b9a3b850e2ab6d7ad6e427e92e15dc653d1c3",
+      "bytes": 1048,
+      "source_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/c597d5fefdd378c3e5c66a51e7690cdb90853287/research/frontier/ontogenesis/results/lm/cache-exchange-M.json"
+    },
+    {
+      "local_path": "evidence/upstream_v5_store_late/research/frontier/ontogenesis/results/lm/cache-exchange-S.json",
+      "source_path": "research/frontier/ontogenesis/results/lm/cache-exchange-S.json",
+      "source_commit": "c597d5fefdd378c3e5c66a51e7690cdb90853287",
+      "git_blob_sha": "3120320aee8c133f804ee3d9a816c03601bb7bb4",
+      "sha256": "55b85cb92775bfc4c257a1df73a9ad0790e8dbccb8f63da55e2edcfe152d9327",
+      "bytes": 1048,
+      "source_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/c597d5fefdd378c3e5c66a51e7690cdb90853287/research/frontier/ontogenesis/results/lm/cache-exchange-S.json"
+    },
+    {
+      "local_path": "evidence/upstream_v5_store_late/research/frontier/ontogenesis/results/lm/store-exchange-M.json",
+      "source_path": "research/frontier/ontogenesis/results/lm/store-exchange-M.json",
+      "source_commit": "c597d5fefdd378c3e5c66a51e7690cdb90853287",
+      "git_blob_sha": "6a7921ca27d4a88db61935a4d780c7ee5bc46b19",
+      "sha256": "d8880f082ec26ea31c66f3e9162a317f791adc0fdc20de741fbe9f25a418dda6",
+      "bytes": 1043,
+      "source_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/c597d5fefdd378c3e5c66a51e7690cdb90853287/research/frontier/ontogenesis/results/lm/store-exchange-M.json"
+    },
+    {
+      "local_path": "evidence/upstream_v5_store_late/research/frontier/ontogenesis/INVESTIGATION.md.txt",
+      "source_path": "research/frontier/ontogenesis/INVESTIGATION.md",
+      "source_commit": "c597d5fefdd378c3e5c66a51e7690cdb90853287",
+      "git_blob_sha": "447ec7e9645d919a0e76bd4b20c0cf519b0805f1",
+      "sha256": "f155d4b90cf2131d2c11f08318e83208b38b85984ca466d96e42ff1fbc912d47",
+      "bytes": 50321,
+      "source_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/c597d5fefdd378c3e5c66a51e7690cdb90853287/research/frontier/ontogenesis/INVESTIGATION.md"
+    },
+    {
+      "local_path": "evidence/upstream_v5_store_late/research/frontier/ontogenesis/tpu/train_jax.py",
+      "source_path": "research/frontier/ontogenesis/tpu/train_jax.py",
+      "source_commit": "c597d5fefdd378c3e5c66a51e7690cdb90853287",
+      "git_blob_sha": "e1d34ed3e8ab8f20fa136a1d9a3ceb2f74b77c11",
+      "sha256": "6d769c89cf3dbcc748693730ebbbc6cb8e364391688523ee93004297fc91a1f6",
+      "bytes": 19669,
+      "source_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/c597d5fefdd378c3e5c66a51e7690cdb90853287/research/frontier/ontogenesis/tpu/train_jax.py"
+    }
+  ]
+}

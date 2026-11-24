@@ -1,0 +1,42 @@
+{
+  "schema": "causal-cache-fixture-checks-v1",
+  "scope": "synthetic integer fixtures only",
+  "language_model_evaluation": false,
+  "passed": true,
+  "checks": [
+    {
+      "check": "exhaustive_independent_oracle_and_positive_normalization",
+      "prefixes": 1093,
+      "passed": true
+    },
+    {
+      "check": "sequential_prefix_recompute_and_score_before_observe",
+      "passed": true
+    },
+    {
+      "check": "query_target_and_future_suffix_noninterference_full_vectors",
+      "suffix_variants": 40,
+      "passed": true
+    },
+    {
+      "check": "explicit_crop_document_reset_and_no_precrop_context",
+      "passed": true
+    },
+    {
+      "check": "masked_loss_still_advances_observed_context",
+      "passed": true
+    },
+    {
+      "check": "immutable_causal_snapshot_invalid_input_is_atomic",
+      "passed": true
+    },
+    {
+      "check": "configuration_and_context_validation",
+      "passed": true
+    },
+    {
+      "check": "proper_native_mixture_zero_weight_and_no_match_exact",
+      "passed": true
+    }
+  ]
+}

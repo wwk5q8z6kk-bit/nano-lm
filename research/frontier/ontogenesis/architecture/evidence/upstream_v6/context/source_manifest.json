@@ -1,0 +1,136 @@
+{
+  "repository": "wwk5q8z6kk-bit/nano-lm",
+  "research_cutoff": "3a38b5f1529a718838b5bc83a010574bfa9a4c6e",
+  "tree_truncated": false,
+  "tree_entry_count": 4594,
+  "files": [
+    {
+      "path": "AGENTS.md",
+      "ref": "3a38b5f1529a718838b5bc83a010574bfa9a4c6e",
+      "git_blob_sha": "1a41b1a3106f65b5b1988ee7e55d478ada436098",
+      "local_path": "evidence/upstream_v6/context/sources/3a38b5f1/AGENTS.md",
+      "bytes": 3779,
+      "sha256": "e8ab78ea0c0ff2fc9280cb995644531b53a1eab99db0071b2b761dfc3b0effa2"
+    },
+    {
+      "path": "research/frontier/ontogenesis/tpu/eval_prep.py",
+      "ref": "3a38b5f1529a718838b5bc83a010574bfa9a4c6e",
+      "git_blob_sha": "5d026080500999a83d290a6405c6bc0d1f4cb98e",
+      "local_path": "evidence/upstream_v6/context/sources/3a38b5f1/research/frontier/ontogenesis/tpu/eval_prep.py",
+      "bytes": 4628,
+      "sha256": "3a7447a92f5179f0da7e43bd90ab29a38727a64c748facf4a3b7d17ae966e440"
+    },
+    {
+      "path": "research/frontier/ontogenesis/tpu/eval_score.py",
+      "ref": "3a38b5f1529a718838b5bc83a010574bfa9a4c6e",
+      "git_blob_sha": "0e66cd23637e30df5c6a246257d8d523a4fb4ac5",
+      "local_path": "evidence/upstream_v6/context/sources/3a38b5f1/research/frontier/ontogenesis/tpu/eval_score.py",
+      "bytes": 4902,
+      "sha256": "bf59fdeeaae1740e7c1dfcc2fd244216b767dfd9fad35239a593c3f3335ed67d"
+    },
+    {
+      "path": "research/frontier/ontogenesis/tpu/eval_score_hf.py",
+      "ref": "3a38b5f1529a718838b5bc83a010574bfa9a4c6e",
+      "git_blob_sha": "568eb18924e461230e11b355b9924910ef6a2951",
+      "local_path": "evidence/upstream_v6/context/sources/3a38b5f1/research/frontier/ontogenesis/tpu/eval_score_hf.py",
+      "bytes": 4144,
+      "sha256": "bb03493219b75724d6be7007698052ab67509c469c3e494c04f7b430ddab7af6"
+    },
+    {
+      "path": "research/frontier/ontogenesis/tpu/eval_contam.py",
+      "ref": "3a38b5f1529a718838b5bc83a010574bfa9a4c6e",
+      "git_blob_sha": "87035a34bf9bf0320c9efc6ea251bbc172033660",
+      "local_path": "evidence/upstream_v6/context/sources/3a38b5f1/research/frontier/ontogenesis/tpu/eval_contam.py",
+      "bytes": 3048,
+      "sha256": "e30f3d491c5a5f8027ebcef908b0f6cabf447b33cf11e576c695a422db1bb05a"
+    },
+    {
+      "path": "research/frontier/ontogenesis/tpu/score_q13.py",
+      "ref": "3a38b5f1529a718838b5bc83a010574bfa9a4c6e",
+      "git_blob_sha": "d635edc50d342b564e415a7dcb1a9d283244feaa",
+      "local_path": "evidence/upstream_v6/context/sources/3a38b5f1/research/frontier/ontogenesis/tpu/score_q13.py",
+      "bytes": 3683,
+      "sha256": "bb03c56db61ce69172daaf0ecdab046c65516a00ab2a87729fd9b36a785802bd"
+    },
+    {
+      "path": "research/frontier/ontogenesis/tpu/train_jax.py",
+      "ref": "3a38b5f1529a718838b5bc83a010574bfa9a4c6e",
+      "git_blob_sha": "746656a8dbf5f74d71f0d7b5594796c92a2b99c9",
+      "local_path": "evidence/upstream_v6/context/sources/3a38b5f1/research/frontier/ontogenesis/tpu/train_jax.py",
+      "bytes": 25833,
+      "sha256": "7511f8f8e2d9665cade2578e9d41c6bbfbeaf49e4692e1e3d86a1aa324d8b03c"
+    },
+    {
+      "path": "research/frontier/ontogenesis/INVESTIGATION.md",
+      "ref": "3a38b5f1529a718838b5bc83a010574bfa9a4c6e",
+      "git_blob_sha": "aaca7a3a4f294bf8a47b04e43218d65ecb138ee1",
+      "local_path": "evidence/upstream_v6/context/sources/3a38b5f1/research/frontier/ontogenesis/INVESTIGATION.md",
+      "bytes": 108434,
+      "sha256": "9621fdfb8fe457208fbc693664b75678ce599450872aeccdec347f54d4a432f7"
+    },
+    {
+      "path": "research/frontier/ontogenesis/LEDGER.md",
+      "ref": "3a38b5f1529a718838b5bc83a010574bfa9a4c6e",
+      "git_blob_sha": "f47542073938667a6d07bc2fae40d11168905618",
+      "local_path": "evidence/upstream_v6/context/sources/3a38b5f1/research/frontier/ontogenesis/LEDGER.md",
+      "bytes": 33495,
+      "sha256": "983ee9ed4b3ea56622f3d2f59c21826216c017479b98670cd4f58dab4394ab8d"
+    },
+    {
+      "path": "research/frontier/ontogenesis/results/scale2/q13-verdict.json",
+      "ref": "3a38b5f1529a718838b5bc83a010574bfa9a4c6e",
+      "git_blob_sha": "4ce808411a21757e4b3c8362c41f1e5a77d468a3",
+      "local_path": "evidence/upstream_v6/context/sources/3a38b5f1/research/frontier/ontogenesis/results/scale2/q13-verdict.json",
+      "bytes": 1517,
+      "sha256": "0fbc6943c4ae69ba1a3a65af8fede6ed73f3e010ccf26224933777d9dbd566a0"
+    },
+    {
+      "path": "research/frontier/ontogenesis/results/scale2/dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2.bench.json",
+      "ref": "3a38b5f1529a718838b5bc83a010574bfa9a4c6e",
+      "git_blob_sha": "e6b89ea4103acd303f15f88bb065a7c6d129ba94",
+      "local_path": "evidence/upstream_v6/context/sources/3a38b5f1/research/frontier/ontogenesis/results/scale2/dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2.bench.json",
+      "bytes": 768,
+      "sha256": "af5eb5afd45c4739be311d4ee3992040f4ef149a2a7c732fe0395602f2a012ac"
+    },
+    {
+      "path": "research/frontier/ontogenesis/results/scale2/dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2.bench-nocontext.json",
+      "ref": "3a38b5f1529a718838b5bc83a010574bfa9a4c6e",
+      "git_blob_sha": "6e03a583da090be96ecdd84b34e81a79ddfc07c0",
+      "local_path": "evidence/upstream_v6/context/sources/3a38b5f1/research/frontier/ontogenesis/results/scale2/dense-XXL-lr0.002-s1000-tok7.7e+09-muon-dp4-fl0.01-hs-v2.bench-nocontext.json",
+      "bytes": 774,
+      "sha256": "e43413b4b1177cff6f6aa57c1566a6ef803b692cfb73c49c3d60c0d71f7aad9b"
+    },
+    {
+      "path": "research/frontier/ontogenesis/results/lm/eval-contamination-v2.json",
+      "ref": "3a38b5f1529a718838b5bc83a010574bfa9a4c6e",
+      "git_blob_sha": "c510abcc75e43a582c331cb3c852b67b40ddf757",
+      "local_path": "evidence/upstream_v6/context/sources/3a38b5f1/research/frontier/ontogenesis/results/lm/eval-contamination-v2.json",
+      "bytes": 837,
+      "sha256": "f9a8588adeacca5f8c7ba6b95d94aacc87d8ec7d8fbdeb52bf21d39b40b72b55"
+    },
+    {
+      "path": "research/frontier/ontogenesis/results/lm/eval-reference-SmolLM2-135M.json",
+      "ref": "3a38b5f1529a718838b5bc83a010574bfa9a4c6e",
+      "git_blob_sha": "26e5890b981eeb83890e3a4231ef9e6cdcb10dd4",
+      "local_path": "evidence/upstream_v6/context/sources/3a38b5f1/research/frontier/ontogenesis/results/lm/eval-reference-SmolLM2-135M.json",
+      "bytes": 573,
+      "sha256": "4398eca84c994e2fc4fbd333abf706022517a0028845060bc78c9e82ecc1714a"
+    },
+    {
+      "path": "research/frontier/ontogenesis/results/lm/eval-reference-SmolLM2-135M-nocontext.json",
+      "ref": "3a38b5f1529a718838b5bc83a010574bfa9a4c6e",
+      "git_blob_sha": "ae1510914bd43a41a80a3c6922e1167ed4c24dff",
+      "local_path": "evidence/upstream_v6/context/sources/3a38b5f1/research/frontier/ontogenesis/results/lm/eval-reference-SmolLM2-135M-nocontext.json",
+      "bytes": 599,
+      "sha256": "7aa56cf61adfe9df3f0aa288ac8293eae882931cd277d894615e46cc9506d175"
+    },
+    {
+      "path": "research/frontier/ontogenesis/reviews/2026-11-23-evidence-and-decisions.md",
+      "ref": "f05da96cb10c22982a8271f25c708bb064c7b371",
+      "git_blob_sha": "e4fd7a0ebd10069275da631d6d0acb518fe081e7",
+      "local_path": "evidence/upstream_v6/context/sources/f05da96c/research/frontier/ontogenesis/reviews/2026-11-23-evidence-and-decisions.md",
+      "bytes": 14098,
+      "sha256": "5d212b0fb15f3490565c95c9fe5ae5eeecccb471dbf9bcb73b0e5df4581a7030"
+    }
+  ]
+}

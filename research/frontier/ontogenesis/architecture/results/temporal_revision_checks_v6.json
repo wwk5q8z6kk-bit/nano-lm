@@ -1,0 +1,638 @@
+{
+  "suite": "Nano LM V6 temporal scoring repair",
+  "status": "PASS",
+  "tests_run": 20,
+  "passed": 20,
+  "failures": 0,
+  "errors": 0,
+  "contract_sha256": "407fc15ceb89cc51662a28990bc7979c4bdb6325a46e4f07234fb5fb73cf45b1",
+  "source_sha256": {
+    "implementation": "89f56cfc18e95a1cfea91b286efe5eae02d212877fde9bfddf51023e469c9e35",
+    "adversarial_checks": "c8e98f9c7bdd5d47545e2bd5b4bca2394cc3f618597e0773b130bceafb23b4a3",
+    "event_manifest_dependency": "f7339939059c8337a2257c9064c3073522b63fb5744cb6a464e7423c15b86087"
+  },
+  "independent_exhaustive_plans": 1350,
+  "scope": "Synthetic temporal-scoring checks only; no training, no learned-model evidence, no G04/G06 raw-result rewrite.",
+  "examples": {
+    "abc_perfect_at_each_requested_time": {
+      "schema": "nanolm-temporal-score-v1",
+      "contract_sha256": "407fc15ceb89cc51662a28990bc7979c4bdb6325a46e4f07234fb5fb73cf45b1",
+      "manifest_sha256": "3a7fae88dc4a6bcafd06898df1121da2f0f945f5636bf20f44e25646547c54b3",
+      "plan_sha256": "15321bbb5a207468721397116b72a6d5bf384162f82aa6c9b07f04a501b30721",
+      "mode": "early_adaptation",
+      "censor_policy": "new_revision",
+      "through_phase": 39,
+      "offset": 1,
+      "unit": "assignment_event",
+      "counts": {
+        "total": 2,
+        "eligible": 2,
+        "censored": 0,
+        "not_yet_due": 0,
+        "measured": 2,
+        "missing": 0,
+        "abstained": 0,
+        "correct": 2,
+        "wrong": 0,
+        "accuracy": 1.0
+      },
+      "cases": [
+        {
+          "case_id": "case-000000",
+          "anchor_event_id": "e1",
+          "key": [
+            0,
+            0
+          ],
+          "requested_time": {
+            "phase": 11,
+            "order": 3
+          },
+          "status": "eligible",
+          "anchor_validity": {
+            "event_id": "e1",
+            "key": [
+              0,
+              0
+            ],
+            "value": 1,
+            "kind": "value_change",
+            "valid_from": {
+              "phase": 10,
+              "order": 1
+            },
+            "valid_until": {
+              "phase": 20,
+              "order": 2
+            },
+            "superseded_by": "e2",
+            "censor_policy": "new_revision"
+          },
+          "target_validity": {
+            "event_id": "e1",
+            "key": [
+              0,
+              0
+            ],
+            "value": 1,
+            "kind": "value_change",
+            "valid_from": {
+              "phase": 10,
+              "order": 1
+            },
+            "valid_until": {
+              "phase": 20,
+              "order": 2
+            },
+            "superseded_by": "e2",
+            "censor_policy": "new_revision"
+          },
+          "target_provenance": {
+            "entity": 0,
+            "relation": 0,
+            "target": 1,
+            "source": "observed_target",
+            "source_id": "e1"
+          },
+          "prediction": 1,
+          "prediction_time": {
+            "phase": 11,
+            "order": 3
+          },
+          "prediction_status": "present",
+          "correct": true
+        },
+        {
+          "case_id": "case-000001",
+          "anchor_event_id": "e2",
+          "key": [
+            0,
+            0
+          ],
+          "requested_time": {
+            "phase": 21,
+            "order": 3
+          },
+          "status": "eligible",
+          "anchor_validity": {
+            "event_id": "e2",
+            "key": [
+              0,
+              0
+            ],
+            "value": 2,
+            "kind": "value_change",
+            "valid_from": {
+              "phase": 20,
+              "order": 2
+            },
+            "valid_until": null,
+            "superseded_by": null,
+            "censor_policy": "new_revision"
+          },
+          "target_validity": {
+            "event_id": "e2",
+            "key": [
+              0,
+              0
+            ],
+            "value": 2,
+            "kind": "value_change",
+            "valid_from": {
+              "phase": 20,
+              "order": 2
+            },
+            "valid_until": null,
+            "superseded_by": null,
+            "censor_policy": "new_revision"
+          },
+          "target_provenance": {
+            "entity": 0,
+            "relation": 0,
+            "target": 2,
+            "source": "observed_target",
+            "source_id": "e2"
+          },
+          "prediction": 2,
+          "prediction_time": {
+            "phase": 21,
+            "order": 3
+          },
+          "prediction_status": "present",
+          "correct": true
+        }
+      ],
+      "scope": "Coordinator-side temporal scoring; no model training, authenticity guarantee, or G04 result rewrite."
+    },
+    "abc_stale_B_at_each_early_time": {
+      "schema": "nanolm-temporal-score-v1",
+      "contract_sha256": "407fc15ceb89cc51662a28990bc7979c4bdb6325a46e4f07234fb5fb73cf45b1",
+      "manifest_sha256": "3a7fae88dc4a6bcafd06898df1121da2f0f945f5636bf20f44e25646547c54b3",
+      "plan_sha256": "15321bbb5a207468721397116b72a6d5bf384162f82aa6c9b07f04a501b30721",
+      "mode": "early_adaptation",
+      "censor_policy": "new_revision",
+      "through_phase": 39,
+      "offset": 1,
+      "unit": "assignment_event",
+      "counts": {
+        "total": 2,
+        "eligible": 2,
+        "censored": 0,
+        "not_yet_due": 0,
+        "measured": 2,
+        "missing": 0,
+        "abstained": 0,
+        "correct": 1,
+        "wrong": 1,
+        "accuracy": 0.5
+      },
+      "cases": [
+        {
+          "case_id": "case-000000",
+          "anchor_event_id": "e1",
+          "key": [
+            0,
+            0
+          ],
+          "requested_time": {
+            "phase": 11,
+            "order": 3
+          },
+          "status": "eligible",
+          "anchor_validity": {
+            "event_id": "e1",
+            "key": [
+              0,
+              0
+            ],
+            "value": 1,
+            "kind": "value_change",
+            "valid_from": {
+              "phase": 10,
+              "order": 1
+            },
+            "valid_until": {
+              "phase": 20,
+              "order": 2
+            },
+            "superseded_by": "e2",
+            "censor_policy": "new_revision"
+          },
+          "target_validity": {
+            "event_id": "e1",
+            "key": [
+              0,
+              0
+            ],
+            "value": 1,
+            "kind": "value_change",
+            "valid_from": {
+              "phase": 10,
+              "order": 1
+            },
+            "valid_until": {
+              "phase": 20,
+              "order": 2
+            },
+            "superseded_by": "e2",
+            "censor_policy": "new_revision"
+          },
+          "target_provenance": {
+            "entity": 0,
+            "relation": 0,
+            "target": 1,
+            "source": "observed_target",
+            "source_id": "e1"
+          },
+          "prediction": 1,
+          "prediction_time": {
+            "phase": 11,
+            "order": 3
+          },
+          "prediction_status": "present",
+          "correct": true
+        },
+        {
+          "case_id": "case-000001",
+          "anchor_event_id": "e2",
+          "key": [
+            0,
+            0
+          ],
+          "requested_time": {
+            "phase": 21,
+            "order": 3
+          },
+          "status": "eligible",
+          "anchor_validity": {
+            "event_id": "e2",
+            "key": [
+              0,
+              0
+            ],
+            "value": 2,
+            "kind": "value_change",
+            "valid_from": {
+              "phase": 20,
+              "order": 2
+            },
+            "valid_until": null,
+            "superseded_by": null,
+            "censor_policy": "new_revision"
+          },
+          "target_validity": {
+            "event_id": "e2",
+            "key": [
+              0,
+              0
+            ],
+            "value": 2,
+            "kind": "value_change",
+            "valid_from": {
+              "phase": 20,
+              "order": 2
+            },
+            "valid_until": null,
+            "superseded_by": null,
+            "censor_policy": "new_revision"
+          },
+          "target_provenance": {
+            "entity": 0,
+            "relation": 0,
+            "target": 2,
+            "source": "observed_target",
+            "source_id": "e2"
+          },
+          "prediction": 1,
+          "prediction_time": {
+            "phase": 21,
+            "order": 3
+          },
+          "prediction_status": "present",
+          "correct": false
+        }
+      ],
+      "scope": "Coordinator-side temporal scoring; no model training, authenticity guarantee, or G04 result rewrite."
+    },
+    "abc_perfect_final_C": {
+      "schema": "nanolm-temporal-score-v1",
+      "contract_sha256": "407fc15ceb89cc51662a28990bc7979c4bdb6325a46e4f07234fb5fb73cf45b1",
+      "manifest_sha256": "3a7fae88dc4a6bcafd06898df1121da2f0f945f5636bf20f44e25646547c54b3",
+      "plan_sha256": "12d01a45be4dd9a10e800747910563ffa8aceff617457862dee5a0e302f692b7",
+      "mode": "final_truth_by_cohort",
+      "censor_policy": "latest_truth",
+      "through_phase": 39,
+      "offset": null,
+      "unit": "distinct_cohort_key",
+      "counts": {
+        "total": 1,
+        "eligible": 1,
+        "censored": 0,
+        "not_yet_due": 0,
+        "measured": 1,
+        "missing": 0,
+        "abstained": 0,
+        "correct": 1,
+        "wrong": 0,
+        "accuracy": 1.0
+      },
+      "cases": [
+        {
+          "case_id": "case-000000",
+          "anchor_event_id": "e1",
+          "key": [
+            0,
+            0
+          ],
+          "requested_time": {
+            "phase": 39,
+            "order": 3
+          },
+          "status": "eligible",
+          "anchor_validity": {
+            "event_id": "e1",
+            "key": [
+              0,
+              0
+            ],
+            "value": 1,
+            "kind": "value_change",
+            "valid_from": {
+              "phase": 10,
+              "order": 1
+            },
+            "valid_until": {
+              "phase": 20,
+              "order": 2
+            },
+            "superseded_by": "e2",
+            "censor_policy": "new_revision"
+          },
+          "target_validity": {
+            "event_id": "e2",
+            "key": [
+              0,
+              0
+            ],
+            "value": 2,
+            "kind": "value_change",
+            "valid_from": {
+              "phase": 20,
+              "order": 2
+            },
+            "valid_until": null,
+            "superseded_by": null,
+            "censor_policy": "new_revision"
+          },
+          "target_provenance": {
+            "entity": 0,
+            "relation": 0,
+            "target": 2,
+            "source": "observed_target",
+            "source_id": "e2"
+          },
+          "prediction": 2,
+          "prediction_time": {
+            "phase": 39,
+            "order": 3
+          },
+          "prediction_status": "present",
+          "correct": true
+        }
+      ],
+      "scope": "Coordinator-side temporal scoring; no model training, authenticity guarantee, or G04 result rewrite."
+    },
+    "abc_stale_final_B": {
+      "schema": "nanolm-temporal-score-v1",
+      "contract_sha256": "407fc15ceb89cc51662a28990bc7979c4bdb6325a46e4f07234fb5fb73cf45b1",
+      "manifest_sha256": "3a7fae88dc4a6bcafd06898df1121da2f0f945f5636bf20f44e25646547c54b3",
+      "plan_sha256": "12d01a45be4dd9a10e800747910563ffa8aceff617457862dee5a0e302f692b7",
+      "mode": "final_truth_by_cohort",
+      "censor_policy": "latest_truth",
+      "through_phase": 39,
+      "offset": null,
+      "unit": "distinct_cohort_key",
+      "counts": {
+        "total": 1,
+        "eligible": 1,
+        "censored": 0,
+        "not_yet_due": 0,
+        "measured": 1,
+        "missing": 0,
+        "abstained": 0,
+        "correct": 0,
+        "wrong": 1,
+        "accuracy": 0.0
+      },
+      "cases": [
+        {
+          "case_id": "case-000000",
+          "anchor_event_id": "e1",
+          "key": [
+            0,
+            0
+          ],
+          "requested_time": {
+            "phase": 39,
+            "order": 3
+          },
+          "status": "eligible",
+          "anchor_validity": {
+            "event_id": "e1",
+            "key": [
+              0,
+              0
+            ],
+            "value": 1,
+            "kind": "value_change",
+            "valid_from": {
+              "phase": 10,
+              "order": 1
+            },
+            "valid_until": {
+              "phase": 20,
+              "order": 2
+            },
+            "superseded_by": "e2",
+            "censor_policy": "new_revision"
+          },
+          "target_validity": {
+            "event_id": "e2",
+            "key": [
+              0,
+              0
+            ],
+            "value": 2,
+            "kind": "value_change",
+            "valid_from": {
+              "phase": 20,
+              "order": 2
+            },
+            "valid_until": null,
+            "superseded_by": null,
+            "censor_policy": "new_revision"
+          },
+          "target_provenance": {
+            "entity": 0,
+            "relation": 0,
+            "target": 2,
+            "source": "observed_target",
+            "source_id": "e2"
+          },
+          "prediction": 1,
+          "prediction_time": {
+            "phase": 39,
+            "order": 3
+          },
+          "prediction_status": "present",
+          "correct": false
+        }
+      ],
+      "scope": "Coordinator-side temporal scoring; no model training, authenticity guarantee, or G04 result rewrite."
+    },
+    "abc_missing_eligible_records": {
+      "schema": "nanolm-temporal-score-v1",
+      "contract_sha256": "407fc15ceb89cc51662a28990bc7979c4bdb6325a46e4f07234fb5fb73cf45b1",
+      "manifest_sha256": "3a7fae88dc4a6bcafd06898df1121da2f0f945f5636bf20f44e25646547c54b3",
+      "plan_sha256": "15321bbb5a207468721397116b72a6d5bf384162f82aa6c9b07f04a501b30721",
+      "mode": "early_adaptation",
+      "censor_policy": "new_revision",
+      "through_phase": 39,
+      "offset": 1,
+      "unit": "assignment_event",
+      "counts": {
+        "total": 2,
+        "eligible": 2,
+        "censored": 0,
+        "not_yet_due": 0,
+        "measured": 0,
+        "missing": 2,
+        "abstained": 0,
+        "correct": 0,
+        "wrong": 2,
+        "accuracy": 0.0
+      },
+      "cases": [
+        {
+          "case_id": "case-000000",
+          "anchor_event_id": "e1",
+          "key": [
+            0,
+            0
+          ],
+          "requested_time": {
+            "phase": 11,
+            "order": 3
+          },
+          "status": "eligible",
+          "anchor_validity": {
+            "event_id": "e1",
+            "key": [
+              0,
+              0
+            ],
+            "value": 1,
+            "kind": "value_change",
+            "valid_from": {
+              "phase": 10,
+              "order": 1
+            },
+            "valid_until": {
+              "phase": 20,
+              "order": 2
+            },
+            "superseded_by": "e2",
+            "censor_policy": "new_revision"
+          },
+          "target_validity": {
+            "event_id": "e1",
+            "key": [
+              0,
+              0
+            ],
+            "value": 1,
+            "kind": "value_change",
+            "valid_from": {
+              "phase": 10,
+              "order": 1
+            },
+            "valid_until": {
+              "phase": 20,
+              "order": 2
+            },
+            "superseded_by": "e2",
+            "censor_policy": "new_revision"
+          },
+          "target_provenance": {
+            "entity": 0,
+            "relation": 0,
+            "target": 1,
+            "source": "observed_target",
+            "source_id": "e1"
+          },
+          "prediction": null,
+          "prediction_time": null,
+          "prediction_status": "missing",
+          "correct": false
+        },
+        {
+          "case_id": "case-000001",
+          "anchor_event_id": "e2",
+          "key": [
+            0,
+            0
+          ],
+          "requested_time": {
+            "phase": 21,
+            "order": 3
+          },
+          "status": "eligible",
+          "anchor_validity": {
+            "event_id": "e2",
+            "key": [
+              0,
+              0
+            ],
+            "value": 2,
+            "kind": "value_change",
+            "valid_from": {
+              "phase": 20,
+              "order": 2
+            },
+            "valid_until": null,
+            "superseded_by": null,
+            "censor_policy": "new_revision"
+          },
+          "target_validity": {
+            "event_id": "e2",
+            "key": [
+              0,
+              0
+            ],
+            "value": 2,
+            "kind": "value_change",
+            "valid_from": {
+              "phase": 20,
+              "order": 2
+            },
+            "valid_until": null,
+            "superseded_by": null,
+            "censor_policy": "new_revision"
+          },
+          "target_provenance": {
+            "entity": 0,
+            "relation": 0,
+            "target": 2,
+            "source": "observed_target",
+            "source_id": "e2"
+          },
+          "prediction": null,
+          "prediction_time": null,
+          "prediction_status": "missing",
+          "correct": false
+        }
+      ],
+      "scope": "Coordinator-side temporal scoring; no model training, authenticity guarantee, or G04 result rewrite."
+    }
+  }
+}

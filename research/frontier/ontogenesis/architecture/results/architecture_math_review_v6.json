@@ -1,0 +1,71 @@
+{
+  "classification": "SECOND_REVIEW_INTEGER_AND_RATIONAL_CHECKS_NOT_MODEL_EXECUTION",
+  "document": "/workspace/scratch/2a0f25a4f985/work_v6/architecture/00_FULL_ARCHITECTURE.md",
+  "document_sha256": "53a2a9aae403d04113b0083852be75493412548b468af72b509f2a9ac58bebbe",
+  "historical_initializer": "/workspace/scratch/2a0f25a4f985/v6_review/upstream_evidence/historical_sources/2791a216281a29aeaa3ec7720a7520c3a9952892/research/frontier/ontogenesis/tpu/train_jax.py",
+  "historical_initializer_sha256": "f01aea2d45e5d7e123f56dd99bd7e08738a97ed8b387bbbf38f8ef4f7d6e5d41",
+  "parameter_inventory_per_block": {
+    "n1": 1280,
+    "n2": 1280,
+    "qn": 64,
+    "kn": 64,
+    "q": 1638400,
+    "k": 327680,
+    "v": 327680,
+    "o": 1638400,
+    "gu": 8847360,
+    "dn": 4423680
+  },
+  "parameter_total": 386062080,
+  "cache_shape_KV_layer_batch_head_token_dimension": [
+    2,
+    20,
+    1,
+    4,
+    512,
+    64
+  ],
+  "cache_bytes_at_two_bytes_per_element": 10485760,
+  "cache_MiB": 10.0,
+  "reference_parameter_counts": [
+    {
+      "unique_blocks": 8,
+      "logical_layers": 8,
+      "parameters": 15208704
+    },
+    {
+      "unique_blocks": 4,
+      "logical_layers": 8,
+      "parameters": 11798784
+    }
+  ],
+  "training_token_presentations": 7698841600,
+  "token_presentations_per_parameter": 19.941978243499076,
+  "rational_edit_examples": [
+    {
+      "margin": "0",
+      "x": "2",
+      "y": "5",
+      "L1_cost": "4"
+    },
+    {
+      "margin": "1/10",
+      "x": "13/6",
+      "y": "31/6",
+      "L1_cost": "13/3"
+    },
+    {
+      "margin": "1",
+      "x": "11/3",
+      "y": "20/3",
+      "L1_cost": "22/3"
+    },
+    {
+      "margin": "3",
+      "x": "7",
+      "y": "10",
+      "L1_cost": "14"
+    }
+  ],
+  "scope": "Sections3.2/3.3/4.1/7; formal proofs reviewed in companion Markdown. No checkpoint, training, serving-memory or efficacy replication."
+}

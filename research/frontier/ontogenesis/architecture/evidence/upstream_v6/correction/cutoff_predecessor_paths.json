@@ -1,0 +1,60 @@
+{
+  "research_cutoff": "3a38b5f1529a718838b5bc83a010574bfa9a4c6e",
+  "tree_complete": true,
+  "predecessors": [
+    {
+      "path": "research/frontier/ontogenesis/correction_entity.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d8c21ad97074ef40454057b6766b43021be21ad8",
+      "size": 6118,
+      "url": "https://api.github.com/repos/wwk5q8z6kk-bit/nano-lm/git/blobs/d8c21ad97074ef40454057b6766b43021be21ad8"
+    },
+    {
+      "path": "research/frontier/ontogenesis/correction_interference.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "cb8386a62380499fc94ffa22bf990049acb1419e",
+      "size": 10251,
+      "url": "https://api.github.com/repos/wwk5q8z6kk-bit/nano-lm/git/blobs/cb8386a62380499fc94ffa22bf990049acb1419e"
+    },
+    {
+      "path": "research/frontier/ontogenesis/correction_margins.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "4e14e8f25a22fa743dd6ffcc51a812df11ecad16",
+      "size": 5721,
+      "url": "https://api.github.com/repos/wwk5q8z6kk-bit/nano-lm/git/blobs/4e14e8f25a22fa743dd6ffcc51a812df11ecad16"
+    },
+    {
+      "path": "research/frontier/ontogenesis/correction_optimizer.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "bcf329aec01b1a659efe6127f87258c7c9a38ad0",
+      "size": 4921,
+      "url": "https://api.github.com/repos/wwk5q8z6kk-bit/nano-lm/git/blobs/bcf329aec01b1a659efe6127f87258c7c9a38ad0"
+    },
+    {
+      "path": "research/frontier/ontogenesis/results/correction_interference/constrained.json",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "8c5e00cc0772842da890e200321744621f3de3b5",
+      "size": 765,
+      "url": "https://api.github.com/repos/wwk5q8z6kk-bit/nano-lm/git/blobs/8c5e00cc0772842da890e200321744621f3de3b5"
+    }
+  ],
+  "identical_g06_sources": [
+    {
+      "path": "research/frontier/ontogenesis/correction_interference.py",
+      "pr_ref": "8b356f938644287eb78177a2299a78ffc02f0f05",
+      "blob_sha": "cb8386a62380499fc94ffa22bf990049acb1419e",
+      "cutoff_blob_sha": "cb8386a62380499fc94ffa22bf990049acb1419e"
+    },
+    {
+      "path": "research/frontier/ontogenesis/results/correction_interference/constrained.json",
+      "pr_ref": "8b356f938644287eb78177a2299a78ffc02f0f05",
+      "blob_sha": "8c5e00cc0772842da890e200321744621f3de3b5",
+      "cutoff_blob_sha": "8c5e00cc0772842da890e200321744621f3de3b5"
+    }
+  ]
+}

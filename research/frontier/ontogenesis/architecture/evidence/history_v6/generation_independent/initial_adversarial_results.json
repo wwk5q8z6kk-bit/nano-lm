@@ -1,0 +1,295 @@
+{
+  "classification": "INDEPENDENT_SYNTHETIC_INSTRUMENT_REVIEW_NOT_MODEL_RESULTS",
+  "source_sha256": "6f79b8f606bc7fa780c9724ad199a44628dfa886e762783292f4fba19ef14c73",
+  "protocol_sha256": "1d86c0b00d4c6db8974fd2bb3f739ba54809daedaa8a839109521c2184fd49b6",
+  "checks": [
+    {
+      "name": "all_split_family_world_denominators",
+      "passed": true,
+      "details": {
+        "development/all": {
+          "worlds": 32,
+          "records": 160,
+          "abstention_denominator": 64
+        },
+        "development/direct_retrieval": {
+          "worlds": 16,
+          "records": 80,
+          "abstention_denominator": 32
+        },
+        "development/two_hop": {
+          "worlds": 16,
+          "records": 80,
+          "abstention_denominator": 32
+        },
+        "evaluation/all": {
+          "worlds": 64,
+          "records": 320,
+          "abstention_denominator": 128
+        },
+        "evaluation/direct_retrieval": {
+          "worlds": 32,
+          "records": 160,
+          "abstention_denominator": 64
+        },
+        "evaluation/two_hop": {
+          "worlds": 32,
+          "records": 160,
+          "abstention_denominator": 64
+        }
+      }
+    },
+    {
+      "name": "independent_visible_prompt_oracle_all480",
+      "passed": true,
+      "details": null
+    },
+    {
+      "name": "all96_worlds_counterfactual_permutation_absence_semantics",
+      "passed": true,
+      "details": null
+    },
+    {
+      "name": "all_full_b_missing_keeps_primary_denominators",
+      "passed": true,
+      "details": {
+        "registered_records": 480,
+        "received_predictions": 384,
+        "status_counts": {
+          "generated": 384,
+          "missing": 96,
+          "context_ineligible": 0,
+          "error": 0
+        },
+        "budget_exhausted": 0,
+        "format_invalid": 0
+      }
+    },
+    {
+      "name": "original_target_gain_distinct_from_unknown_policy",
+      "passed": true,
+      "details": null
+    },
+    {
+      "name": "same_A_answer_in_B_fails_every_pair",
+      "passed": true,
+      "details": null
+    },
+    {
+      "name": "duplicate_id",
+      "passed": true,
+      "details": {
+        "rejected": true,
+        "exception": "ValueError",
+        "message": "duplicate prediction ID"
+      }
+    },
+    {
+      "name": "unknown_id",
+      "passed": true,
+      "details": {
+        "rejected": true,
+        "exception": "ValueError",
+        "message": "unknown prediction ID"
+      }
+    },
+    {
+      "name": "prompt_hash",
+      "passed": true,
+      "details": {
+        "rejected": true,
+        "exception": "ValueError",
+        "message": "prediction prompt hash mismatch"
+      }
+    },
+    {
+      "name": "gold_only_tamper",
+      "passed": true,
+      "details": {
+        "rejected": true,
+        "exception": "ValueError",
+        "message": "oracle gold does not follow visible facts"
+      }
+    },
+    {
+      "name": "on_disk_public_hash_tamper",
+      "passed": true,
+      "details": {
+        "rejected": true,
+        "exception": "ValueError",
+        "message": "dataset file hash/byte mismatch: public.jsonl"
+      }
+    },
+    {
+      "name": "in_memory_dataset_mutation_rejected_before_scoring",
+      "passed": false,
+      "details": {
+        "rejected": false,
+        "semantics_still_valid": true,
+        "claimed_public_file_hash": "bcacfd6c2efb7aa9e5eea4d28386dd059cd13d8e6edf37d59ccb41b166d71d71",
+        "actual_altered_public_hash": "e0f2a32ca4c8151c00073a34bdf80261359a40e6b603e0ccc34774e86d4a8d78",
+        "reported_dataset_hash_unchanged": true
+      }
+    },
+    {
+      "name": "eos_cannot_bypass_first_newline_contract",
+      "passed": false,
+      "details": [
+        {
+          "raw_repr": "'\\nvalue_e06e3ce3143a'",
+          "rejected": false,
+          "credited_correct": 1
+        },
+        {
+          "raw_repr": "'value_e06e3ce3143a\\n\\n'",
+          "rejected": false,
+          "credited_correct": 1
+        },
+        {
+          "raw_repr": "'\\nvalue_e06e3ce3143a\\n'",
+          "rejected": false,
+          "credited_correct": 1
+        }
+      ]
+    },
+    {
+      "name": "model_generated_oversize_receipt_rejected",
+      "passed": true,
+      "details": {
+        "rejected": true,
+        "exception": "ValueError",
+        "message": "generated with ineligible/unknown context"
+      }
+    },
+    {
+      "name": "budget_exact_text_is_not_success",
+      "passed": true,
+      "details": {
+        "registered_records": 480,
+        "received_predictions": 1,
+        "status_counts": {
+          "missing": 479,
+          "generated": 1,
+          "context_ineligible": 0,
+          "error": 0
+        },
+        "budget_exhausted": 1,
+        "format_invalid": 0
+      }
+    },
+    {
+      "name": "unmodified_control_receipt_relabel_rejected",
+      "passed": true,
+      "details": {
+        "rejected": true,
+        "exception": "ValueError",
+        "message": "model receipt has invalid keys"
+      }
+    },
+    {
+      "name": "receipt_self_assertion_boundary_demonstration",
+      "passed": true,
+      "details": {
+        "fixture_only_no_model_run": true,
+        "accepted_synthetic_model_shaped_receipts": true,
+        "reported_execution_status": "EXTERNAL_PREDICTIONS_SCORED",
+        "evaluation_primary": {
+          "correct": 64,
+          "denominator": 64,
+          "rate": 1.0
+        },
+        "expected_scope": "Receipt consistency is not independent model/tokenizer/decode attestation."
+      }
+    },
+    {
+      "name": "encoder_list_alias_cannot_hide_prompt_id_change",
+      "passed": false,
+      "details": {
+        "status": "generated",
+        "preflight_ids": [
+          7,
+          8,
+          9
+        ],
+        "recorded_ids": [
+          7,
+          8
+        ]
+      }
+    },
+    {
+      "name": "prior_output_receipts_not_changed_by_adapter_buffer_reuse",
+      "passed": false,
+      "details": {
+        "output_ids_at_return": [
+          [
+            4,
+            5
+          ],
+          [
+            4,
+            6
+          ]
+        ],
+        "output_ids_in_final_receipts": [
+          [
+            4,
+            6
+          ],
+          [
+            4,
+            6
+          ]
+        ]
+      }
+    },
+    {
+      "name": "inclusive_context_boundary_and_no_generation_above_it",
+      "passed": true,
+      "details": [
+        {
+          "input_tokens": 68,
+          "max_new_tokens": 32,
+          "context_limit": 100,
+          "status": "generated",
+          "generate_calls": 1
+        },
+        {
+          "input_tokens": 69,
+          "max_new_tokens": 32,
+          "context_limit": 100,
+          "status": "context_ineligible",
+          "generate_calls": 0
+        }
+      ]
+    },
+    {
+      "name": "strict_parser_non_ASCII_and_extra_text",
+      "passed": true,
+      "details": {
+        "'UNKNOWN'": "UNKNOWN",
+        "' unknown'": null,
+        "' UNKNOWN\\r\\n'": "UNKNOWN",
+        "'UNKNOWN\\xa0'": null,
+        "'UNKNOWN\\x0b'": null,
+        "'value_0123456789ab.'": null,
+        "'value_0123456789ab'": "value_0123456789ab",
+        "'value_0123456789ab\\nUNKNOWN'": null
+      }
+    }
+  ],
+  "check_count": 21,
+  "failure_count": 4,
+  "prompt_byte_lengths_not_token_counts": {
+    "direct_retrieval": {
+      "min": 337,
+      "max": 680,
+      "token_eligibility": "NOT_CHECKED_NO_ACTUAL_TOKENIZER"
+    },
+    "two_hop": {
+      "min": 361,
+      "max": 908,
+      "token_eligibility": "NOT_CHECKED_NO_ACTUAL_TOKENIZER"
+    }
+  }
+}

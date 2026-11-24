@@ -1,0 +1,41 @@
+{"run": "dense-XXL-lr0.002-s1000-bs16-tok8.192e+06-muon-fl0.01-splash-hs-bench", "name": "dense-XXL-lr0.002-s1000-bs16-tok8.192e+06-muon-fl0.01-splash-hs-bench", "cfg": {"d": 1280, "layers": 20, "ffn": 3456, "heads": 20, "kv": 4, "attn": "splash"}, "lr": 0.002, "warmup": 500, "bs": 16, "seq": 512, "micro": 1, "seed": 1000, "steps": 1000, "train_tokens": 8192000, "corpus_tokens": 100000000, "dtype": "bfloat16", "sampler": "uniform crops drawn on the host with numpy default_rng(seed + 1)", "jax": "0.6.2", "device": "TPU_0(process=0,(0,0,0,0))", "device_kind": "TPU v5 lite", "code_sha256": "55f0d42aaacf79cd", "n_devices": 1, "wd": 0.1, "wd_on": "all", "lr_floor": 0.01, "opt": "muon", "dp": 1, "objective": "cross-entropy", "params": 386062080}
+jax.errors.SimplifiedTraceback: For simplicity, JAX has removed its internal frames from the traceback of the following exception. Set JAX_TRACEBACK_FILTERING=off to include these.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/root/onto/tpu/train_jax.py", line 372, in <module>
+    if not a.multi: raise SystemExit(run(a))
+  File "/root/onto/tpu/train_jax.py", line 322, in run
+    t = time.time(); params, st, ls = chunk(params, st, put_toks(toks), tp); ls = np.asarray(ls); dtc = time.time() - t
+  File "/root/onto/tpu/train_jax.py", line 165, in chunk
+    (p, st), ls = jax.lax.scan(one, (p, st), toks)
+  File "/root/onto/tpu/train_jax.py", line 154, in one
+    l, g = jax.value_and_grad(lossf)(p, tok)
+  File "/root/onto/tpu/train_jax.py", line 149, in <lambda>
+    lossf = (lambda q, tk: kd_loss(q, tp, tk, c, kd[0], dt, kd[1])) if kd else (lambda q, tk: loss_fn(q, tk, c, dt))
+  File "/root/onto/tpu/train_jax.py", line 131, in loss_fn
+    lg = forward(params, tok[:, :-1], c, dt)
+  File "/root/onto/tpu/train_jax.py", line 122, in forward
+    x = block(x, b)
+  File "/root/onto/tpu/train_jax.py", line 111, in block
+    y = _splash_attention(q * jnp.asarray(hd ** -0.5, q.dtype), k, v)
+  File "/root/onto/tpu/train_jax.py", line 89, in _splash_attention
+    return f(q, k, v)
+  File "/usr/local/lib/python3.10/dist-packages/jax/experimental/pallas/ops/tpu/splash_attention/splash_attention_kernel.py", line 2347, in __call__
+    return _splash_attention(
+  File "/usr/local/lib/python3.10/dist-packages/jax/experimental/pallas/ops/tpu/splash_attention/splash_attention_kernel.py", line 2312, in _splash_attention
+    return _splash_attention_custom(
+  File "/usr/local/lib/python3.10/dist-packages/jax/experimental/pallas/ops/tpu/splash_attention/splash_attention_kernel.py", line 1192, in _splash_attention_custom
+    return _splash_attention_forward(  # pytype: disable=wrong-arg-types
+  File "/usr/local/lib/python3.10/dist-packages/jax/experimental/pallas/ops/tpu/splash_attention/splash_attention_kernel.py", line 1100, in _splash_attention_forward
+    all_out = pl.pallas_call(
+  File "/usr/local/lib/python3.10/dist-packages/jax/_src/pallas/pallas_call.py", line 1715, in wrapped
+    jaxpr, consts = _trace_kernel_to_jaxpr(
+  File "/usr/local/lib/python3.10/dist-packages/jax/_src/pallas/pallas_call.py", line 1210, in _trace_kernel_to_jaxpr
+    jaxpr, _, consts, () = pe.trace_to_jaxpr_dynamic(wrapped_kernel_fun,
+  File "/usr/local/lib/python3.10/dist-packages/jax/_src/pallas/primitives.py", line 874, in wrap_with_transforms
+    return f(*new_args)
+  File "/usr/local/lib/python3.10/dist-packages/jax/experimental/pallas/ops/tpu/splash_attention/splash_attention_kernel.py", line 716, in flash_attention_kernel
+    raise NotImplementedError(
+NotImplementedError: head_dim_v=64 should be a multiple of 128
