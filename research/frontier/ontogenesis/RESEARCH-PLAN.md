@@ -542,3 +542,93 @@ If those three can be shown to deliver more capability per FLOP, per byte of mem
 4. Joint training with the store: 0.14 worse, but biased by same-document leakage, so unsettled.
 
 All four are *non-learned, count-based* memories bolted onto a trained model. None says anything about a learned, budgeted, attention-readable memory inside the model, which is what cycle 1 tests.
+
+---
+
+## 19. Cost model v2 (supersedes the ranges in §11)
+
+**Plain summary.**
+- **The flagship ranges in §11 were not comparable.** They mixed GPUs and TPUs, assumed an efficiency we have not measured, and hid the largest unknown: how many tokens a converted student needs to recover. Published conversions used anywhere from 3B to 94B tokens, a 30-fold spread, and that alone dominates the cost.
+- **"Inheritance gives a stronger model for the same money" is an expectation, not a result.** No experiment of ours has measured it.
+- **What we can establish cheaply** is what a converted 0.5B student achieves for a given budget, on free hardware. That measurement replaces guesses with a number.
+
+### 19.1 Quantities used, with their status
+
+| Quantity | Value | Status |
+|---|---|---|
+| TPU v5e-4, dense 101M, Muon, batch 64×512, bf16, JAX 0.6.2 | 439,000 tokens/s | **measured** (Q13 rate check) |
+| TPU v5e-4, dense 386M, same, batch in 2 passes | 105,900 tokens/s | **measured** (Q13) |
+| TPU v5e-1, dense 386M, 16 sequences per chip | 30,774 tokens/s | **measured** (speed benchmark) |
+| v5e price | $1.20 per chip-hour on demand | list price; spot price and our actual billing **not read** |
+| Gated DeltaNet hybrid throughput on our hardware | — | **unknown**: no TPU kernel; GPU kernels exist (fla) |
+| H100 effective throughput | 4e14 FLOP/s (40% of dense peak) | **assumption**, unmeasured |
+| Kaggle T4 ×2 | free, about 30 GPU-hours per week (quota unverified for this account) | hardware **measured** today; quota to check |
+| Kaggle TPU | not available to this account | **measured** today (requests ran on CPU) |
+| Teacher forward cost | 2 × N_teacher × tokens | theory |
+| Student training cost | 6 × N_student × tokens | theory |
+| Tokens a converted student needs to recover | 3B (MOHAWK, 1.5B Phi-Mamba) · 8–12B (Llamba 1B–8B) · 20B (Mamba in the Llama, 7–8B teachers) · 94B (Minitron 8B → 4B, pruning) | **published**, different setups |
+| Remaining Google credit | — | **unknown**: the CLI cannot read credit; please read the console |
+
+### 19.2 Two views of cost
+
+**View A: cost to reach a defined capability target.** Targets must be evaluated outcomes:
+- **T0 (pilot):** a 0.5B student retains ≥ 90% of its 1.5B teacher's broad-suite score.
+- **T1 (stage 2):** a 1.5B student beats the same-family 1.5B model on held-out evaluation at ≤ its inference cost.
+- **T2 (flagship):** a 3–4B student beats Qwen3-4B-Base and approaches 7–8B models.
+
+We cannot yet state the cost to reach any of these, because we don't know how many tokens each route needs to get there. That is exactly what the pilots measure.
+
+**View B: capability achieved for the same budget.** For a fixed budget, for example 1e19 FLOPs (about 36 hours of v5e-4 at our measured efficiency, or about 7 hours on 4× H100 under the assumption above), compare routes on the broad suite:
+
+| Route at 1e19 FLOPs | Starting point | What must be learned | Teacher use | Expected (projection, untested) |
+|---|---|---|---|---|
+| From scratch, 0.5B | random init | everything | none | 0.5B × about 3B tokens: well below Qwen2.5-0.5B, which had 18T tokens |
+| Converted 0.5B from Qwen2.5-0.5B (same size) | inherited MLPs, embeddings, head; attention mapped into GDN | the recurrent mixing | 1.5B teacher, about 1–2B tokens | close to Qwen2.5-0.5B, minus a knowledge/recall loss |
+| Pruned from 1.5B to 0.5B, then converted | pruned weights | recover from pruning, plus the mixing | full 1.5B teacher | possibly above Qwen2.5-0.5B (the Minitron pattern) |
+| Generated data only (same-size student, any tokenizer) | random or inherited | everything not in the data | generation once | depends on the data; known to transfer narrowly (2507.00432) |
+
+This table is what pilot E1 measures. Each row becomes a measured point.
+
+### 19.3 What drives the "teacher over every token" cost, and the alternatives
+
+**Where the cost comes from.** Online logit distillation needs a teacher forward pass for every student token in every epoch, and every experiment repeats it. That is an implementation choice, not a property of inheritance.
+
+| Route | Teacher cost | When it pays | Status |
+|---|---|---|---|
+| Online logits | 2·N_t per token, every epoch, every experiment | single large run | published |
+| **Cached teacher signals** (top-k logits, computed once) | 2·N_t per token once; storage about 6 B × k per token (k = 32: 192 GB per 1B tokens; about $4 per month in GCS) | **many experiments on the same data**, our situation | established technique; the economics are our analysis |
+| **Selective supervision** (teacher only on hard tokens or examples) | fraction f of the full cost | if most of the benefit sits on a minority of tokens | hypothesis; pilot E1b |
+| Generated data (once, verified, reused) | generation once; API prices about $40–320 per 1B tokens | reasoning and format skills; tokenizer-independent | published; narrow transfer |
+| Staged conversion (align mixing, then hidden states, then logits) | most tokens in the last stage; early stages short (MOHAWK used 80M + 160M + 2.76B) | architecture change | published |
+| Smaller teacher | proportional to N_t | short training (Gemma 3; Apple's distillation scaling laws) | published |
+| Several teachers | sum of teachers | only if they are complementary and don't conflict | weak evidence (FuseLLM) |
+| Targeted transfer of one mechanism (for example attention → recurrent mapping only) | near zero teacher compute | when initialisation carries most of the value | published (Mamba in the Llama: initialisation alone moved LAMBADA perplexity from 55 to 6.2) |
+
+**Consequence for our plan.** Compute the teacher's top-32 logits *once* over the pilot corpus, store them, and reuse them across every student experiment. For a 1.5B teacher over 1B tokens:
+- **Compute:** 3e18 FLOPs once, about 30–35 T4 hours (one to two weeks of free Kaggle quota) at an assumed 40% of the T4's 65 TFLOPS.
+- **Storage:** about 190 GB.
+
+That turns the teacher from a per-experiment cost into a one-time cost.
+
+### 19.4 Compute versus cash, ours versus inherited
+
+| | Compute | Cash |
+|---|---|---|
+| Kaggle T4 | real compute | $0 |
+| Google credits | real compute | $0 until the credit is exhausted; **balance unknown** |
+| TPU Research Cloud (if granted) | real TPU compute | $0 for TPUs; driving VMs and storage are charged |
+| Rented GPU (RunPod) | real compute | charged |
+| Upstream compute embodied in teachers | not ours: reported separately (Qwen2.5 18T tokens; Qwen3 36T) | $0 to us |
+
+### 19.5 Which uncertainty dominates, and the measurement that reduces it
+
+1. **Recovery tokens for conversion** (3B–94B published). *Measurement:* E1 at 0.5B, with retention plotted against tokens at 0.25, 0.5 and 1B.
+2. **Hybrid throughput on our hardware.** *Measurement:* a GDN layer benchmark on a Kaggle T4 (free).
+3. **The value of cached and selective supervision.** *Measurement:* E1b, comparing full cached logits with the top 25% hardest tokens only, at equal student tokens.
+4. **Remaining credit.** *Measurement:* the owner reads it in the console.
+
+### 19.6 Funding case
+
+- **Current gap.** Stages 0–1 fit free resources (Kaggle T4s and the laptop) once teacher signals are cached. Stage 2, at 1.5B, likely needs about $600–1,000 of rented compute, or credit. The flagship needs TRC or other funding.
+- **What justifies asking for more.** A demonstrated result at 0.5B: (a) a converted student meeting T0 at a measured token cost, and (b) at least one of the memory or depth mechanisms showing a registered gain.
+- **TRC terms (programme pages; GitHub repository archived April 2026, live status to confirm).** TPUs are free. Other Google Cloud services are charged. Participants share feedback with Google and follow the Google AI Principles. TRC quota does not work with Vertex workflows; use Compute Engine. An application draft will be prepared from the results.
