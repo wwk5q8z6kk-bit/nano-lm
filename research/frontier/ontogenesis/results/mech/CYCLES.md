@@ -118,3 +118,31 @@ Per-seed accuracies are in the raw file. The 8 runs left unresolved at 8,000 ste
 - **Arms:** recency; learned from teacher attention; learned from random targets (control); oracle; no memory.
 - **Prediction:** recency fails whenever unmarked pairs arrive last, and learned-from-teacher succeeds only if the teacher's future attention carries salience. Learned-from-random-targets must fail, or the teacher signal adds nothing.
 - Pre-register the success threshold (0.9), seeds (≥ 8) and steps (8,000) before running.
+
+## Cycle 2 v2: looped reasoning on pointer chasing, six supervised queries per sequence: inconclusive (task unresolved at budget end), 2026-11-23
+
+`mech_hops.py` commit 567c0f3 (sha256 prefix f75ae1c7911a032b), Kaggle T4, 4 seeds (0–3), 6,000 steps, 3 arms, 12 runs; all completed. Raw: `kaggle-hops2/hops-g0.json`, `hops-g1.json`.
+
+| Arm | k=1 accuracy (4 seeds) | k = 2–8 accuracy | Runs learning k ≥ 2 |
+|---|---|---|---|
+| untied-6 (7 distinct layers) | 0.64–0.66 | 0.04–0.10 (chance 1/13 = 0.077) | 0/4 |
+| looped-6 (one shared block × 6) | 0.47–0.61 | 0.05–0.11 | 0/4 |
+| looped, random depth 2–8 (R=6, R=12, halting) | 0.60–0.68 | 0.06–0.10 at every R and under halting | 0/4 |
+
+Training hop range was 1–4, so hops 2–4 were *in distribution* and still at chance for every arm. Final training losses: untied 2.08–2.16, looped 2.29–2.43, random-depth looped 2.17–2.33. Chance-level loss for 13 candidates is 2.56.
+
+**Reading.**
+- **No test of the looping hypothesis is possible.** The baseline never learned the multi-hop task in this budget.
+- **Extra test-time iterations changed nothing.** R=12 and halting give the same accuracies as R=6, but without any learned computation to extend that says nothing about recursion.
+- **Halting behaviour is not informative here.** Mean iterations under halting were 9.96–11.13 of 12: the residual rule almost never triggers when nothing was learned.
+
+**Why this probably happened, and what it implies (hypotheses):**
+- The earlier toy task showed delayed learning (jumps at 6,000–21,000 steps out of 26,000). 6,000 steps may sit before the jump.
+- One-hop lookup was only learned to about 0.65, so sequential composition has no reliable first step to build on.
+
+**Next, smallest controlled step:** a *difficulty and budget pilot* of the untied baseline alone, one seed per setting, before any looping comparison:
+1. a hop curriculum (k = 1 first, adding one hop each quarter of training);
+2. 20,000 steps;
+3. success defined in advance as accuracy ≥ 0.9 at k = 2, 3 and 4.
+
+If the baseline cannot learn k = 2 within 20,000 steps with the curriculum, the task is replaced (not tuned further) by the registered BINDINGS task from the earlier nested experiment, where delayed learning is already characterised and 26,000-step budgets learned in 14 of 20 reuse runs.
