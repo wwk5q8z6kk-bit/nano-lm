@@ -38,10 +38,19 @@ terminate() {
 }
 ( sleep "$HARD"; echo R0_HARD_TIMER_FIRED; terminate ) &
 echo "R0_START pod=${RUNPOD_POD_ID:-unknown} hard_s=$HARD"
+[ -f /etc/profile ] && . /etc/profile >/dev/null 2>&1 || true
+PY=""
+for cand in python /venv/main/bin/python /opt/venv/bin/python /opt/conda/bin/python /usr/local/bin/python /usr/local/bin/python3 /usr/bin/python3 python3; do
+  if command -v "$cand" >/dev/null 2>&1 && "$cand" -c "import torch" >/dev/null 2>&1; then
+    PY=$(command -v "$cand"); break
+  fi
+done
+PY=${PY:-python3}
+echo "R0_PYTHON=$PY version=$($PY -c 'import torch; print(torch.__version__, torch.version.cuda)' 2>&1)"
 nvidia-smi --query-gpu=name,memory.total,driver_version --format=csv,noheader 2>&1 | head -2
 mkdir -p /workspace/out
 echo "$R0_SCRIPT_B64" | base64 -d > /workspace/r0_bench_hopper.py
-R0_OUT=/workspace/out/r0.json timeout "${R0_BENCH_TIMEOUT_S:-1500}" python3 -u /workspace/r0_bench_hopper.py 2>&1 | tee /workspace/out/r0.log
+R0_OUT=/workspace/out/r0.json timeout "${R0_BENCH_TIMEOUT_S:-1500}" "$PY" -u /workspace/r0_bench_hopper.py 2>&1 | tee /workspace/out/r0.log
 echo "R0_BENCH_EXIT ${PIPESTATUS[0]}"
 echo R0_DONE
 sleep "$GRACE"
@@ -223,6 +232,9 @@ def main():
                     res_path.write_text(json.dumps(parsed, indent=2))
                     S["result_captured"] = True
                     ev(f"Captured R0_RESULT JSON cleanly to {res_path.name}")
+                    break
+                if "R0_DONE" in txt:
+                    ev("R0_DONE seen without result block; terminating pod immediately")
                     break
                 if "R0_HARD_TIMER_FIRED" in txt:
                     ev("In-pod hard timer fired")

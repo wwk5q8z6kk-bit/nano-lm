@@ -7,7 +7,6 @@ All model dimensions (24 layers, width 896, 7 heads of 128, SwiGLU 4864, vocab 1
 grids, teacher-cache sparse KD path, profiler categories, and stability checks match `r0_bench.py` identically.
 """
 import hashlib, json, math, os, queue, subprocess, sys, threading, time, traceback
-import numpy as np
 
 OUT = os.environ.get("R0_OUT", "/workspace/out/r0.json")
 BUDGET = float(os.environ.get("R0_BUDGET_S", "1500"))
@@ -67,7 +66,7 @@ if os.environ.get("R0_INSTALL", "1") == "1":
     t0 = time.time()
     install_attempts = []
     # Strategy 1: triton==3.7.1 + fla 0.6.0
-    c1 = subprocess.run([sys.executable, "-m", "pip", "install", "-q", "triton==3.7.1", "transformers", "einops"], capture_output=True, text=True)
+    c1 = subprocess.run([sys.executable, "-m", "pip", "install", "-q", "numpy", "triton==3.7.1", "transformers", "einops"], capture_output=True, text=True)
     c2 = subprocess.run([sys.executable, "-m", "pip", "install", "-q", "--no-deps", "flash-linear-attention==0.6.0", "fla-core==0.6.0"], capture_output=True, text=True)
     p1 = subprocess.run([sys.executable, "-c", PROBE_CODE], capture_output=True, text=True, timeout=180)
     install_attempts.append({"strategy": "triton==3.7.1", "pip_rc": [c1.returncode, c2.returncode], "probe_rc": p1.returncode, "probe_out": (p1.stdout + p1.stderr)[-400:]})
@@ -86,6 +85,7 @@ if os.environ.get("R0_INSTALL", "1") == "1":
     save()
     log("install_complete", R["install_seconds"], [x["strategy"] + ":" + str(x["probe_rc"]) for x in install_attempts])
 
+import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F

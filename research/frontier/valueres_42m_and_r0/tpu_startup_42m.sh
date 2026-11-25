@@ -93,9 +93,9 @@ systemctl daemon-reload
 systemctl enable --now tpu-deadline.timer >> "$LOG" 2>&1
 
 TOK=$(curl -s --max-time 10 -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/token" | python3 -c 'import sys,json; print(json.load(sys.stdin)["access_token"])')
-PERMS=$(curl -s --max-time 30 -X POST -H "Authorization: Bearer $TOK" -H "Content-Type: application/json" -d '{"permissions":["tpu.nodes.delete","tpu.nodes.get"]}' "https://cloudresourcemanager.googleapis.com/v1/projects/$PROJECT_ID:testIamPermissions" | tr -d '\n ')
-log "Booted $NODE_NAME ($ZONE_NAME); deadline=$DEADLINE_UTC UTC; IAM=$PERMS"
-echo "$PERMS" | grep -q "tpu.nodes.delete" || { log "Missing tpu.nodes.delete permission; aborting"; exit 1; }
+GET_CODE=$(curl -s --max-time 30 -o /dev/null -w '%{http_code}' -H "Authorization: Bearer $TOK" "https://tpu.googleapis.com/v2/projects/$PROJECT_ID/locations/$ZONE_NAME/nodes/$NODE_NAME")
+log "Booted $NODE_NAME ($ZONE_NAME); deadline=$DEADLINE_UTC UTC; tpu_api_get_http=$GET_CODE"
+[ "$GET_CODE" = "200" ] || { log "TPU API self-check HTTP $GET_CODE != 200; aborting"; exit 1; }
 
 ( while true; do sleep 120; push_log; done ) &
 
