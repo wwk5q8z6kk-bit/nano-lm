@@ -271,3 +271,9 @@ Full write-ups with registered predictions are in `INVESTIGATION.md`.
 | SmolLM2 scoring: laptop | none |
 
 All machines and Cloud Scheduler jobs are deleted (checked 2026-11-23, 14:25 UTC).
+
+## Proposed evidence annotation — 2026-11-25 (causal transport CPU contracts, review-only)
+
+[Full dated audit](reviews/2026-11-25-causal-transport-contracts.md) | [Standalone synthetic CPU checks](reviews/transport_contracts.py). Research branch and `master` have **no new model-result commits** since the earlier November 25 cutoff. This is a new **8/8 passing software-contract toy** on an isolated CPU interpreter (not Nano LM training, not a replication of LoopRes/ALF, not an architecture validation). It checks recent-loop source bounds, identity-score distinguishability, prior-position depth ranges, future-token invariance, document resets, finite-pass Jacobi approximation, value-scalar algebra and invalid arguments. For a six-token synthetic recurrence, two Jacobi passes differ from exact sequential evaluation; all six passes match in the fixture. Results are not BPB, benchmark wins or compute-efficiency measures.
+
+**No verdict changes:** retain the research branch's nested-reuse **mixed** result; draft #203's D1 **CLOSE_DEPTH_ROUTING_AT_14M** and D2 **REJECT_UNCONDITIONAL_CODA_REFINE**; P0 unverified data/checkpoint/scorer provenance; #195 V6 instrument-only status; and the earlier externally sourced prior-art review in draft #212. ALF's reported `1.38×` equivalent training-token result must be qualified by its extra training FLOPs/time, and LoopRes's math/code win is not a Nano LM measured result. The next cheapest check is **read-only source/shape/mask/prefill inspection** of authors' public implementations against the toy assumptions, with exact code/license pins. Any real model trial needs separate preregistration, independent review and compute authorization. No historical lines or raw receipts are overwritten.
