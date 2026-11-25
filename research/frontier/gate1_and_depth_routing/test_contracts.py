@@ -11,6 +11,7 @@ import torch
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from model_and_muon import ARM_SPECS, ModelCfg, NanoMechanismLM, OptaxParityMuon
 from score_tournament import score_files
+from audit_and_strict_score import strict_score_files, validate_seed_receipts
 
 
 class MechanismAndMuonContractTests(unittest.TestCase):
@@ -222,6 +223,43 @@ np.savez("{tmp_npz}.out.npz", emb=np.asarray(params["emb"]), w2d=np.asarray(para
             scored = score_files([out_dir / "seed_1001.json"])
             self.assertIn("D1_depth_routing", scored["verdicts"])
             self.assertIn("D2_coda_refinement", scored["verdicts"])
+
+    def test_strict_receipt_validator_and_real_receipts(self):
+        import copy, json, tempfile
+        pkg_dir = Path(__file__).resolve().parent
+        real_paths = sorted((pkg_dir / "results" / "tournament").glob("seed_*.json"))
+        self.assertEqual(len(real_paths), 3)
+        res = strict_score_files(real_paths)
+        self.assertEqual(res["historic_verdicts_unchanged"]["D1_depth_routing"], "CLOSE_DEPTH_ROUTING_AT_14M")
+        self.assertEqual(res["historic_verdicts_unchanged"]["D2_coda_refinement"], "REJECT_UNCONDITIONAL_CODA_REFINE")
+        self.assertEqual(res["strict_post_audit_verdicts"]["D1_strict"], "QUALIFY_VALUE_RES_FOR_42M_GATE_REJECT_BLOCK_ATTNRES")
+
+        sample = json.loads(real_paths[0].read_text())
+        with tempfile.TemporaryDirectory() as td:
+            td_p = Path(td)
+            # Negative case 1: completed=False
+            bad1 = copy.deepcopy(sample)
+            bad1["completed"] = False
+            p1 = td_p / "bad_incomplete.json"
+            p1.write_text(json.dumps(bad1))
+            with self.assertRaisesRegex(ValueError, "completed=True"):
+                validate_seed_receipts([p1])
+
+            # Negative case 2: truncated final step
+            bad2 = copy.deepcopy(sample)
+            bad2["arms"]["dense"]["curve"][-1]["step"] = 2500
+            p2 = td_p / "bad_step.json"
+            p2.write_text(json.dumps(bad2))
+            with self.assertRaisesRegex(ValueError, "final step"):
+                validate_seed_receipts([p2])
+
+            # Negative case 3: duplicate seed ID
+            p3a = td_p / "dup_a.json"
+            p3b = td_p / "dup_b.json"
+            p3a.write_text(json.dumps(sample))
+            p3b.write_text(json.dumps(sample))
+            with self.assertRaisesRegex(ValueError, "duplicate seed"):
+                validate_seed_receipts([p3a, p3b])
 
 
 if __name__ == "__main__":

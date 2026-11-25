@@ -1,0 +1,49 @@
+{
+  "corpus": "nanolm-corpus-v1-800m",
+  "files": {
+    "manifest.json": {
+      "bytes": 2519,
+      "sha256": "0ae093945ed3c4b6fc3844ed0952e9b636f72e57b3db08409458c6983427abfc"
+    },
+    "tokenizer_32k.json": {
+      "bytes": 2318722,
+      "sha256": "2eb9b402d301ff801d402099e8d6a21aa3e4f4a4cacd17ef6b17fd07aadada64"
+    },
+    "train.bin": {
+      "bytes": 1600000000,
+      "sha256": "867beb0d8d4c3977acaaf97fb91da39be29fb9fb040d86ea0bfdf78c9de72ac4"
+    },
+    "train_code.bin": {
+      "bytes": 192000000,
+      "sha256": "f67186454917c8f6fedd8424aee7a34ca2f3c0f75c1801dbd249631da8ab0078"
+    },
+    "train_math.bin": {
+      "bytes": 208000000,
+      "sha256": "0b2c7ebc1b2248e18bece9b332003a02b9e5aad533bbd0579a7d121af8929729"
+    },
+    "train_textbook.bin": {
+      "bytes": 208000000,
+      "sha256": "7ac449f1ab5d05bae8e03cdca7b021ec149ebf83f4fbc6ee76d0ec7746048e90"
+    },
+    "train_web.bin": {
+      "bytes": 992000000,
+      "sha256": "c538a2106f7303d2f3996f4ddefe72a7bcc9163d3d2d9b4db8d1f047f56139af"
+    },
+    "val_code.bin": {
+      "bytes": 2000000,
+      "sha256": "a2ed084bcaa56e70be3eb86a7690472326050a9b559fff909a243db9ba208053"
+    },
+    "val_math.bin": {
+      "bytes": 2000000,
+      "sha256": "ea56aed8922cbf2cba3076bf51749da0354ee03a1bbd16817b4984343066dcb6"
+    },
+    "val_textbook.bin": {
+      "bytes": 2000000,
+      "sha256": "e6fc2bcea248793296af68fe05be1adda6ef6c64d6e4dad7b4d3c3806f22c90e"
+    },
+    "val_web.bin": {
+      "bytes": 2000000,
+      "sha256": "28c1dbcb75eab107a5db5bd61a9e023d05eacd22b5479779163b545b4439f27e"
+    }
+  }
+}
