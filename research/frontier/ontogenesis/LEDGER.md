@@ -271,3 +271,15 @@ Full write-ups with registered predictions are in `INVESTIGATION.md`.
 | SmolLM2 scoring: laptop | none |
 
 All machines and Cloud Scheduler jobs are deleted (checked 2026-11-23, 14:25 UTC).
+
+
+## Update 2026-11-25 — external prior art only (proposed; no new local outcome)
+
+See [dated source-pinned review](reviews/2026-11-25-loop-feedback-prior-art.md). Neither canonical branch nor #195 advanced in this check. #210 and #211 remain separate draft reviews.
+
+| Evidence | Status / decision | Next cheapest decisive check |
+|---|---|---|
+| LoopRes, arXiv:2611.31094v2 (Nov 24): structural keys and bounded recent-loop residuals improve authors' pretrained-model math/code SFT results; fused implementation is critical | External preprint, unreplicated here. Distinct successor hypothesis; preserve the closed-for-this-task nested-reuse decision and its mixed registered verdict | Audit existing activation traces if available, then synthetic bounded-window/identity contract; compare fixed routing with learned routing under matched compute only after new registration |
+| ALF, arXiv:2611.31154v1 (Nov 23): causal feedback from prior token's deeper states, fixed-nearby source control, extra training pass | External preprint, unreplicated here. Not same-token value/depth residual or coda; preserve #203 D1/D2. Extra training compute and bandwidth may erase gain | Synthetic prefix and document-boundary/cache equivalence; separate matched-compute dense and final-state controls after new registration |
+
+No historical rows superseded, architecture promoted or protocol changed. Prior P0 provenance and scoring gates remain first.
