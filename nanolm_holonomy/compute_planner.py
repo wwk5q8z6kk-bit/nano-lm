@@ -401,6 +401,78 @@ def plan_omega_v2_campaign(*, allow_kaggle: bool = True) -> dict[str, Any]:
     return {"campaign": "nanolm_omega_v2", "selection": sel}
 
 
+def plan_fp_v3_campaign(
+    *,
+    allow_kaggle: bool = True,
+    live_runpod_balance_usd: float | None = 23.0448,
+    owner_reserve_usd: float = 20.0,
+) -> dict[str, Any]:
+    """Pre-flight compute, VRAM, and financial guard plan for NANOLM FP-v3 Cycle 4 ($0.00 Kaggle)."""
+    workloads = [
+        WorkloadSpec(
+            name="EXP_FP1_Relational_Microcosm_3seeds",
+            total_params=50_000,
+            trainable_params=50_000,
+            n_layers=4,
+            d_model=48,
+            batch_size=32,
+            seq_len=192,
+            train_tokens=5 * 3 * 400 * 32 * 24,
+            decode_tokens=0,
+        ),
+        WorkloadSpec(
+            name="EXP_FP2_Gen5_S4_And_14M_3seed_Muon",
+            total_params=14_000_000,
+            trainable_params=14_000_000,
+            n_layers=8,
+            d_model=384,
+            batch_size=16,
+            seq_len=256,
+            train_tokens=6 * 3 * 800 * 16 * 256,
+            decode_tokens=0,
+        ),
+        WorkloadSpec(
+            name="EXP_FP3_8Primitives_And_VoI_Pareto",
+            total_params=50_000,
+            trainable_params=50_000,
+            n_layers=4,
+            d_model=48,
+            batch_size=32,
+            seq_len=64,
+            train_tokens=9 * 3 * 300 * 32 * 24,
+            decode_tokens=0,
+        ),
+        WorkloadSpec(
+            name="EXP_FP4_1.7B_WorldController_v3_86tasks",
+            total_params=1_747_444_768,
+            trainable_params=26_869_792,
+            n_layers=28,
+            d_model=2048,
+            n_kv_heads=8,
+            d_head=128,
+            batch_size=1,
+            seq_len=512,
+            train_tokens=2 * 62 * 256 + 32 * 4 * 128,
+            decode_tokens=18_000,
+            download_seconds=95.0,
+        ),
+    ]
+    runpod_eligible = bool(
+        live_runpod_balance_usd is not None and live_runpod_balance_usd > owner_reserve_usd + 8.0
+    )
+    sel = select_optimal_gpu(workloads, max_wall_minutes=120.0, allow_kaggle=allow_kaggle, allow_local=False)
+    return {
+        "campaign": "nanolm_fp_v3",
+        "financial_guard": {
+            "live_runpod_balance_usd": live_runpod_balance_usd,
+            "owner_reserve_usd": owner_reserve_usd,
+            "runpod_eligible": runpod_eligible,
+            "enforce_zero_runpod_spend": not runpod_eligible,
+        },
+        "selection": sel,
+    }
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="NanoLM Roofline Compute & VRAM Pre-Flight Planner")
     parser.add_argument("--preflight", action="store_true", help="Print Omega pre-flight GPU/VRAM/cost estimate")
@@ -412,6 +484,7 @@ def main() -> int:
     if args.preflight or not args.calibrate_v2:
         out["omega_preflight"] = plan_omega_campaign(allow_kaggle=args.allow_kaggle)
         out["omega_v2_preflight"] = plan_omega_v2_campaign(allow_kaggle=args.allow_kaggle)
+        out["fp_v3_preflight"] = plan_fp_v3_campaign(allow_kaggle=args.allow_kaggle)
     if args.calibrate_v2:
         out["cycle2_calibration"] = build_cycle2_retrospective_calibration(args.calibrate_v2)
 

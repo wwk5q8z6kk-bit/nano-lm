@@ -141,6 +141,45 @@
       "primary_metric": "Merged_Greedy 38/56 (67.86%, 13.48 tok/s, 1.61x 6-task speedup & 6/6 exact match across 196 merged layers); Cognitive_v2 41/56 (73.21% [60.71%, 83.93%], coding 3/4, math 3/4, tools 4/4, diagrams_charts 4/4 (100%), cap/B=0.4190, eff=0.5710, 13.59 tok/s)",
       "status": "DEMONSTRATED_BREAKTHROUGH",
       "artifact": "artifacts/nanolm_omega_v2/exp_omega7_unified_v2_1p7b.json"
+    },
+    {
+      "id": "EXP-FP1-RELATIONAL-MICROCOSM",
+      "track": "NANOLM Omega-v3 (First-Principles)",
+      "hypothesis": "Iso-parameter (~49.7K) signed sheaf Port-Hamiltonian interaction net outperforms flat Transformer and unsigned/signed baselines on paraphrase & 6x OOD (N=160) typed relational/bitemporal microcosm with zero autonomous Lyapunov violation",
+      "backend": "Kaggle Free GPU 2x Tesla T4 (hassaneljesr/nanolm-fp-v3, $0.00)",
+      "seeds": [101, 202, 303],
+      "primary_metric": "D0_Deterministic (0p): canon 100.0%, para 61.43%, ood 65.71%; flat_transformer: ood 47.62%; signed_mesh: ood 38.09%; sheaf_port_hamiltonian: canon 100.0%, para 100.0%, ood 58.09% (lyap_delta=0.0); unsigned_gat: canon 100.0%, para 100.0%, ood 83.81% (highest OOD); dynamic_rewire_ph: ood 43.81%",
+      "status": "MIXED_UNSIGNED_GAT_WINS_OOD_PH_PROVES_LYAPUNOV",
+      "artifact": "artifacts/nanolm_fp_v3/exp_fp1_microcosm.json"
+    },
+    {
+      "id": "EXP-FP2-GEN5-SEQUENCE-LM",
+      "track": "NANOLM Omega-v3 (First-Principles)",
+      "hypothesis": "Gen5_FP_PH_Holonomy (Port-Hamiltonian Givens FFN + dual-gated 1/4 unitary SO(3) / 3/4 episodic holonomy + O(d) CausalSourceCopyGate) beats B0 Transformer, B2 Gated DeltaNet, Gen1_H2, and Gen4 on S4, 14M BPB, and bitemporal exact value recall under AdamW and Muon",
+      "backend": "Kaggle Free GPU 2x Tesla T4 (hassaneljesr/nanolm-fp-v3, $0.00)",
+      "seeds": [42, 137, 271],
+      "primary_metric": "2A S4: Gen4 97.66% @ 8x OOD L256 vs Gen5 3.12%, B2 DeltaNet 6.25%, B0 3.91%; 2B 14M AdamW: Gen1_H2 retains BEST BPB 0.3751+-0.00217 vs Gen5 0.3756 (did_not_beat_best), B0 0.3784, B2 0.3785; Gen5 bitemporal exact recall 96.67% vs 0.00% all others & 0.48% nocopy ablation (201x lift); 2C Muon: Gen1_H2 0.3749 < Gen5 0.3793 < B0 0.3849 < B2 0.3865",
+      "status": "COPY_GATE_BREAKTHROUGH_GEN1_H2_RETAINS_BEST_BPB",
+      "artifact": "artifacts/nanolm_fp_v3/exp_fp2_gen5_lm.json"
+    },
+    {
+      "id": "EXP-FP3-PRIMITIVES-VOI",
+      "track": "NANOLM Omega-v3 (First-Principles)",
+      "hypothesis": "Each of the 8 computational primitives in U_t is independently load-bearing and Value-of-Information (VoI) halting Pareto-dominates fixed-step compute budgets",
+      "backend": "Kaggle Free GPU 2x Tesla T4 (hassaneljesr/nanolm-fp-v3, $0.00)",
+      "seeds": [101, 202, 303],
+      "primary_metric": "Full U_t 100.00%+-0.0%; all 8 knockouts collapse -38.54 pp to -88.02 pp (worst: no_adaptation_weights 11.98%, no_identity_p_ij 17.71%, no_transition_clock_q_ij 20.31%); VoI lambda=0.28 hits 100.00% in 3.375 steps, strictly Pareto-dominating fixed_k=4 (100% @ 4.00) and fixed_k=8 (82.29% @ 8.00)",
+      "status": "DEMONSTRATED_BREAKTHROUGH",
+      "artifact": "artifacts/nanolm_fp_v3/exp_fp3_primitives_voi.json"
+    },
+    {
+      "id": "EXP-FP4-1.7B-WORLD-INTEGRATION",
+      "track": "NANOLM Omega-v3 (First-Principles)",
+      "hypothesis": "1.747B NanoLM-FP-v3 with WorldController-v3 over AppendOnlySourceLedger outperforms D0 deterministic, Naked Greedy, and 3x Equal-Compute SC3 on held-out FP-5Axis-30 while preserving 15D capability (overlaps=0)",
+      "backend": "Local Apple M3 Max MPS FP16 ($0.00; 3 aborted RunPod init pods terminated, $0.2817 delta)",
+      "primary_metric": "FP-5Axis-30: D0 11/30 (36.67%), Naked 9/30 (30.00%, 30 calls), EqualCompute_SC3 9/30 (30.00%, 90 calls), WorldController_v3 15/30 (50.00% [33.3%, 66.7%], 64 calls, +66.7% rel over Naked & SC3; rel 4/6, bitemp 3/6, exact 4/6, causal 1/6, xdom 3/6); 15D-56: 41/56 (73.21% [62.5%, 83.9%], coding 3/4, math 4/4, tools 4/4)",
+      "status": "DEMONSTRATED_WORLD_CTRL_BEATS_SC3_CAUSAL_GAP_REMAINS",
+      "artifact": "artifacts/nanolm_fp_v3/exp_fp4_1p7b_integration.json"
     }
   ]
 }

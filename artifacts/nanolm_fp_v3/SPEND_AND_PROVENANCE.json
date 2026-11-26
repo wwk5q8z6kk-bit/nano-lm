@@ -1,0 +1,39 @@
+{
+  "campaign": "nanolm_fp_v3",
+  "source_commit": "205df11",
+  "stages": {
+    "stage_a_fp1_fp2_fp3": {
+      "experiments": ["EXP-FP1", "EXP-FP2", "EXP-FP3"],
+      "backend": "kaggle_free_gpu",
+      "kernel": "hassaneljesr/nanolm-fp-v3",
+      "machine_shape": "NvidiaTeslaT4",
+      "gpu_count": 2,
+      "gpu_names": ["Tesla T4", "Tesla T4"],
+      "gpu_vram_gb": [14.56, 14.56],
+      "cuda_capability": [7, 5],
+      "torch_version": "2.11.0+cu130",
+      "triton_version": "3.6.0",
+      "pytest_cuda_passed": "36/36",
+      "wall_seconds_v2_fp23": 8372.52,
+      "cost_usd": 0.0
+    },
+    "stage_b_fp4": {
+      "experiments": ["EXP-FP4"],
+      "backend": "local_apple_mps",
+      "machine_shape": "Apple M3 Max (64 GB unified memory, FP16)",
+      "torch_version": "2.11.0",
+      "adapter_sha256_prefix": "66f2ce64e47ff701",
+      "cost_usd": 0.0
+    }
+  },
+  "aborted_runpod_boot_attempts": {
+    "pods": ["njfltr24eo3q84", "ij3mpklfae4vrz", "0m9b0ittd38yhd"],
+    "reason": "Container runtimeStatus remained initializing >5-10 min; all pods auto-terminated cleanly",
+    "active_pods_remaining": 0,
+    "account_balance_before_usd": 108.344,
+    "account_balance_after_usd": 108.0623,
+    "aborted_boot_delta_usd": 0.2817
+  },
+  "completed_compute_spend_usd": 0.0,
+  "total_campaign_delta_usd": 0.2817
+}

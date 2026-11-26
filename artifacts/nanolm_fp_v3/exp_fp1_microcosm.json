@@ -1,0 +1,513 @@
+{
+  "experiment": "EXP_FP1_Relational_And_Bitemporal_Microcosm",
+  "seeds": [
+    101,
+    202,
+    303
+  ],
+  "train_steps": 400,
+  "ood_nodes": 160,
+  "arms": [
+    {
+      "arm": "D0_Deterministic_Rules",
+      "parameters": 0,
+      "clean_canonical": {
+        "state_acc": 1.0,
+        "joint_acc": 1.0
+      },
+      "semantic_paraphrase": {
+        "state_acc": 0.6143,
+        "joint_acc": 0.6143
+      },
+      "ood_scale_rename": {
+        "state_acc": 0.6571,
+        "joint_acc": 0.6571
+      }
+    },
+    {
+      "arm": "flat_transformer",
+      "parameters": 49779,
+      "clean_canonical": {
+        "joint_acc": {
+          "mean": 0.8238,
+          "std": 0.1592
+        },
+        "state_acc": {
+          "mean": 0.8238,
+          "std": 0.1592
+        }
+      },
+      "semantic_paraphrase": {
+        "joint_acc": {
+          "mean": 0.8524,
+          "std": 0.1174
+        },
+        "state_acc": {
+          "mean": 0.8524,
+          "std": 0.1174
+        }
+      },
+      "ood_scale_rename": {
+        "joint_acc": {
+          "mean": 0.4762,
+          "std": 0.1197
+        },
+        "state_acc": {
+          "mean": 0.5143,
+          "std": 0.0933
+        }
+      },
+      "autonomous_lyapunov_max_energy_delta": null,
+      "per_seed": [
+        {
+          "seed": 101,
+          "parameters": 49779,
+          "eval_ms": 328.56,
+          "clean_canonical": {
+            "state_acc": 1.0,
+            "ptr_acc": 1.0,
+            "joint_acc": 1.0
+          },
+          "semantic_paraphrase": {
+            "state_acc": 0.9857,
+            "ptr_acc": 1.0,
+            "joint_acc": 0.9857
+          },
+          "ood_scale_rename": {
+            "state_acc": 0.6286,
+            "ptr_acc": 0.9714,
+            "joint_acc": 0.6
+          }
+        },
+        {
+          "seed": 202,
+          "parameters": 49779,
+          "eval_ms": 299.1,
+          "clean_canonical": {
+            "state_acc": 0.6143,
+            "ptr_acc": 0.9286,
+            "joint_acc": 0.6143
+          },
+          "semantic_paraphrase": {
+            "state_acc": 0.7,
+            "ptr_acc": 0.9571,
+            "joint_acc": 0.7
+          },
+          "ood_scale_rename": {
+            "state_acc": 0.5143,
+            "ptr_acc": 0.7143,
+            "joint_acc": 0.5143
+          }
+        },
+        {
+          "seed": 303,
+          "parameters": 49779,
+          "eval_ms": 300.09,
+          "clean_canonical": {
+            "state_acc": 0.8571,
+            "ptr_acc": 1.0,
+            "joint_acc": 0.8571
+          },
+          "semantic_paraphrase": {
+            "state_acc": 0.8714,
+            "ptr_acc": 1.0,
+            "joint_acc": 0.8714
+          },
+          "ood_scale_rename": {
+            "state_acc": 0.4,
+            "ptr_acc": 0.8,
+            "joint_acc": 0.3143
+          }
+        }
+      ]
+    },
+    {
+      "arm": "unsigned_gat",
+      "parameters": 49734,
+      "clean_canonical": {
+        "joint_acc": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "state_acc": {
+          "mean": 1.0,
+          "std": 0.0
+        }
+      },
+      "semantic_paraphrase": {
+        "joint_acc": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "state_acc": {
+          "mean": 1.0,
+          "std": 0.0
+        }
+      },
+      "ood_scale_rename": {
+        "joint_acc": {
+          "mean": 0.8381,
+          "std": 0.0356
+        },
+        "state_acc": {
+          "mean": 0.9048,
+          "std": 0.0713
+        }
+      },
+      "autonomous_lyapunov_max_energy_delta": null,
+      "per_seed": [
+        {
+          "seed": 101,
+          "parameters": 49734,
+          "eval_ms": 417.88,
+          "clean_canonical": {
+            "state_acc": 1.0,
+            "ptr_acc": 1.0,
+            "joint_acc": 1.0
+          },
+          "semantic_paraphrase": {
+            "state_acc": 1.0,
+            "ptr_acc": 1.0,
+            "joint_acc": 1.0
+          },
+          "ood_scale_rename": {
+            "state_acc": 1.0,
+            "ptr_acc": 0.8,
+            "joint_acc": 0.8
+          }
+        },
+        {
+          "seed": 202,
+          "parameters": 49734,
+          "eval_ms": 382.51,
+          "clean_canonical": {
+            "state_acc": 1.0,
+            "ptr_acc": 1.0,
+            "joint_acc": 1.0
+          },
+          "semantic_paraphrase": {
+            "state_acc": 1.0,
+            "ptr_acc": 1.0,
+            "joint_acc": 1.0
+          },
+          "ood_scale_rename": {
+            "state_acc": 0.8857,
+            "ptr_acc": 1.0,
+            "joint_acc": 0.8857
+          }
+        },
+        {
+          "seed": 303,
+          "parameters": 49734,
+          "eval_ms": 370.27,
+          "clean_canonical": {
+            "state_acc": 1.0,
+            "ptr_acc": 1.0,
+            "joint_acc": 1.0
+          },
+          "semantic_paraphrase": {
+            "state_acc": 1.0,
+            "ptr_acc": 1.0,
+            "joint_acc": 1.0
+          },
+          "ood_scale_rename": {
+            "state_acc": 0.8286,
+            "ptr_acc": 1.0,
+            "joint_acc": 0.8286
+          }
+        }
+      ]
+    },
+    {
+      "arm": "signed_mesh",
+      "parameters": 49783,
+      "clean_canonical": {
+        "joint_acc": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "state_acc": {
+          "mean": 1.0,
+          "std": 0.0
+        }
+      },
+      "semantic_paraphrase": {
+        "joint_acc": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "state_acc": {
+          "mean": 1.0,
+          "std": 0.0
+        }
+      },
+      "ood_scale_rename": {
+        "joint_acc": {
+          "mean": 0.3809,
+          "std": 0.2763
+        },
+        "state_acc": {
+          "mean": 0.5429,
+          "std": 0.1993
+        }
+      },
+      "autonomous_lyapunov_max_energy_delta": null,
+      "per_seed": [
+        {
+          "seed": 101,
+          "parameters": 49783,
+          "eval_ms": 452.25,
+          "clean_canonical": {
+            "state_acc": 1.0,
+            "ptr_acc": 1.0,
+            "joint_acc": 1.0
+          },
+          "semantic_paraphrase": {
+            "state_acc": 1.0,
+            "ptr_acc": 1.0,
+            "joint_acc": 1.0
+          },
+          "ood_scale_rename": {
+            "state_acc": 0.8,
+            "ptr_acc": 0.9429,
+            "joint_acc": 0.7714
+          }
+        },
+        {
+          "seed": 202,
+          "parameters": 49783,
+          "eval_ms": 452.25,
+          "clean_canonical": {
+            "state_acc": 1.0,
+            "ptr_acc": 1.0,
+            "joint_acc": 1.0
+          },
+          "semantic_paraphrase": {
+            "state_acc": 1.0,
+            "ptr_acc": 1.0,
+            "joint_acc": 1.0
+          },
+          "ood_scale_rename": {
+            "state_acc": 0.5143,
+            "ptr_acc": 0.4857,
+            "joint_acc": 0.2
+          }
+        },
+        {
+          "seed": 303,
+          "parameters": 49783,
+          "eval_ms": 451.66,
+          "clean_canonical": {
+            "state_acc": 1.0,
+            "ptr_acc": 1.0,
+            "joint_acc": 1.0
+          },
+          "semantic_paraphrase": {
+            "state_acc": 1.0,
+            "ptr_acc": 1.0,
+            "joint_acc": 1.0
+          },
+          "ood_scale_rename": {
+            "state_acc": 0.3143,
+            "ptr_acc": 0.5143,
+            "joint_acc": 0.1714
+          }
+        }
+      ]
+    },
+    {
+      "arm": "sheaf_port_hamiltonian",
+      "parameters": 49688,
+      "clean_canonical": {
+        "joint_acc": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "state_acc": {
+          "mean": 1.0,
+          "std": 0.0
+        }
+      },
+      "semantic_paraphrase": {
+        "joint_acc": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "state_acc": {
+          "mean": 1.0,
+          "std": 0.0
+        }
+      },
+      "ood_scale_rename": {
+        "joint_acc": {
+          "mean": 0.5809,
+          "std": 0.0713
+        },
+        "state_acc": {
+          "mean": 0.6952,
+          "std": 0.1886
+        }
+      },
+      "autonomous_lyapunov_max_energy_delta": 0.0,
+      "per_seed": [
+        {
+          "seed": 101,
+          "parameters": 49688,
+          "eval_ms": 2032.23,
+          "clean_canonical": {
+            "state_acc": 1.0,
+            "ptr_acc": 1.0,
+            "joint_acc": 1.0
+          },
+          "semantic_paraphrase": {
+            "state_acc": 1.0,
+            "ptr_acc": 1.0,
+            "joint_acc": 1.0
+          },
+          "ood_scale_rename": {
+            "state_acc": 0.4857,
+            "ptr_acc": 0.9429,
+            "joint_acc": 0.4857
+          }
+        },
+        {
+          "seed": 202,
+          "parameters": 49688,
+          "eval_ms": 2013.69,
+          "clean_canonical": {
+            "state_acc": 1.0,
+            "ptr_acc": 1.0,
+            "joint_acc": 1.0
+          },
+          "semantic_paraphrase": {
+            "state_acc": 1.0,
+            "ptr_acc": 1.0,
+            "joint_acc": 1.0
+          },
+          "ood_scale_rename": {
+            "state_acc": 0.9429,
+            "ptr_acc": 0.6286,
+            "joint_acc": 0.6
+          }
+        },
+        {
+          "seed": 303,
+          "parameters": 49688,
+          "eval_ms": 2017.18,
+          "clean_canonical": {
+            "state_acc": 1.0,
+            "ptr_acc": 1.0,
+            "joint_acc": 1.0
+          },
+          "semantic_paraphrase": {
+            "state_acc": 1.0,
+            "ptr_acc": 1.0,
+            "joint_acc": 1.0
+          },
+          "ood_scale_rename": {
+            "state_acc": 0.6571,
+            "ptr_acc": 0.8857,
+            "joint_acc": 0.6571
+          }
+        }
+      ]
+    },
+    {
+      "arm": "dynamic_rewire_ph",
+      "parameters": 49688,
+      "clean_canonical": {
+        "joint_acc": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "state_acc": {
+          "mean": 1.0,
+          "std": 0.0
+        }
+      },
+      "semantic_paraphrase": {
+        "joint_acc": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "state_acc": {
+          "mean": 1.0,
+          "std": 0.0
+        }
+      },
+      "ood_scale_rename": {
+        "joint_acc": {
+          "mean": 0.4381,
+          "std": 0.0883
+        },
+        "state_acc": {
+          "mean": 0.4953,
+          "std": 0.1327
+        }
+      },
+      "autonomous_lyapunov_max_energy_delta": 0.0,
+      "per_seed": [
+        {
+          "seed": 101,
+          "parameters": 49688,
+          "eval_ms": 2032.88,
+          "clean_canonical": {
+            "state_acc": 1.0,
+            "ptr_acc": 1.0,
+            "joint_acc": 1.0
+          },
+          "semantic_paraphrase": {
+            "state_acc": 1.0,
+            "ptr_acc": 1.0,
+            "joint_acc": 1.0
+          },
+          "ood_scale_rename": {
+            "state_acc": 0.5429,
+            "ptr_acc": 0.8,
+            "joint_acc": 0.5143
+          }
+        },
+        {
+          "seed": 202,
+          "parameters": 49688,
+          "eval_ms": 2020.79,
+          "clean_canonical": {
+            "state_acc": 1.0,
+            "ptr_acc": 1.0,
+            "joint_acc": 1.0
+          },
+          "semantic_paraphrase": {
+            "state_acc": 1.0,
+            "ptr_acc": 1.0,
+            "joint_acc": 1.0
+          },
+          "ood_scale_rename": {
+            "state_acc": 0.6286,
+            "ptr_acc": 0.7143,
+            "joint_acc": 0.4857
+          }
+        },
+        {
+          "seed": 303,
+          "parameters": 49688,
+          "eval_ms": 2031.61,
+          "clean_canonical": {
+            "state_acc": 1.0,
+            "ptr_acc": 1.0,
+            "joint_acc": 1.0
+          },
+          "semantic_paraphrase": {
+            "state_acc": 1.0,
+            "ptr_acc": 1.0,
+            "joint_acc": 1.0
+          },
+          "ood_scale_rename": {
+            "state_acc": 0.3143,
+            "ptr_acc": 0.6,
+            "joint_acc": 0.3143
+          }
+        }
+      ]
+    }
+  ]
+}

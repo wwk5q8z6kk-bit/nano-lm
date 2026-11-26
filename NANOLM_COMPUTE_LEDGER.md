@@ -17,9 +17,12 @@
 | **Omega Debug Launch (`x7gkyrkahgegzo`, failed `EXP-Ω2`)** | RunPod `NVIDIA L40S` (`~1.5m`, auto-removed by trap) | Aborted cleanly (`encode()` arg fix) | `~$0.03` (est.) | `runpodctl` trap verified removed |
 | **`NANOLM Ω` Complete Run (`nanolm_omega_v1`)** | RunPod `NVIDIA A40` (`pod jiwcmt2i7qspab`) | Completed & Terminated | **`$0.3201`** | [SPEND_AND_PROVENANCE.json](artifacts/nanolm_omega_v1/SPEND_AND_PROVENANCE.json) |
 | **`NANOLM Ω-v2` Cycle 3 (`o4..o6` + `o7`)** | Kaggle Free GPU `2x Tesla T4` (`hassaneljesr/nanolm-omega-v2`, `6602.54s`) | Completed (`31/31` CUDA pytest) | **`$0.0000`** | [SPEND_AND_PROVENANCE.json](artifacts/nanolm_omega_v2/SPEND_AND_PROVENANCE.json) |
-| **Total Attributed Spend (Frontier + HSPA C1–C2 + Ω-v1 + Ω-v2)** | `5` completed RunPod pods + `2` Free Kaggle T4 runs | **All `0` active** | **`$2.6947`** *(+`~$0.03` abort)* | Verified JSON artifacts on branch |
+| **`NANOLM Ω-v3` Cycle 4 Stage A (`EXP-FP1..3`)** | Kaggle Free GPU `2x Tesla T4` (`hassaneljesr/nanolm-fp-v3`, `8372.52s` v2) | Completed (`36/36` CUDA pytest) | **`$0.0000`** | [SPEND_AND_PROVENANCE.json](artifacts/nanolm_fp_v3/SPEND_AND_PROVENANCE.json) |
+| **`NANOLM Ω-v3` Cycle 4 Stage B (`EXP-FP4`)** | Local Apple M3 Max `MPS` (`64 GB`, `FP16`) | Completed (`0` active pods) | **`$0.0000`** | [SPEND_AND_PROVENANCE.json](artifacts/nanolm_fp_v3/SPEND_AND_PROVENANCE.json) |
+| **Cycle 4 Aborted RunPod Init Retries** | `3` RunPod pods (`njfltr24eo3q84`, `ij3mpklfae4vrz`, `0m9b0ittd38yhd`) stuck in `initializing` | Auto-terminated cleanly (`0` active) | `$0.2817` | [SPEND_AND_PROVENANCE.json](artifacts/nanolm_fp_v3/SPEND_AND_PROVENANCE.json) |
+| **Total Attributed Spend (Frontier + HSPA C1–C2 + Ω-v1..v3)** | `5` completed RunPod pods + `4` Free Kaggle T4 runs + Local MPS | **All `0` active** | **`$2.6947`** *(+`$0.31` aborts)* | Verified JSON artifacts on branch |
 
-*Account Balance Verification Note:* Live RunPod `clientBalance` was **`$87.9285`** prior to launching `jiwcmt2i7qspab` and **`$84.2127`** immediately after pod removal (`$3.7159` shared-account delta includes concurrent peer pods `v5swuwh5ukl1zh` and `y05unbw7rthg69`; our `A40` pod attributed cost for `1,953 s @ $0.59/hr` was **`$0.3201`**). Owner `$20.00` reserve remained untouched (`$84.21 >> $20.00`).
+*Account Balance Verification Note:* Live RunPod `clientBalance` after Cycle-4 closeout is **`$108.0623`** (`currentSpendPerHr = 0`, `runpodctl pod list == []`, owner `$20.00` reserve untouched). Cycle-4 Stage A (`EXP-FP1..3`) ran for `$0.00` on Kaggle Free `2x Tesla T4` (`36/36` CUDA pytest), and after hitting Kaggle's 30 hr/week GPU quota and seeing `3` RunPod pods stall in `runtimeStatus: "initializing"` (`$0.2817` total boot-abort delta), Stage B (`EXP-FP4`) completed cleanly for `$0.00` on local Apple M3 Max `MPS`. Future large campaigns can also utilize **Google Cloud** alongside Kaggle and RunPod.
 
 ---
 

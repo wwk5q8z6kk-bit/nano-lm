@@ -66,3 +66,32 @@ All hypotheses follow strict scientific discipline: concrete mechanism, why exis
     Transferring dark-knowledge tail calibration alongside verified tool traces without cross-architecture tokenizer mismatch.
 24. **`H-Ω24` [Proposed] Closed-Loop Autonomous Experiment Registry with Pareto Non-Regression Gates:**
     Requiring strict multi-seed improvement over prior `BEST` across capability, OOD retention, and speed/memory efficiency before architecture promotion.
+
+---
+
+## Group VI — Cycle 4 (`NANOLM Ω-v3`): First-Principles Interaction Intelligence (`H-FP01..H-FP12`)
+
+25. **`H-FP01` [Tested `EXP-FP1` — PARTIALLY SUPPORTED / HONEST MIXED] Typed Sheaf Port-Hamiltonian Stability vs Flat/Unsigned Baselines:**
+    `sheaf_port_hamiltonian` (`49.7K`p) achieved `100.0%` canonical, `100.0%` paraphrase, `0.0` autonomous Lyapunov energy violation, and beat `flat_transformer` (`47.62%`) and `signed_mesh` (`38.09%`) at `6x` OOD (`N=160`, `58.09%`), **but** simpler degree-normalized `unsigned_gat` (`49.7K`p) achieved the highest `6x` OOD score (`83.81% ± 3.56%`), and `D0_Deterministic` (`0`p) hit `100.0%` canonical.
+26. **`H-FP02` [Tested `EXP-FP1` — FALSIFIED] Dynamic Rewiring Port-Hamiltonian Improves OOD Generalization:**
+    Adding learned dynamic edge rewiring (`dynamic_rewire_ph`) degraded `6x` OOD accuracy from `58.09%` to `43.81% ± 8.83%` (non-promoted).
+27. **`H-FP03` [Tested `EXP-FP2A` — FALSIFIED for `Gen5`, CONFIRMED for `Gen4`] Unbroken $S_4$ Composition in `Gen5_FP_PH_Holonomy`:**
+    `Gen4_Omega_SO3_PredCode` dominated at `L32..128=100.0%` and `L256 (8x OOD)=97.66%`; `Gen5` (`3.12%`), `B2_Gated_DeltaNet` (`6.25%`), `B0_Transformer` (`3.91%`), and `Gen1_H2` (`3.12%`) collapsed because active deeper episodic mixing in `Gen5` interferes with layer-0 $S_4$ transport.
+28. **`H-FP04` [Tested `EXP-FP2B` — STRONGLY SUPPORTED (BREAKTHROUGH)] Information-Bottleneck Causal Source-Copy Duality:**
+    Adding an `O(d)` `CausalSourceCopyGate` (`+2*d*d_head + d + 1` params) lifted `Gen5` bitemporal exact value recall **`201x`** (`0.48% -> 96.67%`, vs `0.00%` for `B0_Transformer`, `B2_Gated_DeltaNet`, `Gen1_H2`, and `Gen4`) and improved BPB (`0.3789 -> 0.3756`), confirming exact source retrieval bypasses lossy recurrent compression.
+29. **`H-FP05` [Tested `EXP-FP2B` — FALSIFIED ON MACRO BPB] `Gen5_FP_PH_Holonomy` Beats `Gen1_H2` on 14M General Text BPB:**
+    Under `AdamW` (`3` seeds), `Gen1_H2_PredCode` retained `BEST` (`0.3751 ± 0.00217`) over `Gen5` (`0.3756`), `Gen4` (`0.3775`), `B0` (`0.3784`), and `B2_Gated_DeltaNet` (`0.3785`). `Gen5` was honestly marked `did_not_beat_best` on macro BPB.
+30. **`H-FP06` [Tested `EXP-FP2C` — SUPPORTED FOR `Gen1_H2`, MIXED FOR `Gen5`] Hybrid Muon Orthogonalized Updates Across Architectures:**
+    Under 2-seed `Muon`, `Gen1_H2` (`0.3749`) again led `Gen5` (`0.3793`, `copy=0.0072`), `B0` (`0.3849`), and `B2_Gated_DeltaNet` (`0.3865`).
+31. **`H-FP07` [Tested `EXP-FP3` — STRONGLY SUPPORTED] All 8 Computational Primitives in $\mathcal{U}_t$ Are Independently Load-Bearing:**
+    Full $\mathcal{U}_t$ hit `100.00% ± 0.0%`; ablating any single primitive caused `-38.54 pp` (`no_constraint_dissipation`) to `-88.02 pp` (`no_adaptation_weights`) collapse across `3` seeds.
+32. **`H-FP08` [Tested `EXP-FP3` — STRONGLY SUPPORTED] Value-of-Information (`VoI`) Halting Strictly Pareto-Dominates Fixed-Step Compute:**
+    `voi_lambda=0.28` achieved `100.00%` in `3.375` mean steps, strictly dominating `fixed_k=4` (`100.0% @ 4.00`) and `fixed_k=8` (`82.29% @ 8.00`, over-looping degradation).
+33. **`H-FP09` [Tested `EXP-FP4` — STRONGLY SUPPORTED] Typed World Semantics Beat Equal-Compute Test-Time Sampling (`SC3`):**
+    On held-out `FP-5Axis-30` (`overlaps=0`), `EqualCompute_SC3` (`9/30`, `30.00%`, `90` calls) yielded **`+0.0 pp`** over `Naked` (`9/30`, `30.00%`, `30` calls), whereas `WorldController_v3` over `AppendOnlySourceLedger` reached **`15/30 (50.00%)`** in `64` calls (`+66.7%` relative lift).
+34. **`H-FP10` [Tested `EXP-FP4` — SUPPORTED] World Controller Preserves 15D General Capability Without Regression:**
+    `NanoLM_FP_v3_1.7B_Controller_v3` matched the Cycle-3 record on `benchmark_15d` at **`41/56 (73.21% [62.5%, 83.9%])`** with `coding=3/4`, `math_logic=4/4`, `tool_use=4/4`, `hallucination_resistance=4/4`, and `0` contamination.
+35. **`H-FP11` [Tested `EXP-FP4` — PARTIALLY FALSIFIED / OPEN GAP] `WorldController_v3` Improves Interventional Causal Reasoning:**
+    On the `causal_vs_associational` axis of `FP-5Axis-30`, `WorldController_v3` scored `1/6 (16.7%)` vs `Naked` `2/6 (33.3%)` — proving symbolic ledger routing alone does not solve interventional `do()` queries and motivating explicit structural causal model (SCM) verification in Cycle 5.
+36. **`H-FP12` [Verified `architecture.py` — SUPPORTED] Exact `<= 4B` Scaling Blueprints for `Gen5`:**
+    `HSPA_GEN5_2B_CONFIG` (`1,809,521,793`) and `HSPA_GEN5_4B_CONFIG` (`3,842,826,561`) both satisfy the hard `<= 4.0B` parameter ceiling with `3.08e-6` recurrent step parity.

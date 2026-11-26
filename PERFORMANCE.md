@@ -44,4 +44,6 @@ See [NANOLM_COMPUTE_LEDGER.md](NANOLM_COMPUTE_LEDGER.md) for the complete pod-by
 | `nanolm_holonomy_v2` (`C2-X0..X4`) | `L40S` (`pod vboeyg7n3dk7k3`) | `2,319s` | `$0.7021` |
 | `nanolm_omega_v1` (`EXP-Ω1..Ω3`) | `A40` (`pod jiwcmt2i7qspab`) | `1,953s` | `$0.3201` |
 | `nanolm_omega_v2` (`EXP-Ω4..Ω7`) | Free Kaggle `2x Tesla T4` (`v1+v2`) | `6,602.54s` | **`$0.0000`** |
-| **Total Attributed Verified Spend** | `4` Completed Pods + `2` Kaggle Runs (`0` active) | `17,433.5s` | **`$2.6947` USD** *(+`~$0.03` aborted launch)* |
+| `nanolm_fp_v3` Stage A (`EXP-FP1..FP3`) | Free Kaggle `2x Tesla T4` (`v2`) | `8,372.52s` | **`$0.0000`** |
+| `nanolm_fp_v3` Stage B (`EXP-FP4`) | Local Apple M3 Max `MPS` (`64 GB`, `FP16`) | `~2,400s` | **`$0.0000`** |
+| **Total Attributed Verified Spend** | `4` Completed Pods + `4` Kaggle Runs + Local MPS (`0` active) | `~28,206s` | **`$2.6947` USD** *(+`$0.31` aborted pod-init retries)* |

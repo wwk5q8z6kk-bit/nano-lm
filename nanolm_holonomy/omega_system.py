@@ -19,6 +19,7 @@ from __future__ import annotations
 
 import ast
 import json
+import math
 import re
 import subprocess
 import sys
@@ -28,6 +29,12 @@ import torch
 from torch.nn import functional as F
 
 from nanolm_frontier.surgery_and_rlvr import apply_chat_template_safe
+from nanolm_holonomy.first_principles import (
+    AppendOnlySourceLedger,
+    DeterministicTypedRuleSolver,
+    LedgerRecord,
+)
+from nano.contracts import DerivationMode, EpistemicStatus
 from nanolm_posttrain.eval_suite import _extract_fenced_or_raw
 
 TaskMode = str
@@ -254,19 +261,45 @@ def _ret_type_ok(ann: ast.expr | None) -> str:
     return ""
 
 
-def verify_python_smoke_zero_oracle(code_text: str) -> tuple[bool, str]:
-    """Parse AST + run multi-probe & return-type checks in isolated ``python3 -I``."""
+def extract_required_python_symbol(user_prompt: str) -> str | None:
+    """Extract requested top-level Python function or class name purely from user_prompt text."""
+    for pat in (
+        r"`def\s+([A-Za-z_][A-Za-z0-9_]*)\s*\(",
+        r"\bdef\s+([A-Za-z_][A-Za-z0-9_]*)\s*\(",
+        r"(?:implement|write|create|define)\s+(?:a\s+)?(?:python\s+)?(?:function|method|def)\s+`?([A-Za-z_][A-Za-z0-9_]*)`?",
+        r"(?:implement|write|create|define)\s+(?:a\s+)?(?:python\s+)?class\s+`?([A-Za-z_][A-Za-z0-9_]*)`?",
+    ):
+        m = re.search(pat, user_prompt, flags=re.IGNORECASE)
+        if m:
+            sym = m.group(1)
+            if sym.lower() not in ("a", "the", "python", "function", "class", "code"):
+                return sym
+    return None
+
+
+def verify_python_smoke_zero_oracle(
+    code_text: str,
+    *,
+    required_symbol: str | None = None,
+) -> tuple[bool, str]:
+    """Parse AST + verify requested identifier + run multi-probe checks in isolated ``python3 -I``."""
     raw = _extract_fenced_or_raw(code_text)
     try:
         tree = ast.parse(raw)
     except SyntaxError as exc:
         return False, f"SyntaxError: {exc}"
 
+    defined_names = {
+        n.name for n in tree.body if isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef))
+    }
+    if required_symbol and required_symbol not in defined_names:
+        return False, f"ContractError: required symbol '{required_symbol}' not defined (found {sorted(defined_names)})"
+
     funcs = [n for n in tree.body if isinstance(n, ast.FunctionDef)]
     if not funcs:
         return True, "no_function_ast_ok"
 
-    target_fn = funcs[-1]
+    target_fn = next((f for f in funcs if f.name == required_symbol), funcs[-1])
     args0 = [_dummy_value_for_annotation(a.annotation, a.arg, variant=0) for a in target_fn.args.args]
     args1 = [_dummy_value_for_annotation(a.annotation, a.arg, variant=1) for a in target_fn.args.args]
     args2 = [_dummy_value_for_annotation(a.annotation, a.arg, variant=2) for a in target_fn.args.args]
@@ -436,10 +469,12 @@ def omega_generate(
     }
 
     if mode == "CODE_PYTHON":
-        ok, err = verify_python_smoke_zero_oracle(reply)
+        req_sym = extract_required_python_symbol(user_prompt)
+        ok, err = verify_python_smoke_zero_oracle(reply, required_symbol=req_sym)
         for attempt in range(2):
             if ok:
                 break
+            sym_note = f" Make sure to define `{req_sym}` explicitly at top level." if req_sym else ""
             repair_msgs = [
                 {"role": "system", "content": system_prompt},
                 {
@@ -448,7 +483,7 @@ def omega_generate(
                         f"{user_prompt}\n\n"
                         f"Your previous draft failed verification with:\n`{err}`\n"
                         f"Previous draft:\n```python\n{_extract_fenced_or_raw(reply)}\n```\n"
-                        "Fix any undefined tree/helper assumptions, imports, boundary guards, or return types and return only valid Python."
+                        f"Fix any undefined tree/helper assumptions, missing definitions, imports, boundary guards, or return types and return only valid Python.{sym_note}"
                     ),
                 },
             ]
@@ -462,7 +497,7 @@ def omega_generate(
             )
             total_tok += nt
             meta["calls"] += 1
-            ok2, err2 = verify_python_smoke_zero_oracle(cand)
+            ok2, err2 = verify_python_smoke_zero_oracle(cand, required_symbol=req_sym)
             if ok2:
                 reply = cand
                 ok, err = ok2, err2
@@ -535,6 +570,32 @@ def omega_generate(
                 pass
 
         wants_json = "json" in system_prompt.casefold()
+        # Typed Relational DAG Critical-Path Operator (Zero-Oracle surface detection on "makespan" + deps)
+        if not wants_json and ("makespan" in user_prompt.casefold() or ("critical path" in user_prompt.casefold() and "duration" in user_prompt.casefold())):
+            dag_prompt = (
+                "Extract the task graph as strict JSON ONLY matching: "
+                '{"tasks": [{"id": "<str>", "duration": <number>, "deps": ["<id>", ...]}]} '
+                "including EVERY task mentioned.\n\n"
+                f"Problem:\n{user_prompt}"
+            )
+            dag_reply, nt, _ = _run_model_chat_with_margin(
+                model,
+                tokenizer,
+                [{"role": "system", "content": "Return ONLY a valid JSON object."}, {"role": "user", "content": dag_prompt}],
+                max_new_tokens=min(320, max_new_tokens + 96),
+                sample=False,
+            )
+            total_tok += nt
+            meta["calls"] += 1
+            makespan_val = solve_dag_makespan_from_json(dag_reply)
+            if makespan_val is not None:
+                val_str = str(int(makespan_val)) if float(makespan_val).is_integer() else str(round(float(makespan_val), 4))
+                reply = f"Verified via relational DAG critical-path operator.\nFINAL_ANSWER: {val_str}"
+                meta["repaired"] = True
+                meta["reason"] = "dag_critical_path_solver"
+                meta["tokens_generated"] = total_tok
+                return reply, meta
+
         schema_hint = _describe_json_schema_hint(reply) if wants_json else ""
         algo_note = (
             "For parallel DAG schedules, preserve every single task ID and compute critical-path DP "
@@ -601,4 +662,202 @@ def omega_generate(
                 last_err = f"Invalid scalar output: {last_line[:48]}"
 
     meta["tokens_generated"] = total_tok
+    return reply, meta
+
+
+def solve_dag_makespan_from_json(json_text: str) -> float | None:
+    """Topological critical-path DP over model-extracted DAG JSON (returns None if invalid/cyclic)."""
+    raw = _extract_fenced_or_raw(json_text)
+    try:
+        parsed = json.loads(raw)
+    except json.JSONDecodeError:
+        m = re.findall(r"\{.*\}", raw, flags=re.DOTALL)
+        if not m:
+            return None
+        try:
+            parsed = json.loads(m[-1])
+        except json.JSONDecodeError:
+            return None
+    tasks = parsed.get("tasks") if isinstance(parsed, dict) else None
+    if not isinstance(tasks, list) or not tasks:
+        return None
+    dur: dict[str, float] = {}
+    deps: dict[str, list[str]] = {}
+    for item in tasks:
+        if not isinstance(item, dict) or "id" not in item or "duration" not in item:
+            return None
+        tid = str(item["id"]).strip()
+        try:
+            dval = float(item["duration"])
+        except (TypeError, ValueError):
+            return None
+        if dval < 0 or math.isnan(dval) or math.isinf(dval):
+            return None
+        raw_deps = item.get("deps") or []
+        if not isinstance(raw_deps, list):
+            return None
+        dur[tid] = dval
+        deps[tid] = [str(d).strip() for d in raw_deps if str(d).strip() and str(d).strip() != tid]
+
+    finish: dict[str, float] = {}
+    visiting: set[str] = set()
+
+    def _ef(node: str) -> float:
+        if node in finish:
+            return finish[node]
+        if node in visiting or node not in dur:
+            raise ValueError("cycle_or_missing")
+        visiting.add(node)
+        prev = max((_ef(p) for p in deps[node] if p in dur), default=0.0)
+        visiting.remove(node)
+        finish[node] = prev + dur[node]
+        return finish[node]
+
+    try:
+        return max(_ef(tid) for tid in dur)
+    except ValueError:
+        return None
+
+
+def classify_fp_task_mode(system_prompt: str, user_prompt: str) -> str:
+    """Detect whether prompt specifies a bitemporal/tenant source ledger problem."""
+    text_l = (system_prompt + "\n" + user_prompt).casefold()
+    ledger_cues = ("record_time", "valid_time", "as_of", "as of ", "tenant", "supersedes", "retract", "epistemic")
+    hits = sum(1 for c in ledger_cues if c in text_l)
+    if hits >= 2 or ("do(" in text_l and "intervention" in text_l):
+        return "WORLD_LEDGER_OR_CAUSAL"
+    return classify_task_mode(system_prompt, user_prompt)
+
+
+def _resolve_world_ledger_from_json(extracted_json: str, *, wants_json: bool, user_prompt: str = "") -> str | None:
+    """Validate extracted ledger records through immutable AppendOnlySourceLedger + bitemporal masks."""
+    raw = _extract_fenced_or_raw(extracted_json)
+    try:
+        obj = json.loads(raw)
+    except json.JSONDecodeError:
+        return None
+    if (
+        not isinstance(obj, dict)
+        or not isinstance(obj.get("records"), list)
+        or len(obj["records"]) == 0
+        or not isinstance(obj.get("query"), dict)
+    ):
+        return None
+    q = obj["query"]
+    q_ent = str(q.get("entity_id", "")).strip()
+    q_ten = str(q.get("tenant_id", "")).strip()
+    auth_ten = str(q.get("authorized_tenant_id", q_ten)).strip()
+    q_slot = str(q.get("slot", "")).strip()
+    try:
+        as_of = float(q.get("as_of_time", 1e9))
+    except (TypeError, ValueError):
+        return None
+    if not q_ent or not q_ten or not q_slot:
+        return None
+
+    ledger = AppendOnlySourceLedger()
+    try:
+        for idx, r in enumerate(obj["records"]):
+            if not isinstance(r, dict):
+                return None
+            kind = str(r.get("source_kind", "unverified_report")).strip()
+            ep = EpistemicStatus.CLINICIAN_ASSERTED if kind in ("verified_order", "correction") else EpistemicStatus.PATIENT_REPORTED
+            if kind == "retraction":
+                ep = EpistemicStatus.SUPERSEDED
+            tgt = str(r.get("target_record_id", "")).strip()
+            rec = LedgerRecord(
+                record_id=str(r.get("record_id") or f"r_{idx}"),
+                entity_id=str(r.get("entity_id", q_ent)).strip(),
+                tenant_id=str(r.get("tenant_id", q_ten)).strip(),
+                slot=str(r.get("slot", q_slot)).strip(),
+                raw_value=str(r.get("raw_value", "")).strip(),
+                polarity=(-1 if kind == "retraction" else (1 if kind in ("verified_order", "correction") else 0)),
+                valid_time=float(r.get("valid_time", 0.0)),
+                record_time=float(r.get("record_time", 0.0)),
+                source_kind=kind,
+                epistemic_status=ep,
+                derivation_mode=DerivationMode.OBSERVED,
+                text=(f"[correction] supersedes={tgt}" if kind == "correction" and tgt else (f"[retraction] cancels={tgt}" if kind == "retraction" and tgt else f"[{kind}]")),
+                target_record_id=tgt,
+            )
+            ledger.append(rec)
+    except (ValueError, TypeError):
+        return None
+
+    resolved = DeterministicTypedRuleSolver.resolve_ledger(
+        ledger,
+        entity_id=q_ent,
+        tenant_id=q_ten,
+        authorized_tenant_id=auth_ten,
+        slot=q_slot,
+        as_of_time=as_of,
+    )
+    ans = resolved["raw_value"] if resolved["raw_value"] else ("DENIED" if resolved["state"] == "ISOLATED_DENIED" else "UNKNOWN")
+    if wants_json:
+        p_low = user_prompt.casefold()
+        if "state" in p_low and "value" in p_low:
+            return json.dumps({"state": resolved["state"], "value": ans})
+        return None
+    return f"Verified via immutable bitemporal ledger ({resolved['state']}).\nFINAL_ANSWER: {ans}"
+
+
+def omega_fp_generate(
+    model: Any,
+    tokenizer: Any,
+    *,
+    system_prompt: str,
+    user_prompt: str,
+    max_new_tokens: int,
+    device: torch.device,
+) -> tuple[str, dict[str, Any]]:
+    """Zero-Oracle Controller-v3 uniting World Ledger U_t verification with Controller-v2."""
+    fp_mode = classify_fp_task_mode(system_prompt, user_prompt)
+    if fp_mode != "WORLD_LEDGER_OR_CAUSAL":
+        return omega_generate(
+            model,
+            tokenizer,
+            system_prompt=system_prompt,
+            user_prompt=user_prompt,
+            max_new_tokens=max_new_tokens,
+            device=device,
+        )
+
+    # Check if prompt contains structured temporal records suitable for AppendOnlySourceLedger
+    extract_prompt = (
+        "Extract observed event records and the as-of query as JSON ONLY:\n"
+        '{"query": {"entity_id": str, "tenant_id": str, "authorized_tenant_id": str, "slot": str, "as_of_time": float}, '
+        '"records": [{"record_id": str, "entity_id": str, "tenant_id": str, "slot": str, "raw_value": str, '
+        '"valid_time": float, "record_time": float, "source_kind": "verified_order|unverified_report|correction|retraction", '
+        '"target_record_id": str}]}\n'
+        "If the task is purely causal/numerical without timestamped records, return {\"records\": []}.\n\n"
+        f"{user_prompt}"
+    )
+    ext_reply, tok_ext, _ = _run_model_chat_with_margin(
+        model,
+        tokenizer,
+        [{"role": "system", "content": "Return ONLY a valid JSON object."}, {"role": "user", "content": extract_prompt}],
+        max_new_tokens=min(384, max_new_tokens + 128),
+        sample=False,
+    )
+    wants_json = "json" in system_prompt.casefold()
+    resolved_txt = _resolve_world_ledger_from_json(ext_reply, wants_json=wants_json, user_prompt=user_prompt)
+    if resolved_txt is not None:
+        return resolved_txt, {
+            "mode": "WORLD_LEDGER_VERIFIED",
+            "calls": 1,
+            "repaired": True,
+            "reason": "bitemporal_ledger_u_t",
+            "tokens_generated": tok_ext,
+        }
+
+    reply, meta = omega_generate(
+        model,
+        tokenizer,
+        system_prompt=system_prompt,
+        user_prompt=user_prompt,
+        max_new_tokens=max_new_tokens,
+        device=device,
+    )
+    meta["calls"] = int(meta.get("calls", 1)) + 1
+    meta["tokens_generated"] = int(meta.get("tokens_generated", 0)) + tok_ext
     return reply, meta

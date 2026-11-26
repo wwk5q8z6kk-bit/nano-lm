@@ -68,7 +68,7 @@ class SpectralNullspaceLoRALinear(nn.Module):
         self.nullspace_k = k_eff
 
         if k_eff > 0:
-            w_f = base.weight.detach().float()
+            w_f = base.weight.detach().float().cpu() if device.type == "mps" else base.weight.detach().float()
             try:
                 q_over = min(k_eff + 8, min(w_f.shape))
                 _, _, v_mat = torch.svd_lowrank(w_f, q=q_over, niter=2)

@@ -36,6 +36,9 @@ flowchart TB
 | **Spectral Nullspace LoRA** | [`SpectralNullspaceLoRALinear`](nanolm_holonomy/omega_architecture.py) | Projects adapter inputs onto $\text{span}(V_k)^\perp$ so $\Delta W V_k \equiv 0$, isolating new task learning from dominant base coding & reasoning circuits. |
 | **Zero-Oracle Cognitive Controller** | [`omega_generate`](nanolm_holonomy/omega_system.py) | Intrinsic VoI router dispatching isolated `python3 -I` type-smoke checks, self-synthesized Python solvers, and structural Mermaid/JSON repair using only prompt text. |
 | **Roofline Compute Planner** | [`compute_planner.py`](nanolm_holonomy/compute_planner.py) | Pre-flight VRAM, compute-FLOPs, decode-bandwidth, and minimum-USD hardware selector (`12.9%` calibrated mean VRAM error). |
+| **Typed World Substrate & Sheaf PH Nets** | [`first_principles.py`](nanolm_holonomy/first_principles.py) | Typed 7-tuple $\mathcal{U}_t$, `AppendOnlySourceLedger`, 3-clock bitemporal admissibility, `DeterministicTypedRuleSolver` (`0p`), `SO(3)` sheaf Port-Hamiltonian interaction net (`0.0` Lyapunov violation), and `VoIHaltingPolicy`. |
+| **`Gen5` Port-Hamiltonian + Source-Copy LM & `B2_Gated_DeltaNet`** | [`architecture.py`](nanolm_holonomy/architecture.py) | `PortHamiltonianFFNCell` (exact planar Givens symplectic rotation + damping), FP32-safe `CausalSourceCopyGate` (`201x` bitemporal exact recall), chunkwise WY `B2_Gated_DeltaNet`, and `<= 4B` `2B/4B` scaling configs (`1.810B`, `3.843B`). |
+| **World Controller `v3` & `FP-5Axis-30`** | [`omega_system.py`](nanolm_holonomy/omega_system.py), [`fp_benchmark.py`](nanolm_holonomy/fp_benchmark.py) | Zero-oracle `omega_fp_generate` over `AppendOnlySourceLedger`, AST required-symbol verification, topological DAG critical-path DP, and 30-task held-out `FP-5Axis-30` (`overlaps=0`). |
 
 ---
 

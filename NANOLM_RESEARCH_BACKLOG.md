@@ -28,3 +28,8 @@
 | **22** | **`H-Ω10`** | K-FAC Activation-Weighted Nullspace Projection | `8.1` | `7.5` | `6.8` | `7.4` | **`7.54`** | `\$0.40` | **Exploratory** |
 | **23** | **`H-Ω03`** | Bifurcated Connection Bias Alone (`Gen3_H4`) | `7.0` | `6.1` | `8.8` | `8.5` | **`7.18`** | `\$0.25` | **Superseded by `H-Ω01`** |
 | **24** | **`H-Ω08`** | Asymmetric Differential Delta (`C2_DiffNSDelta`) | `6.2` | `5.0` | `7.2` | `8.5` | **`6.32`** | `\$0.10` | **Rejected (`E1`)** |
+| **25** | **`H-FP04`** | `CausalSourceCopyGate` (`O(d)` Source-Copy Duality) | `9.7` | `9.6` | `9.8` | `9.8` | **`9.70`** | `\$0.00` | **Completed (`EXP-FP2B`: `201x`, `96.67%`)** |
+| **26** | **`H-FP07/08`** | 8-Primitive $\mathcal{U}_t$ Ablation + `VoI` Halting Pareto | `9.5` | `9.4` | `9.8` | `9.7` | **`9.57`** | `\$0.00` | **Completed (`EXP-FP3`: `100% @ 3.375` steps)** |
+| **27** | **`H-FP09`** | `WorldController_v3` vs `EqualCompute_SC3` (`FP-5Axis-30`) | `9.4` | `9.5` | `9.7` | `9.6` | **`9.52`** | `\$0.00` | **Completed (`EXP-FP4`: `15/30` vs `9/30`, `15D 41/56`)** |
+| **28** | **`H-FP13`** | Hybrid `Gen1_H2_PredCode` + `CausalSourceCopyGate` (`BEST` BPB + `96.7%` Copy) | `9.6` | `9.5` | `9.5` | `9.5` | **`9.54`** | `\$0.00` (GCP/Kaggle) | **Next Cycle Priority #1** |
+| **29** | **`H-FP14`** | Structural Causal Model (`do()`-calculus) Verifier for `WorldController_v4` | `9.2` | `9.3` | `9.4` | `9.2` | **`9.28`** | `\$0.00` | **Next Cycle Priority #2 (Closes `1/6` Causal Gap)** |

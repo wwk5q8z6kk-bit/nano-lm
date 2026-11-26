@@ -33,3 +33,7 @@ With register split $r_0 = \lfloor R/2 \rfloor$, unitary holonomy $g_{t,r} = \ex
 ## 7. Exact Zero-Overhead Nullspace Weight Folding
 $$\Delta W_\perp = \alpha\, B (A (I - V_k V_k^\top)), \qquad W_{\text{merged}} = W_0 + \Delta W_\perp, \qquad \|\Delta W_\perp V_k\|_F / \|\Delta W_\perp\|_F \le 7\times 10^{-7}.$$
 Folding $\Delta W_\perp$ into `base.weight` matches unmerged outputs (`6/6` at `1.747B`) while lifting linear GEMMs `7.55x`, end-to-end HF decode `1.61x`, and static `CUDA Graph` HSPA decode `3.10x` (`1.808B`) / `2.35x` (`3.841B <= 4B`).
+
+## 8. Discrete Port-Hamiltonian Sheaf Stability & Causal Source-Copy Duality (`Gen5_FP_PH_Holonomy`)
+1. **Autonomous Lyapunov Stability:** For $x_{k+1} = \exp(\Delta t (J - R)) x_k + \Delta t B u_k$ ($J^\top=-J, R\succeq 0$) and planar Givens damped cells `PortHamiltonianFFNCell`, $\mathcal{H}(x_{k+1}) \le \mathcal{H}(x_k)$ at $u_k=0$ (`autonomous_lyapunov_max_energy_delta = 0.0` verified in `EXP-FP1`).
+2. **Source-Copy Duality:** Mixing $P_{\text{out}} = (1-\lambda_t)P_{\text{gen}} + \lambda_t \sum_{s\le t}\alpha_{t,s}\mathbb{I}[x_s=y]$ in FP32-safe `CausalSourceCopyGate` bypasses finite-state compression limits, lifting bitemporal exact value recall **`201x`** (`0.48% -> 96.67%`) in `EXP-FP2B`.

@@ -46,11 +46,13 @@ from nanolm_posttrain.architecture import (
 class HSPAFamily(str, Enum):
     B0_TRANSFORMER = "b0_transformer"
     B1_ABELIAN_SSM = "b1_abelian_ssm"
+    B2_GATED_DELTANET = "b2_gated_deltanet"
     GEN1_H1_HSPA_SPINOR = "gen1_h1_hspa_spinor"
     GEN1_H2_HSPA_PREDCODE = "gen1_h2_hspa_predcode"
     GEN2_H3_HSPA_EVOLVED = "gen2_h3_hspa_evolved"
     GEN3_H4_HSPA_WAVEPRED = "gen3_h4_hspa_wavepred"
     GEN4_OMEGA_SO3_PREDCODE = "gen4_omega_so3_predcode"
+    GEN5_FP_PH_HOLONOMY = "gen5_fp_ph_holonomy"
 
 
 @dataclass(frozen=True, slots=True)
@@ -74,6 +76,8 @@ class HSPAArchConfig:
     rope_theta: float = 500_000.0
     rms_eps: float = 1e-6
     scan_chunk_size: int = 512
+    use_copy_gate: bool = True
+    copy_window: int = 256
 
     def __post_init__(self) -> None:
         for fn, val in (
@@ -120,12 +124,20 @@ class HSPAArchConfig:
         return self.family == HSPAFamily.B1_ABELIAN_SSM
 
     @property
+    def is_deltanet(self) -> bool:
+        return self.family == HSPAFamily.B2_GATED_DELTANET
+
+    @property
     def uses_predcode(self) -> bool:
         return self.family in (
             HSPAFamily.GEN1_H2_HSPA_PREDCODE,
             HSPAFamily.GEN3_H4_HSPA_WAVEPRED,
             HSPAFamily.GEN4_OMEGA_SO3_PREDCODE,
         )
+
+    @property
+    def uses_ph_ffn(self) -> bool:
+        return self.family == HSPAFamily.GEN5_FP_PH_HOLONOMY
 
     @property
     def uses_gen2(self) -> bool:
@@ -140,6 +152,10 @@ class HSPAArchConfig:
         return self.family == HSPAFamily.GEN4_OMEGA_SO3_PREDCODE
 
     @property
+    def uses_gen5(self) -> bool:
+        return self.family == HSPAFamily.GEN5_FP_PH_HOLONOMY
+
+    @property
     def uses_wave_conv(self) -> bool:
         return self.uses_gen2 or self.uses_gen3
 
@@ -147,6 +163,8 @@ class HSPAArchConfig:
     def parameter_count(self) -> int:
         d = self.d_model
         total = self.vocab_size * d + d  # tied tok_emb + final_norm
+        if self.uses_gen5 and self.use_copy_gate:
+            total += 2 * d * self.d_head + d + 1  # CausalSourceCopyGate
         R = self.n_registers
         G = self.n_spinors
         C_comp = self.n_complex_fibers
@@ -171,6 +189,8 @@ class HSPAArchConfig:
                     + self.d_fiber * d  # o_proj
                     + self.d_fiber  # out_norm
                 )
+            elif self.is_deltanet:
+                mix = 4 * d * d + 2 * d * self.n_heads + 2 * self.d_head + d
             else:
                 mix = (
                     d * self.d_fiber  # phi_proj
@@ -190,9 +210,15 @@ class HSPAArchConfig:
                 elif self.uses_gen4:
                     # SO(3) projective adjoint projection + unitary/episodic register biases + scalar highway gate
                     mix += (9 * G) * self.d_fiber + 2 * R + 1
+                elif self.uses_gen5:
+                    r_holo = max(1, R // 4)
+                    r_ep = R - r_holo
+                    mix += (9 * G) * self.d_fiber + d * r_ep + 2 * R + 2
 
             if self.uses_predcode:
                 ffn = 3 * d * self.d_ff + d + 1  # W_enc, W_dec, W_err + err_norm + log_prec
+            elif self.uses_ph_ffn:
+                ffn = 3 * d * self.d_ff + d + (self.d_ff // 2) + 2  # w_in, w_out, w_drive, err_norm, j_freq, log_diss, logit_step
             else:
                 ffn = 3 * d * self.d_ff
             total += norms + mix + ffn
@@ -202,10 +228,15 @@ class HSPAArchConfig:
         """Exact runtime state memory during inference at sequence length ``seq_len``."""
         if self.is_transformer:
             return 2 * self.n_layers * self.n_kv_heads * self.d_head * bytes_per_elem * seq_len
+        if self.is_deltanet:
+            return self.n_layers * self.n_heads * self.d_head * self.d_head * bytes_per_elem
         # Constant O(1) persistent state regardless of seq_len: [R, d_fiber] (plus conv ring (k-1) for wave conv)
         base = self.n_layers * self.n_registers * self.d_fiber * bytes_per_elem
         if self.uses_wave_conv:
             base += self.n_layers * (self.conv_kernel - 1) * self.d_fiber * bytes_per_elem
+        if self.uses_gen5 and self.use_copy_gate:
+            win = min(seq_len, self.copy_window)
+            base += win * (self.d_head * bytes_per_elem + 8)
         return base
 
     def parameter_breakdown(self, sample_seq_len: int = 8_192) -> dict[str, Any]:
@@ -265,11 +296,13 @@ def build_suite_configs(
     target = b0.parameter_count
     variants = (
         ("b1-abelian-ssm", HSPAFamily.B1_ABELIAN_SSM),
+        ("b2-gated-deltanet", HSPAFamily.B2_GATED_DELTANET),
         ("gen1-h1-hspa-spinor", HSPAFamily.GEN1_H1_HSPA_SPINOR),
         ("gen1-h2-hspa-predcode", HSPAFamily.GEN1_H2_HSPA_PREDCODE),
         ("gen2-h3-hspa-evolved", HSPAFamily.GEN2_H3_HSPA_EVOLVED),
         ("gen3-h4-hspa-wavepred", HSPAFamily.GEN3_H4_HSPA_WAVEPRED),
         ("gen4-omega-so3-predcode", HSPAFamily.GEN4_OMEGA_SO3_PREDCODE),
+        ("gen5-fp-ph-holonomy", HSPAFamily.GEN5_FP_PH_HOLONOMY),
     )
     out = [b0]
     for vname, fam in variants:
@@ -370,6 +403,88 @@ HSPA_OMEGA_4B_CONFIG = _iso_match_dff(
         max_seq_len=65_536,
     ),
 )
+
+HSPA_GEN5_2B_CONFIG = HSPAArchConfig(
+    name="nanolm-hspa-gen5-2b",
+    family=HSPAFamily.GEN5_FP_PH_HOLONOMY,
+    vocab_size=100_352,
+    d_model=2_048,
+    n_layers=32,
+    n_heads=16,
+    n_kv_heads=4,
+    d_head=128,
+    d_ff=6_272,
+    n_registers=16,
+    d_fiber=1_024,
+    max_seq_len=65_536,
+)
+
+HSPA_GEN5_4B_CONFIG = _iso_match_dff(
+    TRANSFORMER_4B_CONFIG.parameter_count,
+    HSPAArchConfig(
+        name="nanolm-hspa-gen5-4b",
+        family=HSPAFamily.GEN5_FP_PH_HOLONOMY,
+        vocab_size=100_352,
+        d_model=2_560,
+        n_layers=48,
+        n_heads=20,
+        n_kv_heads=4,
+        d_head=128,
+        d_ff=6_976,
+        n_registers=16,
+        d_fiber=1_024,
+        max_seq_len=65_536,
+    ),
+)
+
+
+class PortHamiltonianFFNCell(nn.Module):
+    """Port-Hamiltonian FFN cell with exact Givens symplectic J + strictly positive damping."""
+
+    def __init__(self, d_model: int, d_ff: int, *, iters: int = 2, rms_eps: float = 1e-6) -> None:
+        super().__init__()
+        if d_ff % 2 != 0:
+            raise ValueError("d_ff must be even for pairwise symplectic J rotation")
+        self.iters = iters
+        self.d_ff = d_ff
+        self.alpha_diss = 0.05
+        self.w_in = nn.Linear(d_model, d_ff, bias=False)
+        self.w_out = nn.Linear(d_ff, d_model, bias=False)
+        self.w_drive = nn.Linear(d_model, d_ff, bias=False)
+        self.err_norm = nn.RMSNorm(d_model, eps=rms_eps)
+        self.j_freq = nn.Parameter(torch.zeros(d_ff // 2))
+        self.log_diss = nn.Parameter(torch.tensor(-1.0))
+        self.logit_step = nn.Parameter(torch.tensor(0.0))
+
+    @staticmethod
+    def energy(c: Tensor) -> Tensor:
+        return 0.5 * torch.sum(c.float() ** 2, dim=-1)
+
+    def _rotate_symplectic(self, c: Tensor, eta: Tensor) -> Tensor:
+        theta = eta * torch.tanh(self.j_freq.float())
+        cs = torch.cos(theta).to(c.dtype)
+        sn = torch.sin(theta).to(c.dtype)
+        pairs = c.view(*c.shape[:-1], self.d_ff // 2, 2)
+        c0 = pairs[..., 0]
+        c1 = pairs[..., 1]
+        r0 = cs * c0 - sn * c1
+        r1 = sn * c0 + cs * c1
+        return torch.stack((r0, r1), dim=-1).reshape_as(c)
+
+    def forward(self, z: Tensor, *, autonomous_drive_zero: bool = False, initial_c: Tensor | None = None) -> Tensor:
+        c = initial_c if initial_c is not None else F.silu(self.w_in(z))
+        eta = 0.5 * torch.sigmoid(self.logit_step.float())
+        gamma = (self.alpha_diss + F.softplus(self.log_diss.float())).to(c.dtype)
+        damp_inv = (1.0 / (1.0 + eta.to(c.dtype) * gamma)).to(c.dtype)
+        for _ in range(self.iters):
+            c_rot = self._rotate_symplectic(c, eta)
+            if autonomous_drive_zero:
+                c = c_rot * damp_inv
+            else:
+                res = z - self.w_out(c)
+                drv = F.silu(self.w_drive(self.err_norm(res)))
+                c = (c_rot + eta.to(c.dtype) * drv) * damp_inv
+        return c if initial_c is not None and autonomous_drive_zero else self.w_out(c)
 
 
 class PredictiveCodingCell(nn.Module):
@@ -516,10 +631,108 @@ class _AbelianRegisterMixer(nn.Module):
         return out, (final_state if use_state else None)
 
 
-class SpinorRegisterField(nn.Module):
-    """Non-Abelian SU(2) Parallel-Transport Spinor Field (Gen 1, Gen 2, Gen 3, Gen 4 Omega)."""
+class _GatedDeltaNetMixer(nn.Module):
+    """Selective Gated DeltaNet recurrent mixer with exact chunkwise WY factorization."""
 
-    def __init__(self, cfg: HSPAArchConfig) -> None:
+    def __init__(self, cfg: HSPAArchConfig, *, chunk_size: int = 16) -> None:
+        super().__init__()
+        self.n_heads = cfg.n_heads
+        self.d_head = cfg.d_head
+        self.d_model = cfg.d_model
+        self.chunk_size = chunk_size
+        self.q_proj = nn.Linear(cfg.d_model, cfg.d_model, bias=False)
+        self.k_proj = nn.Linear(cfg.d_model, cfg.d_model, bias=False)
+        self.v_proj = nn.Linear(cfg.d_model, cfg.d_model, bias=False)
+        self.ab_proj = nn.Linear(cfg.d_model, 2 * cfg.n_heads, bias=False)
+        self.q_norm = nn.RMSNorm(cfg.d_head, eps=cfg.rms_eps)
+        self.k_norm = nn.RMSNorm(cfg.d_head, eps=cfg.rms_eps)
+        self.out_norm = nn.RMSNorm(cfg.d_model, eps=cfg.rms_eps)
+        self.o_proj = nn.Linear(cfg.d_model, cfg.d_model, bias=False)
+
+    def forward(
+        self,
+        h: Tensor,
+        _cos: Tensor,
+        _sin: Tensor,
+        *,
+        state: Tensor | None = None,
+        use_state: bool = False,
+    ) -> tuple[Tensor, Tensor | None]:
+        bsz, seq_len, _ = h.shape
+        H, dh = self.n_heads, self.d_head
+        q = self.q_norm(self.q_proj(h).view(bsz, seq_len, H, dh)).transpose(1, 2).float()
+        k = F.normalize(self.k_norm(self.k_proj(h).view(bsz, seq_len, H, dh)).float(), dim=-1).transpose(1, 2)
+        v = self.v_proj(h).view(bsz, seq_len, H, dh).transpose(1, 2).float()
+        a_log, b_log = self.ab_proj(h).chunk(2, dim=-1)
+        alpha = torch.sigmoid(a_log.float() + 2.0).transpose(1, 2)  # [B, H, T]
+        beta = torch.sigmoid(b_log.float()).transpose(1, 2)  # [B, H, T]
+
+        S = (
+            torch.zeros((bsz, H, dh, dh), device=h.device, dtype=torch.float32)
+            if state is None
+            else state.float()
+        )
+
+        if seq_len == 1 and state is not None:
+            k0, v0, q0 = k.squeeze(2), v.squeeze(2), q.squeeze(2)
+            a0, b0 = alpha[:, :, 0], beta[:, :, 0]
+            sk = torch.einsum("bhij,bhj->bhi", S, k0)
+            w0 = b0.unsqueeze(-1) * (v0 - a0.unsqueeze(-1) * sk)
+            S = a0.view(bsz, H, 1, 1) * S + w0.unsqueeze(-1) * k0.unsqueeze(-2)
+            y = torch.einsum("bhij,bhj->bhi", S, q0).unsqueeze(1)  # [B, 1, H, dh]
+        else:
+            ys: list[Tensor] = []
+            c_sz = self.chunk_size
+            for cs in range(0, seq_len, c_sz):
+                ce = min(seq_len, cs + c_sz)
+                lc = ce - cs
+                qc, kc, vc = q[:, :, cs:ce], k[:, :, cs:ce], v[:, :, cs:ce]
+                ac, bc = alpha[:, :, cs:ce], beta[:, :, cs:ce]
+
+                log_a = torch.log(ac.clamp_min(1e-6))
+                cum_log_a = torch.cumsum(log_a, dim=-1)
+                a_pref = torch.exp(cum_log_a)  # [B, H, Lc]
+
+                diff = cum_log_a.unsqueeze(-1) - cum_log_a.unsqueeze(-2)
+                tril_strict = torch.tril(torch.ones((lc, lc), dtype=torch.bool, device=h.device), diagonal=-1)
+                tril_full = torch.tril(torch.ones((lc, lc), dtype=torch.bool, device=h.device), diagonal=0)
+                decay_strict = torch.exp(diff.masked_fill(~tril_strict, -30.0)) * tril_strict.float()
+                decay_full = torch.exp(diff.masked_fill(~tril_full, -30.0)) * tril_full.float()
+
+                kk = torch.matmul(kc, kc.transpose(-1, -2))
+                eye = torch.eye(lc, dtype=torch.float32, device=h.device).view(1, 1, lc, lc)
+                t_mat = eye + bc.unsqueeze(-1) * decay_strict * kk
+
+                sk_prev = torch.einsum("bhij,bhcj->bhci", S, kc)
+                u_rhs = bc.unsqueeze(-1) * (vc - a_pref.unsqueeze(-1) * sk_prev)
+                # Solve unitriangular lower-triangular linear system (I + T) W = U cleanly
+                try:
+                    w_chunk = torch.linalg.solve_triangular(t_mat, u_rhs, upper=False, unitriangular=True)
+                except RuntimeError:
+                    # CPU fallback if MPS solve_triangular unsupported for batch shapes
+                    t_inv = torch.linalg.solve_triangular(t_mat.cpu(), u_rhs.cpu(), upper=False, unitriangular=True)
+                    w_chunk = t_inv.to(h.device)
+
+                sq_prev = torch.einsum("bhij,bhcj->bhci", S, qc)
+                qk = torch.matmul(qc, kc.transpose(-1, -2))
+                yc = a_pref.unsqueeze(-1) * sq_prev + torch.matmul(qk * decay_full, w_chunk)
+                ys.append(yc.transpose(1, 2))  # [B, Lc, H, dh]
+
+                end_scale = torch.exp((cum_log_a[..., -1:] - cum_log_a).clamp_max(0.0)).unsqueeze(-1)
+                S = a_pref[..., -1].view(bsz, H, 1, 1) * S + torch.matmul(
+                    (w_chunk * end_scale).transpose(-1, -2),
+                    kc,
+                )
+            y = torch.cat(ys, dim=1)
+
+        out = self.o_proj(self.out_norm(y.reshape(bsz, seq_len, self.d_model).to(h.dtype)))
+        return out, (S.to(h.dtype) if use_state else None)
+
+
+class SpinorRegisterField(nn.Module):
+    """Non-Abelian SU(2) Parallel-Transport Spinor Field (Gen 1..Gen 5 First-Principles)."""
+
+    def __init__(self, cfg: HSPAArchConfig, *, layer_idx: int = 0) -> None:
         super().__init__()
         self.R = cfg.n_registers
         self.G = cfg.n_spinors
@@ -528,6 +741,7 @@ class SpinorRegisterField(nn.Module):
         self.use_gen2 = cfg.uses_gen2
         self.use_gen3 = cfg.uses_gen3
         self.use_gen4 = cfg.uses_gen4
+        self.use_gen5 = cfg.uses_gen5
         self.use_conv = cfg.uses_wave_conv
         self.conv_k = cfg.conv_kernel
 
@@ -563,6 +777,22 @@ class SpinorRegisterField(nn.Module):
             nn.init.normal_(self.so3_read_proj.weight, std=1.0 / math.sqrt(9 * self.G))
             with torch.no_grad():
                 self.omega_reg[:half_r].zero_()
+        if self.use_gen5:
+            # Gen-5 Dual-Gate: 1/4 exact SO(3) unitary holonomy registers (active on layer 0 to block
+            # iterated prefix chaos) + 3/4 signed episodic registers (active on ALL layers from step 0!).
+            r_holo = max(1, self.R // 4)
+            r_ep = self.R - r_holo
+            beta_init = torch.cat((torch.full((r_holo,), -4.5), torch.full((r_ep,), 0.5)))
+            mob_init = torch.cat((torch.full((r_holo,), 3.0), torch.zeros(r_ep)))
+            self.beta_reg_bias = nn.Parameter(beta_init)
+            self.mob_reg_bias = nn.Parameter(mob_init)
+            self.so3_read_proj = nn.Linear(9 * self.G, self.d_fiber, bias=False)
+            nn.init.normal_(self.so3_read_proj.weight, std=1.0 / math.sqrt(9 * self.G))
+            self.sign_proj = nn.Linear(cfg.d_model, r_ep, bias=False)
+            self.holo_read_gate = nn.Parameter(torch.tensor(1.0 if layer_idx == 0 else 0.0))
+            self.ep_read_gate = nn.Parameter(torch.tensor(1.0))
+            with torch.no_grad():
+                self.omega_reg[:r_holo].zero_()
 
         self.out_norm = nn.RMSNorm(self.d_fiber, eps=cfg.rms_eps)
         self.o_proj = nn.Linear(self.d_fiber, cfg.d_model, bias=False)
@@ -601,7 +831,7 @@ class SpinorRegisterField(nn.Module):
 
         phi = phi_raw.view(bsz, seq_len, self.G, 4).permute(0, 2, 1, 3).unsqueeze(1)  # [B, 1, G, T, 4]
         w_l, b_l, m_l, r_l = self.gate_proj(h).chunk(4, dim=-1)
-        if self.use_gen3 or self.use_gen4:
+        if self.use_gen3 or self.use_gen4 or self.use_gen5:
             b_l = b_l + self.beta_reg_bias.to(b_l.dtype).view(1, 1, self.R)
             m_l = m_l + self.mob_reg_bias.to(m_l.dtype).view(1, 1, self.R)
         w = F.softmax(w_l, dim=-1).transpose(1, 2).unsqueeze(2).unsqueeze(-1)  # [B, R, 1, T, 1]
@@ -619,22 +849,26 @@ class SpinorRegisterField(nn.Module):
         rm = torch.tanh(rm).transpose(1, 2).unsqueeze(2).unsqueeze(-1)
         qm = torch.tanh(qm).transpose(1, 2).unsqueeze(2).unsqueeze(-1)
 
-        if self.use_gen4:
-            half_r = max(1, self.R // 2)
+        if self.use_gen4 or self.use_gen5:
+            split_r = max(1, self.R // 4) if self.use_gen5 else max(1, self.R // 2)
             omega = mob * (o_tok + om * self.omega_reg.to(o_tok.dtype).view(1, self.R, self.G, 1, 3))
             rho = rho_tok + rm * self.rho_reg.to(rho_tok.dtype).view(1, self.R, self.G, 1, 3)
             q_gen = q_tok + qm * self.q_reg.to(q_tok.dtype).view(1, self.R, self.G, 1, 3)
-            # Exact unitary/episodic fiber split: zero decay/additive drift on holonomy half [:half_r]
-            g_holo = su2_lie_exponential(omega[:, :half_r]).to(h.dtype)
-            s_holo = torch.zeros(bsz, half_r, self.G, seq_len, 4, device=h.device, dtype=h.dtype)
-            decay_ep = (1.0 - w[:, half_r:] * beta[:, half_r:]).clamp_min(1e-4)
-            g_ep = (decay_ep * su2_lie_exponential(omega[:, half_r:])).to(h.dtype)
-            s_ep = (w[:, half_r:] * hamilton_product(su2_lie_exponential(rho[:, half_r:]), phi)).to(h.dtype)
+            g_holo = su2_lie_exponential(omega[:, :split_r]).to(h.dtype)
+            s_holo = torch.zeros(bsz, split_r, self.G, seq_len, 4, device=h.device, dtype=h.dtype)
+            decay_ep = (1.0 - w[:, split_r:] * beta[:, split_r:]).clamp_min(1e-4)
+            g_ep = (decay_ep * su2_lie_exponential(omega[:, split_r:])).to(h.dtype)
+            s_ep_raw = w[:, split_r:] * hamilton_product(su2_lie_exponential(rho[:, split_r:]), phi)
+            if self.use_gen5:
+                sigma_ep = torch.tanh(self.sign_proj(h)).transpose(1, 2).unsqueeze(2).unsqueeze(-1)
+                s_ep = (sigma_ep * s_ep_raw).to(h.dtype)
+            else:
+                s_ep = s_ep_raw.to(h.dtype)
             g = torch.cat((g_holo, g_ep), dim=1)
             s = torch.cat((s_holo, s_ep), dim=1)
             if scan_state is None:
                 scan_state = torch.zeros(bsz, self.R, self.G, 4, device=h.device, dtype=h.dtype)
-                scan_state[:, :half_r, :, 0] = 1.0
+                scan_state[:, :split_r, :, 0] = 1.0
         else:
             omega = mob * (o_tok * om + self.omega_reg.view(1, self.R, self.G, 1, 3))
             rho = rho_tok * rm + self.rho_reg.view(1, self.R, self.G, 1, 3)
@@ -650,18 +884,21 @@ class SpinorRegisterField(nn.Module):
         else:
             all_omega, next_scan = holonomy_scan_fast(g, s, init_state=scan_state, chunk_size=self.chunk)
 
-        if self.use_gen4:
-            half_r = max(1, self.R // 2)
+        if self.use_gen4 or self.use_gen5:
+            split_r = max(1, self.R // 4) if self.use_gen5 else max(1, self.R // 2)
             # Strictly Z2-invariant SO(3) projective adjoint on holonomy bundle (zero +/-q leak)
             adj_holo = (
-                so3_projective_adjoint(all_omega[:, :half_r])
+                so3_projective_adjoint(all_omega[:, :split_r])
                 .permute(0, 1, 3, 2, 4)
-                .reshape(bsz, half_r, seq_len, 9 * self.G)
+                .reshape(bsz, split_r, seq_len, 9 * self.G)
             )
             holo_read = self.so3_read_proj(adj_holo.to(h.dtype))
-            ep_q = su2_lie_exponential(q_gen[:, half_r:])
-            ep_unbound = hamilton_product(spinor_conjugate(ep_q.to(all_omega.dtype)), all_omega[:, half_r:])
-            ep_read = ep_unbound.permute(0, 1, 3, 2, 4).reshape(bsz, self.R - half_r, seq_len, self.d_fiber).to(h.dtype)
+            ep_q = su2_lie_exponential(q_gen[:, split_r:])
+            ep_unbound = hamilton_product(spinor_conjugate(ep_q.to(all_omega.dtype)), all_omega[:, split_r:])
+            ep_read = ep_unbound.permute(0, 1, 3, 2, 4).reshape(bsz, self.R - split_r, seq_len, self.d_fiber).to(h.dtype)
+            if self.use_gen5:
+                holo_read = self.holo_read_gate.to(h.dtype) * holo_read
+                ep_read = self.ep_read_gate.to(h.dtype) * ep_read
             unbound_flat = torch.cat((holo_read, ep_read), dim=1)
         else:
             q_rot = cayley_rotor(q_gen)
@@ -691,8 +928,10 @@ class _UnifiedBlock(nn.Module):
             self.mixer: nn.Module = _TransformerMixer(cfg)
         elif cfg.is_abelian:
             self.mixer = _AbelianRegisterMixer(cfg)
+        elif cfg.is_deltanet:
+            self.mixer = _GatedDeltaNetMixer(cfg)
         else:
-            self.mixer = SpinorRegisterField(cfg)
+            self.mixer = SpinorRegisterField(cfg, layer_idx=layer_idx)
 
         self.res_mix_gate: nn.Parameter | None = (
             nn.Parameter(torch.tensor(1.0 if layer_idx == 0 else 0.0))
@@ -700,8 +939,11 @@ class _UnifiedBlock(nn.Module):
             else None
         )
         self.uses_predcode = cfg.uses_predcode
+        self.uses_ph_ffn = cfg.uses_ph_ffn
         if self.uses_predcode:
             self.ffn: nn.Module = PredictiveCodingCell(cfg.d_model, cfg.d_ff, iters=cfg.pc_iters, rms_eps=cfg.rms_eps)
+        elif self.uses_ph_ffn:
+            self.ffn = PortHamiltonianFFNCell(cfg.d_model, cfg.d_ff, iters=cfg.pc_iters, rms_eps=cfg.rms_eps)
         else:
             self.gate_proj = nn.Linear(cfg.d_model, cfg.d_ff, bias=False)
             self.up_proj = nn.Linear(cfg.d_model, cfg.d_ff, bias=False)
@@ -722,13 +964,13 @@ class _UnifiedBlock(nn.Module):
         else:
             x = x + h_mix
         h2 = self.ffn_norm(x)
-        if self.uses_predcode:
+        if self.uses_predcode or self.uses_ph_ffn:
             return x + self.ffn(h2), next_state
         return x + self.down_proj(F.silu(self.gate_proj(h2)) * self.up_proj(h2)), next_state
 
 
 class HSPAUnifiedLM(nn.Module):
-    """Unified Causal Language Model across Transformer, Abelian SSM, and SU(2) HSPA."""
+    """Unified Causal Language Model across Transformer, Abelian/DeltaNet SSM, and SU(2) HSPA."""
 
     def __init__(self, cfg: HSPAArchConfig) -> None:
         super().__init__()
@@ -737,6 +979,14 @@ class HSPAUnifiedLM(nn.Module):
         nn.init.normal_(self.tok_emb.weight, std=0.02)
         self.blocks = nn.ModuleList(_UnifiedBlock(cfg, layer_idx=idx) for idx in range(cfg.n_layers))
         self.final_norm = nn.RMSNorm(cfg.d_model, eps=cfg.rms_eps)
+        self.has_copy_gate = bool(cfg.uses_gen5 and cfg.use_copy_gate)
+        if self.has_copy_gate:
+            self.copy_q = nn.Linear(cfg.d_model, cfg.d_head, bias=False)
+            self.copy_k = nn.Linear(cfg.d_model, cfg.d_head, bias=False)
+            self.copy_gate = nn.Linear(cfg.d_model, 1, bias=True)
+            with torch.no_grad():
+                nn.init.normal_(self.copy_gate.weight, std=0.02)
+                self.copy_gate.bias.fill_(-2.5)
 
     @property
     def num_parameters(self) -> int:
@@ -777,6 +1027,47 @@ class HSPAUnifiedLM(nn.Module):
             h, nxt = block(h, cos, sin, state=st, use_state=use_state)
             if use_state:
                 next_states.append(nxt)
-        h_sel = h[:, -logits_to_keep:, :] if logits_to_keep is not None else h
-        logits = F.linear(self.final_norm(h_sel), self.tok_emb.weight)
+
+        h_norm = self.final_norm(h)
+        h_sel = h_norm[:, -logits_to_keep:, :] if logits_to_keep is not None else h_norm
+        logits = F.linear(h_sel, self.tok_emb.weight)
+
+        if self.has_copy_gate:
+            k_cur = self.copy_k(h_norm)
+            q_sel = self.copy_q(h_sel)
+            win = self.config.copy_window
+            if past_states is not None and len(past_states) > self.config.n_layers:
+                prev_ids, prev_k = past_states[self.config.n_layers]
+                ctx_ids = torch.cat((prev_ids, input_ids), dim=1)[:, -win:]
+                ctx_k = torch.cat((prev_k, k_cur), dim=1)[:, -win:]
+                hist_len = int(prev_ids.shape[1]) if prev_ids.shape[1] < win else win - seq_len
+                # Exact query-to-context causal offset: last `seq_len` entries in ctx correspond to current chunk
+                n_ctx = int(ctx_ids.shape[1])
+                n_q = int(q_sel.shape[1])
+                q_pos = torch.arange(n_ctx - n_q, n_ctx, device=h.device).unsqueeze(1)
+                k_pos = torch.arange(n_ctx, device=h.device).unsqueeze(0)
+                allowed = (k_pos <= q_pos) & ((q_pos - k_pos) < win)
+            else:
+                ctx_ids = input_ids
+                ctx_k = k_cur
+                n_ctx = seq_len
+                n_q = int(q_sel.shape[1])
+                q_pos = torch.arange(seq_len - n_q, seq_len, device=h.device).unsqueeze(1)
+                k_pos = torch.arange(n_ctx, device=h.device).unsqueeze(0)
+                allowed = (k_pos <= q_pos) & ((q_pos - k_pos) < win)
+
+            with torch.amp.autocast(device_type=h.device.type, enabled=False):
+                scores = torch.matmul(q_sel.float(), ctx_k.float().transpose(-1, -2)) / math.sqrt(self.config.d_head)
+                scores = scores.masked_fill(~allowed.unsqueeze(0), -1e9)
+                copy_probs = F.softmax(scores, dim=-1).to(logits.dtype)
+            gate = torch.sigmoid(self.copy_gate(h_sel)).to(logits.dtype)
+            copy_dist = torch.zeros_like(logits).scatter_add(
+                -1,
+                ctx_ids.unsqueeze(1).expand(-1, n_q, -1),
+                copy_probs,
+            )
+            logits = logits + gate * torch.log1p(12.0 * copy_dist)
+            if use_state:
+                next_states.append((ctx_ids[:, -win:].detach(), ctx_k[:, -win:].detach()))
+
         return (logits, next_states) if use_state else logits

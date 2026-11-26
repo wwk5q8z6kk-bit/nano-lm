@@ -77,3 +77,21 @@ Because small perturbations in $H_t^{(0)}$ alter every subsequent step $t$ of la
 Because orthogonal nullspace projection $P_\perp = I - V_k V_k^\top$ is linear, `SpectralNullspaceLoRALinear` forward evaluation
 $$y = x W_0^\top + \alpha\, (x P_\perp) A^\top B^\top = x \Big(W_0 + \alpha\, B (A P_\perp)\Big)^\top = x W_{\text{merged}}^\top$$
 can be folded **exact to floating-point precision** (`6/6` exact greedy match at `1.747B`) into `base.weight` via `merge()` / `unmerge()` (CPU base backup = `0 MB` extra GPU VRAM), preserving nullspace orthogonality ($\|\Delta W_\perp V_k\|_F / \|\Delta W_\perp\|_F \le 7\times 10^{-7}$). Eliminating dual-path GEMM + Python kernel-launch overhead via static-buffer `torch.cuda.CUDAGraph` (`StaticGraphHSPADecoder`, $L_{\text{dec}}=1$) yields **`7.55x`** nullspace linear speedup (`252.24 -> 33.42 us`), **`1.61x`** end-to-end HF decode speedup (`8.73 -> 14.09 tok/s`), **`3.10x`** on `1.808B` (`158.413 -> 51.023 ms/tok`), and **`2.35x`** on flagship `3.841B <= 4B` (`236.105 -> 100.291 ms/tok`).
+
+---
+
+## Theorem 8 — Discrete Port-Hamiltonian Sheaf Interaction Stability & Givens Symplectic Contraction (`first_principles.py`, `PortHamiltonianFFNCell`)
+
+Let node states $x \in \mathbb{R}^{N \times d}$ evolve over a typed bitemporal interaction graph $G_t = (V, E_t)$ with $SO(3)^{d/3}$ edge transport maps $P_{ij}$ and discrete Port-Hamiltonian update:
+$$x_{k+1} = \exp\big(\Delta t (J - R)\big) x_k + \Delta t\, B u_k, \qquad J^\top = -J, \quad R \succeq 0.$$
+Because $J$ is skew-symmetric ($v^\top J v = 0$) and $R$ is positive semidefinite ($v^\top R v \ge 0$), the quadratic Hamiltonian $\mathcal{H}(x) = \frac{1}{2}\|x\|_2^2$ obeys the strict autonomous ($u_k = 0$) Lyapunov contraction invariant:
+$$\mathcal{H}(x_{k+1}) - \mathcal{H}(x_k) \le 0 \quad \forall k \ge 0.$$
+In `PortHamiltonianFFNCell`, partitioning channels into planar pairs $(q_j, p_j)$ with exact planar Givens symplectic rotation $G(\theta_j) \in SO(2)$ and strictly positive damping $\gamma_j = \operatorname{softplus}(\alpha_j) > 0$ enforces $\|G(\theta_j) e^{-\gamma_j \Delta t}\|_2 = e^{-\gamma_j \Delta t} < 1$, preventing recurrent energy blow-up across arbitrary depths (`autonomous_lyapunov_max_energy_delta = 0.0` verified in `EXP-FP1` and `test_first_principles.py`).
+
+---
+
+## Theorem 9 — Information-Bottleneck Causal Source-Copy Duality (`CausalSourceCopyGate`)
+
+Let a finite-state recurrent backbone compress history $X_{1:t}$ into bounded state $S_t \in \mathbb{R}^{d_s}$ ($d_s \ll t \log |V|$). By the Data Processing Inequality, for arbitrary key-value facts with entropy exceeding $H(S_t)$, any purely recurrent readout suffers irreducible exact-copy distortion (`0.00%` observed across `B0_Transformer` without copy anchor, `B2_Gated_DeltaNet`, `Gen1_H2`, and `Gen4` in `EXP-FP2B`, and `0.48%` in `gen5-fp-nocopy-micro`). Augmenting the readout with an $O(d)$-parameter causal source-copy gate over admissible ledger/prefix tokens $\alpha_t = \operatorname{softmax}_{\text{fp32}}(q_t^\top K_{1:t} / \sqrt{d_h})$:
+$$P_{\text{out}}(y \mid X_{1:t}) = (1 - \lambda_t) P_{\text{gen}}(y \mid h_t) + \lambda_t \sum_{s \le t} \alpha_{t,s}\, \mathbb{I}[x_s = y]$$
+decouples **lossy state-space reasoning** ($P_{\text{gen}}$) from **lossless verbatim transport** ($\sum \alpha_{t,s}\mathbb{I}[x_s=y]$). Empirically in `EXP-FP2B`, this `+2 d d_h + d + 1` gate lifted bitemporal exact value recall **`201x`** (`0.48% -> 96.67%`) while also lowering validation BPB (`0.3789 -> 0.3756`).

@@ -17,6 +17,9 @@
 | `EXPERIMENTAL` (`14M`) | `gen4-omega-so3-predcode-micro` (`Ω5`) | `13,948,944` | `-14.3%` VRAM vs `Gen1_H2` (`3,263.9 MB`) | `0.3775 ± 0.00437` BPB (`math 9.03%`, `state 3.47%`) | **Rejected vs `Gen1_H2` (`0.3701` BPB)** (`res_mix_gate=0` in 7/8 layers) |
 | **`BREAKTHROUGH` (`1.75B`)** | **`NanoLM-Ω-1.7B` (`Naked_Greedy`)** | **`1,747,444,768`** | `Nullspace k=48 + HSPA-Ω Sidecar` | **`40/56 (71.43%)`, `coding=3/4`** | **Outperforms `8.19B` `Qwen3-8B` (`39/56 = 69.64%`)** |
 | **`BREAKTHROUGH` (`Ω-v2`)** | **`NanoLM-Ω-v2-1.7B` (`Cognitive_v2`)** | **`1,747,444,768`** | `Merged Nullspace + Controller-v2` | **`41/56 (73.21%)`, `diagrams 4/4`, `tools 4/4`** | **Lifts T4 FP16 (`38/56`) `+3` (`6/6` merge parity, `1.61x` speed)** |
+| `BASELINE` (`C4`) | `b2-gated-deltanet-micro` (`FP2`) | `14,018,688` | Chunkwise WY DeltaNet (`1.91e-6` parity) | `0.3785 ± 0.00008` BPB (`bit=0.0%`) | Modern recurrent baseline (`EXP-FP2`) |
+| `EXPERIMENTAL` (`C4`) | `gen5-fp-ph-holonomy-micro` (`FP2`) | `14,008,545` | `PortHamiltonianFFN` + `CausalSourceCopyGate` | `0.3756` BPB, **`96.67%` bitemporal recall (`201x`)** | **`201x` copy-gate breakthrough; `Gen1_H2` retains `BEST` BPB (`0.3751`)** |
+| **`BREAKTHROUGH` (`Ω-v3`)** | **`NanoLM-FP-v3-1.7B` (`WorldCtrl_v3`)** | **`1,747,444,768`** | `AppendOnlySourceLedger + Controller-v3` | **`FP-5Axis-30: 15/30 (50.0%)` vs `SC3 9/30`; `15D: 41/56`** | **Beats `3x` Equal-Compute `SC3` (`+66.7%` rel, `overlaps=0`)** |
 
 ---
 
@@ -43,5 +46,7 @@
 | `HSPA_OMEGA_2B_CONFIG` (`nanolm-hspa-omega-2b`) | `1,808,108,608` | Pass | `65,536` | `1.00 MB` ($O(1)$, `51.023 ms/tok` graph) |
 | `HSPA_4B_CONFIG` (`nanolm-hspa-4b`) | `3,845,419,056` | Pass | `65,536` | **`1.781 MB`** (`1,725x` smaller than KV) |
 | `HSPA_OMEGA_4B_CONFIG` (`nanolm-hspa-omega-4b`) | `3,840,503,904` | Pass | `65,536` | **`1.50 MB`** ($O(1)$, `100.291 ms/tok` graph) |
+| `HSPA_GEN5_2B_CONFIG` (`nanolm-hspa-gen5-2b`) | `1,809,521,793` | Pass | `65,536` | `PortHamiltonianFFN` + `CausalSourceCopyGate` |
+| `HSPA_GEN5_4B_CONFIG` (`nanolm-hspa-gen5-4b`) | `3,842,826,561` | Pass | `65,536` | `PortHamiltonianFFN` + `CausalSourceCopyGate` |
 | `TRANSFORMER_4B_CONFIG` | `3,843,291,648` | Pass | `65,536` | `3,072.0 MB` KV at `32,768` |
-| `NanoLM-Ω-1.7B` / `Ω-v2-1.7B` (Grafted `Qwen3-1.7B`) | `1,747,444,768` | Pass | `32,768` | `448 MB` KV @ `4K` + `HSPA-Ω` sidecar |
+| `NanoLM-Ω-1.7B` / `Ω-v2` / `FP-v3` (Grafted `Qwen3-1.7B`) | `1,747,444,768` | Pass | `32,768` | `448 MB` KV @ `4K` + `HSPA-Ω` sidecar |

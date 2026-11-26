@@ -113,3 +113,44 @@ Trained strictly on `L=32` (`600` steps), tested zero-shot up to `L=512`:
 | HSPA-Ω Decode (`seq=512, dec=32`) | `nanolm-hspa-omega-4b` (`3.841B <= 4B`) | `236.105 ms/tok` | **`100.291 ms/tok`** (`1.50 MB` state) | **`2.35x`** | `greedy_parity=True`, `8,409.83 MB` VRAM |
 | Nullspace LoRA Merge | `[2048, 2048]` Linear (`k=48, r=16`) | `252.24 us` | **`33.42 us`** | **`7.55x`** | `max_diff=0.001953`, ortho err `5e-7` |
 | Nullspace LoRA Merge | `[2048, 6144]` Linear (`k=48, r=16`) | `267.62 us` | **`100.47 us`** | **`2.66x`** | `max_diff=0.001953`, ortho err `7e-7` |
+
+---
+
+## 9. Cycle 4 (`NANOLM Ω-v3`, First-Principles Interaction Intelligence — [artifacts/nanolm_fp_v3](artifacts/nanolm_fp_v3), `$0.00` Compute)
+
+### `EXP-FP1` — Typed Relational/Bitemporal Microcosm (`3` Seeds `101/202/303`, `~49.7K` Iso-Param, Kaggle `2x T4`)
+
+| Arm | Params | Canonical | Paraphrase | `6x` OOD (`N=160`) | Lyapunov $\max\Delta\mathcal{H}$ |
+|---|---:|---:|---:|---:|---:|
+| `D0_Deterministic_Rules` | `0` | **`1.0000`** | `0.6143` | `0.6571` | N/A |
+| `flat_transformer` | `49,779` | `0.8238 ± 0.1592` | `0.8524 ± 0.1174` | `0.4762 ± 0.1197` | N/A |
+| `unsigned_gat` | `49,734` | **`1.0000`** | **`1.0000`** | **`0.8381 ± 0.0356`** | N/A |
+| `signed_mesh` | `49,783` | `1.0000` | `1.0000` | `0.3809 ± 0.2763` | N/A |
+| `sheaf_port_hamiltonian` | `49,688` | `1.0000` | `1.0000` | `0.5809 ± 0.0713` | **`0.0`** |
+| `dynamic_rewire_ph` | `49,688` | `1.0000` | `1.0000` | `0.4381 ± 0.0883` | **`0.0`** |
+
+### `EXP-FP2` — `Gen5` Sequence LM (`2A` $S_4$, `2B` 3-Seed `14M` AdamW + Copy-Gate Ablation, `2C` 2-Seed Muon, Kaggle `2x T4`)
+
+| Arm (`14M` `EXP-FP2B` AdamW) | Params | Val BPB (`AdamW`) | Val BPB (`Muon`) | Exact Copy | Bitemporal Recall | $S_4$ `L256` (`2A`) | Verdict |
+|---|---:|---:|---:|---:|---:|---:|---|
+| `b0-transformer-micro` | `13,966,464` | `0.3784 ± 0.00106` | `0.3849` | `0.00%` | `0.00%` | `3.91%` | Baseline |
+| `b2-gated-deltanet-micro` | `14,018,688` | `0.3785 ± 0.00008` | `0.3865` | `0.00%` | `0.00%` | `6.25%` | Modern Recurrent Baseline |
+| **`gen1-h2-hspa-predcode-micro`** | `14,022,536` | **`0.3751 ± 0.00217`** | **`0.3749`** | `0.00%` | `0.00%` | `3.12%` | **Retains `BEST` BPB** |
+| `gen4-omega-so3-predcode-micro` | `13,948,944` | `0.3775 ± 0.00243` | — | `0.00%` | `0.00%` | **`97.66%`** | **Retains $S_4$ Dominance** |
+| **`gen5-fp-ph-holonomy-micro`** | `14,008,545` | `0.3756 ± 0.00000` | `0.3793` | **`4.29%`** | **`96.67%`** | `3.12%` | **`201x` Copy-Gate Breakthrough (`did_not_beat_best` BPB)** |
+| `gen5-fp-nocopy-micro` (ablation) | `13,971,296` | `0.3789 ± 0.00010` | — | `0.00%` | `0.48%` | — | Proves `CausalSourceCopyGate` causality |
+
+### `EXP-FP3` — 8-Primitive Ablation & `VoI` Halting Pareto (`3` Seeds, Kaggle `2x T4`)
+- **Full $\mathcal{U}_t$:** **`1.0000 ± 0.0000`**; all `8` single-primitive knockouts collapsed (`no_adaptation_weights=0.1198`, `no_identity_p_ij=0.1771`, `no_transition_clock_q_ij=0.2031`, `no_relation_edges=0.2448`, `no_info_source_ledger=0.2500`, `no_state=0.3125`, `no_objective_voi=0.4271`, `no_constraint_dissipation=0.6146`).
+- **VoI Halting:** `voi_lambda=0.28` achieved **`1.0000 @ 3.375` mean steps**, strictly Pareto-dominating `fixed_k=4` (`1.0000 @ 4.00`) and `fixed_k=8` (`0.8229 @ 8.00`).
+
+### `EXP-FP4` — `1.747B` `WorldController_v3` vs `EqualCompute_SC3` on `FP-5Axis-30` & `15D-56` (Local M3 Max MPS, `overlaps=0`)
+
+| Arm (`FP-5Axis-30`) | Params | Overall | Accuracy `[95% CI]` | Calls | `rel` | `bitemp` | `exact` | `causal` | `xdom` |
+|---|---:|---:|---|---:|---:|---:|---:|---:|---:|
+| `D0_Deterministic_Symbolic` | `0` | `11/30` | `36.67%` `[16.7, 53.3]` | `0` | `2/6` | `4/6` | `3/6` | `0/6` | `2/6` |
+| `NanoLM_1.7B_Naked_Merged_Greedy` | `1.747B` | `9/30` | `30.00%` `[13.3, 46.7]` | `30` | `1/6` | `1/6` | `3/6` | **`2/6`** | `2/6` |
+| `NanoLM_1.7B_EqualCompute_SC3` | `1.747B` | `9/30` | `30.00%` `[13.3, 46.7]` | `90` | `1/6` | `1/6` | `3/6` | **`2/6`** | `2/6` |
+| **`NanoLM_1.7B_WorldController_v3`** | **`1.747B`** | **`15/30`** | **`50.00%` `[33.3, 66.7]`** | **`64`** | **`4/6`** | `3/6` | **`4/6`** | `1/6` | **`3/6`** |
+
+- **`benchmark_15d` (`56` tasks):** `NanoLM_FP_v3_1.7B_Controller_v3` scored **`41/56 (73.21% [62.5%, 83.9%])`** (`coding=3/4`, `math_logic=4/4`, `summarization=4/4`, `general_knowledge=4/4`, `tool_use=4/4`, `hallucination_resistance=4/4`, `diagrams_charts=3/4`, `planning_decomposition=1/4`, `21` repairs, `cap/B=0.4190`, adapter SHA `66f2ce64e47ff701`).
