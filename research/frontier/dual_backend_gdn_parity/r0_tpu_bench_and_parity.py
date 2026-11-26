@@ -389,12 +389,38 @@ def safe_bench_config(
             return row
         except Exception as exc:
             msg = str(exc)
-            if ("RESOURCE_EXHAUSTED" in msg or "Out of memory" in msg) and (cur_mb > 1 or cur_vc > 512):
+            if "RESOURCE_EXHAUSTED" in msg or "Out of memory" in msg:
                 if cur_mb > 1:
                     cur_mb //= 2
                     cur_acc *= 2
-                else:
+                elif cur_acc > 1:
+                    cur_acc = 1
+                elif cur_vc > 256:
                     cur_vc //= 2
+                else:
+                    with jax.default_device(jax.devices("cpu")[0]):
+                        n_p_oom = jax_n_params(init_jax_hybrid_params(jax.random.PRNGKey(0), cfg))
+                    oom_row = {
+                        "label": label,
+                        "params": n_p_oom,
+                        "dp_chips": dp,
+                        "micro_batch": cur_mb,
+                        "accum": cur_acc,
+                        "seq": seq,
+                        "tokens_per_step": dp * cur_acc * cur_mb * seq,
+                        "with_cached_top32_kd": with_kd,
+                        "compile_sec": 0.0,
+                        "median_step_ms": 0.0,
+                        "tokens_per_second_total": 0.0,
+                        "tokens_per_second_per_chip": 0.0,
+                        "achieved_6N_TFLOPS_total": 0.0,
+                        "mfu_of_datasheet_peak": 0.0,
+                        "peak_chip_hbm_gib": 15.75,
+                        "nonfinite_steps": 0,
+                        "oom_16gib_hbm": True,
+                    }
+                    print(json.dumps({"event": "bench_row_oom", **oom_row}), flush=True)
+                    return oom_row
                 print(json.dumps({"event": "bench_oom_stepdown", "label": label, "new_micro_b": cur_mb, "new_accum": cur_acc, "new_vocab_chunk": cur_vc}), flush=True)
                 continue
             raise
@@ -493,25 +519,25 @@ def main():
 
         dp_max = len(devs)
         bench_rows = [
-            # Direct 1-chip comparisons at exact 16,384 tok/step (`4x2048` x `accum=2`)
-            safe_bench_config("r0_547m_gdn_1chip_2k", cfg_r0_gdn, micro_b=4, seq=2048, accum=2, dp=1, with_kd=False, steps=12, peak_tflops_per_chip=peak_tf),
-            safe_bench_config("r0_547m_gdn_kd32_1chip_2k", cfg_r0_gdn, micro_b=4, seq=2048, accum=2, dp=1, with_kd=True, steps=12, peak_tflops_per_chip=peak_tf),
+            # Direct 1-chip comparisons at exact 16,384 tok/step
+            safe_bench_config("r0_547m_gdn_1chip_2k", cfg_r0_gdn, micro_b=2, seq=2048, accum=4, dp=1, with_kd=False, steps=12, peak_tflops_per_chip=peak_tf),
+            safe_bench_config("r0_547m_gdn_kd32_1chip_2k", cfg_r0_gdn, micro_b=2, seq=2048, accum=4, dp=1, with_kd=True, steps=12, peak_tflops_per_chip=peak_tf),
             safe_bench_config("r0_542m_hybrid_kd32_1chip_2k", cfg_r0_hyb, micro_b=4, seq=2048, accum=2, dp=1, with_kd=True, steps=12, peak_tflops_per_chip=peak_tf),
             safe_bench_config("r0_527m_attn_1chip_2k", cfg_r0_att, micro_b=4, seq=2048, accum=2, dp=1, with_kd=False, steps=12, peak_tflops_per_chip=peak_tf),
-            # Long-context scaling: 4k & 8k context (`16,384` tok/step) — GDN vs Hybrid vs Softmax Attention!
-            safe_bench_config("r0_547m_gdn_1chip_4k", cfg_r0_gdn, micro_b=2, seq=4096, accum=2, dp=1, with_kd=False, steps=10, peak_tflops_per_chip=peak_tf),
+            # Long-context scaling: 4k & 8k context — GDN vs Hybrid vs Softmax Attention!
+            safe_bench_config("r0_547m_gdn_1chip_4k", cfg_r0_gdn, micro_b=1, seq=4096, accum=4, dp=1, with_kd=False, steps=10, peak_tflops_per_chip=peak_tf),
             safe_bench_config("r0_527m_attn_1chip_4k", cfg_r0_att, micro_b=2, seq=4096, accum=2, dp=1, with_kd=False, steps=10, peak_tflops_per_chip=peak_tf),
-            safe_bench_config("r0_547m_gdn_1chip_8k", cfg_r0_gdn, micro_b=1, seq=8192, accum=2, dp=1, with_kd=False, steps=10, peak_tflops_per_chip=peak_tf),
-            safe_bench_config("r0_542m_hybrid_1chip_8k", cfg_r0_hyb, micro_b=1, seq=8192, accum=2, dp=1, with_kd=False, steps=10, peak_tflops_per_chip=peak_tf),
-            safe_bench_config("r0_527m_attn_1chip_8k", cfg_r0_att, micro_b=1, seq=8192, accum=2, dp=1, with_kd=False, steps=10, peak_tflops_per_chip=peak_tf),
+            safe_bench_config("r0_547m_gdn_1chip_8k", cfg_r0_gdn, micro_b=1, seq=8192, accum=1, dp=1, with_kd=False, steps=10, peak_tflops_per_chip=peak_tf),
+            safe_bench_config("r0_542m_hybrid_1chip_8k", cfg_r0_hyb, micro_b=1, seq=8192, accum=1, dp=1, with_kd=False, steps=10, peak_tflops_per_chip=peak_tf),
+            safe_bench_config("r0_527m_attn_1chip_8k", cfg_r0_att, micro_b=1, seq=8192, accum=1, dp=1, with_kd=False, steps=10, peak_tflops_per_chip=peak_tf),
             # 152M SmolLM2-135M hybrid (`Stage B` exact architecture) on TPU
             safe_bench_config("stageb_152m_hybrid_1chip_1k", cfg_152m_hyb, micro_b=8, seq=1024, accum=4, dp=1, with_kd=False, steps=12, peak_tflops_per_chip=peak_tf),
         ]
         if dp_max >= 4:
             bench_rows.extend([
-                safe_bench_config("r0_547m_gdn_4chip_dp_2k", cfg_r0_gdn, micro_b=4, seq=2048, accum=2, dp=4, with_kd=False, steps=12, peak_tflops_per_chip=peak_tf),
+                safe_bench_config("r0_547m_gdn_4chip_dp_2k", cfg_r0_gdn, micro_b=2, seq=2048, accum=4, dp=4, with_kd=False, steps=12, peak_tflops_per_chip=peak_tf),
                 safe_bench_config("r0_542m_hybrid_kd32_4chip_dp_2k", cfg_r0_hyb, micro_b=4, seq=2048, accum=2, dp=4, with_kd=True, steps=12, peak_tflops_per_chip=peak_tf),
-                safe_bench_config("r0_542m_hybrid_kd32_4chip_dp_8k", cfg_r0_hyb, micro_b=1, seq=8192, accum=2, dp=4, with_kd=True, steps=10, peak_tflops_per_chip=peak_tf),
+                safe_bench_config("r0_542m_hybrid_kd32_4chip_dp_8k", cfg_r0_hyb, micro_b=1, seq=8192, accum=1, dp=4, with_kd=True, steps=10, peak_tflops_per_chip=peak_tf),
             ])
 
         stab = run_stability_100(cfg_r0_gdn, dev0, micro_b=2, seq=1024, steps=100)
