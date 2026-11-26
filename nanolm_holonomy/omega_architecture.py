@@ -25,6 +25,7 @@ from torch import Tensor, nn
 from torch.nn import functional as F
 
 from nanolm_frontier.surgery_and_rlvr import _bypass_adapters
+from nanolm_holonomy.sidecar_evolution import _SidecarWrappedDecoderLayer
 from nanolm_holonomy.spinor_algebra import (
     hamilton_product,
     so3_projective_adjoint,
@@ -197,7 +198,7 @@ class HSPAOmegaSidecar(nn.Module):
         self.G = d_fiber // 4
         self.d_fiber = d_fiber
         self.bypass = False
-        self._cached_scan_state: Tensor | None = None
+        self._cache_generation = object()
 
         self.in_norm = nn.RMSNorm(d_model)
         self.phi_proj = nn.Linear(d_model, d_fiber, bias=False)
@@ -212,9 +213,10 @@ class HSPAOmegaSidecar(nn.Module):
         self.sidecar_gate = nn.Parameter(torch.zeros(d_model, dtype=torch.float32))
 
     def reset_cache(self) -> None:
-        self._cached_scan_state = None
+        """Invalidate this layer's entries in any live Transformer caches."""
+        self._cache_generation = object()
 
-    def forward(self, h: Tensor) -> Tensor:
+    def forward(self, h: Tensor, *, state: Tensor | None = None, cache_state: dict | None = None) -> Tensor:
         if self.bypass:
             return torch.zeros_like(h)
 
@@ -235,19 +237,13 @@ class HSPAOmegaSidecar(nn.Module):
         g = (1.0 - w * beta).clamp_min(1e-4) * su2_lie_exponential(o_gen)
         s = w * hamilton_product(su2_lie_exponential(rho_gen), phi)
 
-        if (
-            not self.training
-            and seq_len == 1
-            and self._cached_scan_state is not None
-            and self._cached_scan_state.shape[0] == bsz
-        ):
-            nxt = step_holonomy(g.squeeze(-2), s.squeeze(-2), self._cached_scan_state)
-            self._cached_scan_state = nxt.detach()
+        if seq_len == 1 and state is not None:
+            nxt = step_holonomy(g.squeeze(-2), s.squeeze(-2), state)
             all_omega = nxt.unsqueeze(-2)
         else:
-            all_omega, nxt = holonomy_scan_fast(g, s, init_state=None, chunk_size=256)
-            if not self.training:
-                self._cached_scan_state = nxt.detach()
+            all_omega, nxt = holonomy_scan_fast(g, s, init_state=state, chunk_size=256)
+        if cache_state is not None:
+            cache_state["scan"] = nxt.detach()
 
         unbound = hamilton_product(spinor_conjugate(su2_lie_exponential(q_gen)), all_omega)
         adj = so3_projective_adjoint(unbound).permute(0, 1, 3, 2, 4).reshape(bsz, self.R, seq_len, self.G * 9)
@@ -257,18 +253,8 @@ class HSPAOmegaSidecar(nn.Module):
         return (torch.tanh(self.sidecar_gate) * out).to(h.dtype)
 
 
-class _OmegaWrappedLayer(nn.Module):
-    def __init__(self, base_layer: nn.Module, sidecar: HSPAOmegaSidecar) -> None:
-        super().__init__()
-        self.base_layer = base_layer
-        self.sidecar = sidecar
-
-    def forward(self, hidden_states: Tensor, *args: Any, **kwargs: Any) -> Any:
-        out = self.base_layer(hidden_states, *args, **kwargs)
-        if isinstance(out, tuple):
-            h_out = out[0]
-            return (h_out + self.sidecar(h_out), *out[1:])
-        return out + self.sidecar(out)
+class _OmegaWrappedLayer(_SidecarWrappedDecoderLayer):
+    """Omega graft with the same per-layer, per-request cache lifecycle as the holonomy graft."""
 
 
 def apply_omega_graft(
@@ -297,7 +283,7 @@ def apply_omega_graft(
         start_idx = max(0, n_layers - n_sidecar_layers)
         for idx in range(start_idx, n_layers):
             sc = HSPAOmegaSidecar(d_model, n_registers=n_registers, d_fiber=d_fiber).to(ref_param.device)
-            layers[idx] = _OmegaWrappedLayer(layers[idx], sc)
+            layers[idx] = _OmegaWrappedLayer(layers[idx], sc, idx)
             sidecars += 1
 
     total_after = sum(p.numel() for p in model.parameters())

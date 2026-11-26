@@ -82,6 +82,9 @@ def test_five_architectures_forward_backward_and_budget() -> None:
         assert logits.shape == (2, 24, 256)
         loss = logits.sum()
         loss.backward()
+        for name, p in model.named_parameters():
+            if "lambda_k" in name:
+                assert p.grad is not None and p.grad.abs().max() > 0
         grads = [p.grad for p in model.parameters() if p.requires_grad]
         assert grads and all(g is not None and torch.isfinite(g).all() for g in grads)
 
@@ -100,8 +103,23 @@ def test_iso_param_tournament_configs_and_kv_reduction() -> None:
     # All 5 architectures stay within 1% parameter spread
     assert (max(counts) - min(counts)) / min(counts) < 0.015
     kv_c0 = cfgs[0].kv_cache_bytes_per_token()
-    for c in cfgs[1:]:
+    for c in cfgs[1:4]:
         assert c.kv_cache_bytes_per_token() == kv_c0 // 4
+
+
+@pytest.mark.parametrize("loops,softmax_passes,delta_passes", [(1, 3, 9), (2, 5, 15), (4, 9, 27)])
+def test_cache_estimates_count_recurrent_core_passes(loops, softmax_passes, delta_passes) -> None:
+    micro = build_micro_tournament_configs()
+    c4 = replace(micro[4], active_loops=loops)
+    report = c4.parameter_breakdown()
+    # The 12-layer micro core spans indices [2, 10), including softmax layers 3 and 7.
+    assert report["kv_cache_bytes_per_token_bf16"] == softmax_passes * 512
+    assert report["recurrent_state_bytes_bf16"] == delta_passes * 65_536
+    assert c4.kv_cache_bytes_per_token(4) == 2 * report["kv_cache_bytes_per_token_bf16"]
+    assert c4.recurrent_state_bytes_per_sequence(4) == 2 * report["recurrent_state_bytes_bf16"]
+    for cfg in micro[:4]:
+        assert replace(cfg, active_loops=loops).kv_cache_bytes_per_token() == cfg.kv_cache_bytes_per_token()
+        assert replace(cfg, active_loops=loops).recurrent_state_bytes_per_sequence() == cfg.recurrent_state_bytes_per_sequence()
 
 
 def test_chunkwise_delta_and_ema_key_energy_match_reference() -> None:
@@ -307,3 +325,71 @@ def test_local_e1_smoke_tournament() -> None:
     c4_arm = res["arms"][-1]
     assert "jcle_test_time_scaling" in c4_arm
     assert len(c4_arm["jcle_test_time_scaling"]) == 4
+
+
+def test_reviewed_verifier_boundaries() -> None:
+    tasks = {task.task_id: task for task in build_benchmark_15d_suite()}
+
+    def passes(task_id, text):
+        return verify_benchmark_response(tasks[task_id], text).passed
+
+    assert passes("dia-03", 'flowchart LR\nA["Browser"] --> B[Gateway] --> C["Job Runner"] --> Alert')
+    assert not passes("dia-01", 'flowchart TD\nIngest -->\nValidate -->\nArchive -->')
+    assert not passes("mth-03", "FINAL_ANSWER: 39, not 38")
+    assert not passes("mth-03", "I reject 38")
+    assert not passes("pln-02", json.dumps({"order": [{}, {}, {}, {}], "makespan": 9}))
+    assert passes("hal-01", "ABSTAIN: $250 was for shipping.")
+    assert passes("hal-04", "ABSTAIN: Warehouse East holds 4,200 pallets, West is unknown.")
+    assert passes("hal-04", "ABSTAIN: The 4,200 pallets refer to Warehouse East; Warehouse West is not provided.")
+    assert not passes("hal-04", "ABSTAIN: East is unknown and West held 4,200 pallets.")
+    assert not passes("hal-04", "ABSTAIN: West held 4,200 pallets.")
+    mean, lo, hi = bootstrap_accuracy_ci([0, 1] * 28)
+    assert lo < mean < hi
+
+
+def test_branch_topology_and_json_type_contracts() -> None:
+    from nanolm_frontier.benchmark_15d import _verify_json_invariant
+
+    tasks = {task.task_id: task for task in build_benchmark_15d_suite()}
+    main = 'flowchart LR\nClient["Browser (UI)"] --> Gateway["API Gateway"] --> Worker["Job Runner (Async)"]\n'
+    for edge in ("Gateway -->|error| Alert", "Worker --> Alert"):
+        assert verify_benchmark_response(tasks["dia-03"], main + edge).passed
+    for edge in ('Other["API Gateway"] --> Alert', "Alert --> Gateway", "Client --> Alert"):
+        assert not verify_benchmark_response(tasks["dia-03"], main + edge).passed
+    for task_id, key in (("jsn-01", "tls"), ("mem-01", "active")):
+        task = tasks[task_id]
+        expected = task.spec["expected_json"]
+        assert verify_benchmark_response(task, json.dumps(expected)).passed
+        assert not verify_benchmark_response(task, json.dumps({**expected, key: int(expected[key])})).passed
+    spec = {"expected_json": {"values": [True, 0, 1.5]}}
+    assert _verify_json_invariant('{"values": [true, 0, 1.5005]}', spec).passed
+    for bad in ('{"values": [1, 0, 1.5]}', '{"values": [true, false, 1.5]}', '{"values": [true, 0, NaN]}'):
+        assert not _verify_json_invariant(bad, spec).passed
+
+
+def test_decoding_attention_flops_match_value_width_and_loop_count() -> None:
+    for cfg in build_micro_tournament_configs():
+        start, end = cfg.resolved_loop_span
+        softmax_layers = sum(
+            cfg.active_loops if cfg.uses_jcle and start <= i < end else 1
+            for i in range(cfg.n_layers) if not cfg.is_delta_layer(i)
+        )
+        qk_width = cfg.n_heads * cfg.d_head
+        value_width = cfg.d_head * (2 if cfg.uses_diff_and_whitening else 1)
+        av_width = cfg.n_heads * value_width
+        expected_delta = 2 * softmax_layers * (qk_width + av_width)
+        assert cfg.active_flops_per_token(2048) - cfg.active_flops_per_token(2047) == expected_delta
+
+def test_instruction_constraint_words_and_suffix():
+    tasks = {task.task_id: task for task in build_benchmark_15d_suite()}
+    def passes(key, text):
+        return verify_benchmark_response(tasks[key], text).passed
+
+    assert not passes("ins-01", "superkernel")
+    assert passes("ins-01", "the kernel, under a cloudless sky.")
+    assert not passes("ins-01", "kernel on the cloud.")
+    good = "- tests support debugging\n- tests document behavior\n- tests enable refactoring END_CHECK"
+    assert passes("ins-02", good)
+    assert not passes("ins-02", good.replace("debugging", "a BUG!"))
+    assert not passes("ins-02", good.replace("END_CHECK", "END_CHECK."))
+    assert passes("ins-03", "A COLLISION occurs when items hash to the same BUCKET and the table must resolve that conflict.")

@@ -14,7 +14,9 @@ All 5 architectures shared identical `FrontierMicroTokenizer` (`vocab_size=8,192
 | `C1_GatedDeltaHybrid` (`c1-gated-delta-micro`) | 38,153,664 | 9 / 3 | **1,536** (-75%) | 89,305,088 | 11,821.7 | 3,829.94 | 0.6331 | 0.2544 | 0.8110 | **0.3918** | **1.0750** | `0.0000 / 0.0000 / 0.0417` |
 | `C2_DiffNSDelta` (`c2-diff-ns-delta-micro`) | 38,154,960 | 9 / 3 | **1,536** (-75%) | 89,305,088 | 9,705.0 | 4,347.97 | 0.6335 | 0.2541 | 0.8118 | 0.3921 | 1.0759 | `0.0000 / 0.0000 / 0.0417` |
 | `C3_CorticalPKM` (`c3-cortical-pkm-micro`) | 38,007,516 | 9 / 3 (+4,096 PKM) | **1,536** (-75%) | **82,731,008** (-34.5%) | 9,420.2 | 4,463.34 | 0.6326 | 0.2547 | 0.8001 | 0.3999 | 1.0756 | `0.0000 / 0.0000 / 0.0000` |
-| `C4_JCLE_Frontier` (`c4-jcle-frontier-micro`, r=2) | 38,272,224 | 9 / 3 (+PKM +Loop) | **1,536** (-75%) | 133,341,184 | 5,181.1 | 6,824.55 | 0.6368 | 0.2544 | **0.7887** | 0.4288 | 1.0753 | `0.0000 / 0.0000 / 0.0000` |
+| `C4_JCLE_Frontier` (`c4-jcle-frontier-micro`, r=2) | 38,272,224 | 9 / 3 (+PKM +Loop) | **2,560** (-58.3%) | 133,341,184 | 5,181.1 | 6,824.55 | 0.6368 | 0.2544 | **0.7887** | 0.4288 | 1.0753 | `0.0000 / 0.0000 / 0.0000` |
+
+The C4 row and both saved E1 configuration summaries use corrected analytical BF16 cache estimates. At two fixed loops, the model executes five softmax passes and fifteen delta passes, requiring 2,560 bytes of K/V storage per token and 983,040 bytes of delta matrices per sequence. The original run supplied the training and evaluation measurements.
 
 ### `C4_JCLE_Frontier` Test-Time Compute Scaling & Shannon Entropy Early Exit
 

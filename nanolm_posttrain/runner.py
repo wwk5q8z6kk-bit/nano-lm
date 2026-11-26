@@ -215,7 +215,7 @@ def run_foundation_experiment(
         "device": device,
         "dtype": str(dtype),
         "base_parameter_count": base_params,
-        "within_2b_4b_ceiling": base_params <= ABSOLUTE_MAX_PARAMETERS,
+        "within_2b_4b_ceiling": sum(p.numel() for p in model.parameters()) <= ABSOLUTE_MAX_PARAMETERS,
         "baseline_evaluation": baseline_eval,
         "lora_adaptation": adaptation_info,
         "adapted_evaluation": adapted_eval,

@@ -69,7 +69,6 @@ class HolonomicRegisterSidecar(nn.Module):
         self.G = d_fiber // 4
         self.d_fiber = d_fiber
         self.bypass = False
-        self._cached_scan_state: Tensor | None = None
 
         self.in_norm = nn.RMSNorm(d_model)
         self.phi_proj = nn.Linear(d_model, d_fiber, bias=False)
@@ -78,10 +77,7 @@ class HolonomicRegisterSidecar(nn.Module):
         self.o_proj = nn.Linear(d_fiber, d_model, bias=False)
         self.sidecar_gate = nn.Parameter(torch.zeros(d_model, dtype=torch.float32))
 
-    def reset_cache(self) -> None:
-        self._cached_scan_state = None
-
-    def forward(self, h: Tensor) -> Tensor:
+    def forward(self, h: Tensor, *, state: Tensor | None = None, cache_state: dict | None = None) -> Tensor:
         if self.bypass:
             return torch.zeros_like(h)
 
@@ -101,19 +97,13 @@ class HolonomicRegisterSidecar(nn.Module):
         g = (1.0 - w * beta).clamp_min(1e-4) * cayley_rotor(o_gen)
         s = w * hamilton_product(cayley_rotor(rho_gen), phi)
 
-        if (
-            not self.training
-            and seq_len == 1
-            and self._cached_scan_state is not None
-            and self._cached_scan_state.shape[0] == bsz
-        ):
-            nxt = step_holonomy(g.squeeze(-2), s.squeeze(-2), self._cached_scan_state)
-            self._cached_scan_state = nxt.detach()
+        if seq_len == 1 and state is not None:
+            nxt = step_holonomy(g.squeeze(-2), s.squeeze(-2), state)
             all_omega = nxt.unsqueeze(-2)
         else:
-            all_omega, nxt = holonomy_scan_fast(g, s, init_state=None, chunk_size=256)
-            if not self.training:
-                self._cached_scan_state = nxt.detach()
+            all_omega, nxt = holonomy_scan_fast(g, s, init_state=state, chunk_size=256)
+        if cache_state is not None:
+            cache_state["scan"] = nxt.detach()
 
         unbound = hamilton_product(spinor_conjugate(cayley_rotor(q_gen)), all_omega)
         flat = unbound.permute(0, 1, 3, 2, 4).reshape(bsz, self.R, seq_len, self.d_fiber)
@@ -122,17 +112,34 @@ class HolonomicRegisterSidecar(nn.Module):
 
 
 class _SidecarWrappedDecoderLayer(nn.Module):
-    def __init__(self, base_layer: nn.Module, sidecar: HolonomicRegisterSidecar) -> None:
+    def __init__(self, base_layer: nn.Module, sidecar: nn.Module, layer_idx: int) -> None:
         super().__init__()
+        self.layer_idx = layer_idx
         self.base_layer = base_layer
         self.sidecar = sidecar
 
     def forward(self, hidden_states: Tensor, *args: Any, **kwargs: Any) -> Any:
+        cache = kwargs.get("past_key_values", kwargs.get("past_key_value"))
+        use_cache = not self.training and kwargs.get("use_cache", True) and hasattr(cache, "get_seq_length")
+        state = entry = None
+        if use_cache:
+            length = int(cache.get_seq_length(self.layer_idx))
+            if not hasattr(cache, "_nanolm_sidecars"):
+                cache._nanolm_sidecars = {}
+            entry = cache._nanolm_sidecars.setdefault(self.layer_idx, {})
+            generation = getattr(self.sidecar, "_cache_generation", None)
+            if length > 0 and length == entry.get("length") and entry.get("generation") is generation:
+                state = entry.get("scan")
+            entry.clear()
+            entry["generation"] = generation
         out = self.base_layer(hidden_states, *args, **kwargs)
+        h = out[0] if isinstance(out, tuple) else out
+        delta = self.sidecar(h, state=state, cache_state=entry)
+        if entry is not None:
+            entry["length"] = int(cache.get_seq_length(self.layer_idx))
         if isinstance(out, tuple):
-            h_out = out[0]
-            return (h_out + self.sidecar(h_out), *out[1:])
-        return out + self.sidecar(out)
+            return (h + delta, *out[1:])
+        return h + delta
 
 
 def apply_holonomic_graft(
@@ -160,7 +167,7 @@ def apply_holonomic_graft(
         start_idx = max(0, n_layers - n_sidecar_layers)
         for idx in range(start_idx, n_layers):
             sc = HolonomicRegisterSidecar(d_model, n_registers=n_registers, d_fiber=d_fiber).to(ref_param.device)
-            layers[idx] = _SidecarWrappedDecoderLayer(layers[idx], sc)
+            layers[idx] = _SidecarWrappedDecoderLayer(layers[idx], sc, idx)
             sidecars += 1
 
     total_after = sum(p.numel() for p in model.parameters())

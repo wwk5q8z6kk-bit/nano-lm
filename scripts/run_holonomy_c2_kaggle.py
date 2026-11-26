@@ -87,6 +87,7 @@ def main() -> int:
             "accelerate",
             "sentencepiece",
             "protobuf",
+            "pydantic-monty==1.6.0",
             "pytest",
         ],
         check=True,

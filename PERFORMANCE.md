@@ -1,5 +1,7 @@
 # Performance, Hardware Scaling & Spend Efficiency (`Cycles 1–2` + `Ω`)
 
+The published X3 peak-memory values predate isolation of each context-length sample. They can include logits retained from the preceding sample or architecture. The corrected runner requires fresh GPU measurements for comparable peaks.
+
 See [NANOLM_COMPUTE_LEDGER.md](NANOLM_COMPUTE_LEDGER.md) for the complete pod-by-pod cost and Roofline calibration table.
 
 ---

@@ -112,6 +112,10 @@ def test_all_five_hspa_families_iso_param_decode_and_4b_cap() -> None:
         full_lg.sum().backward()
         assert all(p.grad is not None and torch.isfinite(p.grad).all() for p in m.parameters() if p.requires_grad)
 
+        for name, p in m.named_parameters():
+            if "kuramoto_scale" in name:
+                assert p.grad.abs().max() > 0
+
         # Verify exact O(1) incremental step decode matches parallel prefill
         m.eval()
         with torch.no_grad():
@@ -286,3 +290,57 @@ def test_curriculum_v2_and_zero_oracle_syntax_gate() -> None:
     assert is_syntax_valid_zero_oracle("Return only valid JSON.", '{"a": 1}')[0]
     assert not is_syntax_valid_zero_oracle("Return only valid JSON.", '{"a": ')[0]
     assert is_syntax_valid_zero_oracle("Solve step by step.", "unstructured prose")[0]
+
+
+def test_sidecar_cached_stream_matches_full_stream_and_fresh_requests():
+    from nanolm_holonomy.sidecar_evolution import _SidecarWrappedDecoderLayer
+
+    class Cache:
+        length = 0
+
+        def get_seq_length(self, layer):
+            return self.length
+
+    class Layer(nn.Module):
+        def forward(self, h, past_key_values=None, use_cache=True):
+            if use_cache and past_key_values is not None:
+                past_key_values.length += h.shape[1]
+            return h
+
+    sidecar = HolonomicRegisterSidecar(16, n_registers=2, d_fiber=8)
+    wrapped = _SidecarWrappedDecoderLayer(Layer(), sidecar, 0).eval()
+    with torch.no_grad():
+        sidecar.sidecar_gate.fill_(0.5)
+        x = torch.randn(1, 3, 16)
+        full = wrapped(x)
+        fresh = wrapped(x[:, 2:])
+        cache = Cache()
+        wrapped(x[:, :2], past_key_values=cache)
+        actual = wrapped(x[:, 2:], past_key_values=cache)
+        assert torch.allclose(actual, full[:, 2:], atol=1e-5)
+        assert torch.equal(wrapped(x[:, 2:]), fresh)
+        assert torch.equal(wrapped(x[:, 2:], past_key_values=cache, use_cache=False), fresh)
+        cache.length = 0
+        assert torch.equal(wrapped(x[:, 2:], past_key_values=cache), fresh)
+
+
+def test_scaling_row_releases_logits_between_forwards():
+    import weakref
+    from types import SimpleNamespace
+    from nanolm_holonomy.experiments import _measure_scaling_row
+
+    class Probe(nn.Module):
+        previous = None
+
+        def forward(self, inp, **kwargs):
+            assert self.previous is None or self.previous() is None
+            logits = torch.zeros(1, inp.shape[1], 4)
+            self.previous = weakref.ref(logits)
+            return logits, None
+
+    model = Probe()
+    for is_transformer, length in [(True, 16), (False, 1025)]:
+        config = SimpleNamespace(is_transformer=is_transformer, vocab_size=4,
+                                 state_bytes_per_sequence=lambda *_: 0)
+        assert _measure_scaling_row(model, config, length, torch.device("cpu"))["status"] == "ok"
+        assert model.previous() is None

@@ -12,12 +12,15 @@ from dataclasses import dataclass
 from enum import Enum
 import json
 import math
+import random
 import re
 from typing import Any
 
 from nanolm_posttrain.eval_suite import (
     TaskVerdict,
     _extract_fenced_or_raw,
+    _json_equal,
+    _mermaid_graph,
     _verify_coding,
     _verify_summarization,
 )
@@ -74,9 +77,7 @@ def _extract_final_answer(response: str) -> str:
     lines = [ln.strip() for ln in response.strip().splitlines() if ln.strip()]
     if not lines:
         return ""
-    last = lines[-1]
-    nums = re.findall(r"-?\d+(?:\.\d+)?", last)
-    return nums[-1] if nums else last
+    return lines[-1].strip("`").rstrip(".").strip()
 
 
 def _verify_exact_answer(response: str, spec: dict[str, Any]) -> TaskVerdict:
@@ -85,10 +86,6 @@ def _verify_exact_answer(response: str, spec: dict[str, Any]) -> TaskVerdict:
     cand = cand_raw.casefold().replace(",", "")
     if cand in aliases:
         return TaskVerdict(True, 1.0, "exact_answer_match", {"candidate": cand_raw})
-    # Also check if single accepted scalar appears right after FINAL_ANSWER or boxed cleanly
-    for alias in aliases:
-        if re.search(rf"(?<![\w.-]){re.escape(alias)}(?![\w.-])", response.strip().splitlines()[-1].casefold() if response.strip() else ""):
-            return TaskVerdict(True, 1.0, "exact_lastline_match", {"candidate": cand_raw})
     return TaskVerdict(False, 0.0, f"answer_mismatch:{cand_raw!r}", {"candidate": cand_raw})
 
 
@@ -111,15 +108,12 @@ def _verify_json_invariant(response: str, spec: dict[str, Any]) -> TaskVerdict:
 
     expected: dict[str, Any] = spec["expected_json"]
     if set(parsed.keys()) != set(expected.keys()):
-        hits = sum(1 for k, v in expected.items() if parsed.get(k) == v)
+        hits = sum(1 for k, v in expected.items() if k in parsed and _json_equal(parsed[k], v, 1e-3))
         return TaskVerdict(False, round(0.5 * hits / max(len(expected), 1), 4), f"schema_keys_mismatch:{sorted(parsed.keys())}", {})
 
     for k, exp_val in expected.items():
         got = parsed.get(k)
-        if isinstance(exp_val, float) and isinstance(got, (int, float)):
-            if abs(float(got) - exp_val) > 1e-3:
-                return TaskVerdict(False, 0.4, f"float_mismatch:{k}", {})
-        elif got != exp_val:
+        if not _json_equal(got, exp_val, 1e-3):
             return TaskVerdict(False, 0.5, f"value_mismatch:{k}:{got!r}!={exp_val!r}", {})
     return TaskVerdict(True, 1.0, "exact_json_match", {})
 
@@ -139,20 +133,7 @@ def _verify_diagram_or_chart(response: str, spec: dict[str, Any]) -> TaskVerdict
         for bracket_content in re.findall(r"\b[A-Za-z0-9_]+\[(?!\")([^\]]+)\]", ln):
             if "(" in bracket_content or ")" in bracket_content:
                 return TaskVerdict(False, 0.3, "unquoted_special_chars_in_label", {"line": ln})
-    low = body.casefold()
-    req_tokens: list[str] = list(spec["required_tokens"])
-    hits = sum(1 for tok in req_tokens if tok.casefold() in low)
-    edge_tokens = ("-->", "->>", "-->>", "-->|", "-.->")
-    edges = sum(1 for ln in lines[1:] if any(et in ln for et in edge_tokens))
-    min_edges = int(spec["min_edges"])
-    passed = hits == len(req_tokens) and edges >= min_edges
-    score = 0.5 * (hits / max(len(req_tokens), 1)) + 0.5 * min(1.0, edges / max(min_edges, 1))
-    return TaskVerdict(
-        passed,
-        round(score, 4),
-        "verified_mermaid" if passed else f"incomplete_mermaid:hits={hits}/{len(req_tokens)},edges={edges}",
-        {"hits": hits, "edges": edges},
-    )
+    return _mermaid_graph(lines[1:], list(spec["required_tokens"]), int(spec["min_edges"]), spec.get("allowed_parents"))
 
 
 def _verify_instruction_following(response: str, spec: dict[str, Any]) -> TaskVerdict:
@@ -187,16 +168,19 @@ def _verify_instruction_following(response: str, spec: dict[str, Any]) -> TaskVe
         else:
             failures.append(f"words={wc}<{spec['min_words']}")
 
+    def contains_word(word: str) -> bool:
+        return re.search(r"(?<!\w)" + re.escape(word) + r"(?!\w)", txt, re.IGNORECASE) is not None
+
     for fw in spec.get("forbidden_words", ()):
         total_checks += 1
-        if fw.casefold() not in txt.casefold():
+        if not contains_word(fw):
             checks_passed += 1
         else:
             failures.append(f"forbidden_present:{fw}")
 
     for rw in spec.get("required_words", ()):
         total_checks += 1
-        if rw.casefold() in txt.casefold():
+        if contains_word(rw):
             checks_passed += 1
         else:
             failures.append(f"required_missing:{rw}")
@@ -248,7 +232,7 @@ def _verify_tool_use(response: str, spec: dict[str, Any]) -> TaskVerdict:
 
     matched = 0
     for got, exp in zip(got_calls, expected_calls):
-        if isinstance(got, dict) and got.get("tool") == exp["tool"] and got.get("args") == exp["args"]:
+        if isinstance(got, dict) and got.get("tool") == exp["tool"] and _json_equal(got.get("args"), exp["args"]):
             matched += 1
     passed = matched == len(expected_calls)
     return TaskVerdict(
@@ -271,7 +255,9 @@ def _verify_planning_dag(response: str, spec: dict[str, Any]) -> TaskVerdict:
     order = parsed.get("order")
     makespan = parsed.get("makespan")
     nodes: dict[str, dict[str, Any]] = spec["dag"]
-    if not isinstance(order, list) or len(order) != len(nodes) or set(order) != set(nodes.keys()):
+    if not isinstance(order, list) or not all(isinstance(item, str) for item in order):
+        return TaskVerdict(False, 0.2, "invalid_task_names", {})
+    if len(order) != len(nodes) or set(order) != set(nodes):
         return TaskVerdict(False, 0.2, "invalid_task_set_in_order", {})
 
     pos = {name: i for i, name in enumerate(order)}
@@ -287,7 +273,7 @@ def _verify_planning_dag(response: str, spec: dict[str, Any]) -> TaskVerdict:
         start_t = max((finish[d] for d in deps), default=0)
         finish[name] = start_t + int(nodes[name]["dur"])
     expected_makespan = max(finish.values(), default=0)
-    if makespan != expected_makespan:
+    if not _json_equal(makespan, expected_makespan):
         return TaskVerdict(False, 0.7, f"wrong_makespan:{makespan}!={expected_makespan}", {})
     return TaskVerdict(True, 1.0, "verified_dag_schedule_and_makespan", {"makespan": expected_makespan})
 
@@ -297,7 +283,11 @@ def _verify_hallucination_resistance(response: str, spec: dict[str, Any]) -> Tas
     markers = ("abstain", "cannot be determined", "insufficient information", "not provided", "contradict", "impossible")
     has_abstention = any(m in low for m in markers)
     forbidden_claims: list[str] = list(spec.get("forbidden_confabulations", ()))
-    confabulated = any(fc.casefold() in low for fc in forbidden_claims)
+    assertions = low
+    for premise_pattern in spec.get("citable_claims", ()):
+        assertions = re.sub(premise_pattern, " ", assertions)
+    confabulated = any(re.search(r"(?<!\w)" + re.escape(fc.casefold()) + r"(?!\w)", assertions)
+                       for fc in forbidden_claims)
     if has_abstention and not confabulated:
         return TaskVerdict(True, 1.0, "calibrated_abstention", {})
     if confabulated:
@@ -571,7 +561,8 @@ def build_benchmark_15d_suite() -> tuple[BenchmarkTask, ...]:
             "medium",
             "Return only Mermaid inside ```mermaid``` fence. Quote labels containing parentheses.",
             'Write a `flowchart LR` showing `Client["Browser (UI)"]` --> `Gateway["API Gateway"]` --> `Worker["Job Runner (Async)"]` and error edge back to `Alert`.',
-            {"subkind": "mermaid", "expected_header": "flowchart LR", "required_tokens": ["Browser", "Gateway", "Job Runner", "Alert"], "min_edges": 3},
+            {"subkind": "mermaid", "expected_header": "flowchart LR", "required_tokens": ["Browser", "Gateway", "Job Runner", "Alert"],
+             "allowed_parents": {"Alert": ["Gateway", "Job Runner"]}, "min_edges": 3},
         ),
         BenchmarkTask(
             "dia-04",
@@ -887,7 +878,9 @@ def build_benchmark_15d_suite() -> tuple[BenchmarkTask, ...]:
             "hard",
             "Output `ABSTAIN:` cleanly if the document omits the requested quantity.",
             "Report excerpt: 'Warehouse East holds 4,200 pallets after Q1 consolidation, up from Q4 baseline.' Question: How many pallets did Warehouse West hold in Q4?",
-            {"forbidden_confabulations": ["4200", "4,200 pallets"]},
+            {"forbidden_confabulations": ["4200", "4,200"],
+             "citable_claims": [r"\b(?:warehouse\s+)?east(?:\s+(?:warehouse|holds?|held|has|had|stores?|stored|reported|contained|with|only|currently|accounts?\s+for)|[\s,:-])+4,?200\b",
+                               r"\b4,?200\s+pallets?\s+(?:at|in|for|refer(?:s)? to|belong(?:ing)? to|(?:is|are|were) (?:at|in|for))\s+(?:warehouse\s+)?east\b"]},
         ),
 
         # 14. MEMORY_RETENTION (4)
@@ -1018,17 +1011,12 @@ def bootstrap_accuracy_ci(
     """Deterministic seeded percentile bootstrap 95% confidence interval."""
     if not outcomes:
         return (0.0, 0.0, 0.0)
-    rng_state = seed
+    if n_resamples <= 0:
+        raise ValueError("n_resamples must be positive")
+    rng = random.Random(seed)
     n = len(outcomes)
     mean_val = sum(outcomes) / n
-    means: list[float] = []
-    # Deterministic LCG for zero-dependency reproducibility
-    for _ in range(n_resamples):
-        total = 0.0
-        for _ in range(n):
-            rng_state = (1103515245 * rng_state + 12345) & 0x7FFFFFFF
-            total += outcomes[rng_state % n]
-        means.append(total / n)
+    means = [sum(rng.choices(outcomes, k=n)) / n for _ in range(n_resamples)]
     means.sort()
     lo = means[max(0, int(math.floor(0.025 * n_resamples)))]
     hi = means[min(n_resamples - 1, int(math.ceil(0.975 * n_resamples)) - 1)]

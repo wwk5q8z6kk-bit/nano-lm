@@ -97,6 +97,21 @@ def test_spectral_nullspace_lora_orthogonality_and_step0() -> None:
         assert interference < 1e-5, f"Spectral leakage into top-k subspace: {interference}"
 
 
+def test_kaggle_plans_against_one_t4() -> None:
+    kaggle = GPU_CATALOG["kaggle_t4_x2"]
+    assert (kaggle.vram_gb, kaggle.bf16_tflops, kaggle.mem_bw_gb_s) == (16.0, 65.0, 320.0)
+    # All current runners place their workload on one device, including on dual T4 hosts.
+    spec = WorkloadSpec(name="single-device", total_params=10**9, trainable_params=10**9,
+                        n_layers=24, d_model=2048, seq_len=512)
+    estimate = estimate_workload(spec, kaggle)
+    assert 16 * 1024 < estimate["safe_vram_required_mb"] < 32 * 1024
+    assert not estimate["fits_vram"]
+    selection = select_optimal_gpu([spec])
+    assert selection["recommended"]["backend"] == "runpod"
+    assert selection["recommended"]["feasible"]
+    assert not next(c["feasible"] for c in selection["all_candidates"] if c["backend"] == "kaggle")
+
+
 def test_compute_planner_preflight_and_selection() -> None:
     w_fit = WorkloadSpec(name="1.7b-sft", total_params=1_747_149_824, trainable_params=26_574_848, train_tokens=20_000, decode_tokens=5_000)
     est_l40s = estimate_workload(w_fit, GPU_CATALOG["runpod_l40s_48gb"])
@@ -151,6 +166,7 @@ def test_omega_experiments_smoke_cpu() -> None:
 
 def test_omega_schema_preserving_guard() -> None:
     assert classify_task_mode('Return JSON `{"calls": [...]}`.', "Available tools: balance_get,subtotal=5") == "STRUCTURED_JSON"
+    assert not preserve_valid_json_keys('{"order":["A","B"]}', {"order": [{"name": "A"}, {}]})
     existing = '{"sum_total": 109, "label": "ok"}'
     assert preserve_valid_json_keys(existing, {"sum_total": 100, "label": "ok"})
     assert not preserve_valid_json_keys(existing, {"result": 100})
@@ -395,3 +411,42 @@ def test_omega_wrapped_layer_gradient_checkpointing() -> None:
     h.sum().backward()
     trainable = [p for p in m.parameters() if p.requires_grad]
     assert trainable and all(p.grad is not None and torch.isfinite(p.grad).all() for p in trainable)
+
+def test_omega_cache_tracks_independent_requests_and_continues_each_stream():
+    from nanolm_holonomy.omega_architecture import HSPAOmegaSidecar, _OmegaWrappedLayer
+
+    class Cache:
+        length = 0
+
+        def get_seq_length(self, layer):
+            assert layer == 2
+            return self.length
+
+    class Layer(nn.Module):
+        def forward(self, h, past_key_values=None, use_cache=True):
+            if use_cache and past_key_values is not None:
+                past_key_values.length += h.shape[1]
+            return (h, "base metadata")
+
+    torch.manual_seed(921)
+    sc = HSPAOmegaSidecar(16, n_registers=2, d_fiber=8)
+    wrapper = _OmegaWrappedLayer(Layer(), sc, 2).eval()
+    with torch.inference_mode():
+        sc.sidecar_gate.fill_(0.7)
+        a, b = torch.randn(2, 1, 6, 16)
+        full_a = wrapper(a)[0]
+        full_b = wrapper(b)[0]
+        fresh, metadata = wrapper(a[:, -1:])
+        assert metadata == "base metadata"
+        ca, cb = Cache(), Cache()
+        wrapper(a[:, :2], past_key_values=ca)
+        wrapper(b[:, :4], past_key_values=cb)
+        torch.testing.assert_close(wrapper(a[:, 2:5], past_key_values=ca)[0], full_a[:, 2:5])
+        torch.testing.assert_close(wrapper(b[:, 4:], past_key_values=cb)[0], full_b[:, 4:])
+        torch.testing.assert_close(wrapper(a[:, -1:])[0], fresh)
+        torch.testing.assert_close(wrapper(a[:, -1:], past_key_values=ca, use_cache=False)[0], fresh)
+        torch.testing.assert_close(wrapper(a[:, -1:], past_key_values=ca)[0], full_a[:, -1:])
+        ca.length = 0
+        torch.testing.assert_close(wrapper(a[:, -1:], past_key_values=ca)[0], fresh)
+        sc.reset_cache()
+        torch.testing.assert_close(wrapper(a[:, -1:], past_key_values=cb)[0], fresh)

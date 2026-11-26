@@ -12,7 +12,7 @@ Enhancements in Controller v2:
    1-step stderr/schema-feedback retry.
 3. Canonical Mermaid chained-edge normalization (``normalize_chained_mermaid_edges``)
    splitting multi-hop single-line arrows into standard 2-endpoint edges.
-4. Multi-probe & return-type Python smoke falsification inside isolated ``python3 -I``.
+4. Multi-probe & return-type Python smoke falsification inside the bounded Python guest.
 """
 
 from __future__ import annotations
@@ -21,8 +21,7 @@ import ast
 import json
 import math
 import re
-import subprocess
-import sys
+from nanolm_posttrain.code_guest import run_guest
 from typing import Any
 
 import torch
@@ -137,7 +136,7 @@ def preserve_valid_json_structure(existing_reply: str, candidate_obj: dict[str, 
             and all(isinstance(x, str) for x in orig_val)
             and len(set(orig_val)) == len(orig_val)
         ):
-            if not isinstance(cand_val, list) or len(cand_val) != len(orig_val) or set(cand_val) != set(orig_val):
+            if not all(isinstance(item, str) for item in cand_val) or len(cand_val) != len(orig_val) or set(cand_val) != set(orig_val):
                 return (
                     False,
                     f"item_set_mismatch[{key}]: expected exact permutation of {orig_val}, got {cand_val}",
@@ -282,7 +281,7 @@ def verify_python_smoke_zero_oracle(
     *,
     required_symbol: str | None = None,
 ) -> tuple[bool, str]:
-    """Parse AST + verify requested identifier + run multi-probe checks in isolated ``python3 -I``."""
+    """Parse AST + verify requested identifier + run multi-probe checks in the bounded Python guest."""
     raw = _extract_fenced_or_raw(code_text)
     try:
         tree = ast.parse(raw)
@@ -306,8 +305,6 @@ def verify_python_smoke_zero_oracle(
     ret_chk = _ret_type_ok(target_fn.returns)
 
     call_lines = [
-        raw,
-        "",
         f"_r = {target_fn.name}(*{repr(args0)})",
     ]
     if target_fn.returns is not None:
@@ -323,23 +320,11 @@ def verify_python_smoke_zero_oracle(
     if len(args0) == 1 and isinstance(args0[0], list):
         call_lines.append(f"{target_fn.name}([])")
 
-    script = "\n".join(call_lines)
-    try:
-        proc = subprocess.run(
-            [sys.executable, "-I", "-c", script],
-            capture_output=True,
-            text=True,
-            timeout=2.0,
-        )
-    except subprocess.TimeoutExpired:
-        return False, "TimeoutError: exceeded 2.0s"
-
-    if proc.returncode != 0:
-        err_tail = (proc.stderr or proc.stdout).strip().splitlines()
-        last_err = err_tail[-1] if err_tail else f"exit={proc.returncode}"
-        if "ValueError" in last_err and "SentinelError" not in last_err:
+    ok, error = run_guest(raw, tuple(call_lines))
+    if not ok:
+        if error.startswith("ValueError:"):
             return True, "smoke_value_error_allowed"
-        return False, last_err
+        return False, error
     return True, "smoke_ok"
 
 
@@ -424,20 +409,8 @@ def _run_python_script_stdout(script_text: str) -> tuple[bool, str]:
         ast.parse(raw)
     except SyntaxError as exc:
         return False, f"SyntaxError: {exc}"
-    try:
-        proc = subprocess.run(
-            [sys.executable, "-I", "-c", raw],
-            capture_output=True,
-            text=True,
-            timeout=2.5,
-        )
-    except subprocess.TimeoutExpired:
-        return False, "TimeoutError"
-    if proc.returncode != 0:
-        err = (proc.stderr or "nonzero exit").strip().splitlines()
-        return False, err[-1][-160:] if err else "nonzero exit"
-    out = proc.stdout.strip()
-    return (bool(out), out)
+    ok, result = run_guest(raw, collect_output=True)
+    return ok and bool(result), result
 
 
 def omega_generate(

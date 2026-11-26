@@ -558,6 +558,52 @@ def run_x2_lm_evolution(
 # Experiment X3: 4B-Class (~3.84B) Context-Scaling Memory & Latency Law
 # ---------------------------------------------------------------------------
 
+def _measure_scaling_row(
+    model: HSPAUnifiedLM, cfg: HSPAArchConfig, slen: int, device: torch.device,
+    *, prefill_chunk: int = 1024, logits_to_keep: int | None = None,
+) -> dict[str, Any]:
+    inp = torch.randint(0, cfg.vocab_size, (1, slen), device=device)
+    with torch.no_grad():
+        _sync(device)
+        t0 = time.perf_counter()
+        # Chunk the HSPA scan while keeping only the requested logits for this measurement.
+        if not cfg.is_transformer and slen > prefill_chunk:
+            st = None
+            for cs in range(0, slen, prefill_chunk):
+                ce = min(slen, cs + prefill_chunk)
+                chunk_logits, st = model(inp[:, cs:ce], past_states=st, use_state=True, past_len=cs, logits_to_keep=logits_to_keep)
+                if ce == slen:
+                    cur = chunk_logits[:, -1:, :].argmax(dim=-1)
+                del chunk_logits
+        else:
+            lg, st = model(inp, use_state=True, past_len=0, logits_to_keep=logits_to_keep)
+            cur = lg[:, -1:, :].argmax(dim=-1)
+            del lg
+        _sync(device)
+        prefill_s = max(time.perf_counter() - t0, 1e-6)
+
+        # Incremental 16-step decode timing
+        _sync(device)
+        td0 = time.perf_counter()
+        for step_i in range(16):
+            lg_d, st = model(cur, past_states=st, use_state=True, past_len=slen + step_i, logits_to_keep=logits_to_keep)
+            cur = lg_d[:, -1:, :].argmax(dim=-1)
+            del lg_d
+        _sync(device)
+        decode_ms = round((time.perf_counter() - td0) * 1000.0 / 16.0, 3)
+
+    peak_mb = _peak_mb(device)
+    state_mb = round(cfg.state_bytes_per_sequence(slen, 2) / (1024.0 * 1024.0), 3)
+    return {
+        "seq_len": slen,
+        "status": "ok",
+        "prefill_tok_per_sec": round(slen / prefill_s, 1),
+        "decode_ms_per_tok": decode_ms,
+        "analytical_state_mb": state_mb,
+        "peak_vram_mb": peak_mb,
+    }
+
+
 def run_x3_4b_scaling_benchmark(
     *,
     device: torch.device,
@@ -584,48 +630,11 @@ def run_x3_4b_scaling_benchmark(
         rows: list[dict[str, Any]] = []
         for slen in seq_lengths:
             if device.type == "cuda":
+                _sync(device)
                 torch.cuda.empty_cache()
                 torch.cuda.reset_peak_memory_stats(device)
-            inp = torch.randint(0, cfg.vocab_size, (1, slen), device=device)
             try:
-                with torch.no_grad():
-                    _sync(device)
-                    t0 = time.perf_counter()
-                    # Prefill (chunked at 1024 for HSPA at long contexts so scan tensor stays < 150MB)
-                    if not cfg.is_transformer and slen > 1024:
-                        st = None
-                        for cs in range(0, slen, 1024):
-                            ce = min(slen, cs + 1024)
-                            _, st = model(inp[:, cs:ce], past_states=st, use_state=True, past_len=cs)
-                        cur = inp[:, -1:]
-                    else:
-                        lg, st = model(inp, use_state=True, past_len=0)
-                        cur = lg[:, -1:, :].argmax(dim=-1)
-                    _sync(device)
-                    prefill_s = max(time.perf_counter() - t0, 1e-6)
-
-                    # Incremental 16-step decode timing
-                    _sync(device)
-                    td0 = time.perf_counter()
-                    for step_i in range(16):
-                        lg_d, st = model(cur, past_states=st, use_state=True, past_len=slen + step_i)
-                        cur = lg_d[:, -1:, :].argmax(dim=-1)
-                    _sync(device)
-                    decode_ms = round((time.perf_counter() - td0) * 1000.0 / 16.0, 3)
-
-                peak_mb = _peak_mb(device)
-                state_mb = round(cfg.state_bytes_per_sequence(slen, 2) / (1024.0 * 1024.0), 3)
-                rows.append(
-                    {
-                        "seq_len": slen,
-                        "status": "ok",
-                        "prefill_tok_per_sec": round(slen / prefill_s, 1),
-                        "decode_ms_per_tok": decode_ms,
-                        "analytical_state_mb": state_mb,
-                        "peak_vram_mb": peak_mb,
-                    }
-                )
-                del st, cur
+                rows.append(_measure_scaling_row(model, cfg, slen, device))
             except RuntimeError as exc:
                 rows.append({"seq_len": slen, "status": f"oom_or_err:{str(exc)[:120]}"})
 
