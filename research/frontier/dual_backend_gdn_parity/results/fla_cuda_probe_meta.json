@@ -1,0 +1,63 @@
+{
+  "schema": "nanolm_fla_cuda_parity_probe_v1",
+  "gpu_name": "NVIDIA GeForce RTX 3090",
+  "compute_capability": "8.6",
+  "torch_version": "2.9.1+cu128",
+  "cuda_version": "12.8",
+  "fla_version": "0.6.0",
+  "triton_version": "3.5.1",
+  "cuda_fla_amp_dtype": "bfloat16",
+  "smollm2_135m_hybrid_params_verified": 151928140,
+  "probe_cfg": {
+    "d": 256,
+    "layers": 4,
+    "ffn": 704,
+    "heads": 4,
+    "kv_heads": 2,
+    "vocab": 4096,
+    "attn_layers": [
+      1
+    ]
+  },
+  "loss_fp32": 8.346442222595215,
+  "loss_bf16": 8.346823692321777,
+  "traj_fp32_10steps": [
+    8.37514,
+    8.367695,
+    8.363196,
+    8.364578,
+    8.384437,
+    8.36012,
+    8.365165,
+    8.367775,
+    8.369777,
+    8.374613
+  ],
+  "traj_bf16_10steps": [
+    8.375122,
+    8.367017,
+    8.363627,
+    8.364597,
+    8.384397,
+    8.359775,
+    8.365016,
+    8.367988,
+    8.370876,
+    8.374681
+  ],
+  "pytorch_wy_ref_vs_cuda_fla_fp32": {
+    "logit_max_abs_err": 0.005582630634307861,
+    "loss_abs_err": 2.765655517578125e-05
+  },
+  "kaggle_gpu_152m_hybrid_bench": {
+    "batch_x_seq": "4x1024",
+    "dtype": "float16",
+    "step_ms": 200.36,
+    "tokens_per_second": 20442.8,
+    "peak_gpu_gib": 10.423
+  },
+  "bundle_file": "fla_cuda_parity_bundle.npz",
+  "bundle_sha256": "93457774408bb4abc42b69bf25da338e7bac84f2ee53c9f7daaeae32906df74e",
+  "runpod_pod_gpu": "1x RTX 3090 (SECURE)",
+  "runpod_price_per_hr_usd": 0.5
+}

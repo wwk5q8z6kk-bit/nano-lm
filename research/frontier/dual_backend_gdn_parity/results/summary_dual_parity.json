@@ -1,0 +1,258 @@
+{
+  "device_kind": "TPU v5 lite",
+  "criteria": {
+    "P1_checkpoint_bridge_bit_exact": {
+      "pass": true,
+      "roundtrip_max_abs_diff": 0.0,
+      "smollm2_135m_hybrid_params": 151928140,
+      "r0_547m_gdn_params": 546865360
+    },
+    "P2_cuda_fla_vs_jax_fp32_parity": {
+      "pass": false,
+      "logit_max_abs_err": 0.0071546,
+      "logit_rel_err": 0.0044115,
+      "loss_fla": 8.3464422,
+      "loss_jax": 8.3464813,
+      "loss_abs_err": 3.91e-05,
+      "grad_max_rel_err": 0.0088436,
+      "grad_rel_err_by_tensor_sample": {
+        "blocks.0.dn.weight": 0.0047471,
+        "blocks.0.gu.weight": 0.004475,
+        "blocks.0.mix.A_log": 0.0034262,
+        "blocks.0.mix.a_proj.weight": 0.0033738,
+        "blocks.0.mix.b_proj.weight": 0.0042129,
+        "blocks.0.mix.dt_bias": 0.0034246,
+        "blocks.0.mix.g_proj.weight": 0.0042053,
+        "blocks.0.mix.k_conv1d.weight": 0.0049785,
+        "blocks.0.mix.k_proj.weight": 0.0050401,
+        "blocks.0.mix.o_norm.weight": 0.0038654
+      },
+      "traj_10steps_fla": [
+        8.37514,
+        8.367695,
+        8.363196,
+        8.364578,
+        8.384437,
+        8.36012,
+        8.365165,
+        8.367775,
+        8.369777,
+        8.374613
+      ],
+      "traj_10steps_jax": [
+        8.375136,
+        8.367689,
+        8.363115,
+        8.364754,
+        8.384637,
+        8.360298,
+        8.36515,
+        8.367697,
+        8.369853,
+        8.374182
+      ],
+      "step10_loss_abs_err": 0.000431
+    },
+    "P3_cuda_fla_vs_jax_bf16_and_multistep_parity": {
+      "pass": true,
+      "logit_max_abs_err": 0.0625,
+      "loss_fla": 8.346824,
+      "loss_jax": 8.346205,
+      "loss_abs_err": 0.000619,
+      "traj_10steps_fla": [
+        8.375122,
+        8.367017,
+        8.363627,
+        8.364597,
+        8.384397,
+        8.359775,
+        8.365016,
+        8.367988,
+        8.370876,
+        8.374681
+      ],
+      "traj_10steps_jax": [
+        8.375423,
+        8.368097,
+        8.363907,
+        8.364944,
+        8.384334,
+        8.359916,
+        8.365444,
+        8.368053,
+        8.369888,
+        8.374228
+      ],
+      "step10_loss_abs_err": 0.000453
+    },
+    "P4_tpu_r0_stability_and_throughput_gate": {
+      "pass": true,
+      "nonfinite_steps_100": 0,
+      "r0_gdn_mfu": 0.2433,
+      "r0_gdn_vs_attn_speed_ratio_2k": 0.8916,
+      "stability_loss_start_to_end": [
+        12.1042,
+        0.0017
+      ]
+    }
+  },
+  "unified_hardware_routing_table": [
+    {
+      "backend": "GCP TPU v5 lite (1 chip, JAX WY-chunk)",
+      "workload": "r0_547m_gdn_1chip_2k",
+      "seq": 2048,
+      "tokens_per_second": 14608.5,
+      "mfu": 0.2433,
+      "peak_hbm_gib_per_chip": 6.199,
+      "usd_per_1b_tokens_spot": 6.85,
+      "usd_per_1b_tokens_ondemand": 22.82
+    },
+    {
+      "backend": "GCP TPU v5 lite (1 chip, JAX WY-chunk)",
+      "workload": "r0_547m_gdn_kd32_1chip_2k",
+      "seq": 2048,
+      "tokens_per_second": 12877.5,
+      "mfu": 0.2145,
+      "peak_hbm_gib_per_chip": 6.202,
+      "usd_per_1b_tokens_spot": 7.77,
+      "usd_per_1b_tokens_ondemand": 25.88
+    },
+    {
+      "backend": "GCP TPU v5 lite (1 chip, JAX WY-chunk)",
+      "workload": "r0_542m_hybrid_kd32_1chip_2k",
+      "seq": 2048,
+      "tokens_per_second": 12955.5,
+      "mfu": 0.2138,
+      "peak_hbm_gib_per_chip": 7.27,
+      "usd_per_1b_tokens_spot": 7.72,
+      "usd_per_1b_tokens_ondemand": 25.73
+    },
+    {
+      "backend": "GCP TPU v5 lite (1 chip, JAX WY-chunk)",
+      "workload": "r0_527m_attn_1chip_2k",
+      "seq": 2048,
+      "tokens_per_second": 16385.0,
+      "mfu": 0.263,
+      "peak_hbm_gib_per_chip": 7.27,
+      "usd_per_1b_tokens_spot": 6.1,
+      "usd_per_1b_tokens_ondemand": 20.34
+    },
+    {
+      "backend": "GCP TPU v5 lite (1 chip, JAX WY-chunk)",
+      "workload": "r0_547m_gdn_1chip_4k",
+      "seq": 4096,
+      "tokens_per_second": 14537.8,
+      "mfu": 0.2421,
+      "peak_hbm_gib_per_chip": 7.27,
+      "usd_per_1b_tokens_spot": 6.88,
+      "usd_per_1b_tokens_ondemand": 22.93
+    },
+    {
+      "backend": "GCP TPU v5 lite (1 chip, JAX WY-chunk)",
+      "workload": "r0_527m_attn_1chip_4k",
+      "seq": 4096,
+      "tokens_per_second": 10813.6,
+      "mfu": 0.1736,
+      "peak_hbm_gib_per_chip": 7.27,
+      "usd_per_1b_tokens_spot": 9.25,
+      "usd_per_1b_tokens_ondemand": 30.83
+    },
+    {
+      "backend": "GCP TPU v5 lite (1 chip, JAX WY-chunk)",
+      "workload": "r0_547m_gdn_1chip_8k",
+      "seq": 8192,
+      "tokens_per_second": 12173.2,
+      "mfu": 0.2028,
+      "peak_hbm_gib_per_chip": 7.27,
+      "usd_per_1b_tokens_spot": 8.21,
+      "usd_per_1b_tokens_ondemand": 27.38
+    },
+    {
+      "backend": "GCP TPU v5 lite (1 chip, JAX WY-chunk)",
+      "workload": "r0_542m_hybrid_1chip_8k",
+      "seq": 8192,
+      "tokens_per_second": 2752.7,
+      "mfu": 0.0454,
+      "peak_hbm_gib_per_chip": 7.27,
+      "usd_per_1b_tokens_spot": 36.33,
+      "usd_per_1b_tokens_ondemand": 121.09
+    },
+    {
+      "backend": "GCP TPU v5 lite (1 chip, JAX WY-chunk)",
+      "workload": "r0_527m_attn_1chip_8k",
+      "seq": 8192,
+      "tokens_per_second": 813.5,
+      "mfu": 0.0131,
+      "peak_hbm_gib_per_chip": 7.27,
+      "usd_per_1b_tokens_spot": 122.93,
+      "usd_per_1b_tokens_ondemand": 409.75
+    },
+    {
+      "backend": "GCP TPU v5 lite (1 chip, JAX WY-chunk)",
+      "workload": "stageb_152m_hybrid_1chip_1k",
+      "seq": 1024,
+      "tokens_per_second": 16300.2,
+      "mfu": 0.0754,
+      "peak_hbm_gib_per_chip": 7.27,
+      "usd_per_1b_tokens_spot": 6.13,
+      "usd_per_1b_tokens_ondemand": 20.45
+    },
+    {
+      "backend": "GCP TPU v5 lite (4 chips, JAX WY-chunk)",
+      "workload": "r0_547m_gdn_4chip_dp_2k",
+      "seq": 2048,
+      "tokens_per_second": 56138.6,
+      "mfu": 0.2338,
+      "peak_hbm_gib_per_chip": 7.27,
+      "usd_per_1b_tokens_spot": 7.13,
+      "usd_per_1b_tokens_ondemand": 23.75
+    },
+    {
+      "backend": "GCP TPU v5 lite (4 chips, JAX WY-chunk)",
+      "workload": "r0_542m_hybrid_kd32_4chip_dp_2k",
+      "seq": 2048,
+      "tokens_per_second": 50248.8,
+      "mfu": 0.2073,
+      "peak_hbm_gib_per_chip": 7.289,
+      "usd_per_1b_tokens_spot": 7.96,
+      "usd_per_1b_tokens_ondemand": 26.53
+    },
+    {
+      "backend": "GCP TPU v5 lite (4 chips, JAX WY-chunk)",
+      "workload": "r0_542m_hybrid_kd32_4chip_dp_8k",
+      "seq": 8192,
+      "tokens_per_second": 10597.1,
+      "mfu": 0.0437,
+      "peak_hbm_gib_per_chip": 7.289,
+      "usd_per_1b_tokens_spot": 37.75,
+      "usd_per_1b_tokens_ondemand": 125.82
+    },
+    {
+      "backend": "1x NVIDIA H100 80GB HBM3 (fla 0.6.0 + triton 3.7.1)",
+      "workload": "r0_547m_gdn_1xH100_2k",
+      "seq": 2048,
+      "tokens_per_second": 56133.0,
+      "mfu": 0.1862,
+      "usd_per_1b_tokens_community": 13.31,
+      "usd_per_1b_tokens_secure": 21.72
+    },
+    {
+      "backend": "1x NVIDIA H100 80GB HBM3 + Cached Top-32 KD",
+      "workload": "r0_547m_gdn_kd32_1xH100_2k",
+      "seq": 2048,
+      "tokens_per_second": 48261.0,
+      "mfu": 0.1602,
+      "usd_per_1b_tokens_community": 15.48,
+      "usd_per_1b_tokens_secure": 25.27
+    },
+    {
+      "backend": "Kaggle Free GPU (Tesla T4, PyTorch fla 0.6.0)",
+      "workload": "stageb_152m_hybrid_1xT4_1k",
+      "seq": 1024,
+      "tokens_per_second": 20442.8,
+      "peak_hbm_gib": 10.423,
+      "usd_per_1b_tokens_free_quota": 0.0
+    }
+  ],
+  "verdict": "INVESTIGATE_PARITY_OR_TPU_KERNEL_BEFORE_STAGE_C"
+}

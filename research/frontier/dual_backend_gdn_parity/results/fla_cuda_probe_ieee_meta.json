@@ -1,0 +1,63 @@
+{
+  "schema": "nanolm_fla_cuda_parity_probe_v1",
+  "gpu_name": "NVIDIA RTX A4000",
+  "compute_capability": "8.6",
+  "torch_version": "2.9.1+cu128",
+  "cuda_version": "12.8",
+  "fla_version": "0.6.0",
+  "triton_version": "3.5.1",
+  "cuda_fla_amp_dtype": "bfloat16",
+  "smollm2_135m_hybrid_params_verified": 151928140,
+  "probe_cfg": {
+    "d": 256,
+    "layers": 4,
+    "ffn": 704,
+    "heads": 4,
+    "kv_heads": 2,
+    "vocab": 4096,
+    "attn_layers": [
+      1
+    ]
+  },
+  "loss_fp32": 8.34648323059082,
+  "loss_bf16": 8.346839904785156,
+  "traj_fp32_10steps": [
+    8.37511,
+    8.367549,
+    8.363288,
+    8.364751,
+    8.384508,
+    8.359966,
+    8.365219,
+    8.367681,
+    8.369846,
+    8.374282
+  ],
+  "traj_bf16_10steps": [
+    8.375072,
+    8.366743,
+    8.363099,
+    8.365247,
+    8.383838,
+    8.361359,
+    8.364796,
+    8.368379,
+    8.370481,
+    8.374751
+  ],
+  "pytorch_wy_ref_vs_cuda_fla_fp32": {
+    "logit_max_abs_err": 0.0009842030704021454,
+    "loss_abs_err": 1.33514404296875e-05
+  },
+  "kaggle_gpu_152m_hybrid_bench": {
+    "batch_x_seq": "4x1024",
+    "dtype": "float16",
+    "step_ms": 323.43,
+    "tokens_per_second": 12664.4,
+    "peak_gpu_gib": 10.423
+  },
+  "bundle_file": "fla_cuda_parity_bundle.npz",
+  "bundle_sha256": "36e8a43023c9feadc9ce1efd2972b325f10c9c7af728d7da4305b97ebf7bd9a6",
+  "runpod_pod_gpu": "1x RTX A4000 (SECURE)",
+  "runpod_price_per_hr_usd": 0.25
+}
