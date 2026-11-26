@@ -1,0 +1,53 @@
+{
+  "schema": "nanolm.trackb_posttrain_run.v2",
+  "arm": "B3_verified_onpolicy_kd8b",
+  "student": "Qwen/Qwen3-1.7B",
+  "teacher": "Qwen/Qwen3-8B",
+  "alpha_kd": 0.85,
+  "temperature": 1.5,
+  "topk": 64,
+  "rslora_rank": 16,
+  "lr": 5e-05,
+  "epochs": 1,
+  "trainable_params": 17432576,
+  "unique_params": 1738007552,
+  "encoded_examples": 467,
+  "kd_cache_seconds": 60.06,
+  "train_wall_seconds": 94.2,
+  "teacher_generation_summary": {
+    "teacher": "Qwen/Qwen3-8B",
+    "gen_seconds": 90.65,
+    "filter_stats": {
+      "total": 610,
+      "contaminated_dropped": 0,
+      "verification_failed": 143,
+      "kept": 467
+    },
+    "kept_think1": 118,
+    "kept_think0": 349,
+    "kept_by_sub": {
+      "tool_single": 50,
+      "tool_parallel": 45,
+      "tool_abstain": 42,
+      "tool_recovery": 30,
+      "tool_recovery_stop": 10,
+      "json_arith": 25,
+      "json_ledger": 17,
+      "json_k8s": 25,
+      "mbpp_train": 47,
+      "gsm8k_natural_boxed": 115,
+      "ifeval_bullets_forbidden": 20,
+      "ifeval_title_wordcap": 20,
+      "mermaid_lr": 1,
+      "epistemic_abstain": 20
+    }
+  },
+  "history": [
+    {
+      "epoch": 1,
+      "mean_ce": 0.3705,
+      "mean_kd_kl": 0.1826,
+      "elapsed_s": 90.7
+    }
+  ]
+}

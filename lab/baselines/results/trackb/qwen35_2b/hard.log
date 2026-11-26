@@ -1,0 +1,40 @@
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/lm_eval/tasks/manager.py", line 208, in load
+    obj = self._load_spec(spec) if not isinstance(spec, (Task, Group)) else spec  # type:ignore[invalid-argument-type]
+          ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/lm_eval/tasks/manager.py", line 154, in _load_spec
+    return self._factory.build(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/lm_eval/tasks/_factory.py", line 61, in build
+    return self._build_task(entry, overrides)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/lm_eval/tasks/_factory.py", line 81, in _build_task
+    obj = ConfigurableTask(config=cfg)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/lm_eval/api/task.py", line 753, in __init__
+    self.download(self.config.dataset_kwargs)
+  File "/usr/local/lib/python3.12/dist-packages/lm_eval/api/task.py", line 869, in download
+    self.dataset = datasets.load_dataset(
+                   ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/datasets/load.py", line 1667, in load_dataset
+    builder_instance = load_dataset_builder(
+                       ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/datasets/load.py", line 1290, in load_dataset_builder
+    dataset_module = dataset_module_factory(
+                     ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/datasets/load.py", line 1176, in dataset_module_factory
+    raise e1 from None
+  File "/usr/local/lib/python3.12/dist-packages/datasets/load.py", line 1164, in dataset_module_factory
+    raise DatasetNotFoundError(message) from e
+datasets.exceptions.DatasetNotFoundError: Dataset 'Idavidrein/gpqa' is a gated dataset on the Hub. You must be authenticated to access it.
+(MainProcess pid=2777) INFO 11-17 06:19:43 [utils.py:628] [shutdown] Process manager: send sigterm to process EngineCore
+(EngineCore pid=3022) INFO 11-17 06:19:43 [core.py:1698] [shutdown] EngineCore: trigger received signal=SIGTERM
+(EngineCore pid=3022) INFO 11-17 06:19:43 [core.py:1889] [shutdown] EngineCore: start mode=abort timeout=0s
+(EngineCore pid=3022) INFO 11-17 06:19:43 [core.py:1920] [shutdown] EngineCore: request processing complete; starting resource teardown
+(EngineCore pid=3022) INFO 11-17 06:19:43 [core.py:1746] [shutdown] EngineCore: exiting busy loop
+(MainProcess pid=2777) WARNING 11-17 06:19:48 [core_client.py:869] [shutdown] MPClient: engine core exited unexpectedly; starting cleanup
+(MainProcess pid=2777) INFO 11-17 06:19:48 [core_client.py:822] [shutdown] MPClient: start timeout=default
+(MainProcess pid=2777) INFO 11-17 06:19:48 [core_client.py:824] [shutdown] MPClient: stopping engine manager
+(MainProcess pid=2777) INFO 11-17 06:19:48 [core_client.py:826] [shutdown] MPClient: engine manager stopped
+(MainProcess pid=2777) INFO 11-17 06:19:48 [core_client.py:827] [shutdown] MPClient: cleaning up background resources
+(MainProcess pid=2777) INFO 11-17 06:19:48 [core_client.py:829] [shutdown] MPClient: complete

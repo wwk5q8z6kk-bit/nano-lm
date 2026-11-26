@@ -1,0 +1,845 @@
+{
+  "schema": "nanolm.competitive_eval_8pillar.v1",
+  "model_id": "Qwen/Qwen3.5-2B__think1",
+  "meta": {
+    "hf_repo": "Qwen/Qwen3.5-2B",
+    "revision": "15852e8c16360a2fea060d615a32b45270f8a8fc",
+    "think": true,
+    "total_params": 2274069824,
+    "active_params": 2274069824,
+    "dtype": "bfloat16",
+    "max_model_len": 16384
+  },
+  "total_items": 132,
+  "overall_pass_rate": 0.3788,
+  "leaderboards": {
+    "A_intelligence": {
+      "composite": 0.4083,
+      "coding": 0.375,
+      "math_logic": 0.125,
+      "tool_calling": 0.875,
+      "tool_error_recovery": 0.875,
+      "long_context": 0.0,
+      "diagrams_charts": 0.6667
+    },
+    "B_reliability": {
+      "composite": 0.25,
+      "epistemic_reliability": 0.0,
+      "tool_abstention_when2call": 0.625,
+      "structured_json": 0.375,
+      "summarization_faithfulness": 0.0
+    },
+    "C_efficiency": {
+      "total_params": 2274069824,
+      "active_params": 2274069824,
+      "eval_wall_seconds": 75.82,
+      "approx_output_tok_per_s": 2751.6,
+      "intelligence_per_B_active_params": 0.1795,
+      "gen_seconds": 75.79,
+      "input_tokens": 107398,
+      "output_tokens": 260593,
+      "measured_output_tok_per_s": 3438.2,
+      "measured_input_tok_per_s": 1417.0
+    }
+  },
+  "failure_taxonomy_top15": [
+    [
+      "summarization:word_limit_exceeded",
+      16
+    ],
+    [
+      "math_logic:wrong_answer_math_logic",
+      14
+    ],
+    [
+      "long_context:wrong_answer_long_context",
+      12
+    ],
+    [
+      "epistemic_reliability:wrong_answer_epistemic_reliability",
+      12
+    ],
+    [
+      "structured_json:invalid_json",
+      10
+    ],
+    [
+      "coding:AssertionError",
+      5
+    ],
+    [
+      "tool_calling:invalid_tool_json",
+      4
+    ],
+    [
+      "diagrams_charts:invalid_json",
+      4
+    ],
+    [
+      "coding:no_function_definition",
+      2
+    ],
+    [
+      "coding:TypeError: sequence item 1: expected str instance, int found",
+      1
+    ],
+    [
+      "coding:IndexError: list index out of range",
+      1
+    ],
+    [
+      "coding:SyntaxError: unterminated string literal (detected at line 1)",
+      1
+    ]
+  ],
+  "pillars": {
+    "tool_calling": {
+      "total": 32,
+      "passed": 28,
+      "score": 0.875,
+      "ci95": [
+        0.75,
+        0.9688
+      ],
+      "items": [
+        {
+          "id": "tc_single_01",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_single_02",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_single_03",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_single_04",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_single_05",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_single_06",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_single_07",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_single_08",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_par_01",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_par_02",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_par_03",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_par_04",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_par_05",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_par_06",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_par_07",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_par_08",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_abs_01",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_abs_02",
+          "passed": false,
+          "reason": "invalid_tool_json"
+        },
+        {
+          "id": "tc_abs_03",
+          "passed": false,
+          "reason": "invalid_tool_json"
+        },
+        {
+          "id": "tc_abs_04",
+          "passed": false,
+          "reason": "invalid_tool_json"
+        },
+        {
+          "id": "tc_abs_05",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_abs_06",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_abs_07",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_abs_08",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_rec_01",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_rec_02",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_rec_03",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_rec_04",
+          "passed": false,
+          "reason": "invalid_tool_json"
+        },
+        {
+          "id": "tc_rec_05",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_rec_06",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_rec_07",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_rec_08",
+          "passed": true,
+          "reason": "passed"
+        }
+      ]
+    },
+    "coding": {
+      "total": 16,
+      "passed": 6,
+      "score": 0.375,
+      "ci95": [
+        0.1875,
+        0.625
+      ],
+      "items": [
+        {
+          "id": "code_01_dedup",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "code_02_intervals",
+          "passed": false,
+          "reason": "AssertionError"
+        },
+        {
+          "id": "code_03_brackets",
+          "passed": false,
+          "reason": "AssertionError"
+        },
+        {
+          "id": "code_04_top2",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "code_05_topo",
+          "passed": false,
+          "reason": "AssertionError"
+        },
+        {
+          "id": "code_06_lru",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "code_07_rle",
+          "passed": false,
+          "reason": "TypeError: sequence item 1: expected str instance, int found"
+        },
+        {
+          "id": "code_08_lis",
+          "passed": false,
+          "reason": "no_function_definition"
+        },
+        {
+          "id": "code_09_median_stream",
+          "passed": false,
+          "reason": "IndexError: list index out of range"
+        },
+        {
+          "id": "code_10_semver",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "code_11_min_window",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "code_12_dijkstra",
+          "passed": false,
+          "reason": "no_function_definition"
+        },
+        {
+          "id": "code_13_expr_eval",
+          "passed": false,
+          "reason": "SyntaxError: unterminated string literal (detected at line 1)"
+        },
+        {
+          "id": "code_14_trie_prefix",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "code_15_bipartite",
+          "passed": false,
+          "reason": "AssertionError"
+        },
+        {
+          "id": "code_16_bugfix_retry",
+          "passed": false,
+          "reason": "AssertionError"
+        }
+      ]
+    },
+    "math_logic": {
+      "total": 16,
+      "passed": 2,
+      "score": 0.125,
+      "ci95": [
+        0.0,
+        0.3125
+      ],
+      "items": [
+        {
+          "id": "ml_01",
+          "passed": false,
+          "reason": "wrong_answer_math_logic"
+        },
+        {
+          "id": "ml_02",
+          "passed": false,
+          "reason": "wrong_answer_math_logic"
+        },
+        {
+          "id": "ml_03",
+          "passed": false,
+          "reason": "wrong_answer_math_logic"
+        },
+        {
+          "id": "ml_04",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "ml_05",
+          "passed": false,
+          "reason": "wrong_answer_math_logic"
+        },
+        {
+          "id": "ml_06",
+          "passed": false,
+          "reason": "wrong_answer_math_logic"
+        },
+        {
+          "id": "ml_07",
+          "passed": false,
+          "reason": "wrong_answer_math_logic"
+        },
+        {
+          "id": "ml_08",
+          "passed": false,
+          "reason": "wrong_answer_math_logic"
+        },
+        {
+          "id": "ml_09",
+          "passed": false,
+          "reason": "wrong_answer_math_logic"
+        },
+        {
+          "id": "ml_10",
+          "passed": false,
+          "reason": "wrong_answer_math_logic"
+        },
+        {
+          "id": "ml_11",
+          "passed": false,
+          "reason": "wrong_answer_math_logic"
+        },
+        {
+          "id": "ml_12",
+          "passed": false,
+          "reason": "wrong_answer_math_logic"
+        },
+        {
+          "id": "ml_13",
+          "passed": false,
+          "reason": "wrong_answer_math_logic"
+        },
+        {
+          "id": "ml_14",
+          "passed": false,
+          "reason": "wrong_answer_math_logic"
+        },
+        {
+          "id": "ml_15",
+          "passed": false,
+          "reason": "wrong_answer_math_logic"
+        },
+        {
+          "id": "ml_16",
+          "passed": true,
+          "reason": "passed"
+        }
+      ]
+    },
+    "structured_json": {
+      "total": 16,
+      "passed": 6,
+      "score": 0.375,
+      "ci95": [
+        0.125,
+        0.625
+      ],
+      "items": [
+        {
+          "id": "json_01",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "json_02",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "json_03",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "json_04",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "json_05",
+          "passed": false,
+          "reason": "invalid_json"
+        },
+        {
+          "id": "json_06",
+          "passed": false,
+          "reason": "invalid_json"
+        },
+        {
+          "id": "json_07",
+          "passed": false,
+          "reason": "invalid_json"
+        },
+        {
+          "id": "json_08",
+          "passed": false,
+          "reason": "invalid_json"
+        },
+        {
+          "id": "json_09",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "json_10",
+          "passed": false,
+          "reason": "invalid_json"
+        },
+        {
+          "id": "json_11",
+          "passed": false,
+          "reason": "invalid_json"
+        },
+        {
+          "id": "json_12",
+          "passed": false,
+          "reason": "invalid_json"
+        },
+        {
+          "id": "json_13",
+          "passed": false,
+          "reason": "invalid_json"
+        },
+        {
+          "id": "json_14",
+          "passed": false,
+          "reason": "invalid_json"
+        },
+        {
+          "id": "json_15",
+          "passed": false,
+          "reason": "invalid_json"
+        },
+        {
+          "id": "json_16",
+          "passed": true,
+          "reason": "passed"
+        }
+      ]
+    },
+    "summarization": {
+      "total": 16,
+      "passed": 0,
+      "score": 0.0,
+      "ci95": [
+        0.0,
+        0.0
+      ],
+      "items": [
+        {
+          "id": "sum_01",
+          "passed": false,
+          "reason": "word_limit_exceeded"
+        },
+        {
+          "id": "sum_02",
+          "passed": false,
+          "reason": "word_limit_exceeded"
+        },
+        {
+          "id": "sum_03",
+          "passed": false,
+          "reason": "word_limit_exceeded"
+        },
+        {
+          "id": "sum_04",
+          "passed": false,
+          "reason": "word_limit_exceeded"
+        },
+        {
+          "id": "sum_05",
+          "passed": false,
+          "reason": "word_limit_exceeded"
+        },
+        {
+          "id": "sum_06",
+          "passed": false,
+          "reason": "word_limit_exceeded"
+        },
+        {
+          "id": "sum_07",
+          "passed": false,
+          "reason": "word_limit_exceeded"
+        },
+        {
+          "id": "sum_08",
+          "passed": false,
+          "reason": "word_limit_exceeded"
+        },
+        {
+          "id": "sum_09",
+          "passed": false,
+          "reason": "word_limit_exceeded"
+        },
+        {
+          "id": "sum_10",
+          "passed": false,
+          "reason": "word_limit_exceeded"
+        },
+        {
+          "id": "sum_11",
+          "passed": false,
+          "reason": "word_limit_exceeded"
+        },
+        {
+          "id": "sum_12",
+          "passed": false,
+          "reason": "word_limit_exceeded"
+        },
+        {
+          "id": "sum_13",
+          "passed": false,
+          "reason": "word_limit_exceeded"
+        },
+        {
+          "id": "sum_14",
+          "passed": false,
+          "reason": "word_limit_exceeded"
+        },
+        {
+          "id": "sum_15",
+          "passed": false,
+          "reason": "word_limit_exceeded"
+        },
+        {
+          "id": "sum_16",
+          "passed": false,
+          "reason": "word_limit_exceeded"
+        }
+      ]
+    },
+    "diagrams_charts": {
+      "total": 12,
+      "passed": 8,
+      "score": 0.6667,
+      "ci95": [
+        0.4167,
+        0.9167
+      ],
+      "items": [
+        {
+          "id": "diag_01",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "diag_02",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "diag_03",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "diag_04",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "diag_05",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "diag_06",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "chart_01",
+          "passed": false,
+          "reason": "invalid_json"
+        },
+        {
+          "id": "chart_02",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "chart_03",
+          "passed": false,
+          "reason": "invalid_json"
+        },
+        {
+          "id": "chart_04",
+          "passed": false,
+          "reason": "invalid_json"
+        },
+        {
+          "id": "chart_05",
+          "passed": false,
+          "reason": "invalid_json"
+        },
+        {
+          "id": "chart_06",
+          "passed": true,
+          "reason": "passed"
+        }
+      ]
+    },
+    "long_context": {
+      "total": 12,
+      "passed": 0,
+      "score": 0.0,
+      "ci95": [
+        0.0,
+        0.0
+      ],
+      "items": [
+        {
+          "id": "lc_01_sec45",
+          "passed": false,
+          "reason": "wrong_answer_long_context"
+        },
+        {
+          "id": "lc_02_sec45",
+          "passed": false,
+          "reason": "wrong_answer_long_context"
+        },
+        {
+          "id": "lc_03_sec45",
+          "passed": false,
+          "reason": "wrong_answer_long_context"
+        },
+        {
+          "id": "lc_04_sec45",
+          "passed": false,
+          "reason": "wrong_answer_long_context"
+        },
+        {
+          "id": "lc_05_sec90",
+          "passed": false,
+          "reason": "wrong_answer_long_context"
+        },
+        {
+          "id": "lc_06_sec90",
+          "passed": false,
+          "reason": "wrong_answer_long_context"
+        },
+        {
+          "id": "lc_07_sec90",
+          "passed": false,
+          "reason": "wrong_answer_long_context"
+        },
+        {
+          "id": "lc_08_sec90",
+          "passed": false,
+          "reason": "wrong_answer_long_context"
+        },
+        {
+          "id": "lc_09_sec150",
+          "passed": false,
+          "reason": "wrong_answer_long_context"
+        },
+        {
+          "id": "lc_10_sec150",
+          "passed": false,
+          "reason": "wrong_answer_long_context"
+        },
+        {
+          "id": "lc_11_sec150",
+          "passed": false,
+          "reason": "wrong_answer_long_context"
+        },
+        {
+          "id": "lc_12_sec150",
+          "passed": false,
+          "reason": "wrong_answer_long_context"
+        }
+      ]
+    },
+    "epistemic_reliability": {
+      "total": 12,
+      "passed": 0,
+      "score": 0.0,
+      "ci95": [
+        0.0,
+        0.0
+      ],
+      "items": [
+        {
+          "id": "rel_01_unans",
+          "passed": false,
+          "reason": "wrong_answer_epistemic_reliability"
+        },
+        {
+          "id": "rel_02_ans",
+          "passed": false,
+          "reason": "wrong_answer_epistemic_reliability"
+        },
+        {
+          "id": "rel_03_unans",
+          "passed": false,
+          "reason": "wrong_answer_epistemic_reliability"
+        },
+        {
+          "id": "rel_04_false_prem",
+          "passed": false,
+          "reason": "wrong_answer_epistemic_reliability"
+        },
+        {
+          "id": "rel_05_ans",
+          "passed": false,
+          "reason": "wrong_answer_epistemic_reliability"
+        },
+        {
+          "id": "rel_06_unans",
+          "passed": false,
+          "reason": "wrong_answer_epistemic_reliability"
+        },
+        {
+          "id": "rel_07_contradict",
+          "passed": false,
+          "reason": "wrong_answer_epistemic_reliability"
+        },
+        {
+          "id": "rel_08_ans",
+          "passed": false,
+          "reason": "wrong_answer_epistemic_reliability"
+        },
+        {
+          "id": "rel_09_unans",
+          "passed": false,
+          "reason": "wrong_answer_epistemic_reliability"
+        },
+        {
+          "id": "rel_10_false_prem",
+          "passed": false,
+          "reason": "wrong_answer_epistemic_reliability"
+        },
+        {
+          "id": "rel_11_ans",
+          "passed": false,
+          "reason": "wrong_answer_epistemic_reliability"
+        },
+        {
+          "id": "rel_12_unans",
+          "passed": false,
+          "reason": "wrong_answer_epistemic_reliability"
+        }
+      ]
+    }
+  }
+}

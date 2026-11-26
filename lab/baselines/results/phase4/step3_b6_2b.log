@@ -1,0 +1,12 @@
+[B6-2B] Encoded 479/480 stratified trajectories
+[transformers] `torch_dtype` is deprecated! Use `dtype` instead!
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/707 [00:00<?, ?it/s]Loading weights: 100%|██████████| 707/707 [00:00<00:00, 8566.65it/s]
+[B6-2B] Extracted Qwen3-32B Top-64+Tail logits in 61.6s
+Loading weights:   0%|          | 0/311 [00:00<?, ?it/s]Loading weights: 100%|██████████| 311/311 [00:00<00:00, 6062.43it/s]
+Writing model shards:   0%|          | 0/1 [00:00<?, ?it/s]Writing model shards: 100%|██████████| 1/1 [00:02<00:00,  2.64s/it]Writing model shards: 100%|██████████| 1/1 [00:02<00:00,  2.64s/it]
+Loading weights:   0%|          | 0/310 [00:00<?, ?it/s]Loading weights: 100%|██████████| 310/310 [00:00<00:00, 9522.39it/s]
+Loading weights:   0%|          | 0/310 [00:00<?, ?it/s]Loading weights: 100%|██████████| 310/310 [00:00<00:00, 9418.30it/s]
+[GRPO G=8] step 45/60 reward=0.342 active=8
+Writing model shards:   0%|          | 0/1 [00:00<?, ?it/s]Writing model shards: 100%|██████████| 1/1 [00:02<00:00,  2.51s/it]Writing model shards: 100%|██████████| 1/1 [00:02<00:00,  2.51s/it]
+SAVED_NANOLM_B6_2B /workspace/models/nanolm_b6_2b {"schema": "nanolm.trackb_phase3_b6_2b.v1", "base_model": "Qwen/Qwen3-1.7B", "total_params": 1720574976, "active_params": 1720574976, "method": "Stratified_32B_120B_L2Anchored_100pct_FFT_Top64KD_plus_G8_GRPO", "kd_seconds": 61.57, "anchored_fft_seconds": 106.76, "grpo_steps": 60, "group_size": 8, "active_variance_groups": 12, "mean_reward_first_quarter": 0.325, "mean_reward_last_quarter": 0.55, "grpo_wall_s": 505.94, "grpo_trainable_params": 17432576}

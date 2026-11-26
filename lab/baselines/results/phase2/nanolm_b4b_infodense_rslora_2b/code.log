@@ -1,0 +1,25 @@
+2026-11-17:20:26:40 INFO     [evaluator:589] Running generate_until requests
+Running generate_until requests:   0%|          | 0/164 [00:00<?, ?it/s]
+Rendering prompts:   0%|          | 0/164 [00:00<?, ?it/s][ARendering prompts: 100%|██████████| 164/164 [00:00<00:00, 7662.19it/s]
+
+Processed prompts:   0%|          | 0/164 [00:00<?, ?it/s, est. speed input: 0.00 toks/s, output: 0.00 toks/s][A
+Processed prompts:   1%|          | 1/164 [00:00<00:50,  3.22it/s, est. speed input: 657.68 toks/s, output: 25.79 toks/s][A
+Processed prompts:  12%|█▏        | 20/164 [00:00<00:02, 61.00it/s, est. speed input: 10351.84 toks/s, output: 819.75 toks/s][A
+Processed prompts:  31%|███       | 51/164 [00:00<00:00, 135.49it/s, est. speed input: 23977.40 toks/s, output: 3206.52 toks/s][A
+Processed prompts:  55%|█████▍    | 90/164 [00:00<00:00, 211.37it/s, est. speed input: 37737.07 toks/s, output: 6822.12 toks/s][A
+Processed prompts:  74%|███████▍  | 121/164 [00:00<00:00, 238.83it/s, est. speed input: 47297.19 toks/s, output: 9785.38 toks/s][A
+Processed prompts:  91%|█████████▏| 150/164 [00:00<00:00, 220.35it/s, est. speed input: 50962.77 toks/s, output: 12448.96 toks/s][A
+Processed prompts: 100%|██████████| 164/164 [00:02<00:00, 220.35it/s, est. speed input: 18340.89 toks/s, output: 5683.60 toks/s] [AProcessed prompts: 100%|██████████| 164/164 [00:02<00:00, 59.46it/s, est. speed input: 18340.89 toks/s, output: 5683.60 toks/s] 
+Running generate_until requests:   1%|          | 1/164 [00:02<07:33,  2.78s/it]Running generate_until requests: 100%|██████████| 164/164 [00:02<00:00, 58.90it/s]
+fatal: not a git repository (or any of the parent directories): .git
+(MainProcess pid=20190) INFO 11-17 20:27:06 [utils.py:628] [shutdown] Process manager: send sigterm to process EngineCore
+(EngineCore pid=20498) INFO 11-17 20:27:06 [core.py:1698] [shutdown] EngineCore: trigger received signal=SIGTERM
+(EngineCore pid=20498) INFO 11-17 20:27:06 [core.py:1889] [shutdown] EngineCore: start mode=abort timeout=0s
+(EngineCore pid=20498) INFO 11-17 20:27:06 [core.py:1920] [shutdown] EngineCore: request processing complete; starting resource teardown
+(EngineCore pid=20498) INFO 11-17 20:27:06 [core.py:1746] [shutdown] EngineCore: exiting busy loop
+2026-11-17:20:27:07 INFO     [loggers.evaluation_tracker:247] Saving results aggregated
+vllm ({'pretrained': '/workspace/models/nanolm_b4b_infodense_rslora_2b', 'dtype': 'bfloat16', 'gpu_memory_utilization': 0.85, 'max_model_len': 8192, 'enable_thinking': False}), gen_kwargs: ({'max_gen_toks': 1024, 'temperature': 0}), limit: None, num_fewshot: None, batch_size: auto
+|      Tasks       |Version|  Filter   |n-shot|Metric|   |Value |   |Stderr|
+|------------------|------:|-----------|-----:|------|---|-----:|---|-----:|
+|humaneval_instruct|      4|create_test|     0|pass@1|↑  |0.6768|±  |0.0366|
+

@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "/usr/local/bin/lm_eval", line 7, in <module>
+    sys.exit(cli_evaluate())
+             ^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/lm_eval/__main__.py", line 10, in cli_evaluate
+    parser.execute(args)
+  File "/usr/local/lib/python3.12/dist-packages/lm_eval/_cli/harness.py", line 60, in execute
+    args.func(args)
+  File "/usr/local/lib/python3.12/dist-packages/lm_eval/_cli/run.py", line 381, in _execute
+    task_manager = cfg.process_tasks(cfg.metadata)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/lm_eval/config/evaluate_config.py", line 477, in process_tasks
+    raise ValueError(f"Tasks not found: {missing}")
+ValueError: Tasks not found: mgsm_native_cot

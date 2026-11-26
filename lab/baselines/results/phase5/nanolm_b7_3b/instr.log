@@ -1,0 +1,25 @@
+2026-11-18:10:45:08 ERROR    [tasks.ifeval.instructions:189] Unable to detect language for text *** due to No features in text.
+2026-11-18:10:45:09 ERROR    [tasks.ifeval.instructions:189] Unable to detect language for text """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" due to No features in text.
+2026-11-18:10:45:09 ERROR    [tasks.ifeval.instructions:189] Unable to detect language for text """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" due to No features in text.
+fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+2026-11-18:10:45:10 INFO     [loggers.evaluation_tracker:247] Saving results aggregated
+vllm ({'pretrained': '/workspace/models/nanolm_b7_3b', 'dtype': 'bfloat16', 'gpu_memory_utilization': 0.85, 'max_model_len': 8192}), gen_kwargs: ({'max_gen_toks': 1280, 'temperature': 0}), limit: None, num_fewshot: None, batch_size: auto
+|Tasks |Version|Filter|n-shot|        Metric         |   |Value |   |Stderr|
+|------|------:|------|-----:|-----------------------|---|-----:|---|------|
+|ifeval|      4|none  |     0|inst_level_loose_acc   |↑  |0.6942|±  |   N/A|
+|      |       |none  |     0|inst_level_strict_acc  |↑  |0.6547|±  |   N/A|
+|      |       |none  |     0|prompt_level_loose_acc |↑  |0.5933|±  |0.0211|
+|      |       |none  |     0|prompt_level_strict_acc|↑  |0.5490|±  |0.0214|
+
+(MainProcess pid=5310) INFO 11-18 10:45:10 [utils.py:628] [shutdown] Process manager: send sigterm to process EngineCore
+(EngineCore pid=5597) INFO 11-18 10:45:10 [core.py:1698] [shutdown] EngineCore: trigger received signal=SIGTERM
+(EngineCore pid=5597) INFO 11-18 10:45:10 [core.py:1889] [shutdown] EngineCore: start mode=abort timeout=0s
+(EngineCore pid=5597) INFO 11-18 10:45:10 [core.py:1920] [shutdown] EngineCore: request processing complete; starting resource teardown
+(EngineCore pid=5597) INFO 11-18 10:45:10 [core.py:1746] [shutdown] EngineCore: exiting busy loop
+(MainProcess pid=5310) WARNING 11-18 10:45:12 [core_client.py:869] [shutdown] MPClient: engine core exited unexpectedly; starting cleanup
+(MainProcess pid=5310) INFO 11-18 10:45:12 [core_client.py:822] [shutdown] MPClient: start timeout=default
+(MainProcess pid=5310) INFO 11-18 10:45:12 [core_client.py:824] [shutdown] MPClient: stopping engine manager
+(MainProcess pid=5310) INFO 11-18 10:45:12 [core_client.py:826] [shutdown] MPClient: engine manager stopped
+(MainProcess pid=5310) INFO 11-18 10:45:12 [core_client.py:827] [shutdown] MPClient: cleaning up background resources
+(MainProcess pid=5310) INFO 11-18 10:45:12 [core_client.py:829] [shutdown] MPClient: complete

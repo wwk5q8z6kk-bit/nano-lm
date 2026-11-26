@@ -1,0 +1,25 @@
+Processed prompts:  83%|████████▎ | 449/541 [00:05<00:05, 15.83it/s, est. speed input: 4741.90 toks/s, output: 19335.65 toks/s][A
+Processed prompts:  84%|████████▎ | 452/541 [00:05<00:06, 14.59it/s, est. speed input: 4549.94 toks/s, output: 18948.99 toks/s][A
+Processed prompts:  84%|████████▍ | 455/541 [00:05<00:05, 15.49it/s, est. speed input: 4456.25 toks/s, output: 18951.43 toks/s][A
+Processed prompts:  84%|████████▍ | 457/541 [00:06<00:05, 14.32it/s, est. speed input: 4338.14 toks/s, output: 18716.23 toks/s][A
+Processed prompts:  85%|████████▍ | 459/541 [00:06<00:08,  9.89it/s, est. speed input: 4070.53 toks/s, output: 17811.03 toks/s][A
+Processed prompts:  85%|████████▌ | 461/541 [00:06<00:09,  8.87it/s, est. speed input: 3910.27 toks/s, output: 17366.71 toks/s][A
+Processed prompts:  86%|████████▌ | 463/541 [00:07<00:11,  6.82it/s, est. speed input: 3667.95 toks/s, output: 16535.48 toks/s][A
+Processed prompts: 100%|██████████| 541/541 [00:07<00:00,  6.82it/s, est. speed input: 4274.06 toks/s, output: 30028.28 toks/s][AProcessed prompts: 100%|██████████| 541/541 [00:07<00:00, 73.20it/s, est. speed input: 4274.06 toks/s, output: 30028.28 toks/s]
+Running generate_until requests:   0%|          | 1/541 [00:07<1:07:13,  7.47s/it]Running generate_until requests: 100%|██████████| 541/541 [00:07<00:00, 72.42it/s]
+2026-11-18:04:35:41 ERROR    [tasks.ifeval.instructions:189] Unable to detect language for text ****** due to No features in text.
+fatal: not a git repository (or any of the parent directories): .git
+(MainProcess pid=7622) INFO 11-18 04:35:42 [utils.py:628] [shutdown] Process manager: send sigterm to process EngineCore
+(EngineCore pid=7888) INFO 11-18 04:35:42 [core.py:1698] [shutdown] EngineCore: trigger received signal=SIGTERM
+(EngineCore pid=7888) INFO 11-18 04:35:42 [core.py:1889] [shutdown] EngineCore: start mode=abort timeout=0s
+(EngineCore pid=7888) INFO 11-18 04:35:42 [core.py:1920] [shutdown] EngineCore: request processing complete; starting resource teardown
+(EngineCore pid=7888) INFO 11-18 04:35:42 [core.py:1746] [shutdown] EngineCore: exiting busy loop
+2026-11-18:04:35:43 INFO     [loggers.evaluation_tracker:247] Saving results aggregated
+vllm ({'pretrained': '/workspace/models/nanolm_b6_2b', 'dtype': 'bfloat16', 'gpu_memory_utilization': 0.85, 'max_model_len': 8192, 'enable_thinking': False}), gen_kwargs: ({'max_gen_toks': 1280, 'temperature': 0}), limit: None, num_fewshot: None, batch_size: auto
+|Tasks |Version|Filter|n-shot|        Metric         |   |Value |   |Stderr|
+|------|------:|------|-----:|-----------------------|---|-----:|---|------|
+|ifeval|      4|none  |     0|inst_level_loose_acc   |↑  |0.7554|±  |   N/A|
+|      |       |none  |     0|inst_level_strict_acc  |↑  |0.7218|±  |   N/A|
+|      |       |none  |     0|prompt_level_loose_acc |↑  |0.6636|±  |0.0203|
+|      |       |none  |     0|prompt_level_strict_acc|↑  |0.6377|±  |0.0207|
+

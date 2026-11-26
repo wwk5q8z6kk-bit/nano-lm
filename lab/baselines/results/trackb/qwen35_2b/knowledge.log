@@ -1,0 +1,40 @@
+|  - professional_psychology            |      1|none  |     5|acc     |↑  |0.5359|±  |0.0202|
+|  - public_relations                   |      1|none  |     5|acc     |↑  |0.6000|±  |0.0469|
+|  - security_studies                   |      1|none  |     5|acc     |↑  |0.6531|±  |0.0305|
+|  - sociology                          |      1|none  |     5|acc     |↑  |0.6667|±  |0.0333|
+|  - us_foreign_policy                  |      1|none  |     5|acc     |↑  |0.7800|±  |0.0416|
+| - stem                                |      2|none  |     5|acc     |↑  |0.5477|±  |0.0086|
+|  - abstract_algebra                   |      1|none  |     5|acc     |↑  |0.3700|±  |0.0485|
+|  - anatomy                            |      1|none  |     5|acc     |↑  |0.5481|±  |0.0430|
+|  - astronomy                          |      1|none  |     5|acc     |↑  |0.7039|±  |0.0372|
+|  - college_biology                    |      1|none  |     5|acc     |↑  |0.6806|±  |0.0390|
+|  - college_chemistry                  |      1|none  |     5|acc     |↑  |0.4500|±  |0.0500|
+|  - college_computer_science           |      1|none  |     5|acc     |↑  |0.4500|±  |0.0500|
+|  - college_mathematics                |      1|none  |     5|acc     |↑  |0.4300|±  |0.0498|
+|  - college_physics                    |      1|none  |     5|acc     |↑  |0.3824|±  |0.0484|
+|  - computer_security                  |      1|none  |     5|acc     |↑  |0.6600|±  |0.0476|
+|  - conceptual_physics                 |      1|none  |     5|acc     |↑  |0.6213|±  |0.0317|
+|  - electrical_engineering             |      1|none  |     5|acc     |↑  |0.5862|±  |0.0410|
+|  - elementary_mathematics             |      1|none  |     5|acc     |↑  |0.4524|±  |0.0256|
+|  - high_school_biology                |      1|none  |     5|acc     |↑  |0.7516|±  |0.0246|
+|  - high_school_chemistry              |      1|none  |     5|acc     |↑  |0.5961|±  |0.0345|
+|  - high_school_computer_science       |      1|none  |     5|acc     |↑  |0.6800|±  |0.0469|
+|  - high_school_mathematics            |      1|none  |     5|acc     |↑  |0.4296|±  |0.0302|
+|  - high_school_physics                |      1|none  |     5|acc     |↑  |0.4437|±  |0.0406|
+|  - high_school_statistics             |      1|none  |     5|acc     |↑  |0.5278|±  |0.0340|
+|  - machine_learning                   |      1|none  |     5|acc     |↑  |0.4643|±  |0.0473|
+|arc_challenge                          |      1|none  |     5|acc     |↑  |0.4744|±  |0.0146|
+|                                       |       |none  |     5|acc_norm|↑  |0.5247|±  |0.0146|
+|hellaswag                              |      1|none  |     5|acc     |↑  |0.4601|±  |0.0050|
+|                                       |       |none  |     5|acc_norm|↑  |0.6170|±  |0.0049|
+|truthfulqa_mc2                         |      3|none  |     0|acc     |↑  |0.4341|±  |0.0144|
+|winogrande                             |      1|none  |     5|acc     |↑  |0.6472|±  |0.0134|
+
+|      Groups      |Version|Filter|n-shot|Metric|   |Value |   |Stderr|
+|------------------|------:|------|-----:|------|---|-----:|---|-----:|
+|mmlu              |      2|none  |      |acc   |   |0.5735|±  |0.0040|
+| - humanities     |      2|none  |     5|acc   |↑  |0.5080|±  |0.0070|
+| - other          |      2|none  |     5|acc   |↑  |0.6241|±  |0.0084|
+| - social sciences|      2|none  |     5|acc   |↑  |0.6490|±  |0.0085|
+| - stem           |      2|none  |     5|acc   |↑  |0.5477|±  |0.0086|
+

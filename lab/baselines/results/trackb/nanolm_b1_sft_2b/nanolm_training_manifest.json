@@ -1,0 +1,34 @@
+{
+  "schema": "nanolm.trackb_posttrain_run.v1",
+  "student": "Qwen/Qwen3-1.7B",
+  "teacher": null,
+  "alpha_kd": 0.0,
+  "temperature": 1.5,
+  "topk": 64,
+  "rslora_rank": 32,
+  "trainable_params": 34865152,
+  "total_params": 1755440128,
+  "filter_stats": {
+    "total": 566,
+    "contaminated_dropped": 0,
+    "verification_failed": 0,
+    "kept": 566
+  },
+  "encoded_examples": 566,
+  "epochs": 2,
+  "wall_seconds": 209.09,
+  "history": [
+    {
+      "epoch": 1,
+      "mean_ce": 0.2311,
+      "mean_kd_kl": 0.0,
+      "elapsed_s": 103.0
+    },
+    {
+      "epoch": 2,
+      "mean_ce": 0.0824,
+      "mean_kd_kl": 0.0,
+      "elapsed_s": 205.6
+    }
+  ]
+}

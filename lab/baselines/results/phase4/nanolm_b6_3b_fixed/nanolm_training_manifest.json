@@ -1,0 +1,16 @@
+{
+  "schema": "nanolm.trackb_phase3_b6_3b.v1",
+  "base_model": "HuggingFaceTB/SmolLM3-3B",
+  "total_params": 3075098624,
+  "active_params": 3075098624,
+  "rslora_trainable_params": 60456960,
+  "method": "Stratified_32B_120B_DualMode_rsLoRA32_plus_G8_GRPO",
+  "sft_wall_seconds": 148.31,
+  "grpo_steps": 50,
+  "group_size": 8,
+  "active_variance_groups": 9,
+  "mean_reward_first_quarter": 0.3021,
+  "mean_reward_last_quarter": 0.5417,
+  "grpo_wall_s": 505.8,
+  "grpo_trainable_params": 30228480
+}

@@ -69,3 +69,7 @@ experiments/**/runs/**
 artifacts/p1_runs/
 artifacts/native_checkpoints_fixed
 
+# NanoLM lab local run checkpoints and scratch artifacts
+artifacts/nanolm_v1/
+artifacts/nanolm_cli_run/
+artifacts/nanolm_lab/

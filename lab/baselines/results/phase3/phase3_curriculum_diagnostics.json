@@ -1,0 +1,17 @@
+{
+  "pool_total": 1070,
+  "verified_32b": 878,
+  "rescued_by_120b": 81,
+  "stratified_total": 480,
+  "stratified_by_category": {
+    "math_reasoning": 120,
+    "code_exec": 120,
+    "tool_trajectories": 120,
+    "json_and_constraints": 120
+  },
+  "stratified_by_teacher": {
+    "Qwen3-32B": 429,
+    "gpt-oss-120b": 51
+  },
+  "rlvr_pool_total": 100
+}

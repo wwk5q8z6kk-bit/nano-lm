@@ -1,0 +1,30 @@
+Processed prompts:  57%|█████▋    | 307/542 [00:08<00:02, 89.85it/s, est. speed input: 7643.40 toks/s, output: 4071.72 toks/s][A
+Processed prompts:  60%|██████    | 326/542 [00:08<00:01, 116.09it/s, est. speed input: 7775.70 toks/s, output: 4293.33 toks/s][A
+Processed prompts:  63%|██████▎   | 340/542 [00:08<00:01, 117.06it/s, est. speed input: 7850.26 toks/s, output: 4442.61 toks/s][A
+Processed prompts:  65%|██████▌   | 353/542 [00:08<00:01, 118.76it/s, est. speed input: 7890.49 toks/s, output: 4583.02 toks/s][A
+Processed prompts:  68%|██████▊   | 369/542 [00:09<00:01, 129.61it/s, est. speed input: 7953.15 toks/s, output: 4747.11 toks/s][A
+Processed prompts:  71%|███████   | 383/542 [00:09<00:01, 132.06it/s, est. speed input: 8010.44 toks/s, output: 4892.34 toks/s][A
+Processed prompts:  75%|███████▌  | 408/542 [00:09<00:00, 163.37it/s, est. speed input: 8302.80 toks/s, output: 5233.97 toks/s][A
+Processed prompts:  78%|███████▊  | 425/542 [00:09<00:00, 162.83it/s, est. speed input: 8377.96 toks/s, output: 5415.53 toks/s][A
+Processed prompts:  82%|████████▏ | 442/542 [00:09<00:00, 151.98it/s, est. speed input: 8420.42 toks/s, output: 5623.63 toks/s][A
+Processed prompts:  86%|████████▌ | 465/542 [00:09<00:00, 164.88it/s, est. speed input: 8523.31 toks/s, output: 5879.71 toks/s][A
+Processed prompts:  89%|████████▉ | 482/542 [00:09<00:00, 149.35it/s, est. speed input: 8676.22 toks/s, output: 6162.59 toks/s][A
+Processed prompts:  92%|█████████▏| 498/542 [00:09<00:00, 136.61it/s, est. speed input: 8677.94 toks/s, output: 6341.33 toks/s][A
+Processed prompts:  94%|█████████▍| 512/542 [00:10<00:00, 114.55it/s, est. speed input: 8637.76 toks/s, output: 6510.45 toks/s][A
+Processed prompts:  97%|█████████▋| 525/542 [00:10<00:00, 93.99it/s, est. speed input: 8572.42 toks/s, output: 6660.38 toks/s] [A
+Processed prompts:  99%|█████████▉| 536/542 [00:10<00:00, 64.64it/s, est. speed input: 8412.48 toks/s, output: 6749.26 toks/s][A
+Processed prompts: 100%|██████████| 542/542 [00:15<00:00, 64.64it/s, est. speed input: 5804.76 toks/s, output: 4913.40 toks/s][AProcessed prompts: 100%|██████████| 542/542 [00:15<00:00, 34.81it/s, est. speed input: 5804.76 toks/s, output: 4913.40 toks/s]
+Running generate_until requests:   0%|          | 1/542 [00:15<2:21:35, 15.70s/it]Running generate_until requests: 100%|██████████| 542/542 [00:15<00:00, 34.50it/s]
+fatal: not a git repository (or any of the parent directories): .git
+(MainProcess pid=80577) INFO 11-17 08:28:28 [utils.py:628] [shutdown] Process manager: send sigterm to process EngineCore
+(EngineCore pid=80825) INFO 11-17 08:28:28 [core.py:1698] [shutdown] EngineCore: trigger received signal=SIGTERM
+(EngineCore pid=80825) INFO 11-17 08:28:28 [core.py:1889] [shutdown] EngineCore: start mode=abort timeout=0s
+(EngineCore pid=80825) INFO 11-17 08:28:28 [core.py:1920] [shutdown] EngineCore: request processing complete; starting resource teardown
+(EngineCore pid=80825) INFO 11-17 08:28:28 [core.py:1746] [shutdown] EngineCore: exiting busy loop
+2026-11-17:08:28:30 INFO     [loggers.evaluation_tracker:247] Saving results aggregated
+vllm ({'pretrained': 'Qwen/Qwen2.5-1.5B-Instruct', 'revision': '989aa7980e4cf806f80c7fef2b1adb7bc71aa306', 'dtype': 'bfloat16', 'gpu_memory_utilization': 0.85, 'max_model_len': 8192, 'enable_thinking': False}), gen_kwargs: ({'max_gen_toks': 1024, 'temperature': 0}), limit: None, num_fewshot: None, batch_size: auto
+|      Tasks       |Version|   Filter   |n-shot| Metric  |   |Value |   |Stderr|
+|------------------|------:|------------|-----:|---------|---|-----:|---|-----:|
+|humaneval_instruct|      4|create_test |     0|pass@1   |↑  |0.5244|±  |0.0391|
+|mbpp_plus_instruct|      1|extract_code|     0|pass_at_1|↑  |0.0000|±  |0.0000|
+

@@ -1,0 +1,30 @@
+Processed prompts:  93%|█████████▎| 12211/13103 [01:23<00:04, 211.66it/s, est. speed input: 27321.88 toks/s, output: 145.37 toks/s][A
+Processed prompts:  94%|█████████▎| 12276/13103 [01:24<00:03, 211.41it/s, est. speed input: 27318.70 toks/s, output: 145.61 toks/s][A
+Processed prompts:  94%|█████████▍| 12342/13103 [01:24<00:03, 212.60it/s, est. speed input: 27317.29 toks/s, output: 145.87 toks/s][A
+Processed prompts:  95%|█████████▍| 12408/13103 [01:24<00:03, 213.03it/s, est. speed input: 27314.62 toks/s, output: 146.11 toks/s][A
+Processed prompts:  95%|█████████▌| 12474/13103 [01:25<00:02, 212.77it/s, est. speed input: 27310.94 toks/s, output: 146.35 toks/s][A
+Processed prompts:  96%|█████████▌| 12540/13103 [01:25<00:02, 211.86it/s, est. speed input: 27305.52 toks/s, output: 146.59 toks/s][A
+Processed prompts:  96%|█████████▌| 12607/13103 [01:25<00:02, 211.86it/s, est. speed input: 27300.44 toks/s, output: 146.83 toks/s][A
+Processed prompts:  97%|█████████▋| 12674/13103 [01:26<00:01, 214.64it/s, est. speed input: 27299.40 toks/s, output: 147.09 toks/s][A
+Processed prompts:  97%|█████████▋| 12742/13103 [01:26<00:01, 218.75it/s, est. speed input: 27300.73 toks/s, output: 147.37 toks/s][A
+Processed prompts:  98%|█████████▊| 12810/13103 [01:26<00:01, 217.19it/s, est. speed input: 27295.00 toks/s, output: 147.61 toks/s][A
+Processed prompts:  98%|█████████▊| 12879/13103 [01:27<00:01, 220.94it/s, est. speed input: 27295.59 toks/s, output: 147.90 toks/s][A
+Processed prompts:  99%|█████████▉| 12948/13103 [01:27<00:00, 223.07it/s, est. speed input: 27294.34 toks/s, output: 148.17 toks/s][A
+Processed prompts:  99%|█████████▉| 13018/13103 [01:27<00:00, 222.88it/s, est. speed input: 27289.30 toks/s, output: 148.44 toks/s][A
+Processed prompts: 100%|██████████| 13103/13103 [01:27<00:00, 222.88it/s, est. speed input: 27393.93 toks/s, output: 149.39 toks/s][AProcessed prompts: 100%|██████████| 13103/13103 [01:27<00:00, 149.39it/s, est. speed input: 27393.93 toks/s, output: 149.39 toks/s]
+Running loglikelihood requests:   0%|          | 1/13103 [01:30<328:32:54, 90.27s/it]Running loglikelihood requests:   4%|▍         | 572/13103 [01:30<23:07,  9.03it/s]  Running loglikelihood requests:  10%|▉         | 1251/13103 [01:30<08:07, 24.30it/s]Running loglikelihood requests:  14%|█▍        | 1847/13103 [01:30<04:19, 43.30it/s]Running loglikelihood requests:  18%|█▊        | 2400/13103 [01:30<02:36, 68.23it/s]Running loglikelihood requests:  22%|██▏       | 2920/13103 [01:30<01:40, 101.39it/s]Running loglikelihood requests:  27%|██▋       | 3558/13103 [01:30<01:00, 158.81it/s]Running loglikelihood requests:  32%|███▏      | 4162/13103 [01:31<00:38, 234.65it/s]Running loglikelihood requests:  36%|███▌      | 4736/13103 [01:31<00:25, 334.23it/s]Running loglikelihood requests:  41%|████      | 5322/13103 [01:31<00:16, 473.42it/s]Running loglikelihood requests:  46%|████▌     | 6044/13103 [01:31<00:09, 707.76it/s]Running loglikelihood requests:  55%|█████▍    | 7188/13103 [01:31<00:04, 1215.10it/s]Running loglikelihood requests:  61%|██████▏   | 8053/13103 [01:31<00:02, 1685.45it/s]Running loglikelihood requests:  69%|██████▉   | 9065/13103 [01:31<00:01, 2384.53it/s]Running loglikelihood requests:  79%|███████▉  | 10402/13103 [01:31<00:00, 3547.44it/s]Running loglikelihood requests:  88%|████████▊ | 11567/13103 [01:31<00:00, 4611.58it/s]Running loglikelihood requests:  98%|█████████▊| 12902/13103 [01:31<00:00, 5992.08it/s]Running loglikelihood requests: 100%|██████████| 13103/13103 [01:31<00:00, 142.52it/s] 
+fatal: not a git repository (or any of the parent directories): .git
+(MainProcess pid=79359) INFO 11-17 08:20:06 [utils.py:628] [shutdown] Process manager: send sigterm to process EngineCore
+(EngineCore pid=79608) INFO 11-17 08:20:06 [core.py:1698] [shutdown] EngineCore: trigger received signal=SIGTERM
+(EngineCore pid=79608) INFO 11-17 08:20:06 [core.py:1889] [shutdown] EngineCore: start mode=abort timeout=0s
+(EngineCore pid=79608) INFO 11-17 08:20:06 [core.py:1920] [shutdown] EngineCore: request processing complete; starting resource teardown
+(EngineCore pid=79608) INFO 11-17 08:20:06 [core.py:1746] [shutdown] EngineCore: exiting busy loop
+2026-11-17:08:20:08 INFO     [loggers.evaluation_tracker:247] Saving results aggregated
+vllm ({'pretrained': 'Qwen/Qwen2.5-1.5B-Instruct', 'revision': '989aa7980e4cf806f80c7fef2b1adb7bc71aa306', 'dtype': 'bfloat16', 'gpu_memory_utilization': 0.85, 'max_model_len': 8192, 'enable_thinking': False}), gen_kwargs: ({}), limit: None, num_fewshot: 5, batch_size: auto
+|    Tasks     |Version|Filter|n-shot| Metric |   |Value |   |Stderr|
+|--------------|------:|------|-----:|--------|---|-----:|---|-----:|
+|arc_challenge |      1|none  |     5|acc     |↑  |0.4932|±  |0.0146|
+|              |       |none  |     5|acc_norm|↑  |0.5392|±  |0.0146|
+|truthfulqa_mc2|      3|none  |     0|acc     |↑  |0.4668|±  |0.0150|
+|winogrande    |      1|none  |     5|acc     |↑  |0.6433|±  |0.0135|
+
