@@ -15,6 +15,7 @@ Executes four pre-registered phases:
 """
 from __future__ import annotations
 import argparse
+import functools
 import gc
 import hashlib
 import json
@@ -171,9 +172,9 @@ def measure_tpu_ceilings(dev, small: bool = False) -> dict:
         @jax.jit
         def gemm_loop(x, y):
             def body(c, _):
-                return c + jnp.dot(x, y)[0, 0].astype(jnp.float32), None
-            s, _ = jax.lax.scan(body, jnp.zeros((), jnp.float32), None, length=it)
-            return s
+                return jnp.dot(c, y) * jnp.bfloat16(1.0 / n), None
+            s, _ = jax.lax.scan(body, x, None, length=it)
+            return s[0, 0]
 
         jax.block_until_ready(gemm_loop(a, b))
         t0 = time.perf_counter()
@@ -214,12 +215,14 @@ def bench_config(
     vocab_chunk_cap: int = 2048,
 ) -> dict:
     devs = jax.devices()[:dp]
+    cpu_dev = jax.devices("cpu")[0]
     opt = optax.chain(optax.clip_by_global_norm(1.0), optax.adamw(1e-4, b1=0.9, b2=0.95, weight_decay=0.01))
     vocab_chunk = min(vocab_chunk_cap, micro_b * seq)
 
-    params_host = init_jax_hybrid_params(jax.random.PRNGKey(42), cfg)
-    n_p = jax_n_params(params_host)
-    opt_st_host = opt.init(params_host)
+    with jax.default_device(cpu_dev):
+        params_host = init_jax_hybrid_params(jax.random.PRNGKey(42), cfg)
+        n_p = jax_n_params(params_host)
+        opt_st_host = opt.init(params_host)
 
     rng = np.random.default_rng(0)
 
@@ -230,8 +233,9 @@ def bench_config(
         dev0 = devs[0]
         p_dev = jax.device_put(params_host, dev0)
         st_dev = jax.device_put(opt_st_host, dev0)
+        del params_host, opt_st_host
 
-        @jax.jit
+        @functools.partial(jax.jit, donate_argnums=(0, 1))
         def step_fn(p, st, toks, kis, kvs):
             if accum == 1:
                 l, g = jax.value_and_grad(loss_single)(p, toks[0], kis[0] if with_kd else None, kvs[0] if with_kd else None)
@@ -282,6 +286,7 @@ def bench_config(
     else:
         p_rep = jax.device_put_replicated(params_host, devs)
         st_rep = jax.device_put_replicated(opt_st_host, devs)
+        del params_host, opt_st_host
 
         def pmap_step(p, st, toks, kis, kvs):
             if accum == 1:
@@ -303,7 +308,7 @@ def bench_config(
             u, st_n = opt.update(g, st, p)
             return optax.apply_updates(p, u), st_n, l
 
-        p_step = jax.pmap(pmap_step, axis_name="dp", devices=devs)
+        p_step = jax.pmap(pmap_step, axis_name="dp", devices=devs, donate_argnums=(0, 1))
         toks_np = rng.integers(0, cfg["vocab"], size=(dp, accum, micro_b, seq + 1), dtype=np.int32)
         kis_np = rng.integers(0, cfg["vocab"], size=(dp, accum, micro_b, seq, 32), dtype=np.int32) if with_kd else np.zeros((dp, 1), np.int32)
         kvs_np = rng.standard_normal((dp, accum, micro_b, seq, 32)).astype(np.float16) if with_kd else np.zeros((dp, 1), np.float16)
@@ -397,14 +402,18 @@ def safe_bench_config(
 
 def run_stability_100(cfg: dict, dev, micro_b: int = 2, seq: int = 1024, steps: int = 100) -> dict:
     opt = optax.chain(optax.clip_by_global_norm(1.0), optax.adamw(3e-4, b1=0.9, b2=0.95, weight_decay=0.01))
+    with jax.default_device(jax.devices("cpu")[0]):
+        p_h = init_jax_hybrid_params(jax.random.PRNGKey(123), cfg)
+        st_h = opt.init(p_h)
     with jax.default_device(dev):
-        p = init_jax_hybrid_params(jax.random.PRNGKey(123), cfg)
-        st = opt.init(p)
+        p = jax.device_put(p_h, dev)
+        st = jax.device_put(st_h, dev)
+        del p_h, st_h
 
         def lf(px, tk):
             return jax_chunked_ce_or_kd_loss(px, tk, cfg, jnp.bfloat16, vocab_chunk=min(2048, micro_b * seq), remat=True)
 
-        @jax.jit
+        @functools.partial(jax.jit, donate_argnums=(0, 1))
         def step_fn(px, stx, tk):
             l, g = jax.value_and_grad(lf)(px, tk)
             gn = optax.global_norm(g)
