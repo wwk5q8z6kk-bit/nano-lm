@@ -17,7 +17,7 @@ Verified directly against Git refs, filesystem state, checkpoints, and source co
 | `pretrain/train.py`, `sft/model_nano.py`, `nano_ai/training/model.py` | Hardcoded 6-layer GQA (6Q:2KV) + SwiGLU + RoPE + RMSNorm, `d=192`, `S=512`, `V=4096/4098`, no KV cache | **3.15M** | Toy mechanism prototype; obsolete for 2B–4B training/inference |
 | `nano_ai/training/evidence_query_model.py` | 3.15M frozen trunk + 5-slot clinical state/span pointer head | **3.29M** | Domain-specific Scribe extraction head (H6 terminal/rejected); not reusable as general LM |
 | `scale/kaggle_scale_test.py` | Hardcoded 8-layer GQA (`d=320, S=512, V=4098`) | **10.0M** | Historical Scribe scaling rung |
-| `artifacts/native_checkpoints_bpe/` (on `/Volumes/Express1M2`) | 16-layer decoder (`d=384, H=6, S=512`) Scribe screening runs | **30.0M** | Domain-specific synthetic Scribe screen |
+| `artifacts/native_checkpoints_bpe/` (external checkpoint volume) | 16-layer decoder (`d=384, H=6, S=512`) Scribe screening runs | **30.0M** | Domain-specific synthetic Scribe screen |
 | `trajectory/kaggle_ownstack_160m.py` & `checkpoints/chinchilla-160m/` | 14-layer GQA (`d=1024, H=16, KV=4, ff=2752, S=512, V=4098`) | **159.0M** | Largest historical from-scratch rung; severely bottlenecked by `V=4098` and `S=512` |
 | `pretrain/tokenizer.json`, `sft/tokenizer.json` | 4,096 / 4,098 vocab Byte-Level BPE trained on 12k FineWeb docs | `V=4,098` | Severe sequence inflation on code (`2.05 B/tok`), zero reserved special-token headroom |
 | `.local-data/nano-training-data/` | Local cached `fineweb-edu` and `tinystories` uint16 shards (1M train + 100k val tokens each) | ~2.2M tok | Clean local educational prose suitable for offline smoke/ablation validation |
@@ -34,5 +34,5 @@ Verified directly against Git refs, filesystem state, checkpoints, and source co
 
 ## 4. Available Compute & Storage Verified
 
-- **Local Hardware**: Apple M3 Max, 64 GB unified memory, PyTorch MPS (`bfloat16` & `float16` verified), `102 GiB` internal free disk + `1.3 TiB` free on mounted `/Volumes/Express1M2`. Capable of live instantiation and `bfloat16` inference profiling of full 2.0B–3.9B NanoLM models, plus rapid 25M–125M architecture/data ablations.
-- **Cloud Compute**: Kaggle CLI (`hassaneljesr`) and `runpodctl` configured (`0` active pods verified — zero idle spend). Reserved for multi-billion-token pretraining and large-scale distillation after local preflight gates pass.
+- **Local Hardware**: Apple M3 Max, 64 GB unified memory, PyTorch MPS (`bfloat16` & `float16` verified), `102 GiB` internal free disk + `1.3 TiB` free on mounted external NVMe storage. Capable of live instantiation and `bfloat16` inference profiling of full 2.0B–3.9B NanoLM models, plus rapid 25M–125M architecture/data ablations.
+- **Cloud Compute**: Kaggle CLI and `runpodctl` configured (`0` active pods verified — zero idle spend). Reserved for multi-billion-token pretraining and large-scale distillation after local preflight gates pass.

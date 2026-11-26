@@ -3,9 +3,9 @@
 set -euo pipefail
 POD=$1
 SPECS=$2
-LAB=/Users/mac/Projects/nano-lm/.worktrees/nanolm-lab
-DATA=/Volumes/Express1M2/nanolm-lab/data/v1
-OUT=/Volumes/Express1M2/nanolm-lab/runs
+LAB="${NANOLM_LAB_ROOT:-$(cd "$(dirname "$0")/../.." && pwd)}"
+DATA="${NANOLM_DATA_DIR:-$LAB/artifacts/nanolm_lab/data/v1}"
+OUT="${NANOLM_RUNS_DIR:-$LAB/artifacts/nanolm_lab/runs}"
 EXPECTED_SHA="867beb0d8d4c3977acaaf97fb91da39be29fb9fb040d86ea0bfdf78c9de72ac4"
 
 teardown_pod() {

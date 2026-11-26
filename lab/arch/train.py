@@ -131,8 +131,8 @@ def evaluate(model: LM, data: Path, manifest: dict, dev, dtype, seq: int, window
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--arm", required=True, choices=sorted(ARMS))
-    ap.add_argument("--data", default="/Volumes/Express1M2/nanolm-lab/data/v1")
-    ap.add_argument("--out", default="/Volumes/Express1M2/nanolm-lab/runs")
+    ap.add_argument("--data", default=os.environ.get("NANOLM_DATA_DIR", "artifacts/nanolm_lab/data/v1"))
+    ap.add_argument("--out", default=os.environ.get("NANOLM_RUNS_DIR", "artifacts/nanolm_lab/runs"))
     ap.add_argument("--tokens", type=float, default=200e6)
     ap.add_argument("--batch-tokens", type=int, default=131072)
     ap.add_argument("--micro", type=int, default=16)

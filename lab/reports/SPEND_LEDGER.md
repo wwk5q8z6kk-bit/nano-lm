@@ -1,4 +1,4 @@
-# RunPod Spend Ledger (Phases 1–5 — Final Closeout)
+# RunPod Spend Ledger (Phases 1–6 — Final Closeout)
 
 Envelope: \$180.00 autonomous budget (\$200.00 hard cap, \$20.00 owner reserve untouched).
 
@@ -23,11 +23,16 @@ Envelope: \$180.00 autonomous budget (\$200.00 hard cap, \$20.00 owner reserve u
 | `3tgu2te6rwti8s` | RTX 4090 (secure) | 0.89 | 2026-11-18 01:39 | 2026-11-18 03:35 | `LAB-ARCH-05` `X8_margin_atrd_muon s1` (`600M` tok — `0.9538` BPB) | \$1.72 |
 | `fedq4pvk225egm` | H200 SXM 141GB (secure) | 5.29 | 2026-11-18 03:49 | 2026-11-18 05:14 | Phase 3: `32B+120B` Stratified KD + `NanoLM-B6-2B` + `NanoLM-B6-3B` + `System-v2` | \$7.51 |
 | `mqmxyjlqeevye8` | H200 SXM 141GB (secure) | 5.29 | 2026-11-18 05:55 | 2026-11-18 07:17 | Phase 4: `NanoLM-B6-3B-Fixed` (`473/480` SFT + GRPO) + `System-v3` `1.7B..120B` | \$7.25 |
-| `y05unbw7rthg69` | L40S 48GB (secure) | 1.09 | 2026-11-18 10:04 | 2026-11-18 14:12 | `LAB-SCALE-02` `S2_nanolm_v3_125m` (`600M` tok — **`0.9030` BPB `#1` `125M`!**) | \$4.50 |
+| `y05unbw7rthg69` | L40S 48GB (secure) | 1.09 | 2026-11-18 10:04 | 2026-11-18 14:12 | `LAB-SCALE-02` `S2_nanolm_v3_125m s0` (`600M` tok — `0.9030` BPB `#1` `125M`) | \$4.50 |
 | `g01l7zm6coe9d0` | H200 SXM 141GB (secure) | 5.29 | 2026-11-18 10:04 | 2026-11-18 11:56 | Phase 5A: `NanoLM-B7-3B` + `NanoLMSystem-v4` `1.7B..120B` (`3B=69%`, `120B=100%`) | \$9.89 |
 | `jd8l9kbrtzdo7u` | H100 NVL 94GB (secure) | 3.19 | 2026-11-18 12:06 | 2026-11-18 12:32 | Phase 5B: Causally-shifted `NanoLM-B7-3B-Fixed` (`81.1%` P8, `65%` `#1` `<4B` Math) | \$1.40 |
 | `012up3gv65insi` | H200 SXM 141GB (secure) | 5.29 | 2026-11-18 12:45 | 2026-11-18 13:32 | Phase 5C: Causal-Completed + `WiSE-FT` **`NanoLM-B8-3B`** (`85.6%` P8, `38%` C1, `66%` C2) | \$4.13 |
+| `kd9qw8xwczgx1j` | H200 SXM 141GB (secure) | 5.29 | 2026-11-18 16:17 | 2026-11-18 17:50 | Phase 6: **`NanoLM-B9-2B`** (`1.72B`, `83.3%` P8, **`72.0% > Naked 120B`**) + `System-v5` `1.7B..120B` | \$8.21 |
+| `y2w6enx8kkw2fx` | RTX 5090 32GB (secure) | 1.39 | 2026-11-18 16:17 | 2026-11-18 18:47 | `LAB-SCALE-03` `S2_nanolm_v3_125m s1` (`600M` tok — `0.9013` BPB; `n=2` `0.9021 ± 0.0009`) | \$3.48 |
+| `7lgtpru2bcyczr` | RTX 4090 (secure) | 0.89 | 2026-11-18 16:54 | 2026-11-18 20:27 | `LAB-SCALE-03` `S0_dense_350m s0` (`600M` tok — `0.8677` BPB, `74.7%` OOD copy) | \$3.16 |
+| `ydlvfq3siahi4d` | RTX 4090 (secure) | 0.89 | 2026-11-18 16:47 | 2026-11-19 00:09 | `LAB-SCALE-03` **`S2_nanolm_v3_350m s0`** (`600M` tok — **`0.8634` BPB `#1` `350M`**, `98.6%` copy) | \$6.55 |
 
 - **Phases 1–4 realized spend (19 pods, all removed):** \$92.11
 - **Phase 5 realized spend (4 pods, all removed):** \$19.92
-- **Total realized campaign spend (23 pods, 0 Nano LM pods active):** **\$112.03 / \$180.00** (`62.2%` of autonomous budget; **\$67.97** remaining; \$20.00 owner reserve untouched)
+- **Phase 6 realized spend (4 pods, all removed):** \$21.40
+- **Total realized campaign spend (27 pods, 0 Nano LM pods active):** **\$133.43 / \$180.00** (`74.1%` of autonomous budget; **\$46.57** remaining; \$20.00 owner reserve untouched)

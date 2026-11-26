@@ -1,6 +1,6 @@
 {
   "schema": "nanolm.lab_int_01.v1",
-  "pretrained_ckpt": "/Volumes/Express1M2/nanolm-lab/runs/S0_dense_125m__muon__tokens__600M__s0/final.pt",
+  "pretrained_ckpt": "<EXTERNAL_RUN_STORE>/runs/S0_dense_125m__muon__tokens__600M__s0/final.pt",
   "hybrid_layout": "DDDADDDADDDADDDA",
   "adaptation_tokens": 122880,
   "base": {

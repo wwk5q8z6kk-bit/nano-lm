@@ -1,7 +1,8 @@
+import os
 """Aggregate Track A (LAB-ARCH-02, LAB-ARCH-03 & LAB-SCALE-01) results into multi-scale tables.
 
 Usage:
-  python -m lab.arch.analyze [/Volumes/Express1M2/nanolm-lab/runs] > lab/reports/LAB-ARCH-02_03_FINAL_REPORT_TABLES.md
+  python -m lab.arch.analyze [<runs_dir>] > lab/reports/LAB-ARCH-02_03_FINAL_REPORT_TABLES.md
 """
 
 from __future__ import annotations
@@ -105,10 +106,11 @@ def _render_scale_table(
 
 
 def main() -> None:
-    root = Path(sys.argv[1] if len(sys.argv) > 1 else "/Volumes/Express1M2/nanolm-lab/runs")
+    root = Path(sys.argv[1] if len(sys.argv) > 1 else os.environ.get("NANOLM_RUNS_DIR", "artifacts/nanolm_lab/runs"))
     rows = load(root)
     rows_46m = [r for r in rows if r.get("params", {}).get("non_embedding", 0) < 60_000_000]
-    rows_125m = [r for r in rows if r.get("params", {}).get("non_embedding", 0) >= 60_000_000]
+    rows_125m = [r for r in rows if 60_000_000 <= r.get("params", {}).get("non_embedding", 0) < 200_000_000]
+    rows_350m = [r for r in rows if r.get("params", {}).get("non_embedding", 0) >= 200_000_000]
 
     print("# Track A Empirical Architecture, Optimizer & Scaling Results (Auto-Generated)\n")
     _render_scale_table(
@@ -121,9 +123,16 @@ def main() -> None:
         if not any((r["arm"], r["optim"], r.get("match", "tokens")) == ref_125 for r in rows_125m):
             ref_125 = ("S0_dense_125m", "adamw", "tokens")
         _render_scale_table(
-            "2. Multi-Scale Transfer (`LAB-SCALE-01`, ~96.3M Non-Emb / ~121M Total)",
+            "2. Multi-Scale Transfer — 125M (`LAB-SCALE-01/02`, ~96.3M Non-Emb / ~122M Total)",
             rows_125m,
             ref_125,
+        )
+    if rows_350m:
+        ref_350 = ("S0_dense_350m", "muon", "tokens")
+        _render_scale_table(
+            "3. Multi-Scale Transfer — 350M (`LAB-SCALE-03`, ~289.5M Non-Emb / ~323M Total)",
+            rows_350m,
+            ref_350,
         )
     print("`ctx gain` = loss(positions 0–64) − loss(last 256 positions) on web val (larger = better long-context utilization).")
 

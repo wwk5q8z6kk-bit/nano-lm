@@ -46,9 +46,9 @@ from lab.cognition.swe_env import (
 )
 
 
-def generate_training_episode_rollout(rng: random.Random) -> list[dict[str, Any]]:
+def generate_training_episode_rollout(rng: random.Random, hidden_hop: bool = False) -> list[dict[str, Any]]:
     """Roll out a training episode including realistic noisy/distractor or recovery steps (35% rate)."""
-    ep = sample_episode(rng, ood=False)
+    ep = sample_episode(rng, ood=False, hidden_hop=hidden_hop)
     goal_txt = initial_goal_observation(ep)
     steps_data: list[dict[str, Any]] = []
     latest_obs = goal_txt
@@ -85,7 +85,7 @@ def generate_training_episode_rollout(rng: random.Random) -> list[dict[str, Any]
     return steps_data
 
 
-def train_one_arm(arm: str, seed: int, n_episodes: int, dev: torch.device) -> CognitiveLM:
+def train_one_arm(arm: str, seed: int, n_episodes: int, dev: torch.device, hidden_hop: bool = False) -> CognitiveLM:
     torch.manual_seed(seed)
     rng = random.Random(seed * 101 + 17)
     model = CognitiveLM(arm=arm, d=128, n_head=4, n_slots=8).to(dev)
@@ -93,7 +93,7 @@ def train_one_arm(arm: str, seed: int, n_episodes: int, dev: torch.device) -> Co
 
     model.train()
     for ep_idx in range(n_episodes):
-        traj = generate_training_episode_rollout(rng)
+        traj = generate_training_episode_rollout(rng, hidden_hop=hidden_hop)
         opt.zero_grad(set_to_none=True)
         ep_loss = torch.zeros((), device=dev)
 
@@ -142,7 +142,7 @@ def train_one_arm(arm: str, seed: int, n_episodes: int, dev: torch.device) -> Co
                     ws = model.update_c3_workspace(ws, ids_chunk, spans_chunk, dev)
 
                 l_act = F.cross_entropy(ws["act_logits"].unsqueeze(0), torch.tensor([st_item["opt_action"]], device=dev))
-                if arm == "C6_causal_suffix_canonical" and st_item["opt_action"] not in (ACT_INSPECT, ACT_PATCH):
+                if arm in ("C6_causal_suffix_canonical", "C7_dynamic_register_canonical") and st_item["opt_action"] not in (ACT_INSPECT, ACT_PATCH):
                     # Action-conditioned argument invariance: zero-argument actions do not chase dummy non-equivariant module 0!
                     l_mod = torch.zeros((), device=dev)
                 else:
@@ -191,6 +191,7 @@ def evaluate_arm(
     seed: int = 9001,
     inject_distractors: bool = True,
     extreme_ood: bool = False,
+    hidden_hop: bool = False,
 ) -> dict[str, float]:
     """Evaluate closed-loop autonomous episode completion on ID (`4–5`), OOD (`7–9`), or Extreme-OOD (`10–12`)."""
     model.eval()
@@ -205,7 +206,7 @@ def evaluate_arm(
     contradiction_cases = 0
 
     for _ in range(n_eval):
-        base_ep = sample_episode(rng, ood=ood, extreme_ood=extreme_ood)
+        base_ep = sample_episode(rng, ood=ood, extreme_ood=extreme_ood, hidden_hop=hidden_hop)
 
         for use_oracle_val in (False, True):
             ep = copy.deepcopy(base_ep)
@@ -304,7 +305,7 @@ def main() -> None:
     ap.add_argument("--eval-episodes", type=int, default=200)
     ap.add_argument("--seeds", type=int, default=3)
     ap.add_argument("--workers", type=int, default=12)
-    ap.add_argument("--out", default="/Users/mac/Projects/nano-lm/.worktrees/nanolm-lab/lab/reports/lab_cog_01_results.json")
+    ap.add_argument("--out", default=str(Path(__file__).resolve().parents[1] / "reports" / "lab_cog_01_results.json"))
     args = ap.parse_args()
 
     arms = ["C0_transcript_imitation", "C1_obs_world_model", "C2_latent_loop_only", "C3_ebwm_counterfactual"]

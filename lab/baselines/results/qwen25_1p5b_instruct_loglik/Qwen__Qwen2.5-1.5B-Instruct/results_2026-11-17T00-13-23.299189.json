@@ -667,7 +667,7 @@
         "version": 1.0,
         "pretrained": "Qwen/Qwen2.5-1.5B-Instruct",
         "dtype": "bfloat16",
-        "config_source": "/Users/mac/Projects/nano-lm/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/arc/arc_challenge.yaml"
+        "config_source": "<REPO_ROOT>/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/arc/arc_challenge.yaml"
       }
     },
     "arc_easy": {
@@ -718,7 +718,7 @@
         "version": 1.0,
         "pretrained": "Qwen/Qwen2.5-1.5B-Instruct",
         "dtype": "bfloat16",
-        "config_source": "/Users/mac/Projects/nano-lm/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/arc/arc_easy.yaml"
+        "config_source": "<REPO_ROOT>/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/arc/arc_easy.yaml"
       }
     },
     "hellaswag": {
@@ -767,7 +767,7 @@
         "version": 1.0,
         "pretrained": "Qwen/Qwen2.5-1.5B-Instruct",
         "dtype": "bfloat16",
-        "config_source": "/Users/mac/Projects/nano-lm/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/hellaswag/hellaswag.yaml"
+        "config_source": "<REPO_ROOT>/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/hellaswag/hellaswag.yaml"
       }
     },
     "mmlu_abstract_algebra": {
@@ -822,7 +822,7 @@
         "version": 1.0,
         "pretrained": "Qwen/Qwen2.5-1.5B-Instruct",
         "dtype": "bfloat16",
-        "config_source": "/Users/mac/Projects/nano-lm/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_abstract_algebra.yaml"
+        "config_source": "<REPO_ROOT>/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_abstract_algebra.yaml"
       }
     },
     "mmlu_anatomy": {
@@ -877,7 +877,7 @@
         "version": 1.0,
         "pretrained": "Qwen/Qwen2.5-1.5B-Instruct",
         "dtype": "bfloat16",
-        "config_source": "/Users/mac/Projects/nano-lm/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_anatomy.yaml"
+        "config_source": "<REPO_ROOT>/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_anatomy.yaml"
       }
     },
     "mmlu_astronomy": {
@@ -932,7 +932,7 @@
         "version": 1.0,
         "pretrained": "Qwen/Qwen2.5-1.5B-Instruct",
         "dtype": "bfloat16",
-        "config_source": "/Users/mac/Projects/nano-lm/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_astronomy.yaml"
+        "config_source": "<REPO_ROOT>/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_astronomy.yaml"
       }
     },
     "mmlu_business_ethics": {
@@ -987,7 +987,7 @@
         "version": 1.0,
         "pretrained": "Qwen/Qwen2.5-1.5B-Instruct",
         "dtype": "bfloat16",
-        "config_source": "/Users/mac/Projects/nano-lm/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_business_ethics.yaml"
+        "config_source": "<REPO_ROOT>/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_business_ethics.yaml"
       }
     },
     "mmlu_clinical_knowledge": {
@@ -1042,7 +1042,7 @@
         "version": 1.0,
         "pretrained": "Qwen/Qwen2.5-1.5B-Instruct",
         "dtype": "bfloat16",
-        "config_source": "/Users/mac/Projects/nano-lm/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_clinical_knowledge.yaml"
+        "config_source": "<REPO_ROOT>/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_clinical_knowledge.yaml"
       }
     },
     "mmlu_college_biology": {
@@ -1097,7 +1097,7 @@
         "version": 1.0,
         "pretrained": "Qwen/Qwen2.5-1.5B-Instruct",
         "dtype": "bfloat16",
-        "config_source": "/Users/mac/Projects/nano-lm/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_college_biology.yaml"
+        "config_source": "<REPO_ROOT>/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_college_biology.yaml"
       }
     },
     "mmlu_college_chemistry": {
@@ -1152,7 +1152,7 @@
         "version": 1.0,
         "pretrained": "Qwen/Qwen2.5-1.5B-Instruct",
         "dtype": "bfloat16",
-        "config_source": "/Users/mac/Projects/nano-lm/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_college_chemistry.yaml"
+        "config_source": "<REPO_ROOT>/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_college_chemistry.yaml"
       }
     },
     "mmlu_college_computer_science": {
@@ -1207,7 +1207,7 @@
         "version": 1.0,
         "pretrained": "Qwen/Qwen2.5-1.5B-Instruct",
         "dtype": "bfloat16",
-        "config_source": "/Users/mac/Projects/nano-lm/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_college_computer_science.yaml"
+        "config_source": "<REPO_ROOT>/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_college_computer_science.yaml"
       }
     },
     "mmlu_college_mathematics": {
@@ -1262,7 +1262,7 @@
         "version": 1.0,
         "pretrained": "Qwen/Qwen2.5-1.5B-Instruct",
         "dtype": "bfloat16",
-        "config_source": "/Users/mac/Projects/nano-lm/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_college_mathematics.yaml"
+        "config_source": "<REPO_ROOT>/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_college_mathematics.yaml"
       }
     },
     "mmlu_college_medicine": {
@@ -1317,7 +1317,7 @@
         "version": 1.0,
         "pretrained": "Qwen/Qwen2.5-1.5B-Instruct",
         "dtype": "bfloat16",
-        "config_source": "/Users/mac/Projects/nano-lm/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_college_medicine.yaml"
+        "config_source": "<REPO_ROOT>/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_college_medicine.yaml"
       }
     },
     "mmlu_college_physics": {
@@ -1372,7 +1372,7 @@
         "version": 1.0,
         "pretrained": "Qwen/Qwen2.5-1.5B-Instruct",
         "dtype": "bfloat16",
-        "config_source": "/Users/mac/Projects/nano-lm/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_college_physics.yaml"
+        "config_source": "<REPO_ROOT>/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_college_physics.yaml"
       }
     },
     "mmlu_computer_security": {
@@ -1427,7 +1427,7 @@
         "version": 1.0,
         "pretrained": "Qwen/Qwen2.5-1.5B-Instruct",
         "dtype": "bfloat16",
-        "config_source": "/Users/mac/Projects/nano-lm/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_computer_security.yaml"
+        "config_source": "<REPO_ROOT>/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_computer_security.yaml"
       }
     },
     "mmlu_conceptual_physics": {
@@ -1482,7 +1482,7 @@
         "version": 1.0,
         "pretrained": "Qwen/Qwen2.5-1.5B-Instruct",
         "dtype": "bfloat16",
-        "config_source": "/Users/mac/Projects/nano-lm/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_conceptual_physics.yaml"
+        "config_source": "<REPO_ROOT>/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_conceptual_physics.yaml"
       }
     },
     "mmlu_econometrics": {
@@ -1537,7 +1537,7 @@
         "version": 1.0,
         "pretrained": "Qwen/Qwen2.5-1.5B-Instruct",
         "dtype": "bfloat16",
-        "config_source": "/Users/mac/Projects/nano-lm/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_econometrics.yaml"
+        "config_source": "<REPO_ROOT>/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_econometrics.yaml"
       }
     },
     "mmlu_electrical_engineering": {
@@ -1592,7 +1592,7 @@
         "version": 1.0,
         "pretrained": "Qwen/Qwen2.5-1.5B-Instruct",
         "dtype": "bfloat16",
-        "config_source": "/Users/mac/Projects/nano-lm/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_electrical_engineering.yaml"
+        "config_source": "<REPO_ROOT>/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_electrical_engineering.yaml"
       }
     },
     "mmlu_elementary_mathematics": {
@@ -1647,7 +1647,7 @@
         "version": 1.0,
         "pretrained": "Qwen/Qwen2.5-1.5B-Instruct",
         "dtype": "bfloat16",
-        "config_source": "/Users/mac/Projects/nano-lm/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_elementary_mathematics.yaml"
+        "config_source": "<REPO_ROOT>/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_elementary_mathematics.yaml"
       }
     },
     "mmlu_formal_logic": {
@@ -1702,7 +1702,7 @@
         "version": 1.0,
         "pretrained": "Qwen/Qwen2.5-1.5B-Instruct",
         "dtype": "bfloat16",
-        "config_source": "/Users/mac/Projects/nano-lm/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_formal_logic.yaml"
+        "config_source": "<REPO_ROOT>/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_formal_logic.yaml"
       }
     },
     "mmlu_global_facts": {
@@ -1757,7 +1757,7 @@
         "version": 1.0,
         "pretrained": "Qwen/Qwen2.5-1.5B-Instruct",
         "dtype": "bfloat16",
-        "config_source": "/Users/mac/Projects/nano-lm/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_global_facts.yaml"
+        "config_source": "<REPO_ROOT>/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_global_facts.yaml"
       }
     },
     "mmlu_high_school_biology": {
@@ -1812,7 +1812,7 @@
         "version": 1.0,
         "pretrained": "Qwen/Qwen2.5-1.5B-Instruct",
         "dtype": "bfloat16",
-        "config_source": "/Users/mac/Projects/nano-lm/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_high_school_biology.yaml"
+        "config_source": "<REPO_ROOT>/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_high_school_biology.yaml"
       }
     },
     "mmlu_high_school_chemistry": {
@@ -1867,7 +1867,7 @@
         "version": 1.0,
         "pretrained": "Qwen/Qwen2.5-1.5B-Instruct",
         "dtype": "bfloat16",
-        "config_source": "/Users/mac/Projects/nano-lm/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_high_school_chemistry.yaml"
+        "config_source": "<REPO_ROOT>/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_high_school_chemistry.yaml"
       }
     },
     "mmlu_high_school_computer_science": {
@@ -1922,7 +1922,7 @@
         "version": 1.0,
         "pretrained": "Qwen/Qwen2.5-1.5B-Instruct",
         "dtype": "bfloat16",
-        "config_source": "/Users/mac/Projects/nano-lm/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_high_school_computer_science.yaml"
+        "config_source": "<REPO_ROOT>/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_high_school_computer_science.yaml"
       }
     },
     "mmlu_high_school_european_history": {
@@ -1977,7 +1977,7 @@
         "version": 1.0,
         "pretrained": "Qwen/Qwen2.5-1.5B-Instruct",
         "dtype": "bfloat16",
-        "config_source": "/Users/mac/Projects/nano-lm/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_high_school_european_history.yaml"
+        "config_source": "<REPO_ROOT>/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_high_school_european_history.yaml"
       }
     },
     "mmlu_high_school_geography": {
@@ -2032,7 +2032,7 @@
         "version": 1.0,
         "pretrained": "Qwen/Qwen2.5-1.5B-Instruct",
         "dtype": "bfloat16",
-        "config_source": "/Users/mac/Projects/nano-lm/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_high_school_geography.yaml"
+        "config_source": "<REPO_ROOT>/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_high_school_geography.yaml"
       }
     },
     "mmlu_high_school_government_and_politics": {
@@ -2087,7 +2087,7 @@
         "version": 1.0,
         "pretrained": "Qwen/Qwen2.5-1.5B-Instruct",
         "dtype": "bfloat16",
-        "config_source": "/Users/mac/Projects/nano-lm/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_high_school_government_and_politics.yaml"
+        "config_source": "<REPO_ROOT>/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_high_school_government_and_politics.yaml"
       }
     },
     "mmlu_high_school_macroeconomics": {
@@ -2142,7 +2142,7 @@
         "version": 1.0,
         "pretrained": "Qwen/Qwen2.5-1.5B-Instruct",
         "dtype": "bfloat16",
-        "config_source": "/Users/mac/Projects/nano-lm/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_high_school_macroeconomics.yaml"
+        "config_source": "<REPO_ROOT>/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_high_school_macroeconomics.yaml"
       }
     },
     "mmlu_high_school_mathematics": {
@@ -2197,7 +2197,7 @@
         "version": 1.0,
         "pretrained": "Qwen/Qwen2.5-1.5B-Instruct",
         "dtype": "bfloat16",
-        "config_source": "/Users/mac/Projects/nano-lm/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_high_school_mathematics.yaml"
+        "config_source": "<REPO_ROOT>/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_high_school_mathematics.yaml"
       }
     },
     "mmlu_high_school_microeconomics": {
@@ -2252,7 +2252,7 @@
         "version": 1.0,
         "pretrained": "Qwen/Qwen2.5-1.5B-Instruct",
         "dtype": "bfloat16",
-        "config_source": "/Users/mac/Projects/nano-lm/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_high_school_microeconomics.yaml"
+        "config_source": "<REPO_ROOT>/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_high_school_microeconomics.yaml"
       }
     },
     "mmlu_high_school_physics": {
@@ -2307,7 +2307,7 @@
         "version": 1.0,
         "pretrained": "Qwen/Qwen2.5-1.5B-Instruct",
         "dtype": "bfloat16",
-        "config_source": "/Users/mac/Projects/nano-lm/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_high_school_physics.yaml"
+        "config_source": "<REPO_ROOT>/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_high_school_physics.yaml"
       }
     },
     "mmlu_high_school_psychology": {
@@ -2362,7 +2362,7 @@
         "version": 1.0,
         "pretrained": "Qwen/Qwen2.5-1.5B-Instruct",
         "dtype": "bfloat16",
-        "config_source": "/Users/mac/Projects/nano-lm/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_high_school_psychology.yaml"
+        "config_source": "<REPO_ROOT>/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_high_school_psychology.yaml"
       }
     },
     "mmlu_high_school_statistics": {
@@ -2417,7 +2417,7 @@
         "version": 1.0,
         "pretrained": "Qwen/Qwen2.5-1.5B-Instruct",
         "dtype": "bfloat16",
-        "config_source": "/Users/mac/Projects/nano-lm/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_high_school_statistics.yaml"
+        "config_source": "<REPO_ROOT>/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_high_school_statistics.yaml"
       }
     },
     "mmlu_high_school_us_history": {
@@ -2472,7 +2472,7 @@
         "version": 1.0,
         "pretrained": "Qwen/Qwen2.5-1.5B-Instruct",
         "dtype": "bfloat16",
-        "config_source": "/Users/mac/Projects/nano-lm/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_high_school_us_history.yaml"
+        "config_source": "<REPO_ROOT>/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_high_school_us_history.yaml"
       }
     },
     "mmlu_high_school_world_history": {
@@ -2527,7 +2527,7 @@
         "version": 1.0,
         "pretrained": "Qwen/Qwen2.5-1.5B-Instruct",
         "dtype": "bfloat16",
-        "config_source": "/Users/mac/Projects/nano-lm/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_high_school_world_history.yaml"
+        "config_source": "<REPO_ROOT>/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_high_school_world_history.yaml"
       }
     },
     "mmlu_human_aging": {
@@ -2582,7 +2582,7 @@
         "version": 1.0,
         "pretrained": "Qwen/Qwen2.5-1.5B-Instruct",
         "dtype": "bfloat16",
-        "config_source": "/Users/mac/Projects/nano-lm/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_human_aging.yaml"
+        "config_source": "<REPO_ROOT>/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_human_aging.yaml"
       }
     },
     "mmlu_human_sexuality": {
@@ -2637,7 +2637,7 @@
         "version": 1.0,
         "pretrained": "Qwen/Qwen2.5-1.5B-Instruct",
         "dtype": "bfloat16",
-        "config_source": "/Users/mac/Projects/nano-lm/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_human_sexuality.yaml"
+        "config_source": "<REPO_ROOT>/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_human_sexuality.yaml"
       }
     },
     "mmlu_international_law": {
@@ -2692,7 +2692,7 @@
         "version": 1.0,
         "pretrained": "Qwen/Qwen2.5-1.5B-Instruct",
         "dtype": "bfloat16",
-        "config_source": "/Users/mac/Projects/nano-lm/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_international_law.yaml"
+        "config_source": "<REPO_ROOT>/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_international_law.yaml"
       }
     },
     "mmlu_jurisprudence": {
@@ -2747,7 +2747,7 @@
         "version": 1.0,
         "pretrained": "Qwen/Qwen2.5-1.5B-Instruct",
         "dtype": "bfloat16",
-        "config_source": "/Users/mac/Projects/nano-lm/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_jurisprudence.yaml"
+        "config_source": "<REPO_ROOT>/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_jurisprudence.yaml"
       }
     },
     "mmlu_logical_fallacies": {
@@ -2802,7 +2802,7 @@
         "version": 1.0,
         "pretrained": "Qwen/Qwen2.5-1.5B-Instruct",
         "dtype": "bfloat16",
-        "config_source": "/Users/mac/Projects/nano-lm/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_logical_fallacies.yaml"
+        "config_source": "<REPO_ROOT>/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_logical_fallacies.yaml"
       }
     },
     "mmlu_machine_learning": {
@@ -2857,7 +2857,7 @@
         "version": 1.0,
         "pretrained": "Qwen/Qwen2.5-1.5B-Instruct",
         "dtype": "bfloat16",
-        "config_source": "/Users/mac/Projects/nano-lm/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_machine_learning.yaml"
+        "config_source": "<REPO_ROOT>/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_machine_learning.yaml"
       }
     },
     "mmlu_management": {
@@ -2912,7 +2912,7 @@
         "version": 1.0,
         "pretrained": "Qwen/Qwen2.5-1.5B-Instruct",
         "dtype": "bfloat16",
-        "config_source": "/Users/mac/Projects/nano-lm/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_management.yaml"
+        "config_source": "<REPO_ROOT>/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_management.yaml"
       }
     },
     "mmlu_marketing": {
@@ -2967,7 +2967,7 @@
         "version": 1.0,
         "pretrained": "Qwen/Qwen2.5-1.5B-Instruct",
         "dtype": "bfloat16",
-        "config_source": "/Users/mac/Projects/nano-lm/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_marketing.yaml"
+        "config_source": "<REPO_ROOT>/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_marketing.yaml"
       }
     },
     "mmlu_medical_genetics": {
@@ -3022,7 +3022,7 @@
         "version": 1.0,
         "pretrained": "Qwen/Qwen2.5-1.5B-Instruct",
         "dtype": "bfloat16",
-        "config_source": "/Users/mac/Projects/nano-lm/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_medical_genetics.yaml"
+        "config_source": "<REPO_ROOT>/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_medical_genetics.yaml"
       }
     },
     "mmlu_miscellaneous": {
@@ -3077,7 +3077,7 @@
         "version": 1.0,
         "pretrained": "Qwen/Qwen2.5-1.5B-Instruct",
         "dtype": "bfloat16",
-        "config_source": "/Users/mac/Projects/nano-lm/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_miscellaneous.yaml"
+        "config_source": "<REPO_ROOT>/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_miscellaneous.yaml"
       }
     },
     "mmlu_moral_disputes": {
@@ -3132,7 +3132,7 @@
         "version": 1.0,
         "pretrained": "Qwen/Qwen2.5-1.5B-Instruct",
         "dtype": "bfloat16",
-        "config_source": "/Users/mac/Projects/nano-lm/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_moral_disputes.yaml"
+        "config_source": "<REPO_ROOT>/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_moral_disputes.yaml"
       }
     },
     "mmlu_moral_scenarios": {
@@ -3187,7 +3187,7 @@
         "version": 1.0,
         "pretrained": "Qwen/Qwen2.5-1.5B-Instruct",
         "dtype": "bfloat16",
-        "config_source": "/Users/mac/Projects/nano-lm/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_moral_scenarios.yaml"
+        "config_source": "<REPO_ROOT>/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_moral_scenarios.yaml"
       }
     },
     "mmlu_nutrition": {
@@ -3242,7 +3242,7 @@
         "version": 1.0,
         "pretrained": "Qwen/Qwen2.5-1.5B-Instruct",
         "dtype": "bfloat16",
-        "config_source": "/Users/mac/Projects/nano-lm/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_nutrition.yaml"
+        "config_source": "<REPO_ROOT>/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_nutrition.yaml"
       }
     },
     "mmlu_philosophy": {
@@ -3297,7 +3297,7 @@
         "version": 1.0,
         "pretrained": "Qwen/Qwen2.5-1.5B-Instruct",
         "dtype": "bfloat16",
-        "config_source": "/Users/mac/Projects/nano-lm/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_philosophy.yaml"
+        "config_source": "<REPO_ROOT>/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_philosophy.yaml"
       }
     },
     "mmlu_prehistory": {
@@ -3352,7 +3352,7 @@
         "version": 1.0,
         "pretrained": "Qwen/Qwen2.5-1.5B-Instruct",
         "dtype": "bfloat16",
-        "config_source": "/Users/mac/Projects/nano-lm/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_prehistory.yaml"
+        "config_source": "<REPO_ROOT>/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_prehistory.yaml"
       }
     },
     "mmlu_professional_accounting": {
@@ -3407,7 +3407,7 @@
         "version": 1.0,
         "pretrained": "Qwen/Qwen2.5-1.5B-Instruct",
         "dtype": "bfloat16",
-        "config_source": "/Users/mac/Projects/nano-lm/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_professional_accounting.yaml"
+        "config_source": "<REPO_ROOT>/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_professional_accounting.yaml"
       }
     },
     "mmlu_professional_law": {
@@ -3462,7 +3462,7 @@
         "version": 1.0,
         "pretrained": "Qwen/Qwen2.5-1.5B-Instruct",
         "dtype": "bfloat16",
-        "config_source": "/Users/mac/Projects/nano-lm/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_professional_law.yaml"
+        "config_source": "<REPO_ROOT>/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_professional_law.yaml"
       }
     },
     "mmlu_professional_medicine": {
@@ -3517,7 +3517,7 @@
         "version": 1.0,
         "pretrained": "Qwen/Qwen2.5-1.5B-Instruct",
         "dtype": "bfloat16",
-        "config_source": "/Users/mac/Projects/nano-lm/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_professional_medicine.yaml"
+        "config_source": "<REPO_ROOT>/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_professional_medicine.yaml"
       }
     },
     "mmlu_professional_psychology": {
@@ -3572,7 +3572,7 @@
         "version": 1.0,
         "pretrained": "Qwen/Qwen2.5-1.5B-Instruct",
         "dtype": "bfloat16",
-        "config_source": "/Users/mac/Projects/nano-lm/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_professional_psychology.yaml"
+        "config_source": "<REPO_ROOT>/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_professional_psychology.yaml"
       }
     },
     "mmlu_public_relations": {
@@ -3627,7 +3627,7 @@
         "version": 1.0,
         "pretrained": "Qwen/Qwen2.5-1.5B-Instruct",
         "dtype": "bfloat16",
-        "config_source": "/Users/mac/Projects/nano-lm/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_public_relations.yaml"
+        "config_source": "<REPO_ROOT>/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_public_relations.yaml"
       }
     },
     "mmlu_security_studies": {
@@ -3682,7 +3682,7 @@
         "version": 1.0,
         "pretrained": "Qwen/Qwen2.5-1.5B-Instruct",
         "dtype": "bfloat16",
-        "config_source": "/Users/mac/Projects/nano-lm/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_security_studies.yaml"
+        "config_source": "<REPO_ROOT>/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_security_studies.yaml"
       }
     },
     "mmlu_sociology": {
@@ -3737,7 +3737,7 @@
         "version": 1.0,
         "pretrained": "Qwen/Qwen2.5-1.5B-Instruct",
         "dtype": "bfloat16",
-        "config_source": "/Users/mac/Projects/nano-lm/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_sociology.yaml"
+        "config_source": "<REPO_ROOT>/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_sociology.yaml"
       }
     },
     "mmlu_us_foreign_policy": {
@@ -3792,7 +3792,7 @@
         "version": 1.0,
         "pretrained": "Qwen/Qwen2.5-1.5B-Instruct",
         "dtype": "bfloat16",
-        "config_source": "/Users/mac/Projects/nano-lm/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_us_foreign_policy.yaml"
+        "config_source": "<REPO_ROOT>/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_us_foreign_policy.yaml"
       }
     },
     "mmlu_virology": {
@@ -3847,7 +3847,7 @@
         "version": 1.0,
         "pretrained": "Qwen/Qwen2.5-1.5B-Instruct",
         "dtype": "bfloat16",
-        "config_source": "/Users/mac/Projects/nano-lm/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_virology.yaml"
+        "config_source": "<REPO_ROOT>/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_virology.yaml"
       }
     },
     "mmlu_world_religions": {
@@ -3902,7 +3902,7 @@
         "version": 1.0,
         "pretrained": "Qwen/Qwen2.5-1.5B-Instruct",
         "dtype": "bfloat16",
-        "config_source": "/Users/mac/Projects/nano-lm/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_world_religions.yaml"
+        "config_source": "<REPO_ROOT>/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mmlu/default/mmlu_world_religions.yaml"
       }
     },
     "piqa": {
@@ -3951,7 +3951,7 @@
         "version": 1.0,
         "pretrained": "Qwen/Qwen2.5-1.5B-Instruct",
         "dtype": "bfloat16",
-        "config_source": "/Users/mac/Projects/nano-lm/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/piqa/piqa.yaml"
+        "config_source": "<REPO_ROOT>/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/piqa/piqa.yaml"
       }
     },
     "winogrande": {
@@ -3996,7 +3996,7 @@
         "version": 1.0,
         "pretrained": "Qwen/Qwen2.5-1.5B-Instruct",
         "dtype": "bfloat16",
-        "config_source": "/Users/mac/Projects/nano-lm/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/winogrande/default.yaml"
+        "config_source": "<REPO_ROOT>/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/winogrande/default.yaml"
       }
     }
   },

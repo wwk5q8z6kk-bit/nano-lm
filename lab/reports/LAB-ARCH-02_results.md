@@ -29,13 +29,21 @@ Runs: 39. Values = mean over seeds; ± = half-range across seeds. Δ% is relativ
 
 Reference `T0_dense` seed half-range on composite BPB: 0.0048 (0.46%).
 
-## 2. Multi-Scale Transfer (`LAB-SCALE-01`, ~96.3M Non-Emb / ~121M Total)
+## 2. Multi-Scale Transfer — 125M (`LAB-SCALE-01/02`, ~96.3M Non-Emb / ~122M Total)
 
-Runs: 3. Values = mean over seeds; ± = half-range across seeds. Δ% is relative to `S0_dense_125m/muon/tokens` (negative = better).
+Runs: 4. Values = mean over seeds; ± = half-range across seeds. Δ% is relative to `S0_dense_125m/muon/tokens` (negative = better).
 
 | Arm | Optim | Match | n | Tokens | Train TFLOP·s | KV B/tok | Composite BPB | Δ% vs Ref | web | textbook | math | code | copy loss | ctx gain (nats) | tok/s | Decision / Notes |
 |---|---|---|---:|---:|---:|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|---|
-| S2_nanolm_v3_125m | muon | tokens | 1 | 600M | 3.45e+05 | 4,096 | 0.9030 | -0.83% | 1.0218 | 0.7000 | 1.0436 | 0.7275 | 1.536 | +0.525 | 41,501 | 1-seed check |
+| S2_nanolm_v3_125m | muon | tokens | 2 | 600M | 3.45e+05 | 4,096 | 0.9021 ± 0.0009 | -0.92% | 1.0212 | 0.6987 | 1.0424 | 0.7271 | 1.291 | +0.527 | 57,430 | no detectable difference (<1%) |
 | S0_dense_125m | muon | tokens | 1 | 600M | 3.45e+05 | 16,384 | 0.9105 | +0.00% | 1.0269 | 0.7025 | 1.0544 | 0.7420 | 0.609 | +0.530 | 110,029 |  |
 | S1_nanolm_v2_125m | muon | tokens | 1 | 600M | 3.47e+05 | 4,096 | 0.9106 | +0.00% | 1.0272 | 0.7062 | 1.0546 | 0.7377 | 0.993 | +0.520 | 71,860 | 1-seed check |
+## 3. Multi-Scale Transfer — 350M (`LAB-SCALE-03`, ~289.5M Non-Emb / ~323M Total)
+
+Runs: 2. Values = mean over seeds; ± = half-range across seeds. Δ% is relative to `S0_dense_350m/muon/tokens` (negative = better).
+
+| Arm | Optim | Match | n | Tokens | Train TFLOP·s | KV B/tok | Composite BPB | Δ% vs Ref | web | textbook | math | code | copy loss | ctx gain (nats) | tok/s | Decision / Notes |
+|---|---|---|---:|---:|---:|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|---|
+| S2_nanolm_v3_350m | muon | tokens | 1 | 600M | 1.04e+06 | 6,144 | 0.8634 | -0.50% | 0.9852 | 0.6571 | 0.9980 | 0.6913 | 0.255 | +0.537 | 23,291 | 1-seed check |
+| S0_dense_350m | muon | tokens | 1 | 600M | 1.04e+06 | 24,576 | 0.8677 | +0.00% | 0.9888 | 0.6562 | 1.0046 | 0.7003 | 2.193 | +0.536 | 48,206 |  |
 `ctx gain` = loss(positions 0–64) − loss(last 256 positions) on web val (larger = better long-context utilization).

@@ -21,7 +21,7 @@ import time
 from dataclasses import dataclass, field
 from typing import Any, Callable
 
-from lab.system.memory_engine import PersistentKnowledgeStore, WorkingMemory
+from lab.system.memory_engine import PersistentKnowledgeStore, WorkingMemory, is_read_or_prep_tool
 from lab.system.tool_engine import StatefulToolEnvironment, execute_python_computation
 from lab.system.verification_engine import (
     detect_circular_reasoning,
@@ -166,10 +166,7 @@ class NanoLMSystem:
                 calls, p_chars, o_chars, sbx, mem_q, round((time.perf_counter() - t0) * 1000, 1), trace,
             )
 
-        # 3. COMPUTE_VERIFY_MATH v4: Executable-Specification Voting + Exact Rational State Elimination.
-        #    Channel A = analytical think=1; Channel B = exhaustive brute-force/exact-enumeration script
-        #    (directly encodes the problem's literal constraints; no closed formulas, NEVER Monte Carlo);
-        #    Channel C = efficient exact formula script. Majority vote; on 3-way split prefer B over A/C.
+        # 3. COMPUTE_VERIFY_MATH v5: Executable-Specification Voting + Discrepancy Adjudicator (Channel D).
         if route == "COMPUTE_VERIFY_MATH":
             ana_prompt = f"Solve this mathematical problem step-by-step with exact reasoning and put your final answer inside `\\boxed{{}}`:\n\n{prompt}"
             ana_resp = _ask([{"role": "user", "content": ana_prompt}], True, 3584)
@@ -191,11 +188,11 @@ class NanoLMSystem:
 
             brute_instr = (
                 "Write a Python 3 script that answers the problem below by EXHAUSTIVE BRUTE-FORCE ENUMERATION or "
-                "exact linear-system solving with `fractions.Fraction` (enumerate every candidate integer / permutation / "
-                "tuple directly from the problem's literal constraints, or for Markov/random-walk/recurrence state transitions "
-                "solve the exact linear equations over states with `fractions.Fraction` Gaussian elimination; NEVER use `random` "
-                "Monte Carlo sampling or `float` approximations, and do NOT guess closed-form combinatorics formulas). "
-                "Respect every qualifier ('second smallest', 'exactly', 'non-negative', 'lowest terms'). "
+                "exact state DP / linear-system solving with `fractions.Fraction` (enumerate every candidate integer / "
+                "tuple directly when search space <= 500,000, use exact memoized state DP `functools.lru_cache` when > 500,000, "
+                "or solve exact linear equations over states with `fractions.Fraction` Gaussian elimination for Markov/random walks; "
+                "NEVER use `random` Monte Carlo sampling or `float` approximations, and do NOT guess closed-form identities). "
+                "Respect every qualifier ('second smallest', 'exact', 'non-negative', 'lowest terms'). "
                 "It must finish within 20 seconds and print ONLY the final answer on the last line.\n\n"
                 f"Problem:\n{prompt}"
             )
@@ -209,15 +206,32 @@ class NanoLMSystem:
             ok_c, val_c = _run_channel(formula_instr, 5.0)
 
             votes = [v for v in (ana_ans, val_b if ok_b else "", val_c if ok_c else "") if v]
-            trace.append(f"math_v4:A={ana_ans},B={val_b if ok_b else 'ERR'},C={val_c if ok_c else 'ERR'}")
+            counts: dict[str, int] = {}
+            for v in votes:
+                counts[v] = counts.get(v, 0) + 1
+            top_n_init = max(counts.values()) if counts else 0
+
+            # Channel D (Discrepancy Adjudicator): fires ONLY on genuine split when B and C both ran and disagreed!
+            if top_n_init < 2 and ok_b and ok_c and val_b and val_c and val_b != val_c:
+                adj_instr = (
+                    f"Two independent Python solvers disagreed on this problem: Solver B gave `{val_b}` while Solver C gave `{val_c}`.\n"
+                    "Audit every exact qualifier in the problem ('second smallest' vs 'smallest', 'non-negative >= 0' vs 'positive >= 1', "
+                    "'exact' vs 'at least', 'a + b in lowest terms gcd(a,b)=1'). Write a clean, exact Python 3 verification script "
+                    "(NO `random` sampling, NO `float` rounding) that resolves the discrepancy and prints ONLY the true exact answer:\n\n"
+                    f"Problem:\n{prompt}"
+                )
+                ok_d, val_d = _run_channel(adj_instr, 10.0)
+                if ok_d and val_d:
+                    votes.append(val_d)
+                    counts[val_d] = counts.get(val_d, 0) + 1
+                trace.append(f"math_v5_adj:D={val_d if ok_d else 'ERR'}")
+
+            trace.append(f"math_v5:A={ana_ans},B={val_b if ok_b else 'ERR'},C={val_c if ok_c else 'ERR'}")
             final_ans, tier = "", "UNCERTAIN_OR_FAILED"
             if votes:
-                counts: dict[str, int] = {}
-                for v in votes:
-                    counts[v] = counts.get(v, 0) + 1
                 top_v, top_n = max(counts.items(), key=lambda kv: kv[1])
                 if top_n >= 2:
-                    final_ans, tier = top_v, ("CERTIFIED_TRIPLE_AGREEMENT" if top_n == 3 else "CERTIFIED_MAJORITY")
+                    final_ans, tier = top_v, ("CERTIFIED_TRIPLE_AGREEMENT" if top_n >= 3 else "CERTIFIED_MAJORITY")
                 elif ok_b and val_b:
                     final_ans, tier = val_b, "BRUTE_FORCE_SPECIFICATION"
                 elif ana_ans:
@@ -225,29 +239,28 @@ class NanoLMSystem:
                 else:
                     final_ans, tier = votes[0], "EXECUTABLE_UNVERIFIED"
             if final_ans:
-                wm.record_fact("math_v4_answer", final_ans)
+                wm.record_fact("math_v5_answer", final_ans)
             return SystemEpisodeResult(
                 f"\\boxed{{{final_ans}}}" if final_ans else strip_thinking(ana_resp), final_ans, route, tier,
                 calls, p_chars, o_chars, sbx, mem_q, round((time.perf_counter() - t0) * 1000, 1), trace,
             )
 
-        # 4. CODE_VERIFY_REPAIR v4: Differential Brute-Force/Smoke Self-Testing + Safe Best-Candidate Tracking!
+        # 4. CODE_VERIFY_REPAIR v5: Input-Only Differential Oracle + Asymptotic Scale Stress Test!
         if route == "CODE_VERIFY_REPAIR":
             cur_msgs = [{"role": "user", "content": prompt}]
             resp = _ask(cur_msgs, False, 1536)
             harness = self_test_harness
             if not harness:
-                # Synthesize AST-validated smoke & tiny-input brute-force differential checks (avoiding mental-math constants!)
                 test_p = (
-                    "Write a short Python self-test snippet inside ```python``` to test an implementation of the specification below "
-                    "(do NOT redefine the target function/class). Prefer:\n"
-                    "1) Calling the target function/class on 4 boundary inputs (empty/0, negative numbers, ties, small corner cases) "
-                    "checking return types and obvious base cases (`n=0` or `n=1`), AND\n"
-                    "2) Where possible, a 5-line naive brute-force helper `_naive_ref(...)` on TINY inputs (`n <= 5`, coords `-3..5`) "
-                    "asserting `target_fn(x) == _naive_ref(x)` instead of guessing large mental-math numbers!\n\n"
+                    "Write a concise Python self-test snippet inside ```python``` to verify an implementation of the specification below "
+                    "(do NOT redefine the target function/class!). Include:\n"
+                    "1) A tiny literal brute-force helper `def _spec_oracle(...)` tested against the target function on 5 small tricky inputs "
+                    "(0/empty, negative integer division toward zero like `-7 / 2`, ties, cycles, expiry boundary) via `assert target_fn(...) == _spec_oracle(...)` "
+                    "(do NOT guess large hardcoded mental-math numbers!), AND\n"
+                    "2) If the specification mentions large coordinates/bounds (like `10^9` or sweep-line), 1 large-input call checking fast completion!\n\n"
                     f"{prompt}"
                 )
-                t_resp = strip_thinking(_ask([{"role": "user", "content": test_p}], False, 640))
+                t_resp = strip_thinking(_ask([{"role": "user", "content": test_p}], False, 768))
                 m = re.search(r"```(?:python)?\s*\n(.*?)```", t_resp, flags=re.DOTALL | re.IGNORECASE)
                 cand_asserts = (m.group(1) if m else t_resp).strip()
                 if "assert " in cand_asserts and "class " not in cand_asserts:
@@ -261,7 +274,6 @@ class NanoLMSystem:
             best_raw = resp
             for attempt in range(self.max_repairs + 1):
                 sbx += 1
-                # Always check standalone syntax/compile validity first so we preserve a compiling fallback!
                 syn_rep = verify_code_candidate(resp, self_tests="")
                 if syn_rep.passed and not best_code:
                     best_code = syn_rep.extracted_answer
@@ -278,7 +290,6 @@ class NanoLMSystem:
                     best_code = syn_rep.extracted_answer
                     best_raw = resp
                 if attempt < self.max_repairs:
-                    # Attempt 0 repair uses fast think=False (avoids <think> truncation on <4B); Attempt 1 escalates to think=True!
                     use_t = attempt >= 1
                     cur_msgs = [
                         {"role": "user", "content": prompt},
@@ -296,7 +307,7 @@ class NanoLMSystem:
                 calls, p_chars, o_chars, sbx, mem_q, round((time.perf_counter() - t0) * 1000, 1), trace,
             )
 
-        # 5. SCHEMA_VERIFY_JSON v4: Fast generation + Multi-line/Dict-Safe Python Conservation Synthesis
+        # 5. SCHEMA_VERIFY_JSON v5: Delimited Anti-Echo Python Conservation Synthesis
         if route == "SCHEMA_VERIFY_JSON":
             cur_msgs = [{"role": "user", "content": prompt}]
             resp = _ask(cur_msgs, False, 896)
@@ -310,10 +321,11 @@ class NanoLMSystem:
                     )
                 if attempt < self.max_repairs:
                     py_json_p = (
-                        f"Schema Critic found an error in your previous JSON: `{rep.critique}`.\n"
-                        "Write a short Python 3 script using `import json` that computes every field accurately "
-                        "and prints ONLY `json.dumps(result_dict)` to stdout:\n\n"
-                        f"{prompt}"
+                        f"Schema Critic found an error in your previous JSON: `{rep.critique}`.\n\n"
+                        f"<specification>\n{prompt}\n</specification>\n\n"
+                        "CRITICAL INSTRUCTION FOR THIS REPAIR STEP: Do NOT output raw JSON directly! "
+                        "Instead, write ONLY a ```python``` script using `import json` that computes every field "
+                        "with exact Python arithmetic and ends with `print(json.dumps(result_dict))`!"
                     )
                     py_cand = _ask([{"role": "user", "content": py_json_p}], False, 1024)
                     sbx += 1
@@ -333,6 +345,9 @@ class NanoLMSystem:
                                     resp = cand_s
                         else:
                             resp = full_s.splitlines()[-1].strip()
+                    elif "{" in strip_thinking(py_cand) and "}" in strip_thinking(py_cand):
+                        # If the model still emitted a corrected JSON/dict literal directly without print(), test it!
+                        resp = strip_thinking(py_cand)
                     else:
                         use_t = attempt >= 1
                         resp = _ask(
@@ -344,12 +359,13 @@ class NanoLMSystem:
                 calls, p_chars, o_chars, sbx, mem_q, round((time.perf_counter() - t0) * 1000, 1), trace,
             )
 
-        # 6. AGENTIC_TOOL_LOOP v4: Error-Only Adaptive Thinking + Truncation/Premature-Stop Guards + Grounded State!
+        # 6. AGENTIC_TOOL_LOOP v5: Schema-Aware Read-vs-Mutate Premature-Stop Guard + Bound Extraction!
         assert tool_env is not None
         schema_txt = json.dumps(tool_env.schemas, indent=2)
+        has_mutating_schema = any(not is_read_or_prep_tool(str(s.get("name", ""))) for s in tool_env.schemas)
         history_lines: list[str] = []
         last_vis = ""
-        rejected_premature_stop = False
+        premature_rejections = 0
         terminal_block_kws = ("freeze", "hold", "revok", "forbid", "denied", "compliance", "security")
         for turn in range(self.max_tool_turns):
             wm_txt = wm.render()
@@ -364,7 +380,6 @@ class NanoLMSystem:
                 'output `{"tool_calls": [], "response": "<final grounded summary with exact IDs and final values>"}`.\n\n'
                 f"Available tools:\n```json\n{schema_txt}\n```{wm_block}{hist_block}\nUser Objective: {prompt}"
             )
-            # Adaptive compute: ONLY invoke deep thinking when recovering from an active non-terminal API error!
             saw_terminal_block = any(any(kw in ev.lower() for kw in terminal_block_kws) for ev in wm.events)
             use_think = bool(wm.has_unresolved_error and not saw_terminal_block)
             resp = _ask([{"role": "user", "content": turn_prompt}], use_think, 3584 if use_think else 1024)
@@ -388,17 +403,19 @@ class NanoLMSystem:
             new_calls = tool_env.call_history[prev_hist_len:]
             trace.append(f"tool_turn{turn}:think={int(use_think)},done={done},obs={len(obs_list)},st={st}")
             if done:
-                # Guard 2: Reject premature stop (at most once) if 0 tools called in plain text OR recoverable error unresolved!
-                premature_zero_call = len(tool_env.call_history) == 0 and st == "plain_text_no_tool"
-                premature_unresolved = wm.has_unresolved_error and not saw_terminal_block
-                if not rejected_premature_stop and (premature_zero_call or premature_unresolved):
-                    rejected_premature_stop = True
-                    trace.append(f"tool_turn{turn}_premature_stop_rejected")
+                # Guard 2: Reject premature stop (up to 2 times) if no terminal freeze occurred AND either:
+                #   (a) an API error remains unresolved, OR
+                #   (b) mutating action tools exist in schema yet ONLY read/lookup/refresh tools have succeeded so far!
+                missing_mutating_action = has_mutating_schema and not wm.has_mutating_success
+                premature_unresolved = wm.has_unresolved_error
+                if premature_rejections < 2 and not saw_terminal_block and (missing_mutating_action or premature_unresolved):
+                    premature_rejections += 1
+                    trace.append(f"tool_turn{turn}_premature_stop_rejected_{premature_rejections}")
                     history_lines.append(f"Turn {turn + 1} Assistant: {last_vis[:300]}")
                     history_lines.append(
-                        f"Turn {turn + 1} Verification Critic: Objective not yet verified complete "
-                        "(recoverable API error or missing initial tool call, and no compliance/security freeze reported). "
-                        "Invoke the appropriate recovery/action tool call now."
+                        f"Turn {turn + 1} Verification Critic: Premature stop rejected — no compliance/security freeze occurred, "
+                        "yet no state-modifying action tool has succeeded yet (only read/lookup/refresh tools ran, or an API error "
+                        "remains unresolved). Output a valid `{\"tool_calls\": [...]}` JSON call for the next required action/recovery tool now."
                     )
                     continue
 
@@ -407,10 +424,9 @@ class NanoLMSystem:
                     final_text = str(parsed.get("response", last_vis))
                 except Exception:
                     final_text = last_vis
-                # Grounded WorkingMemory State Receipt: preserve verified live API IDs/values/freeze codes!
                 receipt_bits: list[str] = []
                 for fk, fv in wm.facts.items():
-                    if str(fv) not in final_text:
+                    if fk != "required_safety_bound" and str(fv) not in final_text:
                         receipt_bits.append(f"{fk}={fv}")
                 if saw_terminal_block:
                     for ev in wm.events:
@@ -426,9 +442,12 @@ class NanoLMSystem:
             history_lines.append(f"Turn {turn + 1} Assistant: {last_vis}")
             history_lines.append(f"Turn {turn + 1} Tool Observation: {json.dumps(obs_list)}")
             for idx_ob, ob in enumerate(obs_list):
+                c_name = str(new_calls[idx_ob]["name"]) if idx_ob < len(new_calls) else str(ob.get("tool", ""))
                 c_args = new_calls[idx_ob]["arguments"] if idx_ob < len(new_calls) and isinstance(new_calls[idx_ob].get("arguments"), dict) else {}
                 if ob.get("ok"):
                     wm.has_unresolved_error = False
+                    if c_name and not is_read_or_prep_tool(c_name):
+                        wm.has_mutating_success = True
                     for k, v in ob.items():
                         if k not in ("tool", "ok"):
                             wm.record_fact(k, v)

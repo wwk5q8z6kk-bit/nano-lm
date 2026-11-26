@@ -1,7 +1,7 @@
 #!/bin/bash
 # Cost & lifecycle watchdog (Phase 2: supports NextGen continuation pods & Track B B1/B2 pod).
 CAP=${1:-45}
-LOGS=/Volumes/Express1M2/nanolm-lab/logs
+LOGS="${NANOLM_LOGS_DIR:-artifacts/nanolm_lab/logs}"
 LEDGER=$LOGS/watchdog.log
 
 while true; do

@@ -988,9 +988,111 @@ def run_train_b8_3b(args) -> None:
     print("SAVED_NANOLM_B8_3B", args.out_dir, json.dumps(manifest), flush=True)
 
 
+def run_train_b9_2b(args) -> None:
+    """Train NanoLM-B9-2B (`1.72B` < 2.0B on `Qwen/Qwen3-1.7B`):
+    Causal-Transition-Completed Stratified `32B+120B` Curriculum (`545` verified items) + Same-Tokenizer
+    `Qwen/Qwen3-32B` Top-64+Tail Logit KD (`alpha_kd=0.75`, `T=1.5`) + Proximal L2 100% FFT + `G=8` `GRPO` + `WiSE-FT` (`0.25`).
+    """
+    torch.manual_seed(args.seed)
+    dev = torch.device("cuda")
+    rows = [json.loads(ln) for ln in Path(args.data_jsonl).read_text().splitlines() if ln.strip()]
+    aug = build_causal_completion_augmentations()
+    all_rows = rows + aug
+    base_id = "Qwen/Qwen3-1.7B"
+    tok = AutoTokenizer.from_pretrained(base_id, trust_remote_code=False)
+    encoded = [x for r in all_rows if (x := encode_dual_mode_example(tok, r["prompt"], r["response"], bool(r["think"]), max_len=1536)) is not None]
+    print(f"[B9-2B] Encoded {len(encoded)}/{len(all_rows)} ({len(aug)} causal-completion aug) trajectories", flush=True)
+
+    t0_kd = time.perf_counter()
+    teacher = AutoModelForCausalLM.from_pretrained("Qwen/Qwen3-32B", torch_dtype=torch.bfloat16, trust_remote_code=False).to(dev)
+    teacher.eval()
+    cached_kd = []
+    with torch.no_grad():
+        for ex in encoded:
+            tl = teacher(ex["input_ids"].unsqueeze(0).to(dev), use_cache=False).logits
+            ik, lpk = extract_topk_teacher_targets(tl, k=64, temperature=1.5)
+            cached_kd.append((ik.squeeze(0).cpu(), lpk.squeeze(0).cpu()))
+    del teacher
+    gc.collect()
+    torch.cuda.empty_cache()
+    kd_s = time.perf_counter() - t0_kd
+
+    student = AutoModelForCausalLM.from_pretrained(base_id, torch_dtype=torch.bfloat16, trust_remote_code=False).to(dev)
+    anchor_params = [p.detach().clone() for p in student.parameters()]
+    for p in student.parameters():
+        p.requires_grad_(True)
+    student.gradient_checkpointing_enable()
+
+    lr = 1.0e-5
+    anchor_strength = 0.08
+    opt = torch.optim.AdamW(list(student.parameters()), lr=lr, weight_decay=0.0)
+    total_updates = max(1, len(encoded) // 8)
+    warmup_updates = max(1, int(0.12 * total_updates))
+
+    t0 = time.perf_counter()
+    rng = random.Random(args.seed)
+    order = list(range(len(encoded)))
+    rng.shuffle(order)
+    upd = 0
+    ce_sum, kl_sum = 0.0, 0.0
+    student.train()
+    for step_i, idx_ex in enumerate(order, 1):
+        ex = encoded[idx_ex]
+        ik, lpk = cached_kd[idx_ex]
+        sl = student(ex["input_ids"].unsqueeze(0).to(dev), use_cache=False).logits
+        out = proper_topk_kd_loss(sl, ik.unsqueeze(0).to(dev), lpk.unsqueeze(0).to(dev), ex["labels"].unsqueeze(0).to(dev), temperature=1.5, alpha_kd=0.75)
+        (out["loss"] / 8.0).backward()
+        ce_sum += float(out["ce"].item())
+        kl_sum += float(out["kd_kl"].item())
+        if step_i % 8 == 0 or step_i == len(order):
+            upd += 1
+            lr_mult = upd / warmup_updates if upd <= warmup_updates else 0.15 + 0.425 * (1.0 + math.cos(math.pi * min(1.0, (upd - warmup_updates) / max(1, total_updates - warmup_updates))))
+            for g in opt.param_groups:
+                g["lr"] = lr * lr_mult
+            torch.nn.utils.clip_grad_norm_(student.parameters(), 1.0)
+            opt.step()
+            opt.zero_grad(set_to_none=True)
+            with torch.no_grad():
+                pull = min(0.02, anchor_strength * lr_mult * 0.01)
+                for p, p0 in zip(student.parameters(), anchor_params):
+                    p.lerp_(p0, pull)
+
+    mid_dir = Path(args.out_dir + "_anchored_fft")
+    mid_dir.mkdir(parents=True, exist_ok=True)
+    student.gradient_checkpointing_disable()
+    unique_p = sum(p.numel() for p in student.parameters())
+    student.save_pretrained(mid_dir)
+    tok.save_pretrained(mid_dir)
+    fft_wall = time.perf_counter() - t0
+    del student, anchor_params, opt
+    gc.collect()
+    torch.cuda.empty_cache()
+
+    grpo_stats = _run_grpo_stage(str(mid_dir), args.rlvr_jsonl, args.out_dir, steps=60, group_size=8, kl_beta=0.05, is_smollm3=False, seed=args.seed)
+    _apply_wise_ft_interpolation(args.out_dir, base_id, base_weight=0.25)
+    n_ord = max(1, len(order))
+    manifest = {
+        "schema": "nanolm.trackb_phase6_b9_2b.v1",
+        "base_model": base_id,
+        "total_params": unique_p,
+        "active_params": unique_p,
+        "method": "CausalCompleted_Stratified_32B_120B_Qwen32B_Top64KD_L2FFT_G8_GRPO_plus_WiSE_FT_0p25",
+        "kd_alpha": 0.75,
+        "wise_ft_base_weight": 0.25,
+        "causal_completion_aug_count": len(aug),
+        "mean_epoch_ce": round(ce_sum / n_ord, 4),
+        "mean_epoch_kd_kl": round(kl_sum / n_ord, 4),
+        "kd_seconds": round(kd_s, 2),
+        "anchored_fft_seconds": round(fft_wall, 2),
+        **grpo_stats,
+    }
+    (Path(args.out_dir) / "nanolm_training_manifest.json").write_text(json.dumps(manifest, indent=2))
+    print("SAVED_NANOLM_B9_2B", args.out_dir, json.dumps(manifest), flush=True)
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--phase", required=True, choices=["generate_stratified", "train_b6_2b", "train_b6_3b", "train_b7_3b", "train_b8_3b"])
+    ap.add_argument("--phase", required=True, choices=["generate_stratified", "train_b6_2b", "train_b6_3b", "train_b7_3b", "train_b8_3b", "train_b9_2b"])
     ap.add_argument("--data-dir", default="/workspace/phase3_data")
     ap.add_argument("--data-jsonl", default="/workspace/phase3_data/stratified_b6.jsonl")
     ap.add_argument("--rlvr-jsonl", default="/workspace/phase3_data/rlvr_b6.jsonl")
@@ -1008,8 +1110,10 @@ def main() -> None:
         run_train_b6_3b(args)
     elif args.phase == "train_b7_3b":
         run_train_b7_3b(args)
-    else:
+    elif args.phase == "train_b8_3b":
         run_train_b8_3b(args)
+    else:
+        run_train_b9_2b(args)
 
 
 if __name__ == "__main__":

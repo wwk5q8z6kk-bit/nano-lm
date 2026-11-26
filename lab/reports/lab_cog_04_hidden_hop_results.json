@@ -1,0 +1,633 @@
+{
+  "schema": "nanolm.lab_cog_02.v1",
+  "episodes_train": 800,
+  "seeds": 3,
+  "arms": {
+    "C0_transcript_imitation": {
+      "params": 799619,
+      "wall_s": 132.62,
+      "id_verified_resolution_full": {
+        "mean": 0.437,
+        "half_range": 0.1083
+      },
+      "ood_verified_resolution_full": {
+        "mean": 0.0,
+        "half_range": 0.0
+      },
+      "ood_verified_resolution_policy_only": {
+        "mean": 0.1241,
+        "half_range": 0.1528
+      },
+      "ood_premature_or_regression_rate": {
+        "mean": 0.6,
+        "half_range": 0.3111
+      },
+      "ood_unseen_value_exact_match": {
+        "mean": 0.0,
+        "half_range": 0.0
+      },
+      "ood_belief_revision_acc": {
+        "mean": 0.362,
+        "half_range": 0.2467
+      },
+      "extreme_ood_verified_resolution_full": {
+        "mean": 0.0,
+        "half_range": 0.0
+      },
+      "extreme_ood_policy_only": {
+        "mean": 0.087,
+        "half_range": 0.075
+      },
+      "extreme_ood_unseen_value_exact": {
+        "mean": 0.0,
+        "half_range": 0.0
+      },
+      "extreme_ood_belief_revision_acc": {
+        "mean": 0.1965,
+        "half_range": 0.1701
+      },
+      "extreme_ood_premature_rate": {
+        "mean": 0.4685,
+        "half_range": 0.275
+      },
+      "seed_runs": [
+        {
+          "seed": 0,
+          "params": 799619,
+          "in_dist": {
+            "verified_resolution_full": 0.5722,
+            "verified_resolution_oracle_val": 0.6111,
+            "premature_or_regression_rate": 0.4056,
+            "value_exact_match": 0.4093,
+            "belief_revision_after_contradiction": 0.9929
+          },
+          "ood": {
+            "verified_resolution_full": 0.0,
+            "verified_resolution_oracle_val": 0.3278,
+            "premature_or_regression_rate": 0.9,
+            "value_exact_match": 0.0,
+            "belief_revision_after_contradiction": 0.5398
+          },
+          "extreme_ood": {
+            "verified_resolution_full": 0.0,
+            "verified_resolution_oracle_val": 0.1833,
+            "premature_or_regression_rate": 0.75,
+            "value_exact_match": 0.0,
+            "belief_revision_after_contradiction": 0.3981
+          }
+        },
+        {
+          "seed": 1,
+          "params": 799619,
+          "in_dist": {
+            "verified_resolution_full": 0.3833,
+            "verified_resolution_oracle_val": 0.3944,
+            "premature_or_regression_rate": 0.1111,
+            "value_exact_match": 0.5926,
+            "belief_revision_after_contradiction": 0.4405
+          },
+          "ood": {
+            "verified_resolution_full": 0.0,
+            "verified_resolution_oracle_val": 0.0222,
+            "premature_or_regression_rate": 0.6222,
+            "value_exact_match": 0.0,
+            "belief_revision_after_contradiction": 0.0463
+          },
+          "extreme_ood": {
+            "verified_resolution_full": 0.0,
+            "verified_resolution_oracle_val": 0.0444,
+            "premature_or_regression_rate": 0.4556,
+            "value_exact_match": 0.0,
+            "belief_revision_after_contradiction": 0.058
+          }
+        },
+        {
+          "seed": 2,
+          "params": 799619,
+          "in_dist": {
+            "verified_resolution_full": 0.3556,
+            "verified_resolution_oracle_val": 0.3556,
+            "premature_or_regression_rate": 0.2667,
+            "value_exact_match": 0.4176,
+            "belief_revision_after_contradiction": 0.7217
+          },
+          "ood": {
+            "verified_resolution_full": 0.0,
+            "verified_resolution_oracle_val": 0.0222,
+            "premature_or_regression_rate": 0.2778,
+            "value_exact_match": 0.0,
+            "belief_revision_after_contradiction": 0.5
+          },
+          "extreme_ood": {
+            "verified_resolution_full": 0.0,
+            "verified_resolution_oracle_val": 0.0333,
+            "premature_or_regression_rate": 0.2,
+            "value_exact_match": 0.0,
+            "belief_revision_after_contradiction": 0.1333
+          }
+        }
+      ]
+    },
+    "C3_ebwm_counterfactual": {
+      "params": 884884,
+      "wall_s": 81.3,
+      "id_verified_resolution_full": {
+        "mean": 0.5611,
+        "half_range": 0.2028
+      },
+      "ood_verified_resolution_full": {
+        "mean": 0.1685,
+        "half_range": 0.2472
+      },
+      "ood_verified_resolution_policy_only": {
+        "mean": 0.1685,
+        "half_range": 0.2472
+      },
+      "ood_premature_or_regression_rate": {
+        "mean": 0.8315,
+        "half_range": 0.2472
+      },
+      "ood_unseen_value_exact_match": {
+        "mean": 0.7241,
+        "half_range": 0.0055
+      },
+      "ood_belief_revision_acc": {
+        "mean": 0.2948,
+        "half_range": 0.3539
+      },
+      "extreme_ood_verified_resolution_full": {
+        "mean": 0.1204,
+        "half_range": 0.1639
+      },
+      "extreme_ood_policy_only": {
+        "mean": 0.1204,
+        "half_range": 0.1639
+      },
+      "extreme_ood_unseen_value_exact": {
+        "mean": 0.6963,
+        "half_range": 0.0222
+      },
+      "extreme_ood_belief_revision_acc": {
+        "mean": 0.247,
+        "half_range": 0.2633
+      },
+      "extreme_ood_premature_rate": {
+        "mean": 0.8796,
+        "half_range": 0.1639
+      },
+      "seed_runs": [
+        {
+          "seed": 0,
+          "params": 884884,
+          "in_dist": {
+            "verified_resolution_full": 0.6889,
+            "verified_resolution_oracle_val": 0.6889,
+            "premature_or_regression_rate": 0.3111,
+            "value_exact_match": 0.6889,
+            "belief_revision_after_contradiction": 1.0
+          },
+          "ood": {
+            "verified_resolution_full": 0.0,
+            "verified_resolution_oracle_val": 0.0,
+            "premature_or_regression_rate": 1.0,
+            "value_exact_match": 0.7278,
+            "belief_revision_after_contradiction": 0.0
+          },
+          "extreme_ood": {
+            "verified_resolution_full": 0.0,
+            "verified_resolution_oracle_val": 0.0,
+            "premature_or_regression_rate": 1.0,
+            "value_exact_match": 0.7111,
+            "belief_revision_after_contradiction": 0.0
+          }
+        },
+        {
+          "seed": 1,
+          "params": 884884,
+          "in_dist": {
+            "verified_resolution_full": 0.2944,
+            "verified_resolution_oracle_val": 0.2944,
+            "premature_or_regression_rate": 0.7056,
+            "value_exact_match": 0.7333,
+            "belief_revision_after_contradiction": 0.6023
+          },
+          "ood": {
+            "verified_resolution_full": 0.0111,
+            "verified_resolution_oracle_val": 0.0111,
+            "premature_or_regression_rate": 0.9889,
+            "value_exact_match": 0.7167,
+            "belief_revision_after_contradiction": 0.1765
+          },
+          "extreme_ood": {
+            "verified_resolution_full": 0.0333,
+            "verified_resolution_oracle_val": 0.0333,
+            "premature_or_regression_rate": 0.9667,
+            "value_exact_match": 0.6667,
+            "belief_revision_after_contradiction": 0.2143
+          }
+        },
+        {
+          "seed": 2,
+          "params": 884884,
+          "in_dist": {
+            "verified_resolution_full": 0.7,
+            "verified_resolution_oracle_val": 0.7,
+            "premature_or_regression_rate": 0.3,
+            "value_exact_match": 0.7,
+            "belief_revision_after_contradiction": 1.0
+          },
+          "ood": {
+            "verified_resolution_full": 0.4944,
+            "verified_resolution_oracle_val": 0.4944,
+            "premature_or_regression_rate": 0.5056,
+            "value_exact_match": 0.7278,
+            "belief_revision_after_contradiction": 0.7078
+          },
+          "extreme_ood": {
+            "verified_resolution_full": 0.3278,
+            "verified_resolution_oracle_val": 0.3278,
+            "premature_or_regression_rate": 0.6722,
+            "value_exact_match": 0.7111,
+            "belief_revision_after_contradiction": 0.5267
+          }
+        }
+      ]
+    },
+    "C4b_ulbp_equivariant": {
+      "params": 1018648,
+      "wall_s": 99.87,
+      "id_verified_resolution_full": {
+        "mean": 0.8778,
+        "half_range": 0.1084
+      },
+      "ood_verified_resolution_full": {
+        "mean": 0.7685,
+        "half_range": 0.025
+      },
+      "ood_verified_resolution_policy_only": {
+        "mean": 0.7685,
+        "half_range": 0.025
+      },
+      "ood_premature_or_regression_rate": {
+        "mean": 0.2315,
+        "half_range": 0.025
+      },
+      "ood_unseen_value_exact_match": {
+        "mean": 0.7685,
+        "half_range": 0.025
+      },
+      "ood_belief_revision_acc": {
+        "mean": 1.0,
+        "half_range": 0.0
+      },
+      "extreme_ood_verified_resolution_full": {
+        "mean": 0.7407,
+        "half_range": 0.0277
+      },
+      "extreme_ood_policy_only": {
+        "mean": 0.7407,
+        "half_range": 0.0277
+      },
+      "extreme_ood_unseen_value_exact": {
+        "mean": 0.7407,
+        "half_range": 0.0277
+      },
+      "extreme_ood_belief_revision_acc": {
+        "mean": 1.0,
+        "half_range": 0.0
+      },
+      "extreme_ood_premature_rate": {
+        "mean": 0.2593,
+        "half_range": 0.0277
+      },
+      "seed_runs": [
+        {
+          "seed": 0,
+          "params": 1018648,
+          "in_dist": {
+            "verified_resolution_full": 1.0,
+            "verified_resolution_oracle_val": 1.0,
+            "premature_or_regression_rate": 0.0,
+            "value_exact_match": 1.0,
+            "belief_revision_after_contradiction": 1.0
+          },
+          "ood": {
+            "verified_resolution_full": 0.7389,
+            "verified_resolution_oracle_val": 0.7389,
+            "premature_or_regression_rate": 0.2611,
+            "value_exact_match": 0.7389,
+            "belief_revision_after_contradiction": 1.0
+          },
+          "extreme_ood": {
+            "verified_resolution_full": 0.7167,
+            "verified_resolution_oracle_val": 0.7167,
+            "premature_or_regression_rate": 0.2833,
+            "value_exact_match": 0.7167,
+            "belief_revision_after_contradiction": 1.0
+          }
+        },
+        {
+          "seed": 1,
+          "params": 1018648,
+          "in_dist": {
+            "verified_resolution_full": 0.85,
+            "verified_resolution_oracle_val": 0.85,
+            "premature_or_regression_rate": 0.15,
+            "value_exact_match": 0.85,
+            "belief_revision_after_contradiction": 1.0
+          },
+          "ood": {
+            "verified_resolution_full": 0.7889,
+            "verified_resolution_oracle_val": 0.7889,
+            "premature_or_regression_rate": 0.2111,
+            "value_exact_match": 0.7889,
+            "belief_revision_after_contradiction": 1.0
+          },
+          "extreme_ood": {
+            "verified_resolution_full": 0.7333,
+            "verified_resolution_oracle_val": 0.7333,
+            "premature_or_regression_rate": 0.2667,
+            "value_exact_match": 0.7333,
+            "belief_revision_after_contradiction": 1.0
+          }
+        },
+        {
+          "seed": 2,
+          "params": 1018648,
+          "in_dist": {
+            "verified_resolution_full": 0.7833,
+            "verified_resolution_oracle_val": 0.7833,
+            "premature_or_regression_rate": 0.2167,
+            "value_exact_match": 0.7833,
+            "belief_revision_after_contradiction": 1.0
+          },
+          "ood": {
+            "verified_resolution_full": 0.7778,
+            "verified_resolution_oracle_val": 0.7778,
+            "premature_or_regression_rate": 0.2222,
+            "value_exact_match": 0.7778,
+            "belief_revision_after_contradiction": 1.0
+          },
+          "extreme_ood": {
+            "verified_resolution_full": 0.7722,
+            "verified_resolution_oracle_val": 0.7722,
+            "premature_or_regression_rate": 0.2278,
+            "value_exact_match": 0.7722,
+            "belief_revision_after_contradiction": 1.0
+          }
+        }
+      ]
+    },
+    "C6_causal_suffix_canonical": {
+      "params": 1018648,
+      "wall_s": 101.92,
+      "id_verified_resolution_full": {
+        "mean": 0.9815,
+        "half_range": 0.0139
+      },
+      "ood_verified_resolution_full": {
+        "mean": 0.9093,
+        "half_range": 0.1361
+      },
+      "ood_verified_resolution_policy_only": {
+        "mean": 0.9093,
+        "half_range": 0.1361
+      },
+      "ood_premature_or_regression_rate": {
+        "mean": 0.0907,
+        "half_range": 0.1361
+      },
+      "ood_unseen_value_exact_match": {
+        "mean": 0.9079,
+        "half_range": 0.1381
+      },
+      "ood_belief_revision_acc": {
+        "mean": 1.0,
+        "half_range": 0.0
+      },
+      "extreme_ood_verified_resolution_full": {
+        "mean": 0.8926,
+        "half_range": 0.1445
+      },
+      "extreme_ood_policy_only": {
+        "mean": 0.8926,
+        "half_range": 0.1445
+      },
+      "extreme_ood_unseen_value_exact": {
+        "mean": 0.9024,
+        "half_range": 0.1464
+      },
+      "extreme_ood_belief_revision_acc": {
+        "mean": 1.0,
+        "half_range": 0.0
+      },
+      "extreme_ood_premature_rate": {
+        "mean": 0.1074,
+        "half_range": 0.1444
+      },
+      "seed_runs": [
+        {
+          "seed": 0,
+          "params": 1018648,
+          "in_dist": {
+            "verified_resolution_full": 0.9722,
+            "verified_resolution_oracle_val": 0.9722,
+            "premature_or_regression_rate": 0.0278,
+            "value_exact_match": 0.9722,
+            "belief_revision_after_contradiction": 1.0
+          },
+          "ood": {
+            "verified_resolution_full": 0.7278,
+            "verified_resolution_oracle_val": 0.7278,
+            "premature_or_regression_rate": 0.2722,
+            "value_exact_match": 0.7238,
+            "belief_revision_after_contradiction": 1.0
+          },
+          "extreme_ood": {
+            "verified_resolution_full": 0.7111,
+            "verified_resolution_oracle_val": 0.7111,
+            "premature_or_regression_rate": 0.2889,
+            "value_exact_match": 0.7072,
+            "belief_revision_after_contradiction": 1.0
+          }
+        },
+        {
+          "seed": 1,
+          "params": 1018648,
+          "in_dist": {
+            "verified_resolution_full": 1.0,
+            "verified_resolution_oracle_val": 1.0,
+            "premature_or_regression_rate": 0.0,
+            "value_exact_match": 1.0,
+            "belief_revision_after_contradiction": 1.0
+          },
+          "ood": {
+            "verified_resolution_full": 1.0,
+            "verified_resolution_oracle_val": 1.0,
+            "premature_or_regression_rate": 0.0,
+            "value_exact_match": 1.0,
+            "belief_revision_after_contradiction": 1.0
+          },
+          "extreme_ood": {
+            "verified_resolution_full": 1.0,
+            "verified_resolution_oracle_val": 1.0,
+            "premature_or_regression_rate": 0.0,
+            "value_exact_match": 1.0,
+            "belief_revision_after_contradiction": 1.0
+          }
+        },
+        {
+          "seed": 2,
+          "params": 1018648,
+          "in_dist": {
+            "verified_resolution_full": 0.9722,
+            "verified_resolution_oracle_val": 0.9722,
+            "premature_or_regression_rate": 0.0278,
+            "value_exact_match": 1.0,
+            "belief_revision_after_contradiction": 1.0
+          },
+          "ood": {
+            "verified_resolution_full": 1.0,
+            "verified_resolution_oracle_val": 1.0,
+            "premature_or_regression_rate": 0.0,
+            "value_exact_match": 1.0,
+            "belief_revision_after_contradiction": 1.0
+          },
+          "extreme_ood": {
+            "verified_resolution_full": 0.9667,
+            "verified_resolution_oracle_val": 0.9667,
+            "premature_or_regression_rate": 0.0333,
+            "value_exact_match": 1.0,
+            "belief_revision_after_contradiction": 1.0
+          }
+        }
+      ]
+    },
+    "C7_dynamic_register_canonical": {
+      "params": 1018648,
+      "wall_s": 103.56,
+      "id_verified_resolution_full": {
+        "mean": 0.9981,
+        "half_range": 0.0028
+      },
+      "ood_verified_resolution_full": {
+        "mean": 0.987,
+        "half_range": 0.0195
+      },
+      "ood_verified_resolution_policy_only": {
+        "mean": 0.9944,
+        "half_range": 0.0084
+      },
+      "ood_premature_or_regression_rate": {
+        "mean": 0.0074,
+        "half_range": 0.0111
+      },
+      "ood_unseen_value_exact_match": {
+        "mean": 0.9928,
+        "half_range": 0.0108
+      },
+      "ood_belief_revision_acc": {
+        "mean": 1.0,
+        "half_range": 0.0
+      },
+      "extreme_ood_verified_resolution_full": {
+        "mean": 0.9815,
+        "half_range": 0.0278
+      },
+      "extreme_ood_policy_only": {
+        "mean": 0.9852,
+        "half_range": 0.0222
+      },
+      "extreme_ood_unseen_value_exact": {
+        "mean": 0.9963,
+        "half_range": 0.0055
+      },
+      "extreme_ood_belief_revision_acc": {
+        "mean": 0.9944,
+        "half_range": 0.0084
+      },
+      "extreme_ood_premature_rate": {
+        "mean": 0.0037,
+        "half_range": 0.0056
+      },
+      "seed_runs": [
+        {
+          "seed": 0,
+          "params": 1018648,
+          "in_dist": {
+            "verified_resolution_full": 0.9944,
+            "verified_resolution_oracle_val": 1.0,
+            "premature_or_regression_rate": 0.0056,
+            "value_exact_match": 0.9944,
+            "belief_revision_after_contradiction": 1.0
+          },
+          "ood": {
+            "verified_resolution_full": 0.9611,
+            "verified_resolution_oracle_val": 0.9833,
+            "premature_or_regression_rate": 0.0222,
+            "value_exact_match": 0.9784,
+            "belief_revision_after_contradiction": 1.0
+          },
+          "extreme_ood": {
+            "verified_resolution_full": 0.9444,
+            "verified_resolution_oracle_val": 0.9556,
+            "premature_or_regression_rate": 0.0111,
+            "value_exact_match": 0.989,
+            "belief_revision_after_contradiction": 0.9833
+          }
+        },
+        {
+          "seed": 1,
+          "params": 1018648,
+          "in_dist": {
+            "verified_resolution_full": 1.0,
+            "verified_resolution_oracle_val": 1.0,
+            "premature_or_regression_rate": 0.0,
+            "value_exact_match": 1.0,
+            "belief_revision_after_contradiction": 1.0
+          },
+          "ood": {
+            "verified_resolution_full": 1.0,
+            "verified_resolution_oracle_val": 1.0,
+            "premature_or_regression_rate": 0.0,
+            "value_exact_match": 1.0,
+            "belief_revision_after_contradiction": 1.0
+          },
+          "extreme_ood": {
+            "verified_resolution_full": 1.0,
+            "verified_resolution_oracle_val": 1.0,
+            "premature_or_regression_rate": 0.0,
+            "value_exact_match": 1.0,
+            "belief_revision_after_contradiction": 1.0
+          }
+        },
+        {
+          "seed": 2,
+          "params": 1018648,
+          "in_dist": {
+            "verified_resolution_full": 1.0,
+            "verified_resolution_oracle_val": 1.0,
+            "premature_or_regression_rate": 0.0,
+            "value_exact_match": 1.0,
+            "belief_revision_after_contradiction": 1.0
+          },
+          "ood": {
+            "verified_resolution_full": 1.0,
+            "verified_resolution_oracle_val": 1.0,
+            "premature_or_regression_rate": 0.0,
+            "value_exact_match": 1.0,
+            "belief_revision_after_contradiction": 1.0
+          },
+          "extreme_ood": {
+            "verified_resolution_full": 1.0,
+            "verified_resolution_oracle_val": 1.0,
+            "premature_or_regression_rate": 0.0,
+            "value_exact_match": 1.0,
+            "belief_revision_after_contradiction": 1.0
+          }
+        }
+      ]
+    }
+  },
+  "total_wall_s": 221.61
+}

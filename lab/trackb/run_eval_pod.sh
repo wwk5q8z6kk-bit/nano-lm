@@ -1,7 +1,7 @@
 #!/bin/bash
 # usage: run_eval_pod.sh <pod_id> "<model1>:<tag1> <model2>:<tag2> ..."
 POD=$1; LIST=$2
-LAB=/Users/mac/Projects/nano-lm/.worktrees/nanolm-lab
+LAB="${NANOLM_LAB_ROOT:-$(cd "$(dirname "$0")/../.." && pwd)}"
 for i in $(seq 60); do INFO=$(runpodctl ssh info $POD 2>/dev/null); echo "$INFO" | grep -q '"port"' && break; sleep 10; done
 IP=$(echo "$INFO" | python3 -c "import json,sys;print(json.load(sys.stdin)['ip'])"); PORT=$(echo "$INFO" | python3 -c "import json,sys;print(json.load(sys.stdin)['port'])")
 KEY=$HOME/.runpod/ssh/runpodctl-ssh-key
@@ -15,7 +15,7 @@ for item in $LIST; do
   "${SSH[@]}" "bash /workspace/eval_pod.sh $M $T 0" < /dev/null
   mkdir -p $LAB/lab/baselines/results/trackb
   rsync -a -e "ssh -o StrictHostKeyChecking=no -i $KEY -p $PORT" --exclude='*.jsonl' root@$IP:/workspace/results/ $LAB/lab/baselines/results/trackb/ < /dev/null
-  rsync -a -e "ssh -o StrictHostKeyChecking=no -i $KEY -p $PORT" root@$IP:/workspace/results/ /Volumes/Express1M2/nanolm-lab/trackb-results/ < /dev/null
+  rsync -a -e "ssh -o StrictHostKeyChecking=no -i $KEY -p $PORT" root@$IP:/workspace/results/ ${NANOLM_TRACKB_ARCHIVE:-$LAB/artifacts/nanolm_lab/trackb-results}/ < /dev/null
   echo "=== $(date -u +%FT%TZ) END $M"
 done
 echo "QUEUE COMPLETE $POD"

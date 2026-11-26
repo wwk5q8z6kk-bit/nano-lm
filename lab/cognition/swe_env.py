@@ -51,10 +51,11 @@ class RepoEpisode:
     has_regression: bool = False
     verified_after_patch: bool = False
     contradiction_seen: bool = False
+    hidden_hop: bool = False
     steps: int = 0
 
 
-def sample_episode(rng: random.Random, ood: bool = False, extreme_ood: bool = False) -> RepoEpisode:
+def sample_episode(rng: random.Random, ood: bool = False, extreme_ood: bool = False, hidden_hop: bool = False) -> RepoEpisode:
     if extreme_ood:
         n_mod = rng.choice([10, 11, 12])
         names = rng.sample(EXTREME_OOD_MOD_NAMES, n_mod)
@@ -64,7 +65,7 @@ def sample_episode(rng: random.Random, ood: bool = False, extreme_ood: bool = Fa
             c_decoy = rng.randint(1000, 9999)
         ood = True
     elif not ood:
-        n_mod = rng.choice([4, 5])
+        n_mod = rng.choice([5, 6] if hidden_hop else [4, 5])
         names = rng.sample(TRAIN_MOD_NAMES, n_mod)
         c_true = rng.randint(100, 999)
         c_decoy = rng.randint(100, 999)
@@ -79,16 +80,22 @@ def sample_episode(rng: random.Random, ood: bool = False, extreme_ood: bool = Fa
             c_decoy = rng.randint(1000, 9999)
 
     symptom = n_mod - 1
-    cand_a = max(0, symptom - 2)
-    cand_b = max(0, symptom - 1) if symptom >= 1 else 0
-    if cand_a == cand_b:
-        cand_a, cand_b = 0, min(1, n_mod - 1)
-    true_root, rival = (cand_a, cand_b) if rng.random() < 0.65 else (cand_b, cand_a)
+    if hidden_hop:
+        # 2-Hop Hidden Root Cause: Turn-0 GOAL only knows immediate caller `rival_mod`;
+        # `true_root_mod` lies deeper upstream in `0 .. rival_mod - 2` and is ONLY revealed upon inspecting `rival_mod`!
+        rival = max(2, symptom - 1)
+        true_root = rng.randint(0, max(0, rival - 2))
+    else:
+        cand_a = max(0, symptom - 2)
+        cand_b = max(0, symptom - 1) if symptom >= 1 else 0
+        if cand_a == cand_b:
+            cand_a, cand_b = 0, min(1, n_mod - 1)
+        true_root, rival = (cand_a, cand_b) if rng.random() < 0.65 else (cand_b, cand_a)
     ambig = rng.random() < 0.30
     return RepoEpisode(
         n_modules=n_mod, mod_names=names, symptom_mod=symptom,
         true_root_mod=true_root, rival_mod=rival, ambiguous_goal=ambig,
-        true_const=c_true, decoy_const=c_decoy, ood=ood,
+        true_const=c_true, decoy_const=c_decoy, ood=ood, hidden_hop=hidden_hop,
     )
 
 
@@ -99,9 +106,12 @@ def initial_goal_observation(ep: RepoEpisode) -> str:
         amb_clause = f"AMBIGUOUS_SPEC candidates VAL_{pair[0]} or VAL_{pair[1]}"
     else:
         amb_clause = f"CLEAR_SPEC required VAL_{ep.true_const}"
+    mods_str = " ".join(f"M{i}:{n}" for i, n in enumerate(ep.mod_names))
+    if ep.hidden_hop:
+        # True root cause is completely hidden upstream (not listed in GOAL suspects)!
+        return f"GOAL alert M{ep.symptom_mod} suspects M{ep.rival_mod} {amb_clause} REPO {mods_str}"
     # Order suspects by index so token order does NOT leak which suspect is true_root vs rival!
     s_lo, s_hi = sorted([ep.rival_mod, ep.true_root_mod])
-    mods_str = " ".join(f"M{i}:{n}" for i, n in enumerate(ep.mod_names))
     return f"GOAL alert M{ep.symptom_mod} suspects M{s_lo} M{s_hi} {amb_clause} REPO {mods_str}"
 
 
@@ -225,8 +235,8 @@ def expert_policy(ep: RepoEpisode) -> tuple[int, int, int]:
     if ep.ambiguous_goal and not ep.clarified:
         return (ACT_ASK_CLARIFY, 0, ep.true_const)
     if ep.true_root_mod not in ep.inspected and ep.rival_mod not in ep.inspected:
-        # Inspect closer suspect `rival_mod` (or lower-index suspect) first to gather evidence
-        first_probe = min(ep.rival_mod, ep.true_root_mod)
+        # In hidden_hop mode, only `rival_mod` is known at Turn 0 (true_root_mod is undiscovered upstream!)
+        first_probe = ep.rival_mod if ep.hidden_hop else min(ep.rival_mod, ep.true_root_mod)
         return (ACT_INSPECT, first_probe, ep.true_const)
     if ep.true_root_mod not in ep.inspected:
         return (ACT_INSPECT, ep.true_root_mod, ep.true_const)

@@ -1,3 +1,4 @@
+import os
 """NanoLM discovery-lab corpus builder (LAB-DATA-01).
 
 Builds a reproducible multi-domain pretraining corpus for small-scale
@@ -75,8 +76,8 @@ def ngrams13(text: str) -> set[int]:
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--out", default="/Volumes/Express1M2/nanolm-lab/data/v1")
-    ap.add_argument("--cache", default="/Volumes/Express1M2/nanolm-lab/hf-cache")
+    ap.add_argument("--out", default=os.environ.get("NANOLM_DATA_DIR", "artifacts/nanolm_lab/data/v1"))
+    ap.add_argument("--cache", default=os.environ.get("NANOLM_HF_CACHE", "artifacts/nanolm_lab/hf-cache"))
     ap.add_argument("--train-tokens", type=int, default=800_000_000)
     ap.add_argument("--val-tokens-per-domain", type=int, default=1_000_000)
     ap.add_argument("--tok-sample-mb", type=int, default=400)

@@ -99,6 +99,7 @@ class CognitiveLM(nn.Module):
             "C4b_ulbp_equivariant",
             "C5_de_bruijn_canonical",
             "C6_causal_suffix_canonical",
+            "C7_dynamic_register_canonical",
         )
         self.arm = arm
         self.is_c3_family = arm in (
@@ -107,12 +108,14 @@ class CognitiveLM(nn.Module):
             "C4b_ulbp_equivariant",
             "C5_de_bruijn_canonical",
             "C6_causal_suffix_canonical",
+            "C7_dynamic_register_canonical",
         )
         self.is_c4 = arm in (
             "C4a_ulbp_latent_plan",
             "C4b_ulbp_equivariant",
             "C5_de_bruijn_canonical",
             "C6_causal_suffix_canonical",
+            "C7_dynamic_register_canonical",
         )
         self.d = d
         self.n_slots = n_slots
@@ -235,6 +238,10 @@ class CognitiveLM(nn.Module):
             perm = [0] * 12
             for rank_i, orig_m in enumerate(seen_order):
                 perm[orig_m] = rank_i if rank_i < 3 else bg_slots[rank_i - 3]
+        elif self.arm == "C7_dynamic_register_canonical":
+            # Online Dynamic De Bruijn Register Allocator: foreground registers R0..R3 are bound lazily on-the-fly
+            # across turns ONLY as modules appear in active causal predicates (ignoring passive REPO catalog & UNRELATED)!
+            perm = list(range(12))
         else:
             perm = list(range(12))
         ws = {
@@ -243,9 +250,40 @@ class CognitiveLM(nn.Module):
             "evidence_vecs": [],   # list[(Tensor(d,), int_val)]
             "n_modules": n_modules,
             "perm": perm,
+            "allocated_order": [],
+            "bg_slots": ((torch.randperm(8) + 4).tolist() if self.training else list(range(4, 12))),
             "turn_idx": 0,
         }
         return self.update_c3_workspace(ws, goal_ids, val_spans, dev)
+
+    @staticmethod
+    def _extract_active_causal_modules(obs_ids: list[int]) -> list[int]:
+        """Extract module indices referenced in active causal clauses (skipping passive `REPO ...` & `UNRELATED_MODULE`)."""
+        tid_to_m = {MOD_TOKEN_IDS[m]: m for m in range(12)}
+        repo_tid = TOK2ID["REPO"]
+        obs_tid = TOK2ID["OBS"]
+        act_tid = TOK2ID["ACT"]
+        unrel_tid = TOK2ID["UNRELATED_MODULE"]
+        found: list[int] = []
+        in_repo_catalog = False
+        n = len(obs_ids)
+        for i, tok in enumerate(obs_ids):
+            if tok == repo_tid:
+                in_repo_catalog = True
+                continue
+            if tok in (obs_tid, act_tid):
+                in_repo_catalog = False
+            if in_repo_catalog:
+                continue
+            if tok in tid_to_m:
+                # Look ahead up to 10 tokens for `UNRELATED_MODULE` noise tag
+                window = obs_ids[i + 1 : min(n, i + 10)]
+                if unrel_tid in window:
+                    continue
+                m_idx = tid_to_m[tok]
+                if m_idx not in found:
+                    found.append(m_idx)
+        return found
 
     def update_c3_workspace(
         self,
@@ -256,9 +294,25 @@ class CognitiveLM(nn.Module):
     ) -> dict[str, Any]:
         """Recurrent belief update `Z_t = U_theta(Z_{t-1}, obs_t)` (+ C4 subspace latent planning)."""
         z_prev = ws["z"]                                      # (1, S, d)
-        perm: list[int] = ws.get("perm", list(range(12)))
+        perm: list[int] = list(ws.get("perm", list(range(12))))
+        alloc_order: list[int] = list(ws.get("allocated_order", []))
+        bg_slots: list[int] = list(ws.get("bg_slots", list(range(4, 12))))
         turn_idx: int = int(ws.get("turn_idx", 0))
-        if self.arm in ("C4b_ulbp_equivariant", "C5_de_bruijn_canonical", "C6_causal_suffix_canonical"):
+
+        newly_allocated: set[int] = set()
+        if self.arm == "C7_dynamic_register_canonical":
+            for active_m in self._extract_active_causal_modules(obs_ids):
+                if active_m not in alloc_order and len(alloc_order) < 4:
+                    alloc_order.append(active_m)
+                    newly_allocated.add(active_m)
+            rem = [m for m in range(12) if m not in alloc_order]
+            perm = [0] * 12
+            for r_idx, om in enumerate(alloc_order):
+                perm[om] = r_idx
+            for b_idx, om in enumerate(rem):
+                perm[om] = bg_slots[b_idx] if b_idx < len(bg_slots) else min(11, 4 + b_idx)
+
+        if self.arm in ("C4b_ulbp_equivariant", "C5_de_bruijn_canonical", "C6_causal_suffix_canonical", "C7_dynamic_register_canonical"):
             id_remap = {MOD_TOKEN_IDS[m]: MOD_TOKEN_IDS[perm[m]] for m in range(12)}
             mapped_ids = [id_remap.get(t, t) for t in obs_ids]
         else:
@@ -266,10 +320,8 @@ class CognitiveLM(nn.Module):
 
         obs_t = torch.tensor([mapped_ids], dtype=torch.long, device=dev)
         x_obs = self.emb(obs_t)                               # (1, L, d)
-        # C6 Causal Read-Before-Belief Ordering: place observation FIRST and belief slots at CAUSAL SUFFIX [x_obs; z_prev]
-        # so every Sharp-Delta state sweeps 100% of x_obs into z_cand and global QK-Canon attention binds directly to
-        # AMBIGUOUS_SPEC / CLARIFIED / ALL_PASS at O(1) depth regardless of repo size N!
-        suffix_mode = self.arm == "C6_causal_suffix_canonical"
+        # C6/C7 Causal Read-Before-Belief Ordering: place observation FIRST and belief slots at CAUSAL SUFFIX [x_obs; z_prev]
+        suffix_mode = self.arm in ("C6_causal_suffix_canonical", "C7_dynamic_register_canonical")
         cat_in = torch.cat([x_obs, z_prev], dim=1) if suffix_mode else torch.cat([z_prev, x_obs], dim=1)
         hd = self.d // self.ng_cfg.n_head
         rope = rope_cache(cat_in.size(1), hd, 10000.0, dev)
@@ -298,7 +350,7 @@ class CognitiveLM(nn.Module):
             pos = [idx for idx, tok in enumerate(obs_ids) if tok == orig_tid]
             if pos:
                 v_m = h_obs[pos].mean(dim=0)
-                new_mods.append(0.5 * prev_mods[m] + 0.5 * v_m if prev_mods is not None else v_m)
+                new_mods.append(v_m if (prev_mods is None or m in newly_allocated) else (0.5 * prev_mods[m] + 0.5 * v_m))
             else:
                 new_mods.append(prev_mods[m] if prev_mods is not None else self.emb.weight[emb_tid])
         mod_mat = torch.stack(new_mods, dim=0)                # (n_mod, d)
@@ -361,6 +413,8 @@ class CognitiveLM(nn.Module):
             "evidence_vecs": ev_list,
             "n_modules": n_mod,
             "perm": perm,
+            "allocated_order": alloc_order,
+            "bg_slots": bg_slots,
             "turn_idx": turn_idx + 1,
             "act_logits": act_logits,
             "mod_logits": mod_logits,

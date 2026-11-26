@@ -57,7 +57,25 @@ def test_all_four_cognitive_arms_forward_on_ood_9module_repo():
             assert ws["mod_logits"].shape == (9,)
             assert ws["unc_pred"].shape == (3,)
 
-    # Verify exact iso-parameter match between C5 and C6 (1,018,648 params)!
+    # Verify exact iso-parameter match across C5, C6, and C7 (1,018,648 params)!
     p_c5 = sum(p.numel() for p in CognitiveLM("C5_de_bruijn_canonical", d=128, n_head=4, n_slots=8).parameters())
     p_c6 = sum(p.numel() for p in CognitiveLM("C6_causal_suffix_canonical", d=128, n_head=4, n_slots=8).parameters())
-    assert p_c5 == p_c6, f"Iso-parameter mismatch: C5={p_c5} vs C6={p_c6}"
+    p_c7 = sum(p.numel() for p in CognitiveLM("C7_dynamic_register_canonical", d=128, n_head=4, n_slots=8).parameters())
+    assert p_c5 == p_c6 == p_c7, f"Iso-parameter mismatch: C5={p_c5}, C6={p_c6}, C7={p_c7}"
+
+
+def test_hidden_hop_expert_and_dynamic_register_allocation():
+    rng = random.Random(42)
+    for ext in (False, True):
+        for _ in range(25):
+            ep = sample_episode(rng, ood=True, extreme_ood=ext, hidden_hop=True)
+            goal = initial_goal_observation(ep)
+            assert f"suspects M{ep.true_root_mod} " not in goal
+            solved = False
+            for _ in range(8):
+                a, m, v = expert_policy(ep)
+                _, info = step_environment(ep, a, m, v)
+                if info["done"]:
+                    solved = info["solved_verified"]
+                    break
+            assert solved

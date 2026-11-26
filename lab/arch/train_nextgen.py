@@ -60,11 +60,18 @@ NEXTGEN_SPECS: dict[str, dict] = {
         "gated_vres": True, "sharp_v": True, "qk_canon_attn": True, "loop": None, "sgrd_prior_p": 0.0,
         "optim": "adamw",
     },
+    # LAB-SCALE-03: 350M scale-up Dense GQA baseline (~289.5M non-emb / ~323M total, d=1024, L=24, H=16, KV=4)
+    "S0_dense_350m": {
+        "scale": "350m", "d": 1024, "n_head": 16, "n_kv": 4, "layout": "A" * 24,
+        "gated_vres": False, "sharp_v": False, "qk_canon_attn": False, "loop": None, "sgrd_prior_p": 0.0,
+        "optim": "muon", "muon_lr": 0.00913,
+    },
 }
 
 TARGETS_NON_EMB = {
-    "46m": 29_500_416,    # exact T0_dense non-embedding params
-    "125m": 96_350_208,   # S0_dense_125m at ffn=2048
+    "46m": 29_500_416,     # exact T0_dense non-embedding params
+    "125m": 96_350_208,    # S0_dense_125m at ffn=2048
+    "350m": 289_456_128,   # S0_dense_350m at ffn=3072
 }
 
 
@@ -90,7 +97,7 @@ def build_nextgen(arm: str, vocab: int, seq: int) -> NextGenLM:
     return NextGenLM(_make_cfg(arm, vocab, seq, best))
 
 
-def make_nextgen_optim(model: NextGenLM, kind: str, lr: float, wd: float):
+def make_nextgen_optim(model: NextGenLM, kind: str, lr: float, wd: float, muon_lr: float = 0.02):
     hidden2d = [p for n, p in model.named_parameters() if p.dim() == 2 and "emb" not in n and "head" not in n and "v_gate" not in n and "halt_proj" not in n]
     other = [p for n, p in model.named_parameters() if not (p.dim() == 2 and "emb" not in n and "head" not in n and "v_gate" not in n and "halt_proj" not in n)]
     if kind == "adamw":
@@ -98,15 +105,15 @@ def make_nextgen_optim(model: NextGenLM, kind: str, lr: float, wd: float):
         nod = [p for p in model.parameters() if p.dim() < 2]
         return [torch.optim.AdamW([{"params": decay, "weight_decay": wd}, {"params": nod, "weight_decay": 0.0}], lr=lr, betas=(0.9, 0.95), eps=1e-8)]
     if kind == "muon":
-        return [Muon(hidden2d, lr=0.02, wd=wd * 0.1), torch.optim.AdamW(other, lr=lr, betas=(0.9, 0.95), eps=1e-8, weight_decay=0.0)]
+        return [Muon(hidden2d, lr=muon_lr, wd=wd * 0.1), torch.optim.AdamW(other, lr=lr, betas=(0.9, 0.95), eps=1e-8, weight_decay=0.0)]
     raise ValueError(kind)
 
 
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--arm", required=True, choices=sorted(NEXTGEN_SPECS))
-    ap.add_argument("--data", default="/Volumes/Express1M2/nanolm-lab/data/v1")
-    ap.add_argument("--out", default="/Volumes/Express1M2/nanolm-lab/runs")
+    ap.add_argument("--data", default=os.environ.get("NANOLM_DATA_DIR", "artifacts/nanolm_lab/data/v1"))
+    ap.add_argument("--out", default=os.environ.get("NANOLM_RUNS_DIR", "artifacts/nanolm_lab/runs"))
     ap.add_argument("--tokens", type=float, default=600e6)
     ap.add_argument("--batch-tokens", type=int, default=131072)
     ap.add_argument("--micro", type=int, default=16)
@@ -121,7 +128,8 @@ def main() -> None:
     a = ap.parse_args()
 
     spec = NEXTGEN_SPECS[a.arm]
-    lr = a.lr if a.lr is not None else (2e-3 if spec["scale"] == "125m" else 3e-3)
+    default_lr = 1.5e-3 if spec["scale"] == "350m" else (2e-3 if spec["scale"] == "125m" else 3e-3)
+    lr = a.lr if a.lr is not None else default_lr
     optim_kind = a.optim or spec["optim"]
 
     dev = torch.device("cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu")
@@ -133,7 +141,7 @@ def main() -> None:
     data = Path(a.data)
     manifest = json.loads((data / "manifest.json").read_text())
     model = build_nextgen(a.arm, vocab=manifest["vocab"], seq=a.seq).to(dev)
-    opts = make_nextgen_optim(model, optim_kind, lr, a.wd)
+    opts = make_nextgen_optim(model, optim_kind, lr, a.wd, muon_lr=spec.get("muon_lr", 0.02))
     base_lrs = [[g["lr"] for g in o.param_groups] for o in opts]
     # Note: SGRD uses dynamic auxiliary dict output in training; compile non-SGRD models
     fwd = torch.compile(model) if (a.compile and not model.use_sgrd) else model

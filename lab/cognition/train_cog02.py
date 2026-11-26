@@ -21,16 +21,16 @@ import torch
 from lab.cognition.train_cog01 import evaluate_arm, train_one_arm
 
 
-def _run_cog02_job(job: tuple[str, int, int, int]) -> tuple[str, dict[str, Any], float]:
-    arm, s, n_episodes, n_eval = job
+def _run_cog02_job(job: tuple[str, int, int, int, bool]) -> tuple[str, dict[str, Any], float]:
+    arm, s, n_episodes, n_eval, hidden_hop = job
     torch.set_num_threads(1)
     dev = torch.device("cpu")
     t0 = time.perf_counter()
-    m = train_one_arm(arm, seed=s, n_episodes=n_episodes, dev=dev)
+    m = train_one_arm(arm, seed=s, n_episodes=n_episodes, dev=dev, hidden_hop=hidden_hop)
     n_params = sum(p.numel() for p in m.parameters())
-    id_res = evaluate_arm(m, n_eval=n_eval, ood=False, dev=dev, seed=7000 + s)
-    ood_res = evaluate_arm(m, n_eval=n_eval, ood=True, dev=dev, seed=8000 + s, extreme_ood=False)
-    ext_res = evaluate_arm(m, n_eval=n_eval, ood=True, dev=dev, seed=9000 + s, extreme_ood=True)
+    id_res = evaluate_arm(m, n_eval=n_eval, ood=False, dev=dev, seed=7000 + s, hidden_hop=hidden_hop)
+    ood_res = evaluate_arm(m, n_eval=n_eval, ood=True, dev=dev, seed=8000 + s, extreme_ood=False, hidden_hop=hidden_hop)
+    ext_res = evaluate_arm(m, n_eval=n_eval, ood=True, dev=dev, seed=9000 + s, extreme_ood=True, hidden_hop=hidden_hop)
     dt = time.perf_counter() - t0
     rec = {"seed": s, "params": n_params, "in_dist": id_res, "ood": ood_res, "extreme_ood": ext_res}
     print(
@@ -50,11 +50,12 @@ def main() -> None:
     ap.add_argument("--seeds", type=int, default=3)
     ap.add_argument("--workers", type=int, default=9)
     ap.add_argument("--arms", nargs="+", default=["C3_ebwm_counterfactual", "C4a_ulbp_latent_plan", "C4b_ulbp_equivariant"])
-    ap.add_argument("--out", default="/Users/mac/Projects/nano-lm/.worktrees/nanolm-lab/lab/reports/lab_cog_02_results.json")
+    ap.add_argument("--hidden-hop", action="store_true")
+    ap.add_argument("--out", default=str(Path(__file__).resolve().parents[1] / "reports" / "lab_cog_02_results.json"))
     args = ap.parse_args()
 
     arms = list(args.arms)
-    jobs = [(arm, s, args.episodes, args.eval_episodes) for arm in arms for s in range(args.seeds)]
+    jobs = [(arm, s, args.episodes, args.eval_episodes, bool(args.hidden_hop)) for arm in arms for s in range(args.seeds)]
     grouped: dict[str, list[dict[str, Any]]] = {a: [] for a in arms}
     wall_by_arm: dict[str, float] = {a: 0.0 for a in arms}
 

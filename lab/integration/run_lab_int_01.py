@@ -1,3 +1,4 @@
+import os
 """Run `LAB-INT-01` Controlled Architecture Surgery Experiment on a Pretrained Dense GQA Checkpoint.
 
 Evaluates all three preregistered conversion arms (`PREREG_LAB-INT-01.md`) on held-out real
@@ -56,8 +57,8 @@ def sample_train_batches(train_mm: np.memmap, n_steps: int, bsz: int, seq: int, 
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--ckpt", required=True, help="Path to pretrained S0_dense_125m final.pt")
-    ap.add_argument("--data", default="/Volumes/Express1M2/nanolm-lab/data/v1")
-    ap.add_argument("--out", default="/Users/mac/Projects/nano-lm/.worktrees/nanolm-lab/lab/reports/lab_int_01_results.json")
+    ap.add_argument("--data", default=os.environ.get("NANOLM_DATA_DIR", "artifacts/nanolm_lab/data/v1"))
+    ap.add_argument("--out", default=str(Path(__file__).resolve().parents[1] / "reports" / "lab_int_01_results.json"))
     ap.add_argument("--steps", type=int, default=80, help="Matched adaptation steps per surgical arm")
     ap.add_argument("--bsz", type=int, default=4)
     ap.add_argument("--seq", type=int, default=512)

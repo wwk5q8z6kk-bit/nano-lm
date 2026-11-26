@@ -125,7 +125,7 @@
         "version": 3.0,
         "pretrained": "Qwen/Qwen2.5-1.5B-Instruct",
         "dtype": "bfloat16",
-        "config_source": "/Users/mac/Projects/nano-lm/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/gsm8k/gsm8k.yaml"
+        "config_source": "<REPO_ROOT>/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/gsm8k/gsm8k.yaml"
       }
     },
     "humaneval_instruct": {
@@ -192,7 +192,7 @@
         "version": 4.0,
         "pretrained": "Qwen/Qwen2.5-1.5B-Instruct",
         "dtype": "bfloat16",
-        "config_source": "/Users/mac/Projects/nano-lm/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/humaneval/humaneval_instruct.yaml"
+        "config_source": "<REPO_ROOT>/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/humaneval/humaneval_instruct.yaml"
       }
     },
     "ifeval": {
@@ -255,7 +255,7 @@
         "version": 4.0,
         "pretrained": "Qwen/Qwen2.5-1.5B-Instruct",
         "dtype": "bfloat16",
-        "config_source": "/Users/mac/Projects/nano-lm/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/ifeval/ifeval.yaml"
+        "config_source": "<REPO_ROOT>/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/ifeval/ifeval.yaml"
       }
     },
     "mbpp_instruct": {
@@ -314,7 +314,7 @@
         "version": 1.0,
         "pretrained": "Qwen/Qwen2.5-1.5B-Instruct",
         "dtype": "bfloat16",
-        "config_source": "/Users/mac/Projects/nano-lm/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mbpp/mbpp_instruct.yaml"
+        "config_source": "<REPO_ROOT>/.venv-bench/lib/python3.14/site-packages/lm_eval/tasks/mbpp/mbpp_instruct.yaml"
       }
     }
   },

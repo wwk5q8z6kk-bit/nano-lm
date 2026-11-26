@@ -43,6 +43,14 @@ class RetrievalResult:
     formatted_evidence: str
 
 
+def is_read_or_prep_tool(tool_name: str) -> bool:
+    """Classify read-only lookup / credential-refresh tools vs state-mutating action tools."""
+    low = tool_name.strip().lower()
+    return low.startswith(
+        ("lookup_", "get_", "fetch_", "query_", "list_", "read_", "refresh_", "rotate_", "inspect_", "describe_", "check_")
+    )
+
+
 class WorkingMemory:
     """Epistemic Belief-Revision Scratchpad tracking active facts, invalidated state, and unresolved errors."""
 
@@ -52,6 +60,7 @@ class WorkingMemory:
         self.invalidated_facts: dict[str, Any] = {}
         self.events: list[str] = []
         self.has_unresolved_error: bool = False
+        self.has_mutating_success: bool = False
 
     def record_fact(self, key: str, value: Any) -> None:
         for prefix in ("fresh_", "new_", "updated_", "active_"):
@@ -69,6 +78,13 @@ class WorkingMemory:
                 self.invalidated_facts[k] = v
                 if self.facts.get(k) == v:
                     self.facts.pop(k, None)
+        m_bound = re.search(
+            r"(?:at least|minimum[^\d]*|clamp[^\d]*to(?: at least)?|floor[^\d]*)\s*(\d+)",
+            message,
+            flags=re.IGNORECASE,
+        )
+        if m_bound:
+            self.facts["required_safety_bound"] = int(m_bound.group(1))
         self.record_event(f"ERROR [{error_code}]: {message}")
 
     def record_event(self, summary: str) -> None:

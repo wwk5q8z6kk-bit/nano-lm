@@ -145,3 +145,47 @@ def test_b8_causal_completion_augmentations_decontaminated():
 
     aug = build_causal_completion_augmentations()
     assert len(aug) == 66
+
+
+def test_v5_math_discrepancy_adjudicator_and_readonly_premature_stop_guard():
+    """Verify System-v5 Channel D adjudicator and read-only premature-stop rejection."""
+    from lab.system.frontier_bench import _make_incident_env
+
+    # 1. Math Channel D resolves 3-way split (A=111, B=7420, C=999 -> D=7420 -> CERTIFIED_MAJORITY)
+    def math_mock(msgs, think, max_tok):
+        txt = msgs[-1]["content"]
+        if "Two independent Python solvers disagreed" in txt:
+            return "```python\nprint(7420)\n```"
+        if "EXHAUSTIVE BRUTE-FORCE" in txt:
+            return "```python\nprint(7420)\n```"
+        if "Write a short, exact Python 3 script" in txt:
+            return "```python\nprint(999)\n```"
+        return "Reasoning... \\boxed{111}"
+
+    ep_m = NanoLMSystem(math_mock).solve("How many permutations? Put in \\boxed{}.", task_hint="math_hard")
+    assert ep_m.extracted_answer == "7420" and ep_m.epistemic_tier == "CERTIFIED_MAJORITY"
+
+    # 2. Read-only lookup (`ok: true`) followed by premature `{"tool_calls": []}` must be rejected!
+    env = _make_incident_env("INC-7100", "shard-eu-20", 2000, 650, "LEASE-LIVE-900", locked=False)()
+    step = {"k": 0}
+
+    def tool_mock(msgs, think, max_tok):
+        step["k"] += 1
+        k = step["k"]
+        if k == 1:
+            return '{"tool_calls": [{"name": "lookup_incident_context", "arguments": {"incident_id": "INC-7100"}}]}'
+        if k == 2:
+            # Spurious premature stop right after read-only `ok: true`!
+            return '{"tool_calls": [], "response": "Looked up shard-eu-20."}'
+        if k == 3:
+            return '{"tool_calls": [{"name": "refresh_lease_token", "arguments": {"shard_id": "shard-eu-20"}}]}'
+        if k == 4:
+            return '{"tool_calls": [{"name": "apply_shard_mitigation", "arguments": {"shard_id": "shard-eu-20", "lease_token": "LEASE-LIVE-900", "target_rps": 500}}]}'
+        if k == 5:
+            # Verify WorkingMemory extracted `required_safety_bound=650` into prompt!
+            assert "required_safety_bound=650" in msgs[-1]["content"]
+            return '{"tool_calls": [{"name": "apply_shard_mitigation", "arguments": {"shard_id": "shard-eu-20", "lease_token": "LEASE-LIVE-900", "target_rps": 650}}]}'
+        return '{"tool_calls": [], "response": "Mitigated shard-eu-20 to 650 RPS."}'
+
+    ep_t = NanoLMSystem(tool_mock, max_tool_turns=7).solve("Resolve INC-7100.", task_hint="tool_workflow", tool_env=env)
+    assert env.state["mitigated"] is True and env.state["current_rps"] == 650

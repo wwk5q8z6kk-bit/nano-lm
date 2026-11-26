@@ -4,9 +4,9 @@
 # pulls result.json files back after every run (so partial progress survives pod loss).
 set -u
 POD=$1; Q=$2
-LAB=/Users/mac/Projects/nano-lm/.worktrees/nanolm-lab
-DATA=/Volumes/Express1M2/nanolm-lab/data/v1
-OUT=/Volumes/Express1M2/nanolm-lab/runs
+LAB="${NANOLM_LAB_ROOT:-$(cd "$(dirname "$0")/../.." && pwd)}"
+DATA="${NANOLM_DATA_DIR:-$LAB/artifacts/nanolm_lab/data/v1}"
+OUT="${NANOLM_RUNS_DIR:-$LAB/artifacts/nanolm_lab/runs}"
 for i in $(seq 60); do INFO=$(runpodctl ssh info $POD 2>/dev/null); echo "$INFO" | grep -q '"port"' && break; sleep 10; done
 IP=$(echo "$INFO" | python3 -c "import json,sys;print(json.load(sys.stdin)['ip'])"); PORT=$(echo "$INFO" | python3 -c "import json,sys;print(json.load(sys.stdin)['port'])")
 KEY=$HOME/.runpod/ssh/runpodctl-ssh-key

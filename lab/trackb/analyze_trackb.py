@@ -123,7 +123,7 @@ def _fmt(v: float | None, suffix: str = "%") -> str:
 
 
 def main() -> None:
-    root = Path("/Users/mac/Projects/nano-lm/.worktrees/nanolm-lab/lab/baselines/results/trackb")
+    root = Path(__file__).resolve().parents[1] / "baselines" / "results" / "trackb"
     records = []
     for key, meta in MODEL_REGISTRY.items():
         mdir = root / key

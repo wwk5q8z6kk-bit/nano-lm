@@ -1,3 +1,4 @@
+import os
 """Trainer for Track A Phase-2 Breakthrough Arms (`LAB-ARCH-04`: `X5_atrd_muon` & `X6_pkm_muon`).
 
 Matches exact active non-embedding parameters (`~29.4M`), WSD schedule, validation shards,
@@ -26,18 +27,22 @@ ARCH04_SPECS = {
     # LAB-SCALE-02: 125M scale-up of NanoLM-v3 (X8_margin_atrd_muon) with spectral width/depth-scaled Muon LR!
     # eta_Muon(d=768, L=16) = 0.02 * sqrt(512/768) * sqrt(10/16) = 0.01291
     "S2_nanolm_v3_125m": {"scale": "125m", "d": 768, "n_head": 12, "n_kv": 4, "layout": "DDDADDDADDDADDDA", "use_atrd": True, "use_margin_gate": True, "atrd_frac": 0.25, "use_pkm": False, "optim": "muon", "muon_lr": 0.01291},
+    # LAB-SCALE-03: 350M scale-up of NanoLM-v3 (~289.5M active non-emb / ~323M total, d=1024, L=24, H=16, KV=4)
+    # eta_Muon(d=1024, L=24) = 0.02 * sqrt(512/1024) * sqrt(10/24) = 0.00913
+    "S2_nanolm_v3_350m": {"scale": "350m", "d": 1024, "n_head": 16, "n_kv": 4, "layout": "DDDADDDADDDADDDADDDADDDA", "use_atrd": True, "use_margin_gate": True, "atrd_frac": 0.25, "use_pkm": False, "optim": "muon", "muon_lr": 0.00913},
 }
 
 TARGETS_ACTIVE_NON_EMB = {
-    "46m": 29_377_080,   # exact match to X4_nanolm_v2_muon
-    "125m": 96_350_208,  # exact match to S0_dense_125m & S1_nanolm_v2_125m!
+    "46m": 29_377_080,    # exact match to X4_nanolm_v2_muon
+    "125m": 96_350_208,   # exact match to S0_dense_125m & S1_nanolm_v2_125m!
+    "350m": 289_456_128,  # exact match to S0_dense_350m!
 }
 
 
 def build_arch04(arm: str, vocab: int, seq: int) -> Arch04LM:
     s = ARCH04_SPECS[arm]
     target = TARGETS_ACTIVE_NON_EMB[s["scale"]]
-    lo, hi = 512, 4096
+    lo, hi = 512, 6144
     while hi - lo > 32:
         mid = (lo + hi) // 2 // 32 * 32
         cfg = Arch04Cfg(
@@ -81,8 +86,8 @@ def make_arch04_optim(model: Arch04LM, lr: float, wd: float, muon_lr: float = 0.
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--arm", required=True, choices=sorted(ARCH04_SPECS))
-    ap.add_argument("--data", default="/Volumes/Express1M2/nanolm-lab/data/v1")
-    ap.add_argument("--out", default="/Volumes/Express1M2/nanolm-lab/runs")
+    ap.add_argument("--data", default=os.environ.get("NANOLM_DATA_DIR", "artifacts/nanolm_lab/data/v1"))
+    ap.add_argument("--out", default=os.environ.get("NANOLM_RUNS_DIR", "artifacts/nanolm_lab/runs"))
     ap.add_argument("--tokens", type=float, default=600e6)
     ap.add_argument("--batch-tokens", type=int, default=131072)
     ap.add_argument("--micro", type=int, default=16)
@@ -104,7 +109,7 @@ def main() -> None:
     manifest = json.loads((data / "manifest.json").read_text())
     model = build_arch04(a.arm, vocab=manifest["vocab"], seq=a.seq).to(dev)
     spec_cfg = ARCH04_SPECS[a.arm]
-    eff_adam_lr = a.lr * math.sqrt(512.0 / spec_cfg["d"]) if spec_cfg["scale"] == "125m" else a.lr
+    eff_adam_lr = a.lr * math.sqrt(512.0 / spec_cfg["d"]) if spec_cfg["scale"] in ("125m", "350m") else a.lr
     opts = make_arch04_optim(model, eff_adam_lr, a.wd, muon_lr=spec_cfg["muon_lr"])
     base_lrs = [[g["lr"] for g in o.param_groups] for o in opts]
     # Compile PKM arm (static graph); ATD uses dynamic sparse K_max gather so run eager+Triton FLA

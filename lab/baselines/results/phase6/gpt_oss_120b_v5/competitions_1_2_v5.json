@@ -1,0 +1,61 @@
+{
+  "schema": "nanolm.frontier_competitions_1_2.v1",
+  "model": "openai/gpt-oss-120b",
+  "competition_1_naked_fast": {
+    "competition": "Competition_1_Naked_Foundation",
+    "think": false,
+    "total_items": 100,
+    "passed": 70,
+    "overall_score": 0.7,
+    "tracks": {
+      "frontier_math": 1.0,
+      "frontier_coding": 0.45,
+      "stateful_tool_agents": 1.0,
+      "memory_spec_qa": 0.3,
+      "adversarial_conservation_json": 0.75
+    },
+    "wall_seconds": 33.09,
+    "input_tokens": 24531,
+    "output_tokens": 54682,
+    "measured_output_tok_per_s": 1652.3
+  },
+  "competition_1_naked_think": {
+    "competition": "Competition_1_Naked_Foundation",
+    "think": true,
+    "total_items": 100,
+    "passed": 58,
+    "overall_score": 0.58,
+    "tracks": {
+      "frontier_math": 0.9,
+      "frontier_coding": 0.3,
+      "stateful_tool_agents": 0.85,
+      "memory_spec_qa": 0.0,
+      "adversarial_conservation_json": 0.85
+    },
+    "wall_seconds": 47.3,
+    "input_tokens": 24531,
+    "output_tokens": 91201,
+    "measured_output_tok_per_s": 1928.3
+  },
+  "competition_2_complete_system": {
+    "competition": "Competition_2_Complete_System",
+    "total_items": 100,
+    "passed": 99,
+    "overall_score": 0.99,
+    "tracks": {
+      "frontier_math": 1.0,
+      "frontier_coding": 0.95,
+      "stateful_tool_agents": 1.0,
+      "memory_spec_qa": 1.0,
+      "adversarial_conservation_json": 1.0
+    },
+    "avg_llm_calls_per_task": 2.74,
+    "avg_output_chars_per_task": 4371.7,
+    "total_sandbox_runs": 179,
+    "total_memory_retrievals": 20,
+    "wall_seconds": 172.83,
+    "input_tokens": 160570,
+    "output_tokens": 140831,
+    "measured_output_tok_per_s": 814.8
+  }
+}

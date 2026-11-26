@@ -52,4 +52,4 @@
 
 ## 3. Complete 36-Run Empirical Tables
 
-See [LAB-ARCH-02_results.md](LAB-ARCH-02_results.md) for the auto-generated machine-verified aggregation from `/Volumes/Express1M2/nanolm-lab/runs/*/result.json`, and [lab_int_01_results.json](lab_int_01_results.json) for the `LAB-INT-01` progressive surgery measurements.
+See [LAB-ARCH-02_results.md](LAB-ARCH-02_results.md) for the auto-generated machine-verified aggregation from `${NANOLM_RUNS_DIR}/*/result.json`, and [lab_int_01_results.json](lab_int_01_results.json) for the `LAB-INT-01` progressive surgery measurements.
