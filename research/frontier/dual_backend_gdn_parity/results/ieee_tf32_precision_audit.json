@@ -1,0 +1,46 @@
+{
+  "schema": "nanolm_dual_backend_precision_staircase_audit_v1",
+  "finding": "Upstream fla-core==0.6.0 executes 10-bit mantissa TF32 MMA inside Triton tl.dot on Ampere/Hopper (sm >= 80) even when given torch.float32 inputs: both via Triton default input_precision='tf32' and hardcoded SOLVE_TRIL_DOT_PRECISION='tf32' in fla/ops/gated_delta_rule/chunk_fwd.py:258-290. Pure IEEE-754 FP32 matches JAX Precision.HIGHEST to 3.1e-6 logits / 5.0e-7 loss, and production BF16 matches live Cloud TPU v5e to 6.19e-4 loss / 4.53e-4 step-10 loss.",
+  "rungs": [
+    {
+      "rung": 1,
+      "comparison": "PyTorch IEEE-754 FP32 WY (use_fla=False) vs JAX Precision.HIGHEST FP32",
+      "mantissa_bits": 23,
+      "logit_max_abs_err": 3.1e-06,
+      "loss_abs_err": 5e-07,
+      "grad_max_rel_err": 5.9e-06,
+      "step10_loss_abs_err": 3e-06
+    },
+    {
+      "rung": 2,
+      "comparison": "Live CUDA fla==0.6.0 with TRITON_F32_DEFAULT=ieee (RTX A4000 sm_86; only hardcoded SOLVE_TRIL_DOT_PRECISION='tf32' remains in chunk_fwd.py) vs JAX Precision.HIGHEST FP32",
+      "bundle_sha256": "36e8a43023c9feadc9ce1efd2972b325f10c9c7af728d7da4305b97ebf7bd9a6",
+      "mantissa_bits": "23 (wy/bwd/o) + 10 (chunk_fwd solve_tril)",
+      "logit_max_abs_err": 0.0009864,
+      "loss_abs_err": 1.34e-05,
+      "grad_max_rel_err": 0.0020358,
+      "step10_loss_abs_err": 5.5e-05
+    },
+    {
+      "rung": 3,
+      "comparison": "Live CUDA fla==0.6.0 default env (TRITON_F32_DEFAULT=tf32, RTX 3090 sm_86) vs Live Cloud TPU v5e JAX Precision.HIGHEST FP32",
+      "bundle_sha256": "93457774408bb4abc42b69bf25da338e7bac84f2ee53c9f7daaeae32906df74e",
+      "gcs_bundle_uri": "gs://nanolm-lab-eu-0478806098/runs/r0-tpu-parity-v3/code/fla_cuda_parity_bundle.npz",
+      "mantissa_bits": 10,
+      "logit_max_abs_err": 0.0071546,
+      "loss_abs_err": 3.91e-05,
+      "grad_max_rel_err": 0.0088436,
+      "step10_loss_abs_err": 0.000431
+    },
+    {
+      "rung": 4,
+      "comparison": "Production Mixed-Precision BF16: Live CUDA fla==0.6.0 Tensor Core BF16 vs Live Cloud TPU v5e MXU BF16 (P3 Gate)",
+      "bundle_sha256": "93457774408bb4abc42b69bf25da338e7bac84f2ee53c9f7daaeae32906df74e",
+      "mantissa_bits": 7,
+      "logit_max_abs_err": 0.0625,
+      "loss_abs_err": 0.000619,
+      "step10_loss_abs_err": 0.000453,
+      "p3_pass": true
+    }
+  ]
+}
