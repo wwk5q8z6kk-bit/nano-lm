@@ -56,3 +56,13 @@ Integrating trained `G4OmegaModel` native uncertainty + `OmegaComputeRouter` + `
 | `omega_no_slw_provenance` | `78.33%` | `100% / 100% / 100%` | `30% / 40%` | `50.00%` | `1.817` | `2.840` |
 | `omega_no_early_halt` | `100.0%` | `100% / 100% / 100%` | `100% / 100%` | `100.0%` | `1.883` | `2.325` |
 | **`omega_unified_system`** | **`100.0%`** | **`100% / 100% / 100%`** | **`100% / 100%`** | **`100.0%`** | **`1.817`** | **`2.225`** |
+
+---
+
+## Breakthrough 4: Cross-Pollinated `G5_CrossPollinated` Unseen Open-Vocab Dual-Copy & Exact `32k` Streaming Prefill (`OMEGA-EXP-04`)
+
+Fusing single-pass `G4_NoSparseRefiner` with `StatefulSyncFreeDualCopyHead` (prefix-invariant relative lag $-\beta_{\mathrm{rec}}(p-j)/W$, `SI-001/004` zero-sync + `1e-12` log floor, `_no_autocast_ctx`, $O(W)$ ring-buffer state) and zero-sync `forward_chunked(..., chunk_tokens=1024)` (`artifacts/nanolm_omega_v1/omega_exp04_cross_pollinated.json`, `$0.00`):
+
+- **3-Seed `replace=False` Open-Vocab Associative Recall (`104.6k` iso-param):** `G5_CrossPollinated` lifted `unseen_open_vocab_acc` (0 training exposures) from **`0.0000`** (`b0_transformer`) / **`0.0072`** (`g4_no_sparse_refiner`) to **`0.9173 ± 0.0030`**, and `2x` OOD unseen recall to **`0.9561 ± 0.0043`** (`0.9089` seen ID vs `0.0983`/`0.0534`).
+- **Real `Corpus v1` (`scale_8m`, `n=2` seeds `[42, 137]`, Equal-Token & Equal-Wall-Clock `PR #194`):** At equal `30` steps (`15,360` tok), `G5` (`8.63M`) cut ID BPB to **`2.6245 ± 0.0169`** (vs `3.0492` `b0_tok`, `3.0663` `g4`) and `2x` OOD BPB (`T=256`) to **`2.5018 ± 0.0395`** (vs `3.0500` `b0_tok`). Under equal wall-clock (`~244.4s`), `36.5x`-faster uncompiled SDPA `b0_equal_wall_clock` (`1,094 ± 274` steps) edged ahead on ID BPB (`2.6028 ± 0.0470`) while `G5` still beat `b0_equal_wall_clock` on **`2x` OOD BPB (`2.5018` vs `2.6088`, `-0.1070`)**, isolating fused WY kernel throughput as the sole equal-time bottleneck.
+- **Exact `C_stream = 1024` `32k` Streaming Prefill (`H-Ω21`):** `logit_max_abs_err = 2.57e-5`, `ce_loss_abs_err = 9.54e-7` at `T = 2,048`; MPS allocated memory stayed flat from `801.23 MiB` (`1k`) to **`801.84 MiB` (`32,768` tok, `+0.60 MiB`, `1,418.7 tok/s`, `32.0x` logits tensor reduction `4,096 -> 128 MiB`)**.

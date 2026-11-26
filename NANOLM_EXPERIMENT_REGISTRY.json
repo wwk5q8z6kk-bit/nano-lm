@@ -14,7 +14,9 @@
     "artifacts/nanolm_discovery_v1/lineage_registry.json": "442aa811c34ee037c3784ef3fb27fade09b69c3f0d040e01936ddf725a5deeab",
     "artifacts/nanolm_omega_v1/checkpoint_manifest.json": "2b0bff99b1014c30728a252eccc9d1052fbf83cb8f0aed9f4d7e940c6a5ffaa9",
     "artifacts/nanolm_omega_v1/omega_kaggle_cuda_results.json": "d3259761b1bc03133f34f1d2db0babe148e6ac8f5c9839e8abb32d6322c48458",
-    "artifacts/nanolm_omega_v1/omega_local_results.json": "bc458993a436da46c6ae55100624bae5bd387ff7c6e187c1d749677eac458253"
+    "artifacts/nanolm_omega_v1/omega_local_results.json": "bc458993a436da46c6ae55100624bae5bd387ff7c6e187c1d749677eac458253",
+    "artifacts/nanolm_omega_v1/cross_agent_coordination_v2.json": "8e6cc9db1b18ac868e06c7ef3d3225f8765888ecda81aea742ebd551d82ec331",
+    "artifacts/nanolm_omega_v1/omega_exp04_cross_pollinated.json": "731ac33369d98df3899a6674fe500687f6b2da04b8393a2d28ddbafca4296222"
   },
   "preserved_checkpoints_gitignored": [
     {
@@ -193,6 +195,32 @@
         "omega_unified_abstention_conflict_acc": 1.0,
         "omega_unified_calls": 1.8167,
         "omega_unified_cost_per_win": 2.225
+      }
+    },
+    {
+      "id": "OMEGA-EXP-04",
+      "script": "scripts/run_omega_exp04_cross_pollinated.py",
+      "backend": "Apple M3 Max (CPU 4A 104.6k x 3 seeds + MPS bfloat16 4B 8.63M x 2 seeds Equal-Token & Equal-Wall-Clock + MPS 4C C_stream=1024 32k)",
+      "artifact": "artifacts/nanolm_omega_v1/omega_exp04_cross_pollinated.json",
+      "verdict": "CONFIRMED_UNSEEN_OPEN_VOCAB_AND_32K_STREAMING_PARITY_PLUS_EQUAL_WALL_CLOCK_KERNEL_GAP",
+      "summary": {
+        "exp4a_b0_unseen": 0.0,
+        "exp4a_g4_unseen": 0.0072,
+        "exp4a_g5_seen": 0.9089,
+        "exp4a_g5_unseen": 0.9173,
+        "exp4a_g5_unseen_2x_ood": 0.9561,
+        "exp4b_b0_equal_token_id_bpb": 3.0492,
+        "exp4b_b0_equal_token_ood2x_bpb": 3.05,
+        "exp4b_g4_equal_token_id_bpb": 3.0663,
+        "exp4b_g5_equal_token_id_bpb": 2.6245,
+        "exp4b_g5_equal_token_ood2x_bpb": 2.5018,
+        "exp4b_b0_equal_wall_clock_id_bpb": 2.6028,
+        "exp4b_b0_equal_wall_clock_ood2x_bpb": 2.6088,
+        "exp4c_t2048_logit_mae": 2.574920654296875e-05,
+        "exp4c_t2048_ce_loss_err": 9.5367431640625e-07,
+        "exp4c_32k_alloc_mib": 801.84,
+        "exp4c_32k_tok_per_s": 1418.69,
+        "exp4c_32k_logits_tensor_reduction_x": 32.0
       }
     }
   ]

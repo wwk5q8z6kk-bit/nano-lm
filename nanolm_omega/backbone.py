@@ -34,6 +34,11 @@ from nanolm_discovery.operators import (
     scam_causal_topk_attention,
     scam_step_attention,
 )
+from nanolm_omega.cross_pollinated import (
+    StatefulSyncFreeDualCopyHead,
+    compute_dual_copy_param_count,
+    compute_dual_copy_state_bytes_bf16,
+)
 
 
 def _smooth_anticirc_cosine(
@@ -61,6 +66,7 @@ class OmegaVariant(str, Enum):
     G4_OMEGA = "g4_omega"
     G4_NO_VRES = "g4_no_vres"
     G4_NO_SPARSE_REFINER = "g4_no_sparse_refiner"
+    G5_CROSS_POLLINATED = "g5_cross_pollinated"
 
 
 @dataclass(frozen=True, slots=True)
@@ -83,6 +89,9 @@ class OmegaBackboneConfig:
     tie_embeddings: bool = True
     use_gated_vres: bool = True
     use_latent_refiner: bool = True
+    use_dual_copy_head: bool = False
+    copy_dim: int = 32
+    copy_window: int = 256
     target_routed_frac: float = 0.25
     anticirc_weight: float = 0.02
 
@@ -159,6 +168,9 @@ def compute_omega_census(cfg: OmegaBackboneConfig, *, enforce_strict_4b: bool = 
             refiner_params = 5 * d + 1 + 2 * d * d + 3 * d * cfg.refiner_ffn
         else:
             refiner_params = 0
+        if cfg.use_dual_copy_head:
+            op_total += compute_dual_copy_param_count(d, cfg.copy_dim)
+            state_32k += compute_dual_copy_state_bytes_bf16(cfg.copy_dim, cfg.copy_window)
 
     norms = (2 * cfg.n_layers + 1) * d
     deployed = emb + unemb + op_total + syn_total + refiner_params + norms
@@ -177,7 +189,8 @@ def compute_omega_census(cfg: OmegaBackboneConfig, *, enforce_strict_4b: bool = 
     else:
         h_met = max(1, h // 2)
         d_scam = max(2, d // 4)
-        ctx_flops = 2 * cfg.n_layers * (20 * d + 4 * h_met * hd * hd + 2 * d_scam * max(1, cfg.scam_slots))
+        copy_ctx_flops = (4 * cfg.copy_dim * min(4096, cfg.copy_window)) if cfg.use_dual_copy_head else 0
+        ctx_flops = 2 * cfg.n_layers * (20 * d + 4 * h_met * hd * hd + 2 * d_scam * max(1, cfg.scam_slots)) + copy_ctx_flops
 
     return OmegaCensus(
         embedding_parameters=emb,
@@ -695,6 +708,12 @@ class G4OmegaModel(nn.Module):
             self.score_norm = None
             self.score_proj = None
             self.refiner = None
+        if cfg.use_dual_copy_head:
+            self.copy_head: StatefulSyncFreeDualCopyHead | None = StatefulSyncFreeDualCopyHead(
+                cfg.d_model, copy_dim=cfg.copy_dim, copy_window=cfg.copy_window
+            )
+        else:
+            self.copy_head = None
         self._init_weights()
 
     def _init_weights(self) -> None:
@@ -731,6 +750,9 @@ class G4OmegaModel(nn.Module):
             with torch.no_grad():
                 self.refiner.o_proj.weight.zero_()
                 self.refiner.dn_proj.weight.zero_()
+        if self.copy_head is not None:
+            with torch.no_grad():
+                self.copy_head.gate.bias.fill_(-1.5)
 
     def deployed_parameter_count(self) -> int:
         return sum(p.numel() for p in self.parameters())
@@ -773,7 +795,16 @@ class G4OmegaModel(nn.Module):
 
         output_weight = self.tok_emb.weight if self.output_projection is None else self.output_projection.weight
 
-        logits = F.linear(self.norm_f(hidden), output_weight)
+        vocab_logits = F.linear(self.norm_f(hidden), output_weight)
+        if self.copy_head is not None:
+            copy_st_in = states[-1].get("copy_head") if (states is not None and len(states) > 0) else None
+            logits, _, copy_st_out = self.copy_head.forward_logprobs(
+                hidden, input_ids, vocab_logits, state=copy_st_in, return_state=return_states
+            )
+            if next_states is not None and len(next_states) > 0 and copy_st_out is not None:
+                next_states[-1]["copy_head"] = copy_st_out
+        else:
+            logits = vocab_logits
         loss = ce_loss = None
         if targets is not None:
             ce_per_tok = F.cross_entropy(
@@ -799,6 +830,84 @@ class G4OmegaModel(nn.Module):
             mean_uncertainty=tok_unc.mean(),
             token_uncertainty=tok_unc,
             states=next_states,
+        )
+
+    def forward_chunked(
+        self,
+        input_ids: Tensor,
+        targets: Tensor | None = None,
+        *,
+        chunk_tokens: int = 1024,
+        states: list[dict[str, Any]] | None = None,
+        return_states: bool = False,
+        keep_logits: bool = True,
+    ) -> ModelOutput:
+        """Zero-sync `C_stream`-bounded streaming prefill & loss evaluation (`O(B * C_stream * V)` memory).
+
+        For single-pass models (`use_latent_refiner=False`, including `G4_NO_SPARSE_REFINER` and
+        `G5_CROSS_POLLINATED`), yields logits & cross-entropy loss identical (`< 1e-5`) to
+        monolithic `forward(input_ids)` while never materializing full `[B, T, V]` tensors when
+        `keep_logits=False`.
+        """
+        if chunk_tokens <= 0:
+            raise ValueError(f"chunk_tokens must be >= 1, got {chunk_tokens}")
+        t_total = int(input_ids.shape[1])
+        cur_states = states
+        logit_chunks: list[Tensor] = []
+        unc_chunks: list[Tensor] = []
+        loss_numer = input_ids.new_zeros((), dtype=torch.float32)
+        valid_count = input_ids.new_zeros((), dtype=torch.float32)
+        last_logits: Tensor | None = None
+
+        for start in range(0, t_total, chunk_tokens):
+            end = min(t_total, start + chunk_tokens)
+            x_c = input_ids[:, start:end]
+            y_c = targets[:, start:end] if targets is not None else None
+            need_state = return_states or (end < t_total)
+            out_c = self.forward(x_c, targets=None, states=cur_states, return_states=need_state)
+            cur_states = out_c.states
+            if out_c.token_uncertainty is not None:
+                unc_chunks.append(out_c.token_uncertainty)
+            if y_c is not None:
+                ce_c = F.cross_entropy(
+                    out_c.logits.float().reshape(-1, self.cfg.vocab_size),
+                    y_c.reshape(-1),
+                    ignore_index=-1,
+                    reduction="none",
+                )
+                valid_c = y_c.reshape(-1) >= 0
+                loss_numer = loss_numer + torch.where(valid_c, ce_c, ce_c.new_zeros(())).sum()
+                valid_count = valid_count + valid_c.float().sum()
+            if keep_logits:
+                logit_chunks.append(out_c.logits)
+            else:
+                last_logits = out_c.logits[:, -1:, :]
+
+        logits_out = (
+            torch.cat(logit_chunks, dim=1)
+            if keep_logits
+            else (
+                last_logits
+                if last_logits is not None
+                else input_ids.new_zeros((input_ids.shape[0], 0, self.cfg.vocab_size), dtype=torch.float32)
+            )
+        )
+        tok_unc_out = torch.cat(unc_chunks, dim=1) if unc_chunks else None
+        mean_unc_out = tok_unc_out.mean() if tok_unc_out is not None else None
+        ce_loss_out: Tensor | None = None
+        if targets is not None:
+            ce_loss_out = torch.where(
+                valid_count > 0.0,
+                loss_numer / valid_count.clamp_min(1.0),
+                logits_out.float().sum() * 0.0,
+            )
+        return ModelOutput(
+            logits=logits_out,
+            loss=ce_loss_out,
+            ce_loss=ce_loss_out,
+            mean_uncertainty=mean_unc_out,
+            token_uncertainty=tok_unc_out,
+            states=cur_states if return_states else None,
         )
 
     def forward_step(self, token_id: Tensor, states: list[dict[str, Any]] | None = None) -> ModelOutput:
@@ -842,13 +951,16 @@ def make_omega_suite(tier: str, *, vocab_size: int | None = None) -> dict[OmegaV
     align = 2 if tier == "mech" else (64 if tier == "flagship_4b" else 16)
     ref_ffn = max(16, ((ref_b0.d_model // 3) // align) * align) if tier != "mech" else 32
     suite: dict[OmegaVariant, OmegaBackboneConfig] = {}
+    copy_d = 16 if tier == "mech" else 32
+    copy_w = 128 if tier == "mech" else 256
     specs = (
-        (OmegaVariant.X8_DUAL_UNEMBED_ATRD, True, True),
-        (OmegaVariant.G4_OMEGA, True, True),
-        (OmegaVariant.G4_NO_VRES, False, True),
-        (OmegaVariant.G4_NO_SPARSE_REFINER, True, False),
+        (OmegaVariant.X8_DUAL_UNEMBED_ATRD, True, True, False),
+        (OmegaVariant.G4_OMEGA, True, True, False),
+        (OmegaVariant.G4_NO_VRES, False, True, False),
+        (OmegaVariant.G4_NO_SPARSE_REFINER, True, False, False),
+        (OmegaVariant.G5_CROSS_POLLINATED, True, False, True),
     )
-    for var, use_vr, use_ref in specs:
+    for var, use_vr, use_ref, use_copy in specs:
         base = OmegaBackboneConfig(
             name=f"{var.value}_{tier}",
             variant=var,
@@ -864,6 +976,9 @@ def make_omega_suite(tier: str, *, vocab_size: int | None = None) -> dict[OmegaV
             scam_slots=ref_b0.scam_slots,
             use_gated_vres=use_vr,
             use_latent_refiner=use_ref,
+            use_dual_copy_head=use_copy,
+            copy_dim=copy_d,
+            copy_window=copy_w,
         )
         suite[var] = _solve_omega_ffn(base, target, align=align)
     return suite

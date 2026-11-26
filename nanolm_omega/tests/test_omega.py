@@ -74,7 +74,15 @@ def test_omega_strict_4b_budget_and_honest_unembed_flop_accounting():
         compute_omega_census(too_big, enforce_strict_4b=True)
 
 
-@pytest.mark.parametrize("var", [OmegaVariant.G4_OMEGA, OmegaVariant.G4_NO_VRES, OmegaVariant.G4_NO_SPARSE_REFINER])
+@pytest.mark.parametrize(
+    "var",
+    [
+        OmegaVariant.G4_OMEGA,
+        OmegaVariant.G4_NO_VRES,
+        OmegaVariant.G4_NO_SPARSE_REFINER,
+        OmegaVariant.G5_CROSS_POLLINATED,
+    ],
+)
 def test_g4_omega_parallel_recurrent_duality(var: OmegaVariant):
     torch.manual_seed(17)
     cfg = make_omega_suite("mech")[var]
@@ -346,3 +354,92 @@ def test_untied_vocabulary_projection_matches_census(variant, monkeypatch):
     assert len(projections) == compute_omega_census(cfg).unembed_passes
     assert all(weight is model.output_projection.weight for weight in projections)
     assert model.output_projection.weight.grad.abs().sum() > 0
+
+
+@pytest.mark.parametrize("var", [OmegaVariant.G4_NO_SPARSE_REFINER, OmegaVariant.G5_CROSS_POLLINATED])
+def test_g4_g5_streaming_chunked_prefill_and_compact_copy_storage(var: OmegaVariant):
+    torch.manual_seed(77)
+    cfg = make_omega_suite("mech")[var]
+    model = build_omega_model(cfg).eval()
+    assert isinstance(model, G4OmegaModel)
+    x = torch.randint(0, cfg.vocab_size, (2, 73))
+    y = torch.randint(0, cfg.vocab_size, (2, 73))
+    y[:, ::5] = -1
+
+    with torch.no_grad():
+        full_out = model(x, targets=y, return_states=True)
+        chunk_17 = model.forward_chunked(x, targets=y, chunk_tokens=17, return_states=True, keep_logits=True)
+        chunk_mem = model.forward_chunked(x, targets=y, chunk_tokens=17, return_states=True, keep_logits=False)
+        short_out = model(x[:, :31])
+
+    assert (full_out.logits - chunk_17.logits).abs().max().item() < 1e-5
+    assert abs(float(full_out.loss.item()) - float(chunk_17.loss.item())) < 1e-5
+    assert abs(float(full_out.loss.item()) - float(chunk_mem.loss.item())) < 1e-5
+    assert chunk_mem.logits.shape == (2, 1, cfg.vocab_size)
+    assert (full_out.logits[:, :31] - short_out.logits).abs().max().item() < 1e-5
+
+    if var == OmegaVariant.G5_CROSS_POLLINATED:
+        cp_state = chunk_17.states[-1]["copy_head"]
+        for k_name in ("ids", "kc0", "kc1", "qc1_last"):
+            t_buf = cp_state[k_name]
+            assert t_buf.untyped_storage().nbytes() == t_buf.numel() * t_buf.element_size()
+
+
+def test_g5_cross_pollinated_unseen_open_vocab_copy_dominates_pure_generative():
+    from nanolm_omega.cross_pollinated import sample_decontaminated_open_vocab_kv_batch
+
+    torch.manual_seed(91)
+    suite = make_omega_suite("mech", vocab_size=96)
+    m_g4 = build_omega_model(suite[OmegaVariant.G4_NO_SPARSE_REFINER]).train()
+    m_g5 = build_omega_model(suite[OmegaVariant.G5_CROSS_POLLINATED]).train()
+
+    opt_g4 = torch.optim.AdamW(m_g4.parameters(), lr=4e-3)
+    opt_g5 = torch.optim.AdamW(m_g5.parameters(), lr=4e-3)
+    gen_train = torch.Generator().manual_seed(1234)
+
+    for _ in range(70):
+        xb, yb = sample_decontaminated_open_vocab_kv_batch(
+            16, 6, 4, vocab_size=96, seen_val_hi=64, unseen_mode=False, device=torch.device("cpu"), generator=gen_train
+        )
+        for m, opt in ((m_g4, opt_g4), (m_g5, opt_g5)):
+            opt.zero_grad(set_to_none=True)
+            out = m(xb, targets=yb)
+            out.loss.backward()
+            torch.nn.utils.clip_grad_norm_(m.parameters(), 1.0)
+            opt.step()
+
+    m_g4.eval()
+    m_g5.eval()
+    gen_eval = torch.Generator().manual_seed(9999)
+    x_unseen, y_unseen = sample_decontaminated_open_vocab_kv_batch(
+        64, 6, 4, vocab_size=96, seen_val_hi=64, unseen_mode=True, device=torch.device("cpu"), generator=gen_eval
+    )
+    valid = y_unseen >= 0
+    with torch.no_grad():
+        pred_g4 = m_g4(x_unseen).logits.argmax(dim=-1)
+        pred_g5 = m_g5(x_unseen).logits.argmax(dim=-1)
+    acc_g4 = float((pred_g4[valid] == y_unseen[valid]).float().mean().item())
+    acc_g5 = float((pred_g5[valid] == y_unseen[valid]).float().mean().item())
+    assert acc_g4 < 0.08, f"Pure generative head unexpectedly emitted unseen IDs: {acc_g4:.4f}"
+    assert acc_g5 > 0.85, f"G5 StatefulSyncFreeDualCopyHead failed unseen open-vocab copy: {acc_g5:.4f}"
+
+
+def test_identifier_and_skeleton_leak_audit():
+    from nanolm_omega.cross_pollinated import audit_identifier_and_skeleton_leakage
+
+    train_docs = [
+        "def compute_ordinary_norm(values): return sum(values) / max(1, len(values))",
+        "Another prose sentence about numbers 12 and 34 inside general training corpora.",
+    ]
+    leaked_eval = [
+        "Recall `compute_ordinary_norm` or call compute_ordinary_norm on 99 and 100 inside general training corpora."
+    ]
+    clean_eval = [
+        "Totally disjoint `distinctive_eval_symbol` evaluates topological holonomy with zero overlap."
+    ]
+    r_leak = audit_identifier_and_skeleton_leakage(train_docs, leaked_eval)
+    r_clean = audit_identifier_and_skeleton_leakage(train_docs, clean_eval)
+    assert r_leak["eval_items_with_identifier_leak"] == 1
+    assert r_leak["mean_skeleton_overlap"] > 0.0
+    assert r_clean["eval_items_with_identifier_leak"] == 0
+    assert r_clean["mean_skeleton_overlap"] == 0.0

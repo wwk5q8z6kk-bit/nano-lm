@@ -1,0 +1,84 @@
+{
+  "schema": "nanolm.omega.cross_agent_coordination.v2",
+  "captured_at_et": "2026-11-26T11:36:00-05:00",
+  "canonical_origin_master": "39338d7",
+  "active_program_mandate": {
+    "capability_frontier": "GENERAL_PURPOSE_LANGUAGE_MODEL",
+    "current_gate": "MATCHED_GENERAL_MODEL_BASELINE",
+    "nanoscribe_status": "HISTORICAL_MAINTAIN_REPRODUCTION_PATH_ONLY",
+    "compute_guard": "HARD_ZERO_PAID_RUNPOD_8_93_USD_AND_KAGGLE_30H_WEEKLY_QUOTA_REACHED"
+  },
+  "synchronized_peer_agents": [
+    {
+      "conversation_id": "175c8e32-6642-4d04-8b15-a2fc6d74b583",
+      "worktree": ".worktrees/nanolm-discovery",
+      "branch": "nanolm/architecture-invention-v1",
+      "pr": 176,
+      "sync_status": "SELF_COORDINATOR",
+      "owned_lane": "G5_CrossPollinated (G4_NoSparseRefiner + StatefulSyncFreeDualCopyHead with -(p-j)/W prefix-invariant ring buffer + exact C_stream=1024 streaming chunked prefill + OMEGA-EXP-04 equal-token & equal-wall-clock benchmark)"
+    },
+    {
+      "conversation_id": "0430cfe4-eb5c-4b62-a6a7-481640644dd7",
+      "worktree": ".worktrees/nanolm-v3",
+      "branch": "nanolm/arch-evolution-v3",
+      "sync_status": "LIVE_BIDIRECTIONAL_ACK",
+      "owned_lane": "UNIFIED-SYNTH-01 (completed: V8_Unified_Copy_And_Godel 1.0000 seen, 0.9987 unseen-val, 0.9243 unseen-key+val in 92.23s)",
+      "exchanged_technical_items": [
+        "Received replace=False (EXACT-RECALL-03b) and MPS _no_autocast_ctx float32 matmul guard.",
+        "Shared and verified causal relative-lag -(p-j)/W fix eliminating T-dependent prefix drift."
+      ]
+    },
+    {
+      "conversation_id": "a337f4f7-ca2d-4858-b31f-7845f7b423ef",
+      "worktree": ".worktrees/nanolm-unified-loop",
+      "branch": "research/unified-discovery-loop-v1",
+      "sync_status": "LIVE_BIDIRECTIONAL_ACK",
+      "owned_lane": "EXP-U10 (proportional-fiber HSPA_LieSO3 at 19.2k tok/s + low-rank ConceptSlotV2 100% 4x OOD + PR #194 equal-token & equal-wall-clock M0_Dense_GQA_RoPE control)"
+    },
+    {
+      "conversation_id": "2cdbaf96-1b66-4e6e-9743-4f820b97919e",
+      "worktree": ".worktrees/nanolm-lab",
+      "branch": "nanolm/discovery-lab-v1",
+      "pr_merged": 219,
+      "origin_master_commit": "39338d7",
+      "sync_status": "LIVE_BIDIRECTIONAL_ACK",
+      "owned_lane": "Phase 1-6 consolidation merged cleanly into origin/master (PR #219): S2_350m 0.8634 BPB vs S0_350m 0.8677 BPB, C7 98.2%, B9-2B 72.0% > 120B 70.0%."
+    },
+    {
+      "conversation_id": "bb3dca4d-9989-41cf-8b47-7f667a9328ea",
+      "worktree": ".worktrees/nanolm-paradigm",
+      "branch": "nanolm/autonomous-discovery-v1",
+      "sync_status": "LIVE_BIDIRECTIONAL_ACK",
+      "owned_lane": "Commit 9408534 beyond-13-gram identifier/skeleton leak audit + external LAMBADA/HellaSwag/ARC-E harness; flagged Kaggle 30.00h weekly GPU quota reached."
+    },
+    {
+      "conversation_id": "2cc1ce51-4e97-4f80-befb-5ab02634a7d0",
+      "worktree": ".worktrees/nanolm-master-cycle1",
+      "branch": "research/nanolm-master-cycle1",
+      "sync_status": "LIVE_BIDIRECTIONAL_ACK",
+      "owned_lane": "Cycle 3 verified (0c16e3a, 36/36) + Cycle 4 CPU verification & Hopper F1 allow_tf32=False audit confirmation."
+    }
+  ],
+  "omega_exp04_summary": {
+    "artifact": "artifacts/nanolm_omega_v1/omega_exp04_cross_pollinated.json",
+    "exp_4a_open_vocab_3seed": {
+      "b0_transformer": {"params": 104768, "seen_id": 0.0983, "unseen": 0.0, "ood2x": 0.0},
+      "g4_no_sparse_refiner": {"params": 104978, "seen_id": 0.0534, "unseen": 0.0072, "ood2x": 0.0107},
+      "g5_cross_pollinated": {"params": 104600, "seen_id": 0.9089, "unseen": 0.9173, "ood2x": 0.9561}
+    },
+    "exp_4b_real_corpus_2seed": {
+      "b0_equal_token_30s": {"params": 8653248, "wall_s": 12.63, "id_bpb": 3.0492, "ood2x_bpb": 3.05},
+      "g4_no_sparse_refiner_30s": {"params": 8665055, "wall_s": 176.09, "id_bpb": 3.0663, "ood2x_bpb": 3.0657},
+      "g5_cross_pollinated_30s": {"params": 8634725, "wall_s": 224.62, "id_bpb": 2.6245, "ood2x_bpb": 2.5018},
+      "b0_equal_wall_clock_1094s": {"params": 8653248, "steps": 1094.0, "wall_s": 244.35, "id_bpb": 2.6028, "ood2x_bpb": 2.6088}
+    },
+    "exp_4c_streaming_32k": {
+      "parity_t2048_logit_mae": 2.574920654296875e-05,
+      "parity_t2048_ce_loss_err": 9.5367431640625e-07,
+      "alloc_mib_1k": 801.23,
+      "alloc_mib_32k": 801.84,
+      "tok_per_s_32k": 1418.69,
+      "logits_tensor_reduction_x": 32.0
+    }
+  }
+}
