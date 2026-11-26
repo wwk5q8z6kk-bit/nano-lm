@@ -1,0 +1,21 @@
+{
+  "schema": "nanolm.coordination.experiment.v1",
+  "id": "EXP-INV-06A",
+  "status": "COMPLETED",
+  "verdict": "PROMOTED_CROSSOVER",
+  "paid_usd": 0.0,
+  "script": "scripts/kaggle_discovery_horizon_benchmark.py",
+  "backend": "Kaggle 2x NVIDIA Tesla T4 (hassaneljesr/nanolm-discovery-cuda-v1, 1,000 steps x 2 seeds)",
+  "artifact": "artifacts/nanolm_discovery_v1/kaggle_cuda_results.json",
+  "report": "NANOLM_BREAKTHROUGH_REPORT.md",
+  "summary": {
+    "b0_transformer_adamw_bpb": 2.1188,
+    "b0_transformer_adamw_ood2x": 2.1526,
+    "i3_hrwn_adamw_bpb": 2.1654,
+    "g3_hmwr_adamw_bpb": 2.1342,
+    "g3_hmwr_adamw_ood2x": 2.1322,
+    "g3_hmwr_muon_ce_bpb": 2.1457,
+    "g3_hmwr_muon_ce_ood2x": 2.1445
+  },
+  "branch": "nanolm/architecture-invention-v1"
+}

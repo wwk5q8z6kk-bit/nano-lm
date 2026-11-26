@@ -1,0 +1,26 @@
+{
+  "schema": "nanolm.coordination.experiment.v1",
+  "id": "OMEGA-EXP-02",
+  "status": "COMPLETED",
+  "verdict": "BREAKTHROUGH_SUPER_OOD_WITHOUT_SHIELDS",
+  "paid_usd": 0.0,
+  "script": "scripts/run_nanolm_omega_suite.py",
+  "backend": "Apple M3 Max (HardCausalSWEEnv N=4..24, 248,328 params, 3 seeds [0, 1, 2])",
+  "artifact": "artifacts/nanolm_omega_v1/omega_local_results.json",
+  "report": "NANOLM_BREAKTHROUGH_REPORT.md",
+  "summary": {
+    "c0_id": 0.4417,
+    "c0_super_ood": 0.0583,
+    "c4b_sym12_ood": 0.2278,
+    "c4b_sym12_super_ood": 0.0528,
+    "c5_shielded_super_ood": 0.0417,
+    "c5_unshielded_premature_super_ood": 0.0917,
+    "omega_efe_planner_id": 0.8472,
+    "omega_efe_planner_ood": 0.9556,
+    "omega_efe_planner_super_ood": 0.8333,
+    "omega_efe_planner_premature_all": 0.0,
+    "omega_no_efe_risk_ood": 0.7556,
+    "omega_no_graph_prop_super_ood": 0.3583
+  },
+  "branch": "nanolm/architecture-invention-v1"
+}

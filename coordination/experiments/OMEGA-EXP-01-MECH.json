@@ -1,0 +1,23 @@
+{
+  "schema": "nanolm.coordination.experiment.v1",
+  "id": "OMEGA-EXP-01-MECH",
+  "status": "COMPLETED",
+  "verdict": "CONFIRMED_GATED_VRES_AND_ROUTER_PARADOX",
+  "paid_usd": 0.0,
+  "script": "scripts/run_nanolm_omega_suite.py",
+  "backend": "Apple M3 Max (115k, 3 seeds [101, 202, 303] x 360 steps)",
+  "artifact": "artifacts/nanolm_omega_v1/omega_local_results.json",
+  "report": "NANOLM_BREAKTHROUGH_REPORT.md",
+  "summary": {
+    "x8_dual_unembed_ood_comp": 0.6559,
+    "x8_dual_unembed_epist_int": 0.8151,
+    "g4_omega_ood_comp": 0.6477,
+    "g4_omega_epist_int": 0.526,
+    "g4_omega_epist_entropy": 0.7852,
+    "g4_uncalibrated_epist_int": 0.3854,
+    "g4_no_vres_ood_comp": 0.5704,
+    "g4_no_sparse_refiner_ood_comp": 0.6431,
+    "g4_no_sparse_refiner_epist_int": 0.6185
+  },
+  "branch": "nanolm/architecture-invention-v1"
+}

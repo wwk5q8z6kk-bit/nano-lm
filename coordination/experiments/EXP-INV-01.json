@@ -1,0 +1,20 @@
+{
+  "schema": "nanolm.coordination.experiment.v1",
+  "id": "EXP-INV-01",
+  "status": "COMPLETED",
+  "verdict": "CONFIRMED",
+  "paid_usd": 0.0,
+  "script": "scripts/run_autonomous_discovery_cycles.py",
+  "backend": "Apple M3 Max (mps/cpu, 115k, 3 seeds x 360 steps)",
+  "artifact": "artifacts/nanolm_discovery_v1/discovery_results.json",
+  "report": "NANOLM_BREAKTHROUGH_REPORT.md",
+  "summary": {
+    "b0_transformer_ood_comp": 0.1818,
+    "i3_hrwn_ood_comp": 0.1756,
+    "g2_no_precision_ood_comp": 0.7513,
+    "g3_hmwr_ood_comp": 0.7393,
+    "g3_hmwr_epist_auroc_internal": 0.686,
+    "g3_hmwr_epist_auroc_entropy": 0.875
+  },
+  "branch": "nanolm/architecture-invention-v1"
+}
