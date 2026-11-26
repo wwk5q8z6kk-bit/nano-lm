@@ -1,31 +1,42 @@
 # Agent Contract (multi-agent / multi-worktree)
 
-Goal: every agent can work autonomously in any worktree without colliding. Rules are mechanical, enforced by `.githooks/` and CI, not by memory.
+Goal: every agent works autonomously across any worktree without colliding, overwriting peer edits, or drifting off `origin/master`. Rules are mechanical, enforced by `.githooks/`, `scripts/agent_coord.py`, and CI.
 
 ## Session start (every agent, every worktree)
+
 ```bash
 bash scripts/agent_bootstrap.sh <agent-name> "<task>" [paths-you-will-edit...]
 ```
-This sets `core.hooksPath=.githooks`, fetches, reports drift, rebases a clean branch onto `origin/master`, runs `agent_lease.py gc`, and claims a lease. Exit 2 = another live agent holds your paths: pick different work, do not force.
+
+This installs shared hooks into `<git-common-dir>/hooks`, fetches `origin/master`, reaps expired leases, rebases a clean branch onto `origin/master` (stopping cleanly if conflicts exist), claims a path lease, announces the session, and prints the coordination board. Exit `2` means another live agent holds those paths: pick disjoint work, do not force.
 
 ## Pre-authorized (no owner prompt)
-- Create branches/worktrees, commit, push own branch, open PRs.
-- Rebase/merge `origin/master` into own branch (only when working tree is clean).
-- Run tests, benchmarks, Kaggle/free-tier jobs, routine RunPod within the active experiment budget.
-- Take/heartbeat/release leases; reap *stale leases* (TTL 6h).
-- Resolve conflicts on code in own branch; on conflict in shared files use the per-agent files below, never overwrite a peer's entries.
+
+- Allocate a new worktree with the sanctioned allocator (`~/.claude/bin/worktree-new` — use `--long-lived` on `/Volumes/Express1M2/Worktrees/nano-lm` whenever internal `/` free space is `< 35 GB`), create feature branches, commit, push own branch, and open PRs.
+- Keep build artifacts out of `/tmp` and internal disk by using `~/.claude/bin/build-scratch nano-lm`.
+- Rebase or merge `origin/master` into own branch when the working tree is clean.
+- Run tests, benchmarks, Kaggle/free-tier jobs, and routine RunPod within the active experiment budget.
+- Claim/heartbeat/release own leases; run `agent_coord.py gc` to reap expired/dead-PID leases.
+- Verify PR readiness with `~/.claude/bin/pr-ready <PR>` and retire *only* own proven-complete, clean, merged worktree via `~/.claude/bin/worktree-retire --check` then `--apply`.
 
 ## Needs owner / experiment-scoped authorization
-- Spend beyond the active experiment budget (\$180 envelope, \$200 cap, \$20 reserve).
-- Freeze tags, evidence-protected paths (`AGENT_ALLOW_EVIDENCE=1` only in an authorized run), PHI/private data.
-- Deleting another agent's worktree, unlocking a locked worktree, discarding its dirty files, force-push.
 
-## Shared state rules
-1. Never mutate sibling worktrees (read-only). Cross-agent info goes through git (PRs/master) or leases.
-2. One writer per shared file. New registry/ledger entries go in `coordination/entries/<agent>-<utc>.json` (append-only, one file each); `scripts/worktree_audit.py` flags any branch that edits a shared single file.
-3. `origin/master` is truth. Never push from stale local `master`; pre-push rejects branches >100 commits behind.
-4. Heartbeat leases during long runs (`agent_lease.py heartbeat`); release at end. Stale leases are reaped, so a crashed agent never blocks others.
-5. Compute: acquire a lease on path `compute/runpod` (or `compute/gpu0`) before launching pods; release on teardown. Conflicting claim = wait or use free backend.
+- Spend beyond the active experiment budget (\$180 envelope, \$200 cap, \$20 RunPod owner reserve floor).
+- Freeze tags (`paper-alpha*`, `*freeze*`), evidence-protected paths (`AGENT_ALLOW_EVIDENCE=1` only inside an authorized run), and PHI/private data.
+- Unlocking or removing dirty, unmerged, or peer-locked worktrees, or force-pushing.
 
-## Cleanup policy
-`python3 scripts/worktree_audit.py` is read-only. Candidates for reaping = locked/idle >24h or dirty/idle >24h; an agent may *report* them, only the owner removes dirty ones. Clean, merged, idle >72h worktrees may be removed by any agent via `git worktree remove` (never `--force`).
+## Shared state & compute mutex rules
+
+1. **Never mutate sibling worktrees.** Peer worktrees are strictly read-only. Cross-agent state goes through git PRs or [`scripts/agent_coord.py`](../scripts/agent_coord.py).
+2. **Never edit monolithic shared ledgers.** Root `NANOLM_CROSS_WORKTREE_LEDGER.json` and `NANOLM_EXPERIMENT_REGISTRY.json` are blocked by `pre-commit` and CI. Record one file per entry instead:
+   - Experiments: `python3 scripts/agent_coord.py record-experiment --id <ID> --status <STATUS> --verdict <VERDICT> --paid-usd 0` (writes `coordination/experiments/<ID>.json`)
+   - Findings/status: `python3 scripts/agent_coord.py record-finding --id <ID> --focus "<focus>" --finding "<text>"` (writes `coordination/findings/<ID>.json`)
+   - Live session status: `python3 scripts/agent_coord.py announce --agent <NAME> --status ACTIVE --scope "<scope>"`
+   - Combined view: `python3 scripts/agent_coord.py board`
+3. **Serialize shared hardware & enforce RunPod reserve.** Wrap MPS, CPU benchmarks, or pod launches in the kernel `flock` mutex:
+   ```bash
+   python3 scripts/agent_coord.py lock-run --resource mps --agent <NAME> --reason "<exp>" -- <cmd...>
+   ```
+   `--resource runpod` automatically refuses when `<git-common-dir>/agent-coord/budget.json` is at or below the \$20.00 owner reserve floor (override `AGENT_ALLOW_PAID_RUNPOD=1` only with owner authorization).
+4. **Stay close to `origin/master`.** `pre-push` blocks direct pushes to `master`/`main`, blocks freeze tags, blocks branches `> 100` commits behind `origin/master`, and blocks branches that fail `git merge-tree --write-tree origin/master HEAD`.
+5. **Audit safely.** Use [`scripts/worktree_audit.py`](../scripts/worktree_audit.py) (`GIT_OPTIONAL_LOCKS=0`, read-only) to inspect drift, stale locks, and merge-tree conflicts across all worktrees.

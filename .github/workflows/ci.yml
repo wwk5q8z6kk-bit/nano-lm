@@ -4,6 +4,7 @@ on:
   push:
     branches: [master, 'docs/**']
   pull_request:
+  merge_group:
 
 jobs:
   canonical-integrity:
@@ -57,3 +58,9 @@ jobs:
 
       - name: Benchmark contracts (Program 0 + agentic instruments)
         run: pytest benchmarks/ -q
+
+      - name: Coordination registry & monolithic-ledger guard
+        run: python3 scripts/agent_coord.py compile-registry --check
+
+      - name: Multi-agent coordination & hook suite
+        run: python3 -m pytest scripts/test_agent_coord.py -q

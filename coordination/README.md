@@ -1,3 +1,8 @@
 # coordination/
 
-`entries/` holds append-only, one-file-per-agent JSON records (`<agent>-<UTC>.json`) that replace in-place edits to `NANOLM_CROSS_WORKTREE_LEDGER.json` / `NANOLM_EXPERIMENT_REGISTRY.json`. Because every entry is a new file, concurrent branches never conflict. See `docs/AGENT_CONTRACT.md`.
+Append-only, one-file-per-entry JSON shards that eliminate cross-worktree merge conflicts:
+
+- `experiments/<ID>.json` — created via `python3 scripts/agent_coord.py record-experiment ...`
+- `findings/<ID>.json` — created via `python3 scripts/agent_coord.py record-finding ...`
+
+Validate and compile with `python3 scripts/agent_coord.py compile-registry --check`. See [`docs/AGENT_CONTRACT.md`](../docs/AGENT_CONTRACT.md).
