@@ -1,0 +1,17 @@
+{
+  "schema": "nanolm.coordination.experiment.v1",
+  "id": "EXP-INV-03-05A",
+  "status": "COMPLETED",
+  "verdict": "CONFIRMED_SCALING_AND_JEP_PENALTY",
+  "paid_usd": 0.0,
+  "script": "scripts/run_autonomous_discovery_cycles.py",
+  "backend": "Apple M3 Max (mps bfloat16, 8.65M / 20.55M / 47.64M x 250 steps)",
+  "artifact": "artifacts/nanolm_discovery_v1/discovery_results.json",
+  "report": "NANOLM_BREAKTHROUGH_REPORT.md",
+  "summary": {
+    "i3_hrwn_muon_jep_250_bpb": 2.4864,
+    "scale_42m_b0_comp_bpb": 2.4668,
+    "scale_42m_i3_comp_bpb": 2.4551
+  },
+  "branch": "nanolm/architecture-invention-v1"
+}

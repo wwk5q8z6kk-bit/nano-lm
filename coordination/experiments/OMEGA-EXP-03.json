@@ -1,0 +1,23 @@
+{
+  "schema": "nanolm.coordination.experiment.v1",
+  "id": "OMEGA-EXP-03",
+  "status": "COMPLETED",
+  "verdict": "CONFIRMED_UNIFIED_SYMBOLIC_NEURAL_SYSTEM",
+  "paid_usd": 0.0,
+  "script": "scripts/run_nanolm_omega_suite.py",
+  "backend": "Apple M3 Max (OMEGA-BENCH-01, 60 unlabelled tasks across 6 pillars)",
+  "artifact": "artifacts/nanolm_omega_v1/omega_local_results.json",
+  "report": "NANOLM_BREAKTHROUGH_REPORT.md",
+  "summary": {
+    "naked_pass1_acc": 0.2333,
+    "legacy_keyword_system_v2_acc": 0.2833,
+    "legacy_cost_per_win": 4.5882,
+    "omega_no_slw_provenance_acc": 0.7833,
+    "omega_no_early_halt_calls": 1.8833,
+    "omega_unified_system_acc": 1.0,
+    "omega_unified_abstention_conflict_acc": 1.0,
+    "omega_unified_calls": 1.8167,
+    "omega_unified_cost_per_win": 2.225
+  },
+  "branch": "nanolm/architecture-invention-v1"
+}

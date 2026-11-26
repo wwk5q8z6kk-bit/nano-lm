@@ -1,0 +1,18 @@
+{
+  "schema": "nanolm.coordination.experiment.v1",
+  "id": "EXP-INV-05B",
+  "status": "COMPLETED",
+  "verdict": "CONFIRMED_STRICT_SUB4B_AND_STATE_REDUCTION",
+  "paid_usd": 0.0,
+  "script": "scripts/run_autonomous_discovery_cycles.py",
+  "backend": "Apple M3 Max (64 GB UMA bfloat16, ~3.88B-3.89B live profiling)",
+  "artifact": "artifacts/nanolm_discovery_v1/discovery_results.json",
+  "report": "NANOLM_BREAKTHROUGH_REPORT.md",
+  "summary": {
+    "b0_transformer_4b_params": 3887254272,
+    "b0_transformer_4b_32k_state_mib": 5632.0,
+    "g3_hmwr_4b_params": 3882612303,
+    "g3_hmwr_4b_32k_state_mib": 83.71
+  },
+  "branch": "nanolm/architecture-invention-v1"
+}

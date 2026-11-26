@@ -1,0 +1,26 @@
+{
+  "schema": "nanolm.coordination.experiment.v1",
+  "id": "OMEGA-EXP-01",
+  "status": "COMPLETED",
+  "verdict": "G4_SINGLE_BEATS_B0_AND_FALSIFIES_PASS2_REFINER",
+  "paid_usd": 0.0,
+  "script": "scripts/kaggle_omega_backbone_experiment.py",
+  "backend": "Kaggle 2x NVIDIA Tesla T4 (hassaneljesr/nanolm-omega-cuda-v1 v4+v5, float32, 20.55M x 1,000 steps x 2 seeds [42, 137])",
+  "artifact": "artifacts/nanolm_omega_v1/omega_kaggle_cuda_results.json",
+  "report": "NANOLM_BREAKTHROUGH_REPORT.md",
+  "summary": {
+    "x8_dual_unembed_atrd_bpb": 2.0797,
+    "x8_dual_unembed_atrd_ood2x": 2.0759,
+    "x8_32k_state_bytes": 50537472,
+    "g4_omega_bpb": 2.1175,
+    "g4_omega_ood2x": 2.1148,
+    "g4_no_vres_bpb": 2.1508,
+    "g4_no_vres_ood2x": 2.148,
+    "g4_no_sparse_refiner_bpb": 2.1112,
+    "g4_no_sparse_refiner_ood2x": 2.1079,
+    "g4_32k_state_bytes": 1802496,
+    "flagship_4b_g4_single_params": 3883581092,
+    "flagship_4b_g4_single_32k_state_bytes": 87773184
+  },
+  "branch": "nanolm/architecture-invention-v1"
+}

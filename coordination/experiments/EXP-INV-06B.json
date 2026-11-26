@@ -1,0 +1,18 @@
+{
+  "schema": "nanolm.coordination.experiment.v1",
+  "id": "EXP-INV-06B",
+  "status": "COMPLETED",
+  "verdict": "CONFIRMED_KV_WALL_AND_CHUNKED_PREFILL_NEED",
+  "paid_usd": 0.0,
+  "script": "scripts/kaggle_discovery_horizon_benchmark.py",
+  "backend": "Kaggle NVIDIA Tesla T4 (222M ctx 512..32k)",
+  "artifact": "artifacts/nanolm_discovery_v1/kaggle_cuda_results.json",
+  "report": "NANOLM_BREAKTHROUGH_REPORT.md",
+  "summary": {
+    "b0_32k_decode_ms_per_tok": 74.42,
+    "g3_32k_decode_ms_per_tok": 77.58,
+    "g3_32k_state_mib": 13.22,
+    "g3_unchunked_32k_peak_vram_mib": 7876.73
+  },
+  "branch": "nanolm/architecture-invention-v1"
+}
