@@ -1,0 +1,610 @@
+{
+  "schema": "nanolm_r0_hopper_v2",
+  "code_sha256": "a3e5f6f0485f1524df4d61b0cf663269276e426be6d25b8f248e61a65b08b0ac",
+  "dtype": "bfloat16",
+  "small_mode": false,
+  "phases": {
+    "env": {
+      "ok": true,
+      "result": {
+        "gpu": "NVIDIA H100 80GB HBM3",
+        "capability": [
+          9,
+          0
+        ],
+        "memory_GiB": 79.2,
+        "sm_count": 132,
+        "torch": "2.9.1+cu128",
+        "cuda": "12.8",
+        "datasheet_peak_TFLOPS_dense_16bit": 989.0,
+        "datasheet_bandwidth_GBps": 3350.0,
+        "cpu_count": 208,
+        "triton": "3.7.1",
+        "tilelang": null,
+        "fla-core": "0.6.0",
+        "flash-linear-attention": "0.6.0",
+        "transformers": "5.24.1"
+      },
+      "seconds": 0.0
+    },
+    "ceilings": {
+      "ok": true,
+      "result": {
+        "measured_gemm_TFLOPS": 817.1,
+        "measured_copy_bandwidth_GBps": 3028.5,
+        "gemm_matrix": 8192
+      },
+      "seconds": 0.3
+    },
+    "correctness": {
+      "ok": true,
+      "result": [
+        {
+          "dtype": "torch.float32",
+          "output_rel_err": 0.001212133327499032,
+          "grad_q_rel_err": 0.0013246992602944374,
+          "grad_k_rel_err": 0.001151827396824956,
+          "grad_v_rel_err": 0.0017230076482519507,
+          "grad_g_rel_err": 0.001454442273825407,
+          "grad_b_rel_err": 0.0019942205399274826
+        },
+        {
+          "dtype": "torch.bfloat16",
+          "output_rel_err": 0.005959979258477688,
+          "grad_q_rel_err": 0.004397689830511808,
+          "grad_k_rel_err": 0.0036273023579269648,
+          "grad_v_rel_err": 0.004830935504287481,
+          "grad_g_rel_err": 0.0032796477898955345,
+          "grad_b_rel_err": 0.003409279277548194
+        }
+      ],
+      "seconds": 110.3
+    },
+    "bench_gdn": {
+      "ok": true,
+      "result": [
+        {
+          "kind": "gdn",
+          "micro_batch": "4x1024",
+          "kd_cached_teacher": false,
+          "params_M": 546.9,
+          "first_step_s_incl_compile": 105.07,
+          "warmup_steps_s": [
+            0.112,
+            0.107,
+            0.107
+          ],
+          "steady_step_s_mean": 0.1084,
+          "steady_step_ms_fwd_bwd_opt_mean_sd": {
+            "forward": [
+              46.7,
+              1.5
+            ],
+            "backward": [
+              54.2,
+              0.0
+            ],
+            "optimizer": [
+              6.3,
+              0.0
+            ],
+            "device_step": [
+              107.2,
+              1.5
+            ]
+          },
+          "tokens_per_s": 37779,
+          "achieved_model_TFLOPS_6N": 124.0,
+          "fraction_of_measured_gemm_ceiling": 0.152,
+          "fraction_of_datasheet_peak": 0.125,
+          "peak_mem_GiB": 18.25,
+          "last_loss": 12.113
+        },
+        {
+          "kind": "gdn",
+          "micro_batch": "8x1024",
+          "kd_cached_teacher": false,
+          "params_M": 546.9,
+          "first_step_s_incl_compile": 2.04,
+          "warmup_steps_s": [
+            0.164,
+            0.16,
+            0.16
+          ],
+          "steady_step_s_mean": 0.1609,
+          "steady_step_ms_fwd_bwd_opt_mean_sd": {
+            "forward": [
+              51.7,
+              0.5
+            ],
+            "backward": [
+              101.5,
+              0.0
+            ],
+            "optimizer": [
+              6.3,
+              0.0
+            ],
+            "device_step": [
+              159.5,
+              0.5
+            ]
+          },
+          "tokens_per_s": 50916,
+          "achieved_model_TFLOPS_6N": 167.1,
+          "fraction_of_measured_gemm_ceiling": 0.204,
+          "fraction_of_datasheet_peak": 0.169,
+          "peak_mem_GiB": 25.2,
+          "last_loss": 12.094
+        },
+        {
+          "kind": "gdn",
+          "micro_batch": "16x1024",
+          "kd_cached_teacher": false,
+          "params_M": 546.9,
+          "first_step_s_incl_compile": 24.38,
+          "warmup_steps_s": [
+            0.291,
+            0.291,
+            0.291
+          ],
+          "steady_step_s_mean": 0.292,
+          "steady_step_ms_fwd_bwd_opt_mean_sd": {
+            "forward": [
+              89.0,
+              0.5
+            ],
+            "backward": [
+              194.1,
+              0.2
+            ],
+            "optimizer": [
+              6.3,
+              0.0
+            ],
+            "device_step": [
+              289.4,
+              0.6
+            ]
+          },
+          "tokens_per_s": 56106,
+          "achieved_model_TFLOPS_6N": 184.1,
+          "fraction_of_measured_gemm_ceiling": 0.225,
+          "fraction_of_datasheet_peak": 0.186,
+          "peak_mem_GiB": 39.16,
+          "last_loss": 12.106
+        },
+        {
+          "kind": "gdn",
+          "micro_batch": "8x2048",
+          "kd_cached_teacher": false,
+          "params_M": 546.9,
+          "first_step_s_incl_compile": 0.45,
+          "warmup_steps_s": [
+            0.291,
+            0.292,
+            0.291
+          ],
+          "steady_step_s_mean": 0.2919,
+          "steady_step_ms_fwd_bwd_opt_mean_sd": {
+            "forward": [
+              89.0,
+              0.4
+            ],
+            "backward": [
+              193.9,
+              0.2
+            ],
+            "optimizer": [
+              6.3,
+              0.0
+            ],
+            "device_step": [
+              289.3,
+              0.4
+            ]
+          },
+          "tokens_per_s": 56133,
+          "achieved_model_TFLOPS_6N": 184.2,
+          "fraction_of_measured_gemm_ceiling": 0.225,
+          "fraction_of_datasheet_peak": 0.186,
+          "peak_mem_GiB": 39.16,
+          "last_loss": 12.094
+        }
+      ],
+      "seconds": 173.5
+    },
+    "bench_attention": {
+      "ok": true,
+      "result": [
+        {
+          "kind": "attn",
+          "micro_batch": "4x1024",
+          "kd_cached_teacher": false,
+          "params_M": 527.0,
+          "first_step_s_incl_compile": 0.1,
+          "warmup_steps_s": [
+            0.07,
+            0.07,
+            0.07
+          ],
+          "steady_step_s_mean": 0.0703,
+          "steady_step_ms_fwd_bwd_opt_mean_sd": {
+            "forward": [
+              19.5,
+              0.1
+            ],
+            "backward": [
+              43.9,
+              0.0
+            ],
+            "optimizer": [
+              6.0,
+              0.0
+            ],
+            "device_step": [
+              69.4,
+              0.1
+            ]
+          },
+          "tokens_per_s": 58244,
+          "achieved_model_TFLOPS_6N": 184.2,
+          "fraction_of_measured_gemm_ceiling": 0.225,
+          "fraction_of_datasheet_peak": 0.186,
+          "peak_mem_GiB": 16.2,
+          "last_loss": 12.099
+        },
+        {
+          "kind": "attn",
+          "micro_batch": "8x1024",
+          "kd_cached_teacher": false,
+          "params_M": 527.0,
+          "first_step_s_incl_compile": 0.14,
+          "warmup_steps_s": [
+            0.127,
+            0.127,
+            0.127
+          ],
+          "steady_step_s_mean": 0.1271,
+          "steady_step_ms_fwd_bwd_opt_mean_sd": {
+            "forward": [
+              36.3,
+              0.1
+            ],
+            "backward": [
+              83.7,
+              0.0
+            ],
+            "optimizer": [
+              6.0,
+              0.0
+            ],
+            "device_step": [
+              126.0,
+              0.1
+            ]
+          },
+          "tokens_per_s": 64464,
+          "achieved_model_TFLOPS_6N": 203.8,
+          "fraction_of_measured_gemm_ceiling": 0.249,
+          "fraction_of_datasheet_peak": 0.206,
+          "peak_mem_GiB": 21.46,
+          "last_loss": 12.078
+        },
+        {
+          "kind": "attn",
+          "micro_batch": "16x1024",
+          "kd_cached_teacher": false,
+          "params_M": 527.0,
+          "first_step_s_incl_compile": 0.24,
+          "warmup_steps_s": [
+            0.238,
+            0.238,
+            0.238
+          ],
+          "steady_step_s_mean": 0.2382,
+          "steady_step_ms_fwd_bwd_opt_mean_sd": {
+            "forward": [
+              69.1,
+              0.3
+            ],
+            "backward": [
+              161.7,
+              0.2
+            ],
+            "optimizer": [
+              6.0,
+              0.0
+            ],
+            "device_step": [
+              236.9,
+              0.4
+            ]
+          },
+          "tokens_per_s": 68787,
+          "achieved_model_TFLOPS_6N": 217.5,
+          "fraction_of_measured_gemm_ceiling": 0.266,
+          "fraction_of_datasheet_peak": 0.22,
+          "peak_mem_GiB": 31.94,
+          "last_loss": 12.093
+        },
+        {
+          "kind": "attn",
+          "micro_batch": "8x2048",
+          "kd_cached_teacher": false,
+          "params_M": 527.0,
+          "first_step_s_incl_compile": 0.25,
+          "warmup_steps_s": [
+            0.248,
+            0.247,
+            0.248
+          ],
+          "steady_step_s_mean": 0.2475,
+          "steady_step_ms_fwd_bwd_opt_mean_sd": {
+            "forward": [
+              71.6,
+              0.3
+            ],
+            "backward": [
+              168.7,
+              0.4
+            ],
+            "optimizer": [
+              6.1,
+              0.0
+            ],
+            "device_step": [
+              246.3,
+              0.4
+            ]
+          },
+          "tokens_per_s": 66188,
+          "achieved_model_TFLOPS_6N": 209.3,
+          "fraction_of_measured_gemm_ceiling": 0.256,
+          "fraction_of_datasheet_peak": 0.212,
+          "peak_mem_GiB": 31.94,
+          "last_loss": 12.077
+        }
+      ],
+      "seconds": 35.4
+    },
+    "teacher_cache_path": {
+      "ok": true,
+      "result": {
+        "cache_file_MiB": 732,
+        "cache_creation_s": 2.8,
+        "without_cache": {
+          "kind": "gdn",
+          "micro_batch": "8x2048",
+          "kd_cached_teacher": false,
+          "params_M": 546.9,
+          "first_step_s_incl_compile": 0.45,
+          "warmup_steps_s": [
+            0.291,
+            0.292,
+            0.291
+          ],
+          "steady_step_s_mean": 0.2919,
+          "steady_step_ms_fwd_bwd_opt_mean_sd": {
+            "forward": [
+              89.0,
+              0.4
+            ],
+            "backward": [
+              193.9,
+              0.2
+            ],
+            "optimizer": [
+              6.3,
+              0.0
+            ],
+            "device_step": [
+              289.3,
+              0.4
+            ]
+          },
+          "tokens_per_s": 56133,
+          "achieved_model_TFLOPS_6N": 184.2,
+          "fraction_of_measured_gemm_ceiling": 0.225,
+          "fraction_of_datasheet_peak": 0.186,
+          "peak_mem_GiB": 39.16,
+          "last_loss": 12.094
+        },
+        "with_cache": {
+          "kind": "gdn",
+          "micro_batch": "8x2048",
+          "kd_cached_teacher": true,
+          "params_M": 546.9,
+          "first_step_s_incl_compile": 0.46,
+          "warmup_steps_s": [
+            0.34,
+            0.34,
+            0.339
+          ],
+          "steady_step_s_mean": 0.3395,
+          "steady_step_ms_fwd_bwd_opt_mean_sd": {
+            "forward": [
+              98.2,
+              0.3
+            ],
+            "backward": [
+              234.0,
+              0.2
+            ],
+            "optimizer": [
+              6.3,
+              0.0
+            ],
+            "device_step": [
+              338.5,
+              0.5
+            ]
+          },
+          "tokens_per_s": 48261,
+          "achieved_model_TFLOPS_6N": 158.4,
+          "fraction_of_measured_gemm_ceiling": 0.194,
+          "fraction_of_datasheet_peak": 0.16,
+          "peak_mem_GiB": 41.48,
+          "last_loss": 10.604,
+          "loader_wait_s_per_step": 0.0,
+          "loader_read_s_total": 0.15
+        }
+      },
+      "seconds": 17.6
+    },
+    "profile": {
+      "ok": true,
+      "result": {
+        "micro_batch": "8x2048",
+        "profiled_steps": 5,
+        "wall_s_per_step": 0.386,
+        "device_busy_s_per_step": 0.7029,
+        "device_busy_fraction_of_wall": 1.821,
+        "device_time_share": {
+          "gemm": 0.123,
+          "attention_flash": 0.0,
+          "recurrent_triton": 0.141,
+          "optimizer": 0.03,
+          "norm_activation_elementwise": 0.294,
+          "other": 0.411
+        },
+        "top_kernels": [
+          {
+            "name": "autograd::engine::evaluate_function: MmBackward0",
+            "share": 0.077,
+            "calls_per_step": 224
+          },
+          {
+            "name": "MmBackward0",
+            "share": 0.077,
+            "calls_per_step": 224
+          },
+          {
+            "name": "autograd::engine::evaluate_function: NllLossBackward0",
+            "share": 0.046,
+            "calls_per_step": 8
+          },
+          {
+            "name": "NllLossBackward0",
+            "share": 0.046,
+            "calls_per_step": 8
+          },
+          {
+            "name": "void at::native::unrolled_elementwise_kernel<at::native::direct_copy_kernel_cuda(at::Tenso",
+            "share": 0.04,
+            "calls_per_step": 440
+          },
+          {
+            "name": "void at::native::(anonymous namespace)::cunn_SoftMaxForward<4, float, float, float, at::na",
+            "share": 0.037,
+            "calls_per_step": 16
+          },
+          {
+            "name": "autograd::engine::evaluate_function: ToCopyBackward0",
+            "share": 0.035,
+            "calls_per_step": 408
+          },
+          {
+            "name": "autograd::engine::evaluate_function: ChunkGatedDeltaRuleFunctionBackward",
+            "share": 0.026,
+            "calls_per_step": 24
+          },
+          {
+            "name": "ChunkGatedDeltaRuleFunctionBackward",
+            "share": 0.026,
+            "calls_per_step": 24
+          },
+          {
+            "name": "ToCopyBackward0",
+            "share": 0.025,
+            "calls_per_step": 408
+          },
+          {
+            "name": "void at::native::vectorized_elementwise_kernel<8, at::native::bfloat16_copy_kernel_cuda(at",
+            "share": 0.024,
+            "calls_per_step": 496
+          },
+          {
+            "name": "nvjet_tst_128x304_64x3_1x2_h_bz_coopA_NNT",
+            "share": 0.021,
+            "calls_per_step": 144
+          },
+          {
+            "name": "void at::native::vectorized_elementwise_kernel<4, at::native::CUDAFunctor_add<float>, std:",
+            "share": 0.02,
+            "calls_per_step": 214
+          },
+          {
+            "name": "ChunkGatedDeltaRuleFunction",
+            "share": 0.019,
+            "calls_per_step": 24
+          }
+        ]
+      },
+      "seconds": 13.9
+    },
+    "stability": {
+      "ok": true,
+      "result": {
+        "steps": 100,
+        "nonfinite_loss_steps": 0,
+        "log[step,loss,gradnorm]": [
+          [
+            0,
+            12.119,
+            20.271
+          ],
+          [
+            20,
+            12.108,
+            19.67
+          ],
+          [
+            40,
+            12.109,
+            18.528
+          ],
+          [
+            60,
+            12.096,
+            17.278
+          ],
+          [
+            80,
+            12.099,
+            15.973
+          ],
+          [
+            99,
+            12.092,
+            14.583
+          ]
+        ],
+        "note": "random tokens: checks numerical stability only, not learning"
+      },
+      "seconds": 32.4
+    }
+  },
+  "install_seconds": 67.6,
+  "install_attempts": [
+    {
+      "strategy": "triton==3.7.1",
+      "pip_rc": [
+        0,
+        0
+      ],
+      "probe_rc": 0,
+      "probe_out": "HOPPER_GDN_PROBE_OK triton=3.7.1\n"
+    }
+  ],
+  "verdicts": {
+    "correctness_pass": true,
+    "stability_pass": true,
+    "best_gdn_fraction_of_datasheet_peak": 0.186,
+    "best_gdn_tokens_per_s": 56133,
+    "best_attn_tokens_per_s": 68787,
+    "F1_stage_c_gate": "ADVANCE_STAGE_C_ON_HOPPER"
+  },
+  "total_seconds": 452.4,
+  "done": true
+}
