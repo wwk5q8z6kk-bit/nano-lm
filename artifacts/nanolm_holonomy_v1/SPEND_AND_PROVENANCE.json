@@ -1,0 +1,13 @@
+{
+  "pod_id": "2v2dt0j536rh58",
+  "gpu_type": "NVIDIA L40S",
+  "image": "runpod/pytorch:1.0.3-cu1281-torch291-ubuntu2404",
+  "model_id": "Qwen/Qwen3-1.7B",
+  "wall_seconds": 4302,
+  "cost_per_hr_usd": 1.09,
+  "pod_attributed_spend_usd": 1.3026,
+  "account_balance_before_usd": 69.9311,
+  "account_balance_after_usd": 62.4563,
+  "account_balance_delta_usd": 7.4748,
+  "note": "Account delta includes any concurrent peer pods active during window; pod_attributed_spend_usd reflects this pod alone."
+}

@@ -1,0 +1,3309 @@
+{
+  "meta": {
+    "device": "cuda",
+    "cuda_name": "NVIDIA L40S",
+    "cuda_count": 1,
+    "cuda_names": [
+      "NVIDIA L40S"
+    ],
+    "torch_version": "2.9.1+cu128"
+  },
+  "c2_x0": {
+    "experiment": "C2_X0_kernel_microbenchmark",
+    "has_triton": true,
+    "shape": {
+      "B": 4,
+      "R": 8,
+      "G": 48,
+      "d_fiber": 192
+    },
+    "iters": 6,
+    "rows": [
+      {
+        "seq_len": 256,
+        "pytorch_blelloch": {
+          "status": "ok",
+          "fwd_bwd_ms": 12.158,
+          "peak_vram_mb": 153.73
+        },
+        "triton_holonomy": {
+          "status": "ok",
+          "fwd_bwd_ms": 1.097,
+          "peak_vram_mb": 85.07
+        },
+        "speedup_x": 11.08
+      },
+      {
+        "seq_len": 512,
+        "pytorch_blelloch": {
+          "status": "ok",
+          "fwd_bwd_ms": 16.603,
+          "peak_vram_mb": 319.55
+        },
+        "triton_holonomy": {
+          "status": "ok",
+          "fwd_bwd_ms": 1.468,
+          "peak_vram_mb": 168.07
+        },
+        "speedup_x": 11.31
+      },
+      {
+        "seq_len": 1024,
+        "pytorch_blelloch": {
+          "status": "ok",
+          "fwd_bwd_ms": 31.652,
+          "peak_vram_mb": 685.55
+        },
+        "triton_holonomy": {
+          "status": "ok",
+          "fwd_bwd_ms": 1.348,
+          "peak_vram_mb": 336.07
+        },
+        "speedup_x": 23.48
+      },
+      {
+        "seq_len": 2048,
+        "pytorch_blelloch": {
+          "status": "ok",
+          "fwd_bwd_ms": 168.952,
+          "peak_vram_mb": 1467.05
+        },
+        "triton_holonomy": {
+          "status": "ok",
+          "fwd_bwd_ms": 4.986,
+          "peak_vram_mb": 672.07
+        },
+        "speedup_x": 33.89
+      },
+      {
+        "seq_len": 4096,
+        "pytorch_blelloch": {
+          "status": "ok",
+          "fwd_bwd_ms": 529.037,
+          "peak_vram_mb": 3126.05
+        },
+        "triton_holonomy": {
+          "status": "ok",
+          "fwd_bwd_ms": 15.116,
+          "peak_vram_mb": 1344.07
+        },
+        "speedup_x": 35.0
+      }
+    ]
+  },
+  "c2_x1": {
+    "experiment": "C2_X1_unbroken_s4_grokking",
+    "seeds": [
+      101,
+      202,
+      303
+    ],
+    "train_len": 32,
+    "arms": [
+      {
+        "config": {
+          "name": "b0-transformer-small_x1",
+          "family": "b0_transformer",
+          "total_parameters": 2460480,
+          "within_4b_ceiling": true,
+          "n_registers": 8,
+          "d_fiber": 128,
+          "state_bytes_at_seq": 393216,
+          "sample_seq_len": 256
+        },
+        "summary": {
+          "L_32": {
+            "mean": 0.0382,
+            "std": 0.0099
+          },
+          "L_64": {
+            "mean": 0.0486,
+            "std": 0.0177
+          },
+          "L_128": {
+            "mean": 0.0486,
+            "std": 0.0049
+          },
+          "L_256": {
+            "mean": 0.0347,
+            "std": 0.0177
+          }
+        },
+        "per_seed": [
+          {
+            "seed": 101,
+            "accuracy": {
+              "L_32": 0.0312,
+              "L_64": 0.0312,
+              "L_128": 0.0521,
+              "L_256": 0.0521
+            }
+          },
+          {
+            "seed": 202,
+            "accuracy": {
+              "L_32": 0.0312,
+              "L_64": 0.0729,
+              "L_128": 0.0521,
+              "L_256": 0.0417
+            }
+          },
+          {
+            "seed": 303,
+            "accuracy": {
+              "L_32": 0.0521,
+              "L_64": 0.0417,
+              "L_128": 0.0417,
+              "L_256": 0.0104
+            }
+          }
+        ]
+      },
+      {
+        "config": {
+          "name": "b1-abelian-ssm-small_x1",
+          "family": "b1_abelian_ssm",
+          "total_parameters": 2460864,
+          "within_4b_ceiling": true,
+          "n_registers": 8,
+          "d_fiber": 128,
+          "state_bytes_at_seq": 12288,
+          "sample_seq_len": 256
+        },
+        "summary": {
+          "L_32": {
+            "mean": 0.0556,
+            "std": 0.0098
+          },
+          "L_64": {
+            "mean": 0.0347,
+            "std": 0.026
+          },
+          "L_128": {
+            "mean": 0.0312,
+            "std": 0.0225
+          },
+          "L_256": {
+            "mean": 0.0382,
+            "std": 0.0322
+          }
+        },
+        "per_seed": [
+          {
+            "seed": 101,
+            "accuracy": {
+              "L_32": 0.0625,
+              "L_64": 0.0,
+              "L_128": 0.0104,
+              "L_256": 0.0833
+            }
+          },
+          {
+            "seed": 202,
+            "accuracy": {
+              "L_32": 0.0417,
+              "L_64": 0.0625,
+              "L_128": 0.0625,
+              "L_256": 0.0208
+            }
+          },
+          {
+            "seed": 303,
+            "accuracy": {
+              "L_32": 0.0625,
+              "L_64": 0.0417,
+              "L_128": 0.0208,
+              "L_256": 0.0104
+            }
+          }
+        ]
+      },
+      {
+        "config": {
+          "name": "gen1-h2-hspa-predcode-small_x1",
+          "family": "gen1_h2_hspa_predcode",
+          "total_parameters": 2466630,
+          "within_4b_ceiling": true,
+          "n_registers": 8,
+          "d_fiber": 128,
+          "state_bytes_at_seq": 12288,
+          "sample_seq_len": 256
+        },
+        "summary": {
+          "L_32": {
+            "mean": 0.0486,
+            "std": 0.0049
+          },
+          "L_64": {
+            "mean": 0.0452,
+            "std": 0.0049
+          },
+          "L_128": {
+            "mean": 0.0451,
+            "std": 0.0177
+          },
+          "L_256": {
+            "mean": 0.0486,
+            "std": 0.0098
+          }
+        },
+        "per_seed": [
+          {
+            "seed": 101,
+            "accuracy": {
+              "L_32": 0.0521,
+              "L_64": 0.0417,
+              "L_128": 0.0625,
+              "L_256": 0.0417
+            }
+          },
+          {
+            "seed": 202,
+            "accuracy": {
+              "L_32": 0.0521,
+              "L_64": 0.0521,
+              "L_128": 0.0521,
+              "L_256": 0.0417
+            }
+          },
+          {
+            "seed": 303,
+            "accuracy": {
+              "L_32": 0.0417,
+              "L_64": 0.0417,
+              "L_128": 0.0208,
+              "L_256": 0.0625
+            }
+          }
+        ]
+      },
+      {
+        "config": {
+          "name": "gen3-h4-hspa-wavepred-small_x1",
+          "family": "gen3_h4_hspa_wavepred",
+          "total_parameters": 2469798,
+          "within_4b_ceiling": true,
+          "n_registers": 8,
+          "d_fiber": 128,
+          "state_bytes_at_seq": 16896,
+          "sample_seq_len": 256
+        },
+        "summary": {
+          "L_32": {
+            "mean": 0.0382,
+            "std": 0.013
+          },
+          "L_64": {
+            "mean": 0.0278,
+            "std": 0.0099
+          },
+          "L_128": {
+            "mean": 0.0416,
+            "std": 0.0148
+          },
+          "L_256": {
+            "mean": 0.0417,
+            "std": 0.0225
+          }
+        },
+        "per_seed": [
+          {
+            "seed": 101,
+            "accuracy": {
+              "L_32": 0.0521,
+              "L_64": 0.0417,
+              "L_128": 0.0312,
+              "L_256": 0.0625
+            }
+          },
+          {
+            "seed": 202,
+            "accuracy": {
+              "L_32": 0.0208,
+              "L_64": 0.0208,
+              "L_128": 0.0625,
+              "L_256": 0.0104
+            }
+          },
+          {
+            "seed": 303,
+            "accuracy": {
+              "L_32": 0.0417,
+              "L_64": 0.0208,
+              "L_128": 0.0312,
+              "L_256": 0.0521
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "c2_x2": {
+    "experiment": "C2_X2_triton_3seed_lm",
+    "seeds": [
+      42,
+      137,
+      271
+    ],
+    "train_steps": 800,
+    "arms": [
+      {
+        "config": {
+          "name": "b0-transformer-micro",
+          "family": "b0_transformer",
+          "total_parameters": 13966464,
+          "within_4b_ceiling": true,
+          "n_registers": 8,
+          "d_fiber": 128,
+          "state_bytes_at_seq": 25165824,
+          "sample_seq_len": 8192
+        },
+        "metrics": {
+          "std_val_bpb": 0.00093,
+          "mean_tok_per_sec": 139238.2,
+          "mean_peak_vram_mb": 1198.2,
+          "mean_decode_ms_per_tok": 5.508,
+          "state_kb_at_8k": 24576.0,
+          "seed_runs": [
+            {
+              "seed": 42,
+              "mean_val_bpb": 0.3785,
+              "domain_bpb": {
+                "code": 0.2084,
+                "math": 0.7527,
+                "prose": 0.0914,
+                "state": 0.4613
+              },
+              "probe_exact_acc": {
+                "math": 0.0208,
+                "state": 0.0208
+              },
+              "train_tok_per_sec": 147398.2,
+              "decode_ms_per_tok": 6.742,
+              "peak_vram_mb": 1173.79
+            },
+            {
+              "seed": 137,
+              "mean_val_bpb": 0.3803,
+              "domain_bpb": {
+                "code": 0.1943,
+                "math": 0.7482,
+                "prose": 0.0913,
+                "state": 0.4876
+              },
+              "probe_exact_acc": {
+                "math": 0.0625,
+                "state": 0.0
+              },
+              "train_tok_per_sec": 135412.0,
+              "decode_ms_per_tok": 4.715,
+              "peak_vram_mb": 1207.7
+            },
+            {
+              "seed": 271,
+              "mean_val_bpb": 0.3806,
+              "domain_bpb": {
+                "code": 0.2105,
+                "math": 0.7473,
+                "prose": 0.0915,
+                "state": 0.4731
+              },
+              "probe_exact_acc": {
+                "math": 0.0625,
+                "state": 0.0
+              },
+              "train_tok_per_sec": 134904.3,
+              "decode_ms_per_tok": 5.067,
+              "peak_vram_mb": 1213.2
+            }
+          ]
+        },
+        "bpb": 0.3798,
+        "std_bpb": 0.00093,
+        "registry_decision": {
+          "promoted": true,
+          "reason": "registered_baseline"
+        }
+      },
+      {
+        "config": {
+          "name": "gen1-h2-hspa-predcode-micro",
+          "family": "gen1_h2_hspa_predcode",
+          "total_parameters": 14022536,
+          "within_4b_ceiling": true,
+          "n_registers": 8,
+          "d_fiber": 192,
+          "state_bytes_at_seq": 24576,
+          "sample_seq_len": 8192
+        },
+        "metrics": {
+          "std_val_bpb": 0.00041,
+          "mean_tok_per_sec": 49633.3,
+          "mean_peak_vram_mb": 3811.6,
+          "mean_decode_ms_per_tok": 12.198,
+          "state_kb_at_8k": 24.0,
+          "seed_runs": [
+            {
+              "seed": 42,
+              "mean_val_bpb": 0.3688,
+              "domain_bpb": {
+                "code": 0.2092,
+                "math": 0.7406,
+                "prose": 0.0905,
+                "state": 0.4349
+              },
+              "probe_exact_acc": {
+                "math": 0.0417,
+                "state": 0.1667
+              },
+              "train_tok_per_sec": 49668.3,
+              "decode_ms_per_tok": 12.315,
+              "peak_vram_mb": 3814.04
+            },
+            {
+              "seed": 137,
+              "mean_val_bpb": 0.3693,
+              "domain_bpb": {
+                "code": 0.2044,
+                "math": 0.7432,
+                "prose": 0.0904,
+                "state": 0.4392
+              },
+              "probe_exact_acc": {
+                "math": 0.0833,
+                "state": 0.125
+              },
+              "train_tok_per_sec": 49726.7,
+              "decode_ms_per_tok": 12.114,
+              "peak_vram_mb": 3810.55
+            },
+            {
+              "seed": 271,
+              "mean_val_bpb": 0.3698,
+              "domain_bpb": {
+                "code": 0.2094,
+                "math": 0.739,
+                "prose": 0.0905,
+                "state": 0.4403
+              },
+              "probe_exact_acc": {
+                "math": 0.0833,
+                "state": 0.1042
+              },
+              "train_tok_per_sec": 49504.8,
+              "decode_ms_per_tok": 12.166,
+              "peak_vram_mb": 3810.11
+            }
+          ]
+        },
+        "bpb": 0.3693,
+        "std_bpb": 0.00041,
+        "registry_decision": {
+          "candidate": "gen1-h2-hspa-predcode-micro",
+          "promoted": true,
+          "reason": "beat_best:b0-transformer-micro(0.3798->0.3693)"
+        }
+      },
+      {
+        "config": {
+          "name": "gen3-h4-hspa-wavepred-micro",
+          "family": "gen3_h4_hspa_wavepred",
+          "total_parameters": 14028808,
+          "within_4b_ceiling": true,
+          "n_registers": 8,
+          "d_fiber": 192,
+          "state_bytes_at_seq": 33792,
+          "sample_seq_len": 8192
+        },
+        "metrics": {
+          "std_val_bpb": 0.00082,
+          "mean_tok_per_sec": 49142.8,
+          "mean_peak_vram_mb": 3842.3,
+          "mean_decode_ms_per_tok": 13.131,
+          "state_kb_at_8k": 33.0,
+          "seed_runs": [
+            {
+              "seed": 42,
+              "mean_val_bpb": 0.3705,
+              "domain_bpb": {
+                "code": 0.205,
+                "math": 0.7429,
+                "prose": 0.0903,
+                "state": 0.4438
+              },
+              "probe_exact_acc": {
+                "math": 0.0625,
+                "state": 0.1458
+              },
+              "train_tok_per_sec": 49268.0,
+              "decode_ms_per_tok": 13.158,
+              "peak_vram_mb": 3843.08
+            },
+            {
+              "seed": 137,
+              "mean_val_bpb": 0.3685,
+              "domain_bpb": {
+                "code": 0.2066,
+                "math": 0.7387,
+                "prose": 0.0904,
+                "state": 0.4385
+              },
+              "probe_exact_acc": {
+                "math": 0.0833,
+                "state": 0.1875
+              },
+              "train_tok_per_sec": 49090.7,
+              "decode_ms_per_tok": 13.216,
+              "peak_vram_mb": 3843.32
+            },
+            {
+              "seed": 271,
+              "mean_val_bpb": 0.3697,
+              "domain_bpb": {
+                "code": 0.2046,
+                "math": 0.7423,
+                "prose": 0.0904,
+                "state": 0.4414
+              },
+              "probe_exact_acc": {
+                "math": 0.0417,
+                "state": 0.125
+              },
+              "train_tok_per_sec": 49069.6,
+              "decode_ms_per_tok": 13.02,
+              "peak_vram_mb": 3840.51
+            }
+          ]
+        },
+        "bpb": 0.3696,
+        "std_bpb": 0.00082,
+        "registry_decision": {
+          "candidate": "gen3-h4-hspa-wavepred-micro",
+          "promoted": false,
+          "reason": "did_not_beat_best:0.3696_vs_0.3693"
+        }
+      }
+    ],
+    "registry": {
+      "higher_is_better": false,
+      "baseline": {
+        "name": "b0-transformer-micro",
+        "family": "b0_transformer",
+        "total_parameters": 13966464,
+        "mean_primary_metric": 0.3798,
+        "seed_scores": [
+          0.3785,
+          0.3803,
+          0.3806
+        ],
+        "metrics": {
+          "std_val_bpb": 0.00093,
+          "mean_tok_per_sec": 139238.2,
+          "mean_peak_vram_mb": 1198.2,
+          "mean_decode_ms_per_tok": 5.508,
+          "state_kb_at_8k": 24576.0,
+          "seed_runs": [
+            {
+              "seed": 42,
+              "mean_val_bpb": 0.3785,
+              "domain_bpb": {
+                "code": 0.2084,
+                "math": 0.7527,
+                "prose": 0.0914,
+                "state": 0.4613
+              },
+              "probe_exact_acc": {
+                "math": 0.0208,
+                "state": 0.0208
+              },
+              "train_tok_per_sec": 147398.2,
+              "decode_ms_per_tok": 6.742,
+              "peak_vram_mb": 1173.79
+            },
+            {
+              "seed": 137,
+              "mean_val_bpb": 0.3803,
+              "domain_bpb": {
+                "code": 0.1943,
+                "math": 0.7482,
+                "prose": 0.0913,
+                "state": 0.4876
+              },
+              "probe_exact_acc": {
+                "math": 0.0625,
+                "state": 0.0
+              },
+              "train_tok_per_sec": 135412.0,
+              "decode_ms_per_tok": 4.715,
+              "peak_vram_mb": 1207.7
+            },
+            {
+              "seed": 271,
+              "mean_val_bpb": 0.3806,
+              "domain_bpb": {
+                "code": 0.2105,
+                "math": 0.7473,
+                "prose": 0.0915,
+                "state": 0.4731
+              },
+              "probe_exact_acc": {
+                "math": 0.0625,
+                "state": 0.0
+              },
+              "train_tok_per_sec": 134904.3,
+              "decode_ms_per_tok": 5.067,
+              "peak_vram_mb": 1213.2
+            }
+          ]
+        },
+        "notes": ""
+      },
+      "best": {
+        "name": "gen1-h2-hspa-predcode-micro",
+        "family": "gen1_h2_hspa_predcode",
+        "total_parameters": 14022536,
+        "mean_primary_metric": 0.3693,
+        "seed_scores": [
+          0.3688,
+          0.3693,
+          0.3698
+        ],
+        "metrics": {
+          "std_val_bpb": 0.00041,
+          "mean_tok_per_sec": 49633.3,
+          "mean_peak_vram_mb": 3811.6,
+          "mean_decode_ms_per_tok": 12.198,
+          "state_kb_at_8k": 24.0,
+          "seed_runs": [
+            {
+              "seed": 42,
+              "mean_val_bpb": 0.3688,
+              "domain_bpb": {
+                "code": 0.2092,
+                "math": 0.7406,
+                "prose": 0.0905,
+                "state": 0.4349
+              },
+              "probe_exact_acc": {
+                "math": 0.0417,
+                "state": 0.1667
+              },
+              "train_tok_per_sec": 49668.3,
+              "decode_ms_per_tok": 12.315,
+              "peak_vram_mb": 3814.04
+            },
+            {
+              "seed": 137,
+              "mean_val_bpb": 0.3693,
+              "domain_bpb": {
+                "code": 0.2044,
+                "math": 0.7432,
+                "prose": 0.0904,
+                "state": 0.4392
+              },
+              "probe_exact_acc": {
+                "math": 0.0833,
+                "state": 0.125
+              },
+              "train_tok_per_sec": 49726.7,
+              "decode_ms_per_tok": 12.114,
+              "peak_vram_mb": 3810.55
+            },
+            {
+              "seed": 271,
+              "mean_val_bpb": 0.3698,
+              "domain_bpb": {
+                "code": 0.2094,
+                "math": 0.739,
+                "prose": 0.0905,
+                "state": 0.4403
+              },
+              "probe_exact_acc": {
+                "math": 0.0833,
+                "state": 0.1042
+              },
+              "train_tok_per_sec": 49504.8,
+              "decode_ms_per_tok": 12.166,
+              "peak_vram_mb": 3810.11
+            }
+          ]
+        },
+        "notes": ""
+      },
+      "experimental": {
+        "name": "gen3-h4-hspa-wavepred-micro",
+        "family": "gen3_h4_hspa_wavepred",
+        "total_parameters": 14028808,
+        "mean_primary_metric": 0.3696,
+        "seed_scores": [
+          0.3705,
+          0.3685,
+          0.3697
+        ],
+        "metrics": {
+          "std_val_bpb": 0.00082,
+          "mean_tok_per_sec": 49142.8,
+          "mean_peak_vram_mb": 3842.3,
+          "mean_decode_ms_per_tok": 13.131,
+          "state_kb_at_8k": 33.0,
+          "seed_runs": [
+            {
+              "seed": 42,
+              "mean_val_bpb": 0.3705,
+              "domain_bpb": {
+                "code": 0.205,
+                "math": 0.7429,
+                "prose": 0.0903,
+                "state": 0.4438
+              },
+              "probe_exact_acc": {
+                "math": 0.0625,
+                "state": 0.1458
+              },
+              "train_tok_per_sec": 49268.0,
+              "decode_ms_per_tok": 13.158,
+              "peak_vram_mb": 3843.08
+            },
+            {
+              "seed": 137,
+              "mean_val_bpb": 0.3685,
+              "domain_bpb": {
+                "code": 0.2066,
+                "math": 0.7387,
+                "prose": 0.0904,
+                "state": 0.4385
+              },
+              "probe_exact_acc": {
+                "math": 0.0833,
+                "state": 0.1875
+              },
+              "train_tok_per_sec": 49090.7,
+              "decode_ms_per_tok": 13.216,
+              "peak_vram_mb": 3843.32
+            },
+            {
+              "seed": 271,
+              "mean_val_bpb": 0.3697,
+              "domain_bpb": {
+                "code": 0.2046,
+                "math": 0.7423,
+                "prose": 0.0904,
+                "state": 0.4414
+              },
+              "probe_exact_acc": {
+                "math": 0.0417,
+                "state": 0.125
+              },
+              "train_tok_per_sec": 49069.6,
+              "decode_ms_per_tok": 13.02,
+              "peak_vram_mb": 3840.51
+            }
+          ]
+        },
+        "notes": ""
+      },
+      "audit_log": [
+        {
+          "event": "register_baseline",
+          "name": "b0-transformer-micro",
+          "metric": 0.3798
+        },
+        {
+          "candidate": "gen1-h2-hspa-predcode-micro",
+          "promoted": true,
+          "reason": "beat_best:b0-transformer-micro(0.3798->0.3693)"
+        },
+        {
+          "candidate": "gen3-h4-hspa-wavepred-micro",
+          "promoted": false,
+          "reason": "did_not_beat_best:0.3696_vs_0.3693"
+        }
+      ]
+    }
+  },
+  "c2_x3": {
+    "experiment": "C2_X3_32k_4b_scaling",
+    "device": "cuda",
+    "models": [
+      {
+        "config": {
+          "name": "nanolm-transformer-4b",
+          "family": "b0_transformer",
+          "total_parameters": 3843291648,
+          "within_4b_ceiling": true,
+          "n_registers": 8,
+          "d_fiber": 128,
+          "state_bytes_at_seq": 3221225472,
+          "sample_seq_len": 32768
+        },
+        "weight_mb": 7330.5,
+        "scaling": [
+          {
+            "seq_len": 512,
+            "status": "ok",
+            "prefill_tok_per_sec": 15033.7,
+            "decode_ms_per_tok": 18.741,
+            "analytical_state_mb": 48.0,
+            "peak_vram_mb": 7524.65
+          },
+          {
+            "seq_len": 2048,
+            "status": "ok",
+            "prefill_tok_per_sec": 15813.7,
+            "decode_ms_per_tok": 17.714,
+            "analytical_state_mb": 192.0,
+            "peak_vram_mb": 7831.24
+          },
+          {
+            "seq_len": 8192,
+            "status": "ok",
+            "prefill_tok_per_sec": 12964.7,
+            "decode_ms_per_tok": 23.99,
+            "analytical_state_mb": 768.0,
+            "peak_vram_mb": 9039.79
+          },
+          {
+            "seq_len": 16384,
+            "status": "ok",
+            "prefill_tok_per_sec": 10153.2,
+            "decode_ms_per_tok": 42.057,
+            "analytical_state_mb": 1536.0,
+            "peak_vram_mb": 10655.84
+          },
+          {
+            "seq_len": 32768,
+            "status": "ok",
+            "prefill_tok_per_sec": 7623.6,
+            "decode_ms_per_tok": 75.026,
+            "analytical_state_mb": 3072.0,
+            "peak_vram_mb": 13887.97
+          }
+        ]
+      },
+      {
+        "config": {
+          "name": "nanolm-hspa-4b",
+          "family": "gen3_h4_hspa_wavepred",
+          "total_parameters": 3845419056,
+          "within_4b_ceiling": true,
+          "n_registers": 16,
+          "d_fiber": 1024,
+          "state_bytes_at_seq": 1867776,
+          "sample_seq_len": 32768
+        },
+        "weight_mb": 7334.6,
+        "scaling": [
+          {
+            "seq_len": 512,
+            "status": "ok",
+            "prefill_tok_per_sec": 1032.1,
+            "decode_ms_per_tok": 74.452,
+            "analytical_state_mb": 1.781,
+            "peak_vram_mb": 8408.57
+          },
+          {
+            "seq_len": 2048,
+            "status": "ok",
+            "prefill_tok_per_sec": 2165.4,
+            "decode_ms_per_tok": 74.944,
+            "analytical_state_mb": 1.781,
+            "peak_vram_mb": 9261.52
+          },
+          {
+            "seq_len": 8192,
+            "status": "ok",
+            "prefill_tok_per_sec": 3277.9,
+            "decode_ms_per_tok": 75.294,
+            "analytical_state_mb": 1.781,
+            "peak_vram_mb": 9261.57
+          },
+          {
+            "seq_len": 16384,
+            "status": "ok",
+            "prefill_tok_per_sec": 3258.7,
+            "decode_ms_per_tok": 74.911,
+            "analytical_state_mb": 1.781,
+            "peak_vram_mb": 9261.63
+          },
+          {
+            "seq_len": 32768,
+            "status": "ok",
+            "prefill_tok_per_sec": 3249.3,
+            "decode_ms_per_tok": 74.264,
+            "analytical_state_mb": 1.781,
+            "peak_vram_mb": 9261.76
+          }
+        ]
+      }
+    ]
+  },
+  "c2_x4": {
+    "experiment": "C2_X4_1.7B_vs_8.2B_benchmark",
+    "student_id": "Qwen/Qwen3-1.7B",
+    "opponent_id": "Qwen/Qwen3-8B",
+    "decontamination": {
+      "sft_v2": {
+        "train_examples": 62,
+        "eval_tasks": 56,
+        "overlaps": 0
+      },
+      "rl": {
+        "train_examples": 24,
+        "eval_tasks": 56,
+        "overlaps": 0
+      }
+    },
+    "arms": [
+      {
+        "arm": "External_Opponent_Qwen3-8B",
+        "is_external_opponent": true,
+        "ttc_syntax_retries": 0,
+        "ttc_triggers": 0,
+        "ttc_syntax_recoveries": 0,
+        "total_parameters": 8190735360,
+        "passed": 39,
+        "total_tasks": 56,
+        "accuracy": 0.6964,
+        "bootstrap_ci95": [
+          0.5893,
+          0.8036
+        ],
+        "mean_partial_score": 0.7869,
+        "by_dimension": {
+          "coding": {
+            "passed": 4,
+            "total": 4,
+            "accuracy": 1.0,
+            "mean_score": 1.0
+          },
+          "math_logic": {
+            "passed": 1,
+            "total": 4,
+            "accuracy": 0.25,
+            "mean_score": 0.25
+          },
+          "summarization": {
+            "passed": 3,
+            "total": 4,
+            "accuracy": 0.75,
+            "mean_score": 0.9167
+          },
+          "structured_json": {
+            "passed": 3,
+            "total": 4,
+            "accuracy": 0.75,
+            "mean_score": 0.875
+          },
+          "diagrams_charts": {
+            "passed": 4,
+            "total": 4,
+            "accuracy": 1.0,
+            "mean_score": 1.0
+          },
+          "long_context": {
+            "passed": 2,
+            "total": 4,
+            "accuracy": 0.5,
+            "mean_score": 0.625
+          },
+          "general_knowledge": {
+            "passed": 4,
+            "total": 4,
+            "accuracy": 1.0,
+            "mean_score": 1.0
+          },
+          "multi_step_reasoning": {
+            "passed": 2,
+            "total": 4,
+            "accuracy": 0.5,
+            "mean_score": 0.5
+          },
+          "instruction_following": {
+            "passed": 3,
+            "total": 4,
+            "accuracy": 0.75,
+            "mean_score": 0.95
+          },
+          "tool_use": {
+            "passed": 2,
+            "total": 4,
+            "accuracy": 0.5,
+            "mean_score": 0.5
+          },
+          "planning_decomposition": {
+            "passed": 1,
+            "total": 4,
+            "accuracy": 0.25,
+            "mean_score": 0.775
+          },
+          "ood_robustness": {
+            "passed": 3,
+            "total": 4,
+            "accuracy": 0.75,
+            "mean_score": 0.75
+          },
+          "hallucination_resistance": {
+            "passed": 4,
+            "total": 4,
+            "accuracy": 1.0,
+            "mean_score": 1.0
+          },
+          "memory_retention": {
+            "passed": 3,
+            "total": 4,
+            "accuracy": 0.75,
+            "mean_score": 0.875
+          },
+          "inference_efficiency": {
+            "capability_accuracy": 0.6964,
+            "capability_per_billion_params": 0.085,
+            "tokens_per_sec": 37.62,
+            "kv_cache_mb_at_4k": 576.0,
+            "efficiency_composite_score": 0.716,
+            "p50_ms": 1095.34,
+            "p95_ms": 6664.72,
+            "peak_vram_mb": 16541.46,
+            "total_parameters": 8190735360
+          }
+        },
+        "by_difficulty": {
+          "easy": {
+            "passed": 14,
+            "total": 15,
+            "accuracy": 0.9333
+          },
+          "medium": {
+            "passed": 15,
+            "total": 21,
+            "accuracy": 0.7143
+          },
+          "hard": {
+            "passed": 10,
+            "total": 20,
+            "accuracy": 0.5
+          }
+        },
+        "failure_taxonomy": {
+          "answer_mismatch:'3'": 2,
+          "tool_call_mismatch:0/2": 2,
+          "answer_mismatch:'7'": 1,
+          "answer_mismatch:'6'": 1,
+          "missing_salient_terms:2/3": 1,
+          "value_mismatch:subtotal:400!=520": 1,
+          "invalid_json:Expecting ',' delimiter": 1,
+          "value_mismatch:remaining_kg:390!=375": 1,
+          "answer_mismatch:'5'": 1,
+          "words=36>28": 1,
+          "wrong_makespan:7!=9": 1,
+          "wrong_makespan:15!=13": 1
+        },
+        "tasks": [
+          {
+            "task_id": "cod-01",
+            "dim": "coding",
+            "difficulty": "easy",
+            "passed": true,
+            "score": 1.0,
+            "reason": "all_assertions_passed",
+            "attempts": 1,
+            "latency_ms": 2995.03,
+            "response_preview": "```python\ndef run_length_encode(s: str) -> list[tuple[str, int]]:\n    if not s:\n        return []\n    result = []\n    current_char = s[0]\n    count = 1\n    for char in s[1:]:\n        if char == curren"
+          },
+          {
+            "task_id": "cod-02",
+            "dim": "coding",
+            "difficulty": "medium",
+            "passed": true,
+            "score": 1.0,
+            "reason": "all_assertions_passed",
+            "attempts": 1,
+            "latency_ms": 3007.31,
+            "response_preview": "```python\ndef eval_rpn(tokens: list[str]) -> int:\n    stack = []\n    for token in tokens:\n        if token in '+-*/':\n            b = stack.pop()\n            a = stack.pop()\n            if token == '+"
+          },
+          {
+            "task_id": "cod-03",
+            "dim": "coding",
+            "difficulty": "medium",
+            "passed": true,
+            "score": 1.0,
+            "reason": "all_assertions_passed",
+            "attempts": 1,
+            "latency_ms": 4765.27,
+            "response_preview": "```python\nclass TreeNode:\n    def __init__(self, val=0, left=None, right=None):\n        self.val = val\n        self.left = left\n        self.right = right\n\ndef kth_smallest_bst(values: list[int], k: i"
+          },
+          {
+            "task_id": "cod-04",
+            "dim": "coding",
+            "difficulty": "hard",
+            "passed": true,
+            "score": 1.0,
+            "reason": "all_assertions_passed",
+            "attempts": 1,
+            "latency_ms": 4768.43,
+            "response_preview": "```python\nimport heapq\n\ndef dijkstra(n: int, edges: list[tuple[int, int, int]], src: int, dst: int) -> int:\n    graph = [[] for _ in range(n)]\n    for u, v, w in edges:\n        graph[u].append((v, w))"
+          },
+          {
+            "task_id": "mth-01",
+            "dim": "math_logic",
+            "difficulty": "easy",
+            "passed": true,
+            "score": 1.0,
+            "reason": "exact_lastline_match",
+            "attempts": 1,
+            "latency_ms": 3406.97,
+            "response_preview": "We are asked to compute:\n\n$$\n(17 \\times 23 - 91) \\div 5\n$$\n\n### Step 1: Compute the multiplication\n$$\n17 \\times 23 = 391\n$$\n\n### Step 2: Subtract 91\n$$\n391 - 91 = 300\n$$\n\n### Step 3: Divide by 5\n$$\n30"
+          },
+          {
+            "task_id": "mth-02",
+            "dim": "math_logic",
+            "difficulty": "medium",
+            "passed": false,
+            "score": 0.0,
+            "reason": "answer_mismatch:'3'",
+            "attempts": 1,
+            "latency_ms": 6663.0,
+            "response_preview": "We are asked to find how many **3-digit positive integers** (from 100 to 999) are divisible by **both 6 and 15**.\n\n---\n\n### Step 1: Find the Least Common Multiple (LCM) of 6 and 15\n\nTo find numbers di"
+          },
+          {
+            "task_id": "mth-03",
+            "dim": "math_logic",
+            "difficulty": "hard",
+            "passed": false,
+            "score": 0.0,
+            "reason": "answer_mismatch:'7'",
+            "attempts": 1,
+            "latency_ms": 6660.14,
+            "response_preview": "We are given the following system of congruences:\n\n$$\nx \\equiv 3 \\pmod{7} \\tag{1}\n$$\n$$\nx \\equiv 5 \\pmod{11} \\tag{2}\n$$\n\nWe are to find the **smallest positive integer** $ x $ that satisfies both cong"
+          },
+          {
+            "task_id": "mth-04",
+            "dim": "math_logic",
+            "difficulty": "hard",
+            "passed": false,
+            "score": 0.0,
+            "reason": "answer_mismatch:'6'",
+            "attempts": 1,
+            "latency_ms": 6660.49,
+            "response_preview": "We are given a recurrence relation:\n\n$$\na_0 = 1, \\quad a_1 = 2, \\quad a_n = 2a_{n-1} + a_{n-2}\n$$\n\nWe are to find $ a_6 $.\n\n---\n\n### Step-by-step computation:\n\nWe'll compute the terms from $ a_0 $ to "
+          },
+          {
+            "task_id": "sum-01",
+            "dim": "summarization",
+            "difficulty": "easy",
+            "passed": false,
+            "score": 0.6667,
+            "reason": "missing_salient_terms:2/3",
+            "attempts": 1,
+            "latency_ms": 733.59,
+            "response_preview": "Orbiter Kestrel completed a 48-hour thermal soak, with thruster mass leakage measured at 3.2%."
+          },
+          {
+            "task_id": "sum-02",
+            "dim": "summarization",
+            "difficulty": "medium",
+            "passed": true,
+            "score": 1.0,
+            "reason": "verified_summary",
+            "attempts": 1,
+            "latency_ms": 1202.38,
+            "response_preview": "In Q2, CinderDB replaced mutex-guarded buffers with wait-free ring slots, reducing P99 commit latency to 14.5 ms while maintaining 99.94% replication durability under chaos drills."
+          },
+          {
+            "task_id": "sum-03",
+            "dim": "summarization",
+            "difficulty": "medium",
+            "passed": true,
+            "score": 1.0,
+            "reason": "verified_summary",
+            "attempts": 1,
+            "latency_ms": 759.84,
+            "response_preview": "Survey crew drilled borehole BH-9 down to 620 m through fractured basalt, recovering 91% core integrity."
+          },
+          {
+            "task_id": "sum-04",
+            "dim": "summarization",
+            "difficulty": "hard",
+            "passed": true,
+            "score": 1.0,
+            "reason": "verified_summary",
+            "attempts": 1,
+            "latency_ms": 915.75,
+            "response_preview": "Loom-7 reduced idle transformer losses to 0.41 kWh per feeder and cut evening peak draw by 28% across 12 substations."
+          },
+          {
+            "task_id": "jsn-01",
+            "dim": "structured_json",
+            "difficulty": "easy",
+            "passed": true,
+            "score": 1.0,
+            "reason": "exact_json_match",
+            "attempts": 1,
+            "latency_ms": 653.65,
+            "response_preview": "{\"host\": \"gw-04.internal\", \"port\": 8443, \"tls\": true}"
+          },
+          {
+            "task_id": "jsn-02",
+            "dim": "structured_json",
+            "difficulty": "medium",
+            "passed": true,
+            "score": 1.0,
+            "reason": "exact_json_match",
+            "attempts": 1,
+            "latency_ms": 760.04,
+            "response_preview": "{\n  \"items\": 5,\n  \"total_cost_usd\": 150,\n  \"currency\": \"USD\"\n}"
+          },
+          {
+            "task_id": "jsn-03",
+            "dim": "structured_json",
+            "difficulty": "medium",
+            "passed": true,
+            "score": 1.0,
+            "reason": "exact_json_match",
+            "attempts": 1,
+            "latency_ms": 760.92,
+            "response_preview": "{\n  \"active_regions\": [\"ap-south\", \"ca-central\", \"us-east\"],\n  \"offline_count\": 2\n}"
+          },
+          {
+            "task_id": "jsn-04",
+            "dim": "structured_json",
+            "difficulty": "hard",
+            "passed": false,
+            "score": 0.5,
+            "reason": "value_mismatch:subtotal:400!=520",
+            "attempts": 1,
+            "latency_ms": 992.4,
+            "response_preview": "{\n  \"subtotal\": 400,\n  \"discount\": 40,\n  \"tax\": 38,\n  \"grand_total\": 498\n}"
+          },
+          {
+            "task_id": "dia-01",
+            "dim": "diagrams_charts",
+            "difficulty": "easy",
+            "passed": true,
+            "score": 1.0,
+            "reason": "verified_mermaid",
+            "attempts": 1,
+            "latency_ms": 549.81,
+            "response_preview": "```mermaid\nflowchart TD\n    Ingest --> Validate\n    Validate --> Archive\n```"
+          },
+          {
+            "task_id": "dia-02",
+            "dim": "diagrams_charts",
+            "difficulty": "medium",
+            "passed": true,
+            "score": 1.0,
+            "reason": "verified_mermaid",
+            "attempts": 1,
+            "latency_ms": 730.51,
+            "response_preview": "```mermaid\nstateDiagram-v2\n    Idle --> Queued\n    Queued --> Running\n    Running --> Done\n```"
+          },
+          {
+            "task_id": "dia-03",
+            "dim": "diagrams_charts",
+            "difficulty": "medium",
+            "passed": true,
+            "score": 1.0,
+            "reason": "verified_mermaid",
+            "attempts": 1,
+            "latency_ms": 1381.38,
+            "response_preview": "```mermaid\nflowchart LR\n    Client[\"Browser (UI)\"] --> Gateway[\"API Gateway\"]\n    Gateway[\"API Gateway\"] --> Worker[\"Job Runner (Async)\"]\n    Worker[\"Job Runner (Async)\"] --> Alert[\"Alert\"]\n```"
+          },
+          {
+            "task_id": "dia-04",
+            "dim": "diagrams_charts",
+            "difficulty": "hard",
+            "passed": true,
+            "score": 1.0,
+            "reason": "exact_json_match",
+            "attempts": 1,
+            "latency_ms": 1722.73,
+            "response_preview": "```json\n{\n  \"chart_type\": \"bar\",\n  \"x_labels\": [\"Q1\", \"Q2\", \"Q3\", \"Q4\"],\n  \"values\": [14, 29, 21, 36],\n  \"sum_total\": 100\n}\n```"
+          },
+          {
+            "task_id": "lng-01",
+            "dim": "long_context",
+            "difficulty": "easy",
+            "passed": true,
+            "score": 1.0,
+            "reason": "exact_json_match",
+            "attempts": 1,
+            "latency_ms": 1100.25,
+            "response_preview": "```json\n{\"owner_south\": \"Kiran\", \"final_north_latency_ms\": 27}\n```"
+          },
+          {
+            "task_id": "lng-02",
+            "dim": "long_context",
+            "difficulty": "medium",
+            "passed": false,
+            "score": 0.0,
+            "reason": "invalid_json:Expecting ',' delimiter",
+            "attempts": 1,
+            "latency_ms": 1337.58,
+            "response_preview": "```json\n{\"ticket\": \"TKT-901\", \"net_hours\": 120 + 85 - 40}\n```"
+          },
+          {
+            "task_id": "lng-03",
+            "dim": "long_context",
+            "difficulty": "hard",
+            "passed": true,
+            "score": 1.0,
+            "reason": "exact_json_match",
+            "attempts": 1,
+            "latency_ms": 1602.89,
+            "response_preview": "```json\n{\n  \"p1_rpm\": 310,\n  \"p2_rpm\": 440,\n  \"reported_rpm\": 310\n}\n```"
+          },
+          {
+            "task_id": "lng-04",
+            "dim": "long_context",
+            "difficulty": "hard",
+            "passed": false,
+            "score": 0.5,
+            "reason": "value_mismatch:remaining_kg:390!=375",
+            "attempts": 1,
+            "latency_ms": 1487.45,
+            "response_preview": "{\n  \"remaining_crates\": 13,\n  \"remaining_kg\": 390,\n  \"seal_code\": \"BOREAL-719\"\n}"
+          },
+          {
+            "task_id": "knw-01",
+            "dim": "general_knowledge",
+            "difficulty": "easy",
+            "passed": true,
+            "score": 1.0,
+            "reason": "exact_answer_match",
+            "attempts": 1,
+            "latency_ms": 782.23,
+            "response_preview": "The HTTP status code that means 'Too Many Requests' for rate limiting is 429.  \nFINAL_ANSWER: 429"
+          },
+          {
+            "task_id": "knw-02",
+            "dim": "general_knowledge",
+            "difficulty": "easy",
+            "passed": true,
+            "score": 1.0,
+            "reason": "exact_answer_match",
+            "attempts": 1,
+            "latency_ms": 963.97,
+            "response_preview": "The bit width of a standard double-precision `float64` in Python / IEEE-754 is 64 bits.  \nFINAL_ANSWER: 64"
+          },
+          {
+            "task_id": "knw-03",
+            "dim": "general_knowledge",
+            "difficulty": "medium",
+            "passed": true,
+            "score": 1.0,
+            "reason": "exact_answer_match",
+            "attempts": 1,
+            "latency_ms": 368.64,
+            "response_preview": "O(log n)  \nFINAL_ANSWER: O(log n)"
+          },
+          {
+            "task_id": "knw-04",
+            "dim": "general_knowledge",
+            "difficulty": "hard",
+            "passed": true,
+            "score": 1.0,
+            "reason": "exact_answer_match",
+            "attempts": 1,
+            "latency_ms": 810.04,
+            "response_preview": "The synchronization primitive that pairs a condition counter to allow wait/wake without kernel calls unless contended is `futex`.\n\nFINAL_ANSWER: futex"
+          },
+          {
+            "task_id": "msr-01",
+            "dim": "multi_step_reasoning",
+            "difficulty": "easy",
+            "passed": true,
+            "score": 1.0,
+            "reason": "exact_lastline_match",
+            "attempts": 1,
+            "latency_ms": 4662.75,
+            "response_preview": "We are given a buffer that starts at 10, and we apply a sequence of operations step by step. Let's track the value at each step.\n\n**Step 1: Double it**  \nStart: 10  \nAfter doubling: $ 10 \\times 2 = 20"
+          },
+          {
+            "task_id": "msr-02",
+            "dim": "multi_step_reasoning",
+            "difficulty": "medium",
+            "passed": true,
+            "score": 1.0,
+            "reason": "exact_lastline_match",
+            "attempts": 1,
+            "latency_ms": 6664.72,
+            "response_preview": "We are given three boxes: **Red**, **Blue**, and **Green**, each containing exactly one key: **Silver**, **Gold**, or **Brass**. We are also given three clues:\n\n---\n\n**Clue 1:** Red does not contain G"
+          },
+          {
+            "task_id": "msr-03",
+            "dim": "multi_step_reasoning",
+            "difficulty": "hard",
+            "passed": false,
+            "score": 0.0,
+            "reason": "answer_mismatch:'3'",
+            "attempts": 1,
+            "latency_ms": 6689.24,
+            "response_preview": "We are given a 4-register machine with the following initial values:\n\n- `r0 = 3`\n- `r1 = 5`\n- `r2 = 2`\n- `r3 = 7`\n\nWe are to execute the following operations step by step:\n\n1. `r0 <- r0 + r1`\n2. `r2 <"
+          },
+          {
+            "task_id": "msr-04",
+            "dim": "multi_step_reasoning",
+            "difficulty": "hard",
+            "passed": false,
+            "score": 0.0,
+            "reason": "answer_mismatch:'5'",
+            "attempts": 1,
+            "latency_ms": 6683.1,
+            "response_preview": "We are given the following information about the positions of servers A, B, C, D, and E:\n\n- There are 5 positions: 1, 2, 3, 4, 5.\n- Server B is at position **2**.\n- Server C is **immediately left of B"
+          },
+          {
+            "task_id": "ins-01",
+            "dim": "instruction_following",
+            "difficulty": "easy",
+            "passed": true,
+            "score": 1.0,
+            "reason": "all_constraints_satisfied",
+            "attempts": 1,
+            "latency_ms": 447.15,
+            "response_preview": "the system's kernel manages resources efficiently, ensuring stability and performance without external dependencies."
+          },
+          {
+            "task_id": "ins-02",
+            "dim": "instruction_following",
+            "difficulty": "medium",
+            "passed": true,
+            "score": 1.0,
+            "reason": "all_constraints_satisfied",
+            "attempts": 1,
+            "latency_ms": 1017.81,
+            "response_preview": "- Ensures code reliability by validating functionality under various conditions  \n- Facilitates faster development through early detection of issues  \n- Simplifies maintenance by isolating and address"
+          },
+          {
+            "task_id": "ins-03",
+            "dim": "instruction_following",
+            "difficulty": "medium",
+            "passed": false,
+            "score": 0.8,
+            "reason": "words=36>28",
+            "attempts": 1,
+            "latency_ms": 1095.34,
+            "response_preview": "Hash tables use a hash function to map keys to indices, where each index points to a bucket. Collisions occur when multiple keys hash to the same bucket, requiring resolution strategies like chaining "
+          },
+          {
+            "task_id": "ins-04",
+            "dim": "instruction_following",
+            "difficulty": "hard",
+            "passed": true,
+            "score": 1.0,
+            "reason": "all_constraints_satisfied",
+            "attempts": 1,
+            "latency_ms": 498.41,
+            "response_preview": "- latency drops with cache optimization ::done  \n- faster responses via efficient cache use ::done"
+          },
+          {
+            "task_id": "tol-01",
+            "dim": "tool_use",
+            "difficulty": "easy",
+            "passed": true,
+            "score": 1.0,
+            "reason": "verified_tool_calls",
+            "attempts": 1,
+            "latency_ms": 682.24,
+            "response_preview": "{\"tool\": \"read_metric\", \"args\": {\"service\": \"auth-api\", \"window_min\": 15}}"
+          },
+          {
+            "task_id": "tol-02",
+            "dim": "tool_use",
+            "difficulty": "medium",
+            "passed": false,
+            "score": 0.0,
+            "reason": "tool_call_mismatch:0/2",
+            "attempts": 1,
+            "latency_ms": 1526.32,
+            "response_preview": "{\"calls\": [{\"function\": \"fetch_balance\", \"arguments\": {\"account_id\": 402}}, {\"function\": \"convert_currency\", \"arguments\": {\"amount\": 250, \"from_ccy\": \"USD\", \"to_ccy\": \"EUR\"}}]}"
+          },
+          {
+            "task_id": "tol-03",
+            "dim": "tool_use",
+            "difficulty": "medium",
+            "passed": true,
+            "score": 1.0,
+            "reason": "verified_tool_calls",
+            "attempts": 1,
+            "latency_ms": 579.95,
+            "response_preview": "{\"tool\": \"cache_lookup\", \"args\": {\"key\": \"cuda\", \"fallback\": true}}"
+          },
+          {
+            "task_id": "tol-04",
+            "dim": "tool_use",
+            "difficulty": "hard",
+            "passed": false,
+            "score": 0.0,
+            "reason": "tool_call_mismatch:0/2",
+            "attempts": 1,
+            "latency_ms": 942.89,
+            "response_preview": "{\"calls\": [\"create_backup_dir(path: '/tmp/recover')\", \"write_default_config(target: '/etc/missing.conf', mode: 644)\"]}"
+          },
+          {
+            "task_id": "pln-01",
+            "dim": "planning_decomposition",
+            "difficulty": "easy",
+            "passed": true,
+            "score": 1.0,
+            "reason": "verified_dag_schedule_and_makespan",
+            "attempts": 1,
+            "latency_ms": 526.71,
+            "response_preview": "{\"order\": [\"A\", \"B\", \"C\"], \"makespan\": 9}"
+          },
+          {
+            "task_id": "pln-02",
+            "dim": "planning_decomposition",
+            "difficulty": "medium",
+            "passed": false,
+            "score": 0.7,
+            "reason": "wrong_makespan:7!=9",
+            "attempts": 1,
+            "latency_ms": 632.62,
+            "response_preview": "{\"order\": [\"Spec\", \"Backend\", \"Frontend\", \"Deploy\"], \"makespan\": 7}"
+          },
+          {
+            "task_id": "pln-03",
+            "dim": "planning_decomposition",
+            "difficulty": "hard",
+            "passed": false,
+            "score": 0.7,
+            "reason": "wrong_makespan:15!=13",
+            "attempts": 1,
+            "latency_ms": 841.52,
+            "response_preview": "{\"order\": [\"T1\", \"T2\", \"T3\", \"T4\", \"T5\"], \"makespan\": 15}"
+          },
+          {
+            "task_id": "pln-04",
+            "dim": "planning_decomposition",
+            "difficulty": "hard",
+            "passed": false,
+            "score": 0.7,
+            "reason": "wrong_makespan:17!=10",
+            "attempts": 1,
+            "latency_ms": 735.49,
+            "response_preview": "{\"order\": [\"Init\", \"Data\", \"Kernel\", \"Eval\", \"Signoff\"], \"makespan\": 17}"
+          },
+          {
+            "task_id": "ood-01",
+            "dim": "ood_robustness",
+            "difficulty": "easy",
+            "passed": true,
+            "score": 1.0,
+            "reason": "exact_answer_match",
+            "attempts": 1,
+            "latency_ms": 2786.86,
+            "response_preview": "We are given a custom binary operator `@` defined as:\n\n$$\na @ b = (2 \\times a) + (3 \\times b)\n$$\n\nWe are asked to compute:\n\n$$\n5 @ 4\n$$\n\nUsing the definition:\n\n$$\n5 @ 4 = (2 \\times 5) + (3 \\times 4)\n$"
+          },
+          {
+            "task_id": "ood-02",
+            "dim": "ood_robustness",
+            "difficulty": "medium",
+            "passed": false,
+            "score": 0.0,
+            "reason": "answer_mismatch:'24'",
+            "attempts": 1,
+            "latency_ms": 5758.91,
+            "response_preview": "In Base-Z arithmetic, the operations are defined as follows:\n\n- `+` represents **multiplication** (ordinary multiplication)\n- `*` represents **addition** (ordinary addition)\n- `*` has **higher precede"
+          },
+          {
+            "task_id": "ood-03",
+            "dim": "ood_robustness",
+            "difficulty": "hard",
+            "passed": true,
+            "score": 1.0,
+            "reason": "exact_lastline_match",
+            "attempts": 1,
+            "latency_ms": 3595.82,
+            "response_preview": "To compute `FLIP_ADD(14, 230)`, we follow the steps defined by the operator:\n\n1. **Reverse the decimal digits of `a` (14):**  \n   - `14` \u2192 reverse \u2192 `41`\n\n2. **Reverse the decimal digits of `b` (230):"
+          },
+          {
+            "task_id": "ood-04",
+            "dim": "ood_robustness",
+            "difficulty": "hard",
+            "passed": true,
+            "score": 1.0,
+            "reason": "exact_lastline_match",
+            "attempts": 1,
+            "latency_ms": 5264.36,
+            "response_preview": "We are given the function $ f(x) = (x^2 + 1) \\mod 13 $, and we are asked to compute $ f(f(4)) $.\n\n---\n\n### Step 1: Compute $ f(4) $\n\n$$\nf(4) = (4^2 + 1) \\mod 13\n$$\n$$\n= (16 + 1) \\mod 13\n$$\n$$\n= 17 \\mo"
+          },
+          {
+            "task_id": "hal-01",
+            "dim": "hallucination_resistance",
+            "difficulty": "easy",
+            "passed": true,
+            "score": 1.0,
+            "reason": "calibrated_abstention",
+            "attempts": 1,
+            "latency_ms": 1098.26,
+            "response_preview": "ABSTAIN: The provided information does not include the quantity of units purchased or the total price of the items before shipping, making it impossible to determine the exact price per unit of item S"
+          },
+          {
+            "task_id": "hal-02",
+            "dim": "hallucination_resistance",
+            "difficulty": "medium",
+            "passed": true,
+            "score": 1.0,
+            "reason": "calibrated_abstention",
+            "attempts": 1,
+            "latency_ms": 2087.45,
+            "response_preview": "ABSTAIN: The logs provide conflicting information about the server uptime on May 4. Log A states 100.00% uptime with zero downtime, while Log B states 94.2% uptime due to a 50-minute power trip. Witho"
+          },
+          {
+            "task_id": "hal-03",
+            "dim": "hallucination_resistance",
+            "difficulty": "medium",
+            "passed": true,
+            "score": 1.0,
+            "reason": "calibrated_abstention",
+            "attempts": 1,
+            "latency_ms": 3279.16,
+            "response_preview": "ABSTAIN:  \n\nThere are no prime integers $ p > 5 $ whose square $ p^2 $ is even.  \n\n### Reasoning:\n- A prime number greater than 5 must be odd (since all even numbers greater than 2 are not prime).\n- T"
+          },
+          {
+            "task_id": "hal-04",
+            "dim": "hallucination_resistance",
+            "difficulty": "hard",
+            "passed": true,
+            "score": 1.0,
+            "reason": "calibrated_abstention",
+            "attempts": 1,
+            "latency_ms": 136.59,
+            "response_preview": "ABSTAIN:"
+          },
+          {
+            "task_id": "mem-01",
+            "dim": "memory_retention",
+            "difficulty": "easy",
+            "passed": true,
+            "score": 1.0,
+            "reason": "exact_json_match",
+            "attempts": 1,
+            "latency_ms": 843.8,
+            "response_preview": "{\"user\": \"alice\", \"role\": \"editor\", \"region\": \"eu-west\", \"active\": false, \"quota\": 35}"
+          },
+          {
+            "task_id": "mem-02",
+            "dim": "memory_retention",
+            "difficulty": "medium",
+            "passed": true,
+            "score": 1.0,
+            "reason": "exact_json_match",
+            "attempts": 1,
+            "latency_ms": 530.99,
+            "response_preview": "{\"gpu\": 3, \"ssd\": 1, \"fan\": 3}"
+          },
+          {
+            "task_id": "mem-03",
+            "dim": "memory_retention",
+            "difficulty": "hard",
+            "passed": false,
+            "score": 0.5,
+            "reason": "value_mismatch:A:110!=80",
+            "attempts": 1,
+            "latency_ms": 427.97,
+            "response_preview": "{\"A\": 110, \"B\": 65}"
+          },
+          {
+            "task_id": "mem-04",
+            "dim": "memory_retention",
+            "difficulty": "hard",
+            "passed": true,
+            "score": 1.0,
+            "reason": "exact_json_match",
+            "attempts": 1,
+            "latency_ms": 738.99,
+            "response_preview": "{\"branch\": \"release-1\", \"owner\": \"liam\", \"priority\": \"critical\", \"status\": \"merged\"}"
+          }
+        ]
+      },
+      {
+        "arm": "NanoLM_1.7B_Holonomic_v2_Greedy",
+        "is_external_opponent": false,
+        "ttc_syntax_retries": 0,
+        "ttc_triggers": 0,
+        "ttc_syntax_recoveries": 0,
+        "total_parameters": 1747149824,
+        "passed": 35,
+        "total_tasks": 56,
+        "accuracy": 0.625,
+        "bootstrap_ci95": [
+          0.5179,
+          0.75
+        ],
+        "mean_partial_score": 0.7702,
+        "by_dimension": {
+          "coding": {
+            "passed": 1,
+            "total": 4,
+            "accuracy": 0.25,
+            "mean_score": 0.25
+          },
+          "math_logic": {
+            "passed": 2,
+            "total": 4,
+            "accuracy": 0.5,
+            "mean_score": 0.5
+          },
+          "summarization": {
+            "passed": 4,
+            "total": 4,
+            "accuracy": 1.0,
+            "mean_score": 1.0
+          },
+          "structured_json": {
+            "passed": 2,
+            "total": 4,
+            "accuracy": 0.5,
+            "mean_score": 0.75
+          },
+          "diagrams_charts": {
+            "passed": 2,
+            "total": 4,
+            "accuracy": 0.5,
+            "mean_score": 0.8958
+          },
+          "long_context": {
+            "passed": 2,
+            "total": 4,
+            "accuracy": 0.5,
+            "mean_score": 0.75
+          },
+          "general_knowledge": {
+            "passed": 4,
+            "total": 4,
+            "accuracy": 1.0,
+            "mean_score": 1.0
+          },
+          "multi_step_reasoning": {
+            "passed": 2,
+            "total": 4,
+            "accuracy": 0.5,
+            "mean_score": 0.5
+          },
+          "instruction_following": {
+            "passed": 3,
+            "total": 4,
+            "accuracy": 0.75,
+            "mean_score": 0.9375
+          },
+          "tool_use": {
+            "passed": 4,
+            "total": 4,
+            "accuracy": 1.0,
+            "mean_score": 1.0
+          },
+          "planning_decomposition": {
+            "passed": 0,
+            "total": 4,
+            "accuracy": 0.0,
+            "mean_score": 0.7
+          },
+          "ood_robustness": {
+            "passed": 3,
+            "total": 4,
+            "accuracy": 0.75,
+            "mean_score": 0.75
+          },
+          "hallucination_resistance": {
+            "passed": 4,
+            "total": 4,
+            "accuracy": 1.0,
+            "mean_score": 1.0
+          },
+          "memory_retention": {
+            "passed": 2,
+            "total": 4,
+            "accuracy": 0.5,
+            "mean_score": 0.75
+          },
+          "inference_efficiency": {
+            "capability_accuracy": 0.625,
+            "capability_per_billion_params": 0.3577,
+            "tokens_per_sec": 24.45,
+            "kv_cache_mb_at_4k": 448.0,
+            "efficiency_composite_score": 0.5774,
+            "p50_ms": 1218.69,
+            "p95_ms": 5264.61,
+            "peak_vram_mb": 4296.81,
+            "total_parameters": 1747149824
+          }
+        },
+        "by_difficulty": {
+          "easy": {
+            "passed": 12,
+            "total": 15,
+            "accuracy": 0.8
+          },
+          "medium": {
+            "passed": 13,
+            "total": 21,
+            "accuracy": 0.619
+          },
+          "hard": {
+            "passed": 10,
+            "total": 20,
+            "accuracy": 0.5
+          }
+        },
+        "failure_taxonomy": {
+          "runtime_or_assertion_failure:IndexError: string index out of range": 1,
+          "runtime_or_assertion_failure:AssertionError": 1,
+          "runtime_or_assertion_failure:NameError: name 'heapq' is not defined. Did you mean: 'help'? Or did you forget ": 1,
+          "answer_mismatch:'300'": 1,
+          "answer_mismatch:'22'": 1,
+          "value_mismatch:total_cost_usd:115!=150": 1,
+          "value_mismatch:subtotal:400!=520": 1,
+          "incomplete_mermaid:hits=3/3,edges=1": 1,
+          "incomplete_mermaid:hits=4/4,edges=2": 1,
+          "value_mismatch:net_hours:100!=165": 1,
+          "value_mismatch:remaining_crates:1!=13": 1,
+          "answer_mismatch:'<int>`'": 1
+        },
+        "tasks": [
+          {
+            "task_id": "cod-01",
+            "dim": "coding",
+            "difficulty": "easy",
+            "passed": false,
+            "score": 0.0,
+            "reason": "runtime_or_assertion_failure:IndexError: string index out of range",
+            "attempts": 1,
+            "latency_ms": 3785.05,
+            "response_preview": "```python\ndef run_length_encode(s: str) -> list[tuple[str, int]]:\n    out = []\n    n = 1\n    for i in range(1, len(s)):\n        if s[i] == s[i-1]:\n            n += 1\n        else:\n            out.appe"
+          },
+          {
+            "task_id": "cod-02",
+            "dim": "coding",
+            "difficulty": "medium",
+            "passed": true,
+            "score": 1.0,
+            "reason": "all_assertions_passed",
+            "attempts": 1,
+            "latency_ms": 4608.94,
+            "response_preview": "```python\ndef eval_rpn(tokens: list[str]) -> int:\n    stack = []\n    for tok in tokens:\n        if tok in ('+', '-', '*', '/'):\n            b = stack.pop()\n            a = stack.pop()\n            if t"
+          },
+          {
+            "task_id": "cod-03",
+            "dim": "coding",
+            "difficulty": "medium",
+            "passed": false,
+            "score": 0.0,
+            "reason": "runtime_or_assertion_failure:AssertionError",
+            "attempts": 1,
+            "latency_ms": 5264.61,
+            "response_preview": "```python\ndef kth_smallest_bst(values: list[int], k: int) -> int:\n    def get_kth_smallest(arr: list[int], k: int) -> int:\n        if not arr:\n            return -1\n        if k == 1:\n            retu"
+          },
+          {
+            "task_id": "cod-04",
+            "dim": "coding",
+            "difficulty": "hard",
+            "passed": false,
+            "score": 0.0,
+            "reason": "runtime_or_assertion_failure:NameError: name 'heapq' is not defined. Did you mean: 'help'? Or did you forget ",
+            "attempts": 1,
+            "latency_ms": 7156.49,
+            "response_preview": "```python\ndef dijkstra(n: int, edges: list[tuple[int, int, int]], src: int, dst: int) -> int:\n    adj = [[] for _ in range(n)]\n    for u, v, w in edges:\n        adj[u].append((v, w))\n    dist = [float"
+          },
+          {
+            "task_id": "mth-01",
+            "dim": "math_logic",
+            "difficulty": "easy",
+            "passed": true,
+            "score": 1.0,
+            "reason": "exact_answer_match",
+            "attempts": 1,
+            "latency_ms": 1784.9,
+            "response_preview": "Compute product 17 * 23 = 391.\nSubtract 91: 300.\nInteger divide by 5: 60.\nFINAL_ANSWER: 60"
+          },
+          {
+            "task_id": "mth-02",
+            "dim": "math_logic",
+            "difficulty": "medium",
+            "passed": false,
+            "score": 0.0,
+            "reason": "answer_mismatch:'300'",
+            "attempts": 1,
+            "latency_ms": 1096.66,
+            "response_preview": "Checking divisibility by 6 and 15 yields numbers divisible by 30.\nFINAL_ANSWER: 300"
+          },
+          {
+            "task_id": "mth-03",
+            "dim": "math_logic",
+            "difficulty": "hard",
+            "passed": false,
+            "score": 0.0,
+            "reason": "answer_mismatch:'22'",
+            "attempts": 1,
+            "latency_ms": 973.85,
+            "response_preview": "Checking residues modulo 7 and 11 yields x = 22.\nFINAL_ANSWER: 22"
+          },
+          {
+            "task_id": "mth-04",
+            "dim": "math_logic",
+            "difficulty": "hard",
+            "passed": true,
+            "score": 1.0,
+            "reason": "exact_answer_match",
+            "attempts": 1,
+            "latency_ms": 5841.3,
+            "response_preview": "a_2 = 2*a_1 + a_0 = 2*2 + 1 = 5\na_3 = 2*a_2 + a_1 = 2*5 + 2 = 12\na_4 = 2*a_3 + a_2 = 2*12 + 5 = 29\na_5 = 2*a_4 + a_3 = 2*29 + 12 = 70\na_6 = 2*a_5 + a_4 = 2*70 + 29 = 169\nFINAL_ANSWER: 169"
+          },
+          {
+            "task_id": "sum-01",
+            "dim": "summarization",
+            "difficulty": "easy",
+            "passed": true,
+            "score": 1.0,
+            "reason": "verified_summary",
+            "attempts": 1,
+            "latency_ms": 1056.18,
+            "response_preview": "Orbiter Kestrel endured 48 hours of thermal soak with 3.2% thruster mass leakage."
+          },
+          {
+            "task_id": "sum-02",
+            "dim": "summarization",
+            "difficulty": "medium",
+            "passed": true,
+            "score": 1.0,
+            "reason": "verified_summary",
+            "attempts": 1,
+            "latency_ms": 1870.34,
+            "response_preview": "CinderDB replaced mutex-guarded buffers with wait-free ring slots in Q2, reducing P99 commit latency to 14.5 ms while maintaining 99.94% replication durability under chaos drills."
+          },
+          {
+            "task_id": "sum-03",
+            "dim": "summarization",
+            "difficulty": "medium",
+            "passed": true,
+            "score": 1.0,
+            "reason": "verified_summary",
+            "attempts": 1,
+            "latency_ms": 1177.71,
+            "response_preview": "Survey crew drilled borehole BH-9 down to 620 m through fractured basalt, recovering 91% core integrity."
+          },
+          {
+            "task_id": "sum-04",
+            "dim": "summarization",
+            "difficulty": "hard",
+            "passed": true,
+            "score": 1.0,
+            "reason": "verified_summary",
+            "attempts": 1,
+            "latency_ms": 1420.36,
+            "response_preview": "Loom-7 reduced idle transformer losses to 0.41 kWh per feeder and cut evening peak draw by 28% across 12 substations."
+          },
+          {
+            "task_id": "jsn-01",
+            "dim": "structured_json",
+            "difficulty": "easy",
+            "passed": true,
+            "score": 1.0,
+            "reason": "exact_json_match",
+            "attempts": 1,
+            "latency_ms": 1014.95,
+            "response_preview": "{\"host\": \"gw-04.internal\", \"port\": 8443, \"tls\": true}"
+          },
+          {
+            "task_id": "jsn-02",
+            "dim": "structured_json",
+            "difficulty": "medium",
+            "passed": false,
+            "score": 0.5,
+            "reason": "value_mismatch:total_cost_usd:115!=150",
+            "attempts": 1,
+            "latency_ms": 974.41,
+            "response_preview": "{\"items\": 5, \"total_cost_usd\": 115, \"currency\": \"USD\"}"
+          },
+          {
+            "task_id": "jsn-03",
+            "dim": "structured_json",
+            "difficulty": "medium",
+            "passed": true,
+            "score": 1.0,
+            "reason": "exact_json_match",
+            "attempts": 1,
+            "latency_ms": 1016.82,
+            "response_preview": "{\"active_regions\": [\"ap-south\", \"ca-central\", \"us-east\"], \"offline_count\": 2}"
+          },
+          {
+            "task_id": "jsn-04",
+            "dim": "structured_json",
+            "difficulty": "hard",
+            "passed": false,
+            "score": 0.5,
+            "reason": "value_mismatch:subtotal:400!=520",
+            "attempts": 1,
+            "latency_ms": 1300.73,
+            "response_preview": "{\"subtotal\": 400, \"discount\": 40, \"tax\": 38, \"grand_total\": 400}"
+          },
+          {
+            "task_id": "dia-01",
+            "dim": "diagrams_charts",
+            "difficulty": "easy",
+            "passed": false,
+            "score": 0.75,
+            "reason": "incomplete_mermaid:hits=3/3,edges=1",
+            "attempts": 1,
+            "latency_ms": 731.57,
+            "response_preview": "```mermaid\nflowchart TD\n    Ingest --> Validate --> Archive\n```"
+          },
+          {
+            "task_id": "dia-02",
+            "dim": "diagrams_charts",
+            "difficulty": "medium",
+            "passed": true,
+            "score": 1.0,
+            "reason": "verified_mermaid",
+            "attempts": 1,
+            "latency_ms": 1137.09,
+            "response_preview": "```mermaid\nstateDiagram-v2\n    Idle --> Queued\n    Queued --> Running\n    Running --> Done\n```"
+          },
+          {
+            "task_id": "dia-03",
+            "dim": "diagrams_charts",
+            "difficulty": "medium",
+            "passed": false,
+            "score": 0.8333,
+            "reason": "incomplete_mermaid:hits=4/4,edges=2",
+            "attempts": 1,
+            "latency_ms": 1621.66,
+            "response_preview": "```mermaid\nflowchart LR\n    Client[\"Browser (UI)\"] --> Gateway[\"API Gateway\"] --> Worker[\"Job Runner (Async)\"]\n    Gateway --> Alert[\"Alert\"]\n```"
+          },
+          {
+            "task_id": "dia-04",
+            "dim": "diagrams_charts",
+            "difficulty": "hard",
+            "passed": true,
+            "score": 1.0,
+            "reason": "exact_json_match",
+            "attempts": 1,
+            "latency_ms": 2151.04,
+            "response_preview": "{\"chart_type\": \"bar\", \"x_labels\": [\"Q1\",\"Q2\",\"Q3\",\"Q4\"], \"values\": [14, 29, 21, 36], \"sum_total\": 100}"
+          },
+          {
+            "task_id": "lng-01",
+            "dim": "long_context",
+            "difficulty": "easy",
+            "passed": true,
+            "score": 1.0,
+            "reason": "exact_json_match",
+            "attempts": 1,
+            "latency_ms": 979.83,
+            "response_preview": "{\"owner_south\": \"Kiran\", \"final_north_latency_ms\": 27}"
+          },
+          {
+            "task_id": "lng-02",
+            "dim": "long_context",
+            "difficulty": "medium",
+            "passed": false,
+            "score": 0.5,
+            "reason": "value_mismatch:net_hours:100!=165",
+            "attempts": 1,
+            "latency_ms": 981.71,
+            "response_preview": "{\"ticket\": \"TKT-901\", \"net_hours\": 100}"
+          },
+          {
+            "task_id": "lng-03",
+            "dim": "long_context",
+            "difficulty": "hard",
+            "passed": true,
+            "score": 1.0,
+            "reason": "exact_json_match",
+            "attempts": 1,
+            "latency_ms": 1470.32,
+            "response_preview": "{\"p1_rpm\": 310, \"p2_rpm\": 440, \"reported_rpm\": 310}"
+          },
+          {
+            "task_id": "lng-04",
+            "dim": "long_context",
+            "difficulty": "hard",
+            "passed": false,
+            "score": 0.5,
+            "reason": "value_mismatch:remaining_crates:1!=13",
+            "attempts": 1,
+            "latency_ms": 1430.39,
+            "response_preview": "{\"remaining_crates\": 1, \"remaining_kg\": 105, \"seal_code\": \"BOREAL-719\"}"
+          },
+          {
+            "task_id": "knw-01",
+            "dim": "general_knowledge",
+            "difficulty": "easy",
+            "passed": true,
+            "score": 1.0,
+            "reason": "exact_answer_match",
+            "attempts": 1,
+            "latency_ms": 1218.69,
+            "response_preview": "The HTTP status code 429 is used to indicate 'Too Many Requests' for rate limiting.\nFINAL_ANSWER: 429"
+          },
+          {
+            "task_id": "knw-02",
+            "dim": "general_knowledge",
+            "difficulty": "easy",
+            "passed": true,
+            "score": 1.0,
+            "reason": "exact_answer_match",
+            "attempts": 1,
+            "latency_ms": 1055.48,
+            "response_preview": "The bit width of a standard double-precision float64 is 64 bits.\nFINAL_ANSWER: 64"
+          },
+          {
+            "task_id": "knw-03",
+            "dim": "general_knowledge",
+            "difficulty": "medium",
+            "passed": true,
+            "score": 1.0,
+            "reason": "exact_answer_match",
+            "attempts": 1,
+            "latency_ms": 1176.52,
+            "response_preview": "The worst-case time complexity of binary search on a sorted array of n elements is O(log n). FINAL_ANSWER: O(log n)"
+          },
+          {
+            "task_id": "knw-04",
+            "dim": "general_knowledge",
+            "difficulty": "hard",
+            "passed": true,
+            "score": 1.0,
+            "reason": "exact_answer_match",
+            "attempts": 1,
+            "latency_ms": 571.51,
+            "response_preview": "The correct pair is futex.\nFINAL_ANSWER: futex"
+          },
+          {
+            "task_id": "msr-01",
+            "dim": "multi_step_reasoning",
+            "difficulty": "easy",
+            "passed": true,
+            "score": 1.0,
+            "reason": "exact_answer_match",
+            "attempts": 1,
+            "latency_ms": 1623.46,
+            "response_preview": "Step 1: 20\nStep 2: 14\nStep 3: 42\nStep 4: 50\nFINAL_ANSWER: 50"
+          },
+          {
+            "task_id": "msr-02",
+            "dim": "multi_step_reasoning",
+            "difficulty": "medium",
+            "passed": true,
+            "score": 1.0,
+            "reason": "exact_answer_match",
+            "attempts": 1,
+            "latency_ms": 2224.96,
+            "response_preview": "Clue 2 says Green contains Silver. Clue 1 says Red does not contain Gold. Clue 3 says Blue does not contain Brass. So Red contains either Silver or Brass. But Green contains Silver, so Red contains Br"
+          },
+          {
+            "task_id": "msr-03",
+            "dim": "multi_step_reasoning",
+            "difficulty": "hard",
+            "passed": false,
+            "score": 0.0,
+            "reason": "answer_mismatch:'<int>`'",
+            "attempts": 1,
+            "latency_ms": 1338.01,
+            "response_preview": "Compute exact parity/count and end with `FINAL_ANSWER: <int>`.\nCompute exact parity/count and end with `FINAL_ANSWER: <int>`."
+          },
+          {
+            "task_id": "msr-04",
+            "dim": "multi_step_reasoning",
+            "difficulty": "hard",
+            "passed": false,
+            "score": 0.0,
+            "reason": "answer_mismatch:'1'",
+            "attempts": 1,
+            "latency_ms": 1501.07,
+            "response_preview": "B is at 2, C is at 3. A is at 5. D is at 4. E is at 1.\nFINAL_ANSWER: 1"
+          },
+          {
+            "task_id": "ins-01",
+            "dim": "instruction_following",
+            "difficulty": "easy",
+            "passed": true,
+            "score": 1.0,
+            "reason": "all_constraints_satisfied",
+            "attempts": 1,
+            "latency_ms": 611.75,
+            "response_preview": "kernel is the heart of computing, powering everything from servers to smartphones."
+          },
+          {
+            "task_id": "ins-02",
+            "dim": "instruction_following",
+            "difficulty": "medium",
+            "passed": false,
+            "score": 0.75,
+            "reason": "forbidden_present:bug",
+            "attempts": 1,
+            "latency_ms": 1942.25,
+            "response_preview": "- Unit testing ensures code reliability by validating expected behavior under various inputs.\n- It improves maintainability by catching regressions early and reducing debugging time.\n- Testing promote"
+          },
+          {
+            "task_id": "ins-03",
+            "dim": "instruction_following",
+            "difficulty": "medium",
+            "passed": true,
+            "score": 1.0,
+            "reason": "all_constraints_satisfied",
+            "attempts": 1,
+            "latency_ms": 771.85,
+            "response_preview": "Hash tables use buckets to store key-value pairs, resolving collisions via chaining or open addressing."
+          },
+          {
+            "task_id": "ins-04",
+            "dim": "instruction_following",
+            "difficulty": "hard",
+            "passed": true,
+            "score": 1.0,
+            "reason": "all_constraints_satisfied",
+            "attempts": 1,
+            "latency_ms": 812.39,
+            "response_preview": "- latency: 10ms\n- cache: 90% hit\n::done"
+          },
+          {
+            "task_id": "tol-01",
+            "dim": "tool_use",
+            "difficulty": "easy",
+            "passed": true,
+            "score": 1.0,
+            "reason": "verified_tool_calls",
+            "attempts": 1,
+            "latency_ms": 1062.99,
+            "response_preview": "{\"tool\": \"read_metric\", \"args\": {\"service\": \"auth-api\", \"window_min\": 15}}"
+          },
+          {
+            "task_id": "tol-02",
+            "dim": "tool_use",
+            "difficulty": "medium",
+            "passed": true,
+            "score": 1.0,
+            "reason": "verified_tool_calls",
+            "attempts": 1,
+            "latency_ms": 2354.12,
+            "response_preview": "{\"calls\": [{\"tool\": \"fetch_balance\", \"args\": {\"account_id\": 402}}, {\"tool\": \"convert_currency\", \"args\": {\"amount\": 250, \"from_ccy\": \"USD\", \"to_ccy\": \"EUR\"}}]}"
+          },
+          {
+            "task_id": "tol-03",
+            "dim": "tool_use",
+            "difficulty": "medium",
+            "passed": true,
+            "score": 1.0,
+            "reason": "verified_tool_calls",
+            "attempts": 1,
+            "latency_ms": 895.82,
+            "response_preview": "{\"tool\": \"cache_lookup\", \"args\": {\"key\": \"cuda\", \"fallback\": true}}"
+          },
+          {
+            "task_id": "tol-04",
+            "dim": "tool_use",
+            "difficulty": "hard",
+            "passed": true,
+            "score": 1.0,
+            "reason": "verified_tool_calls",
+            "attempts": 1,
+            "latency_ms": 2157.22,
+            "response_preview": "{\"calls\": [{\"tool\": \"create_backup_dir\", \"args\": {\"path\": \"/tmp/recover\"}}, {\"tool\": \"write_default_config\", \"args\": {\"target\": \"/etc/missing.conf\", \"mode\": 644}}]}"
+          },
+          {
+            "task_id": "pln-01",
+            "dim": "planning_decomposition",
+            "difficulty": "easy",
+            "passed": false,
+            "score": 0.7,
+            "reason": "wrong_makespan:7!=9",
+            "attempts": 1,
+            "latency_ms": 814.76,
+            "response_preview": "{\"order\": [\"A\", \"B\", \"C\"], \"makespan\": 7}"
+          },
+          {
+            "task_id": "pln-02",
+            "dim": "planning_decomposition",
+            "difficulty": "medium",
+            "passed": false,
+            "score": 0.7,
+            "reason": "wrong_makespan:10!=9",
+            "attempts": 1,
+            "latency_ms": 1018.69,
+            "response_preview": "{\"order\": [\"Spec\", \"Backend\", \"Frontend\", \"Deploy\"], \"makespan\": 10}"
+          },
+          {
+            "task_id": "pln-03",
+            "dim": "planning_decomposition",
+            "difficulty": "hard",
+            "passed": false,
+            "score": 0.7,
+            "reason": "wrong_makespan:15!=13",
+            "attempts": 1,
+            "latency_ms": 1306.51,
+            "response_preview": "{\"order\": [\"T1\", \"T2\", \"T3\", \"T4\", \"T5\"], \"makespan\": 15}"
+          },
+          {
+            "task_id": "pln-04",
+            "dim": "planning_decomposition",
+            "difficulty": "hard",
+            "passed": false,
+            "score": 0.7,
+            "reason": "wrong_makespan:13!=10",
+            "attempts": 1,
+            "latency_ms": 1144.78,
+            "response_preview": "{\"order\": [\"Init\", \"Data\", \"Kernel\", \"Eval\", \"Signoff\"], \"makespan\": 13}"
+          },
+          {
+            "task_id": "ood-01",
+            "dim": "ood_robustness",
+            "difficulty": "easy",
+            "passed": true,
+            "score": 1.0,
+            "reason": "exact_answer_match",
+            "attempts": 1,
+            "latency_ms": 1504.2,
+            "response_preview": "5 @ 4 = 2 * 5 + 3 * 4 = 10 + 12 = 22.\nFINAL_ANSWER: 22"
+          },
+          {
+            "task_id": "ood-02",
+            "dim": "ood_robustness",
+            "difficulty": "medium",
+            "passed": false,
+            "score": 0.0,
+            "reason": "answer_mismatch:'10'",
+            "attempts": 1,
+            "latency_ms": 737.94,
+            "response_preview": "Compute 2 * 3 + 4.\nFINAL_ANSWER: 10"
+          },
+          {
+            "task_id": "ood-03",
+            "dim": "ood_robustness",
+            "difficulty": "hard",
+            "passed": true,
+            "score": 1.0,
+            "reason": "exact_answer_match",
+            "attempts": 1,
+            "latency_ms": 2234.49,
+            "response_preview": "FLIP_ADD(14, 230) reverses 14 to 41 and 230 to 032, summing 41 + 32 = 73.\nFINAL_ANSWER: 73"
+          },
+          {
+            "task_id": "ood-04",
+            "dim": "ood_robustness",
+            "difficulty": "hard",
+            "passed": true,
+            "score": 1.0,
+            "reason": "exact_answer_match",
+            "attempts": 1,
+            "latency_ms": 1906.44,
+            "response_preview": "f(4) = 17 mod 13 = 4.\nf(4) = 4^2 + 1 = 17 mod 13 = 4.\nFINAL_ANSWER: 4"
+          },
+          {
+            "task_id": "hal-01",
+            "dim": "hallucination_resistance",
+            "difficulty": "easy",
+            "passed": true,
+            "score": 1.0,
+            "reason": "calibrated_abstention",
+            "attempts": 1,
+            "latency_ms": 2485.47,
+            "response_preview": "ABSTAIN: The question contains an impossible premise. The invoice #88 cannot be used to determine the exact price per unit of item SKU-9 because the invoice does not provide the total cost of the item"
+          },
+          {
+            "task_id": "hal-02",
+            "dim": "hallucination_resistance",
+            "difficulty": "medium",
+            "passed": true,
+            "score": 1.0,
+            "reason": "calibrated_abstention",
+            "attempts": 1,
+            "latency_ms": 491.56,
+            "response_preview": "ABSTAIN: Premises are missing or contradictory."
+          },
+          {
+            "task_id": "hal-03",
+            "dim": "hallucination_resistance",
+            "difficulty": "medium",
+            "passed": true,
+            "score": 1.0,
+            "reason": "calibrated_abstention",
+            "attempts": 1,
+            "latency_ms": 1546.23,
+            "response_preview": "ABSTAIN: The square of any prime number is even if and only if the prime is 2. Since 2 is not greater than 5, no such prime exists."
+          },
+          {
+            "task_id": "hal-04",
+            "dim": "hallucination_resistance",
+            "difficulty": "hard",
+            "passed": true,
+            "score": 1.0,
+            "reason": "calibrated_abstention",
+            "attempts": 1,
+            "latency_ms": 817.45,
+            "response_preview": "ABSTAIN: The document does not provide information about Warehouse West's inventory in Q4."
+          },
+          {
+            "task_id": "mem-01",
+            "dim": "memory_retention",
+            "difficulty": "easy",
+            "passed": true,
+            "score": 1.0,
+            "reason": "exact_json_match",
+            "attempts": 1,
+            "latency_ms": 1303.31,
+            "response_preview": "{\"user\": \"alice\", \"role\": \"editor\", \"region\": \"eu-west\", \"active\": false, \"quota\": 35}"
+          },
+          {
+            "task_id": "mem-02",
+            "dim": "memory_retention",
+            "difficulty": "medium",
+            "passed": true,
+            "score": 1.0,
+            "reason": "exact_json_match",
+            "attempts": 1,
+            "latency_ms": 818.4,
+            "response_preview": "{\"gpu\": 3, \"ssd\": 1, \"fan\": 3}"
+          },
+          {
+            "task_id": "mem-03",
+            "dim": "memory_retention",
+            "difficulty": "hard",
+            "passed": false,
+            "score": 0.5,
+            "reason": "value_mismatch:A:75!=80",
+            "attempts": 1,
+            "latency_ms": 615.37,
+            "response_preview": "{\"A\": 75, \"B\": 70}"
+          },
+          {
+            "task_id": "mem-04",
+            "dim": "memory_retention",
+            "difficulty": "hard",
+            "passed": false,
+            "score": 0.5,
+            "reason": "value_mismatch:branch:'main'!='release-1'",
+            "attempts": 1,
+            "latency_ms": 1060.44,
+            "response_preview": "{\"branch\": \"main\", \"owner\": \"liam\", \"priority\": \"critical\", \"status\": \"merged\"}"
+          }
+        ],
+        "training_stats": {
+          "graft": {
+            "lora_layers": 196,
+            "holonomic_sidecar_layers": 8,
+            "total_parameters": 1747149824,
+            "trainable_parameters": 26574848,
+            "trainable_pct": 1.521,
+            "step0_max_abs_logit_diff": 0.0
+          },
+          "sft_v2": {
+            "epochs": 3,
+            "steps": 186,
+            "epoch_losses": [
+              0.59044,
+              0.22513,
+              0.13001
+            ]
+          },
+          "grpo_v2": {
+            "rounds": 2,
+            "total_prompt_groups": 94,
+            "gradient_updates": 19,
+            "skipped_zero_variance_groups": 75,
+            "round_mean_rewards": [
+              0.5608,
+              0.5892
+            ],
+            "mean_kl": 0.350726
+          },
+          "mean_abs_sidecar_gate": 0.001397,
+          "trainable_tensor_count": 440
+        }
+      },
+      {
+        "arm": "NanoLM_1.7B_Holonomic_v2_SyntaxTTC",
+        "is_external_opponent": false,
+        "ttc_syntax_retries": 2,
+        "ttc_triggers": 0,
+        "ttc_syntax_recoveries": 0,
+        "total_parameters": 1747149824,
+        "passed": 35,
+        "total_tasks": 56,
+        "accuracy": 0.625,
+        "bootstrap_ci95": [
+          0.5179,
+          0.75
+        ],
+        "mean_partial_score": 0.7702,
+        "by_dimension": {
+          "coding": {
+            "passed": 1,
+            "total": 4,
+            "accuracy": 0.25,
+            "mean_score": 0.25
+          },
+          "math_logic": {
+            "passed": 2,
+            "total": 4,
+            "accuracy": 0.5,
+            "mean_score": 0.5
+          },
+          "summarization": {
+            "passed": 4,
+            "total": 4,
+            "accuracy": 1.0,
+            "mean_score": 1.0
+          },
+          "structured_json": {
+            "passed": 2,
+            "total": 4,
+            "accuracy": 0.5,
+            "mean_score": 0.75
+          },
+          "diagrams_charts": {
+            "passed": 2,
+            "total": 4,
+            "accuracy": 0.5,
+            "mean_score": 0.8958
+          },
+          "long_context": {
+            "passed": 2,
+            "total": 4,
+            "accuracy": 0.5,
+            "mean_score": 0.75
+          },
+          "general_knowledge": {
+            "passed": 4,
+            "total": 4,
+            "accuracy": 1.0,
+            "mean_score": 1.0
+          },
+          "multi_step_reasoning": {
+            "passed": 2,
+            "total": 4,
+            "accuracy": 0.5,
+            "mean_score": 0.5
+          },
+          "instruction_following": {
+            "passed": 3,
+            "total": 4,
+            "accuracy": 0.75,
+            "mean_score": 0.9375
+          },
+          "tool_use": {
+            "passed": 4,
+            "total": 4,
+            "accuracy": 1.0,
+            "mean_score": 1.0
+          },
+          "planning_decomposition": {
+            "passed": 0,
+            "total": 4,
+            "accuracy": 0.0,
+            "mean_score": 0.7
+          },
+          "ood_robustness": {
+            "passed": 3,
+            "total": 4,
+            "accuracy": 0.75,
+            "mean_score": 0.75
+          },
+          "hallucination_resistance": {
+            "passed": 4,
+            "total": 4,
+            "accuracy": 1.0,
+            "mean_score": 1.0
+          },
+          "memory_retention": {
+            "passed": 2,
+            "total": 4,
+            "accuracy": 0.5,
+            "mean_score": 0.75
+          },
+          "inference_efficiency": {
+            "capability_accuracy": 0.625,
+            "capability_per_billion_params": 0.3577,
+            "tokens_per_sec": 24.49,
+            "kv_cache_mb_at_4k": 448.0,
+            "efficiency_composite_score": 0.5776,
+            "p50_ms": 1213.12,
+            "p95_ms": 5240.57,
+            "peak_vram_mb": 4296.81,
+            "total_parameters": 1747149824
+          }
+        },
+        "by_difficulty": {
+          "easy": {
+            "passed": 12,
+            "total": 15,
+            "accuracy": 0.8
+          },
+          "medium": {
+            "passed": 13,
+            "total": 21,
+            "accuracy": 0.619
+          },
+          "hard": {
+            "passed": 10,
+            "total": 20,
+            "accuracy": 0.5
+          }
+        },
+        "failure_taxonomy": {
+          "runtime_or_assertion_failure:IndexError: string index out of range": 1,
+          "runtime_or_assertion_failure:AssertionError": 1,
+          "runtime_or_assertion_failure:NameError: name 'heapq' is not defined. Did you mean: 'help'? Or did you forget ": 1,
+          "answer_mismatch:'300'": 1,
+          "answer_mismatch:'22'": 1,
+          "value_mismatch:total_cost_usd:115!=150": 1,
+          "value_mismatch:subtotal:400!=520": 1,
+          "incomplete_mermaid:hits=3/3,edges=1": 1,
+          "incomplete_mermaid:hits=4/4,edges=2": 1,
+          "value_mismatch:net_hours:100!=165": 1,
+          "value_mismatch:remaining_crates:1!=13": 1,
+          "answer_mismatch:'<int>`'": 1
+        },
+        "tasks": [
+          {
+            "task_id": "cod-01",
+            "dim": "coding",
+            "difficulty": "easy",
+            "passed": false,
+            "score": 0.0,
+            "reason": "runtime_or_assertion_failure:IndexError: string index out of range",
+            "attempts": 1,
+            "latency_ms": 3779.02,
+            "response_preview": "```python\ndef run_length_encode(s: str) -> list[tuple[str, int]]:\n    out = []\n    n = 1\n    for i in range(1, len(s)):\n        if s[i] == s[i-1]:\n            n += 1\n        else:\n            out.appe"
+          },
+          {
+            "task_id": "cod-02",
+            "dim": "coding",
+            "difficulty": "medium",
+            "passed": true,
+            "score": 1.0,
+            "reason": "all_assertions_passed",
+            "attempts": 1,
+            "latency_ms": 4629.11,
+            "response_preview": "```python\ndef eval_rpn(tokens: list[str]) -> int:\n    stack = []\n    for tok in tokens:\n        if tok in ('+', '-', '*', '/'):\n            b = stack.pop()\n            a = stack.pop()\n            if t"
+          },
+          {
+            "task_id": "cod-03",
+            "dim": "coding",
+            "difficulty": "medium",
+            "passed": false,
+            "score": 0.0,
+            "reason": "runtime_or_assertion_failure:AssertionError",
+            "attempts": 1,
+            "latency_ms": 5240.57,
+            "response_preview": "```python\ndef kth_smallest_bst(values: list[int], k: int) -> int:\n    def get_kth_smallest(arr: list[int], k: int) -> int:\n        if not arr:\n            return -1\n        if k == 1:\n            retu"
+          },
+          {
+            "task_id": "cod-04",
+            "dim": "coding",
+            "difficulty": "hard",
+            "passed": false,
+            "score": 0.0,
+            "reason": "runtime_or_assertion_failure:NameError: name 'heapq' is not defined. Did you mean: 'help'? Or did you forget ",
+            "attempts": 1,
+            "latency_ms": 7197.8,
+            "response_preview": "```python\ndef dijkstra(n: int, edges: list[tuple[int, int, int]], src: int, dst: int) -> int:\n    adj = [[] for _ in range(n)]\n    for u, v, w in edges:\n        adj[u].append((v, w))\n    dist = [float"
+          },
+          {
+            "task_id": "mth-01",
+            "dim": "math_logic",
+            "difficulty": "easy",
+            "passed": true,
+            "score": 1.0,
+            "reason": "exact_answer_match",
+            "attempts": 1,
+            "latency_ms": 1786.99,
+            "response_preview": "Compute product 17 * 23 = 391.\nSubtract 91: 300.\nInteger divide by 5: 60.\nFINAL_ANSWER: 60"
+          },
+          {
+            "task_id": "mth-02",
+            "dim": "math_logic",
+            "difficulty": "medium",
+            "passed": false,
+            "score": 0.0,
+            "reason": "answer_mismatch:'300'",
+            "attempts": 1,
+            "latency_ms": 1094.35,
+            "response_preview": "Checking divisibility by 6 and 15 yields numbers divisible by 30.\nFINAL_ANSWER: 300"
+          },
+          {
+            "task_id": "mth-03",
+            "dim": "math_logic",
+            "difficulty": "hard",
+            "passed": false,
+            "score": 0.0,
+            "reason": "answer_mismatch:'22'",
+            "attempts": 1,
+            "latency_ms": 971.93,
+            "response_preview": "Checking residues modulo 7 and 11 yields x = 22.\nFINAL_ANSWER: 22"
+          },
+          {
+            "task_id": "mth-04",
+            "dim": "math_logic",
+            "difficulty": "hard",
+            "passed": true,
+            "score": 1.0,
+            "reason": "exact_answer_match",
+            "attempts": 1,
+            "latency_ms": 5814.71,
+            "response_preview": "a_2 = 2*a_1 + a_0 = 2*2 + 1 = 5\na_3 = 2*a_2 + a_1 = 2*5 + 2 = 12\na_4 = 2*a_3 + a_2 = 2*12 + 5 = 29\na_5 = 2*a_4 + a_3 = 2*29 + 12 = 70\na_6 = 2*a_5 + a_4 = 2*70 + 29 = 169\nFINAL_ANSWER: 169"
+          },
+          {
+            "task_id": "sum-01",
+            "dim": "summarization",
+            "difficulty": "easy",
+            "passed": true,
+            "score": 1.0,
+            "reason": "verified_summary",
+            "attempts": 1,
+            "latency_ms": 1050.02,
+            "response_preview": "Orbiter Kestrel endured 48 hours of thermal soak with 3.2% thruster mass leakage."
+          },
+          {
+            "task_id": "sum-02",
+            "dim": "summarization",
+            "difficulty": "medium",
+            "passed": true,
+            "score": 1.0,
+            "reason": "verified_summary",
+            "attempts": 1,
+            "latency_ms": 1859.12,
+            "response_preview": "CinderDB replaced mutex-guarded buffers with wait-free ring slots in Q2, reducing P99 commit latency to 14.5 ms while maintaining 99.94% replication durability under chaos drills."
+          },
+          {
+            "task_id": "sum-03",
+            "dim": "summarization",
+            "difficulty": "medium",
+            "passed": true,
+            "score": 1.0,
+            "reason": "verified_summary",
+            "attempts": 1,
+            "latency_ms": 1173.02,
+            "response_preview": "Survey crew drilled borehole BH-9 down to 620 m through fractured basalt, recovering 91% core integrity."
+          },
+          {
+            "task_id": "sum-04",
+            "dim": "summarization",
+            "difficulty": "hard",
+            "passed": true,
+            "score": 1.0,
+            "reason": "verified_summary",
+            "attempts": 1,
+            "latency_ms": 1413.84,
+            "response_preview": "Loom-7 reduced idle transformer losses to 0.41 kWh per feeder and cut evening peak draw by 28% across 12 substations."
+          },
+          {
+            "task_id": "jsn-01",
+            "dim": "structured_json",
+            "difficulty": "easy",
+            "passed": true,
+            "score": 1.0,
+            "reason": "exact_json_match",
+            "attempts": 1,
+            "latency_ms": 1012.35,
+            "response_preview": "{\"host\": \"gw-04.internal\", \"port\": 8443, \"tls\": true}"
+          },
+          {
+            "task_id": "jsn-02",
+            "dim": "structured_json",
+            "difficulty": "medium",
+            "passed": false,
+            "score": 0.5,
+            "reason": "value_mismatch:total_cost_usd:115!=150",
+            "attempts": 1,
+            "latency_ms": 972.32,
+            "response_preview": "{\"items\": 5, \"total_cost_usd\": 115, \"currency\": \"USD\"}"
+          },
+          {
+            "task_id": "jsn-03",
+            "dim": "structured_json",
+            "difficulty": "medium",
+            "passed": true,
+            "score": 1.0,
+            "reason": "exact_json_match",
+            "attempts": 1,
+            "latency_ms": 1010.75,
+            "response_preview": "{\"active_regions\": [\"ap-south\", \"ca-central\", \"us-east\"], \"offline_count\": 2}"
+          },
+          {
+            "task_id": "jsn-04",
+            "dim": "structured_json",
+            "difficulty": "hard",
+            "passed": false,
+            "score": 0.5,
+            "reason": "value_mismatch:subtotal:400!=520",
+            "attempts": 1,
+            "latency_ms": 1298.83,
+            "response_preview": "{\"subtotal\": 400, \"discount\": 40, \"tax\": 38, \"grand_total\": 400}"
+          },
+          {
+            "task_id": "dia-01",
+            "dim": "diagrams_charts",
+            "difficulty": "easy",
+            "passed": false,
+            "score": 0.75,
+            "reason": "incomplete_mermaid:hits=3/3,edges=1",
+            "attempts": 1,
+            "latency_ms": 730.21,
+            "response_preview": "```mermaid\nflowchart TD\n    Ingest --> Validate --> Archive\n```"
+          },
+          {
+            "task_id": "dia-02",
+            "dim": "diagrams_charts",
+            "difficulty": "medium",
+            "passed": true,
+            "score": 1.0,
+            "reason": "verified_mermaid",
+            "attempts": 1,
+            "latency_ms": 1132.91,
+            "response_preview": "```mermaid\nstateDiagram-v2\n    Idle --> Queued\n    Queued --> Running\n    Running --> Done\n```"
+          },
+          {
+            "task_id": "dia-03",
+            "dim": "diagrams_charts",
+            "difficulty": "medium",
+            "passed": false,
+            "score": 0.8333,
+            "reason": "incomplete_mermaid:hits=4/4,edges=2",
+            "attempts": 1,
+            "latency_ms": 1617.15,
+            "response_preview": "```mermaid\nflowchart LR\n    Client[\"Browser (UI)\"] --> Gateway[\"API Gateway\"] --> Worker[\"Job Runner (Async)\"]\n    Gateway --> Alert[\"Alert\"]\n```"
+          },
+          {
+            "task_id": "dia-04",
+            "dim": "diagrams_charts",
+            "difficulty": "hard",
+            "passed": true,
+            "score": 1.0,
+            "reason": "exact_json_match",
+            "attempts": 1,
+            "latency_ms": 2147.09,
+            "response_preview": "{\"chart_type\": \"bar\", \"x_labels\": [\"Q1\",\"Q2\",\"Q3\",\"Q4\"], \"values\": [14, 29, 21, 36], \"sum_total\": 100}"
+          },
+          {
+            "task_id": "lng-01",
+            "dim": "long_context",
+            "difficulty": "easy",
+            "passed": true,
+            "score": 1.0,
+            "reason": "exact_json_match",
+            "attempts": 1,
+            "latency_ms": 982.7,
+            "response_preview": "{\"owner_south\": \"Kiran\", \"final_north_latency_ms\": 27}"
+          },
+          {
+            "task_id": "lng-02",
+            "dim": "long_context",
+            "difficulty": "medium",
+            "passed": false,
+            "score": 0.5,
+            "reason": "value_mismatch:net_hours:100!=165",
+            "attempts": 1,
+            "latency_ms": 983.29,
+            "response_preview": "{\"ticket\": \"TKT-901\", \"net_hours\": 100}"
+          },
+          {
+            "task_id": "lng-03",
+            "dim": "long_context",
+            "difficulty": "hard",
+            "passed": true,
+            "score": 1.0,
+            "reason": "exact_json_match",
+            "attempts": 1,
+            "latency_ms": 1476.46,
+            "response_preview": "{\"p1_rpm\": 310, \"p2_rpm\": 440, \"reported_rpm\": 310}"
+          },
+          {
+            "task_id": "lng-04",
+            "dim": "long_context",
+            "difficulty": "hard",
+            "passed": false,
+            "score": 0.5,
+            "reason": "value_mismatch:remaining_crates:1!=13",
+            "attempts": 1,
+            "latency_ms": 1430.03,
+            "response_preview": "{\"remaining_crates\": 1, \"remaining_kg\": 105, \"seal_code\": \"BOREAL-719\"}"
+          },
+          {
+            "task_id": "knw-01",
+            "dim": "general_knowledge",
+            "difficulty": "easy",
+            "passed": true,
+            "score": 1.0,
+            "reason": "exact_answer_match",
+            "attempts": 1,
+            "latency_ms": 1213.12,
+            "response_preview": "The HTTP status code 429 is used to indicate 'Too Many Requests' for rate limiting.\nFINAL_ANSWER: 429"
+          },
+          {
+            "task_id": "knw-02",
+            "dim": "general_knowledge",
+            "difficulty": "easy",
+            "passed": true,
+            "score": 1.0,
+            "reason": "exact_answer_match",
+            "attempts": 1,
+            "latency_ms": 1053.71,
+            "response_preview": "The bit width of a standard double-precision float64 is 64 bits.\nFINAL_ANSWER: 64"
+          },
+          {
+            "task_id": "knw-03",
+            "dim": "general_knowledge",
+            "difficulty": "medium",
+            "passed": true,
+            "score": 1.0,
+            "reason": "exact_answer_match",
+            "attempts": 1,
+            "latency_ms": 1174.52,
+            "response_preview": "The worst-case time complexity of binary search on a sorted array of n elements is O(log n). FINAL_ANSWER: O(log n)"
+          },
+          {
+            "task_id": "knw-04",
+            "dim": "general_knowledge",
+            "difficulty": "hard",
+            "passed": true,
+            "score": 1.0,
+            "reason": "exact_answer_match",
+            "attempts": 1,
+            "latency_ms": 567.66,
+            "response_preview": "The correct pair is futex.\nFINAL_ANSWER: futex"
+          },
+          {
+            "task_id": "msr-01",
+            "dim": "multi_step_reasoning",
+            "difficulty": "easy",
+            "passed": true,
+            "score": 1.0,
+            "reason": "exact_answer_match",
+            "attempts": 1,
+            "latency_ms": 1617.34,
+            "response_preview": "Step 1: 20\nStep 2: 14\nStep 3: 42\nStep 4: 50\nFINAL_ANSWER: 50"
+          },
+          {
+            "task_id": "msr-02",
+            "dim": "multi_step_reasoning",
+            "difficulty": "medium",
+            "passed": true,
+            "score": 1.0,
+            "reason": "exact_answer_match",
+            "attempts": 1,
+            "latency_ms": 2227.07,
+            "response_preview": "Clue 2 says Green contains Silver. Clue 1 says Red does not contain Gold. Clue 3 says Blue does not contain Brass. So Red contains either Silver or Brass. But Green contains Silver, so Red contains Br"
+          },
+          {
+            "task_id": "msr-03",
+            "dim": "multi_step_reasoning",
+            "difficulty": "hard",
+            "passed": false,
+            "score": 0.0,
+            "reason": "answer_mismatch:'<int>`'",
+            "attempts": 1,
+            "latency_ms": 1336.59,
+            "response_preview": "Compute exact parity/count and end with `FINAL_ANSWER: <int>`.\nCompute exact parity/count and end with `FINAL_ANSWER: <int>`."
+          },
+          {
+            "task_id": "msr-04",
+            "dim": "multi_step_reasoning",
+            "difficulty": "hard",
+            "passed": false,
+            "score": 0.0,
+            "reason": "answer_mismatch:'1'",
+            "attempts": 1,
+            "latency_ms": 1501.96,
+            "response_preview": "B is at 2, C is at 3. A is at 5. D is at 4. E is at 1.\nFINAL_ANSWER: 1"
+          },
+          {
+            "task_id": "ins-01",
+            "dim": "instruction_following",
+            "difficulty": "easy",
+            "passed": true,
+            "score": 1.0,
+            "reason": "all_constraints_satisfied",
+            "attempts": 1,
+            "latency_ms": 610.61,
+            "response_preview": "kernel is the heart of computing, powering everything from servers to smartphones."
+          },
+          {
+            "task_id": "ins-02",
+            "dim": "instruction_following",
+            "difficulty": "medium",
+            "passed": false,
+            "score": 0.75,
+            "reason": "forbidden_present:bug",
+            "attempts": 1,
+            "latency_ms": 1946.28,
+            "response_preview": "- Unit testing ensures code reliability by validating expected behavior under various inputs.\n- It improves maintainability by catching regressions early and reducing debugging time.\n- Testing promote"
+          },
+          {
+            "task_id": "ins-03",
+            "dim": "instruction_following",
+            "difficulty": "medium",
+            "passed": true,
+            "score": 1.0,
+            "reason": "all_constraints_satisfied",
+            "attempts": 1,
+            "latency_ms": 774.04,
+            "response_preview": "Hash tables use buckets to store key-value pairs, resolving collisions via chaining or open addressing."
+          },
+          {
+            "task_id": "ins-04",
+            "dim": "instruction_following",
+            "difficulty": "hard",
+            "passed": true,
+            "score": 1.0,
+            "reason": "all_constraints_satisfied",
+            "attempts": 1,
+            "latency_ms": 811.61,
+            "response_preview": "- latency: 10ms\n- cache: 90% hit\n::done"
+          },
+          {
+            "task_id": "tol-01",
+            "dim": "tool_use",
+            "difficulty": "easy",
+            "passed": true,
+            "score": 1.0,
+            "reason": "verified_tool_calls",
+            "attempts": 1,
+            "latency_ms": 1065.92,
+            "response_preview": "{\"tool\": \"read_metric\", \"args\": {\"service\": \"auth-api\", \"window_min\": 15}}"
+          },
+          {
+            "task_id": "tol-02",
+            "dim": "tool_use",
+            "difficulty": "medium",
+            "passed": true,
+            "score": 1.0,
+            "reason": "verified_tool_calls",
+            "attempts": 1,
+            "latency_ms": 2360.01,
+            "response_preview": "{\"calls\": [{\"tool\": \"fetch_balance\", \"args\": {\"account_id\": 402}}, {\"tool\": \"convert_currency\", \"args\": {\"amount\": 250, \"from_ccy\": \"USD\", \"to_ccy\": \"EUR\"}}]}"
+          },
+          {
+            "task_id": "tol-03",
+            "dim": "tool_use",
+            "difficulty": "medium",
+            "passed": true,
+            "score": 1.0,
+            "reason": "verified_tool_calls",
+            "attempts": 1,
+            "latency_ms": 897.42,
+            "response_preview": "{\"tool\": \"cache_lookup\", \"args\": {\"key\": \"cuda\", \"fallback\": true}}"
+          },
+          {
+            "task_id": "tol-04",
+            "dim": "tool_use",
+            "difficulty": "hard",
+            "passed": true,
+            "score": 1.0,
+            "reason": "verified_tool_calls",
+            "attempts": 1,
+            "latency_ms": 2153.3,
+            "response_preview": "{\"calls\": [{\"tool\": \"create_backup_dir\", \"args\": {\"path\": \"/tmp/recover\"}}, {\"tool\": \"write_default_config\", \"args\": {\"target\": \"/etc/missing.conf\", \"mode\": 644}}]}"
+          },
+          {
+            "task_id": "pln-01",
+            "dim": "planning_decomposition",
+            "difficulty": "easy",
+            "passed": false,
+            "score": 0.7,
+            "reason": "wrong_makespan:7!=9",
+            "attempts": 1,
+            "latency_ms": 814.19,
+            "response_preview": "{\"order\": [\"A\", \"B\", \"C\"], \"makespan\": 7}"
+          },
+          {
+            "task_id": "pln-02",
+            "dim": "planning_decomposition",
+            "difficulty": "medium",
+            "passed": false,
+            "score": 0.7,
+            "reason": "wrong_makespan:10!=9",
+            "attempts": 1,
+            "latency_ms": 1023.02,
+            "response_preview": "{\"order\": [\"Spec\", \"Backend\", \"Frontend\", \"Deploy\"], \"makespan\": 10}"
+          },
+          {
+            "task_id": "pln-03",
+            "dim": "planning_decomposition",
+            "difficulty": "hard",
+            "passed": false,
+            "score": 0.7,
+            "reason": "wrong_makespan:15!=13",
+            "attempts": 1,
+            "latency_ms": 1303.45,
+            "response_preview": "{\"order\": [\"T1\", \"T2\", \"T3\", \"T4\", \"T5\"], \"makespan\": 15}"
+          },
+          {
+            "task_id": "pln-04",
+            "dim": "planning_decomposition",
+            "difficulty": "hard",
+            "passed": false,
+            "score": 0.7,
+            "reason": "wrong_makespan:13!=10",
+            "attempts": 1,
+            "latency_ms": 1140.09,
+            "response_preview": "{\"order\": [\"Init\", \"Data\", \"Kernel\", \"Eval\", \"Signoff\"], \"makespan\": 13}"
+          },
+          {
+            "task_id": "ood-01",
+            "dim": "ood_robustness",
+            "difficulty": "easy",
+            "passed": true,
+            "score": 1.0,
+            "reason": "exact_answer_match",
+            "attempts": 1,
+            "latency_ms": 1498.97,
+            "response_preview": "5 @ 4 = 2 * 5 + 3 * 4 = 10 + 12 = 22.\nFINAL_ANSWER: 22"
+          },
+          {
+            "task_id": "ood-02",
+            "dim": "ood_robustness",
+            "difficulty": "medium",
+            "passed": false,
+            "score": 0.0,
+            "reason": "answer_mismatch:'10'",
+            "attempts": 1,
+            "latency_ms": 733.62,
+            "response_preview": "Compute 2 * 3 + 4.\nFINAL_ANSWER: 10"
+          },
+          {
+            "task_id": "ood-03",
+            "dim": "ood_robustness",
+            "difficulty": "hard",
+            "passed": true,
+            "score": 1.0,
+            "reason": "exact_answer_match",
+            "attempts": 1,
+            "latency_ms": 2193.41,
+            "response_preview": "FLIP_ADD(14, 230) reverses 14 to 41 and 230 to 032, summing 41 + 32 = 73.\nFINAL_ANSWER: 73"
+          },
+          {
+            "task_id": "ood-04",
+            "dim": "ood_robustness",
+            "difficulty": "hard",
+            "passed": true,
+            "score": 1.0,
+            "reason": "exact_answer_match",
+            "attempts": 1,
+            "latency_ms": 1903.99,
+            "response_preview": "f(4) = 17 mod 13 = 4.\nf(4) = 4^2 + 1 = 17 mod 13 = 4.\nFINAL_ANSWER: 4"
+          },
+          {
+            "task_id": "hal-01",
+            "dim": "hallucination_resistance",
+            "difficulty": "easy",
+            "passed": true,
+            "score": 1.0,
+            "reason": "calibrated_abstention",
+            "attempts": 1,
+            "latency_ms": 2477.61,
+            "response_preview": "ABSTAIN: The question contains an impossible premise. The invoice #88 cannot be used to determine the exact price per unit of item SKU-9 because the invoice does not provide the total cost of the item"
+          },
+          {
+            "task_id": "hal-02",
+            "dim": "hallucination_resistance",
+            "difficulty": "medium",
+            "passed": true,
+            "score": 1.0,
+            "reason": "calibrated_abstention",
+            "attempts": 1,
+            "latency_ms": 489.7,
+            "response_preview": "ABSTAIN: Premises are missing or contradictory."
+          },
+          {
+            "task_id": "hal-03",
+            "dim": "hallucination_resistance",
+            "difficulty": "medium",
+            "passed": true,
+            "score": 1.0,
+            "reason": "calibrated_abstention",
+            "attempts": 1,
+            "latency_ms": 1541.5,
+            "response_preview": "ABSTAIN: The square of any prime number is even if and only if the prime is 2. Since 2 is not greater than 5, no such prime exists."
+          },
+          {
+            "task_id": "hal-04",
+            "dim": "hallucination_resistance",
+            "difficulty": "hard",
+            "passed": true,
+            "score": 1.0,
+            "reason": "calibrated_abstention",
+            "attempts": 1,
+            "latency_ms": 813.48,
+            "response_preview": "ABSTAIN: The document does not provide information about Warehouse West's inventory in Q4."
+          },
+          {
+            "task_id": "mem-01",
+            "dim": "memory_retention",
+            "difficulty": "easy",
+            "passed": true,
+            "score": 1.0,
+            "reason": "exact_json_match",
+            "attempts": 1,
+            "latency_ms": 1303.35,
+            "response_preview": "{\"user\": \"alice\", \"role\": \"editor\", \"region\": \"eu-west\", \"active\": false, \"quota\": 35}"
+          },
+          {
+            "task_id": "mem-02",
+            "dim": "memory_retention",
+            "difficulty": "medium",
+            "passed": true,
+            "score": 1.0,
+            "reason": "exact_json_match",
+            "attempts": 1,
+            "latency_ms": 824.75,
+            "response_preview": "{\"gpu\": 3, \"ssd\": 1, \"fan\": 3}"
+          },
+          {
+            "task_id": "mem-03",
+            "dim": "memory_retention",
+            "difficulty": "hard",
+            "passed": false,
+            "score": 0.5,
+            "reason": "value_mismatch:A:75!=80",
+            "attempts": 1,
+            "latency_ms": 613.16,
+            "response_preview": "{\"A\": 75, \"B\": 70}"
+          },
+          {
+            "task_id": "mem-04",
+            "dim": "memory_retention",
+            "difficulty": "hard",
+            "passed": false,
+            "score": 0.5,
+            "reason": "value_mismatch:branch:'main'!='release-1'",
+            "attempts": 1,
+            "latency_ms": 1061.36,
+            "response_preview": "{\"branch\": \"main\", \"owner\": \"liam\", \"priority\": \"critical\", \"status\": \"merged\"}"
+          }
+        ],
+        "training_stats": {
+          "graft": {
+            "lora_layers": 196,
+            "holonomic_sidecar_layers": 8,
+            "total_parameters": 1747149824,
+            "trainable_parameters": 26574848,
+            "trainable_pct": 1.521,
+            "step0_max_abs_logit_diff": 0.0
+          },
+          "sft_v2": {
+            "epochs": 3,
+            "steps": 186,
+            "epoch_losses": [
+              0.59044,
+              0.22513,
+              0.13001
+            ]
+          },
+          "grpo_v2": {
+            "rounds": 2,
+            "total_prompt_groups": 94,
+            "gradient_updates": 19,
+            "skipped_zero_variance_groups": 75,
+            "round_mean_rewards": [
+              0.5608,
+              0.5892
+            ],
+            "mean_kl": 0.350726
+          },
+          "mean_abs_sidecar_gate": 0.001397,
+          "trainable_tensor_count": 440
+        }
+      }
+    ]
+  }
+}

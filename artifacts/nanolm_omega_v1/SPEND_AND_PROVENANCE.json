@@ -1,0 +1,14 @@
+{
+  "pod_id": "jiwcmt2i7qspab",
+  "gpu_type": "NVIDIA A40",
+  "image": "runpod/pytorch:1.0.3-cu1281-torch291-ubuntu2404",
+  "wall_seconds": 1953,
+  "wall_minutes": 32.55,
+  "cost_per_hr_usd": 0.59,
+  "pod_attributed_spend_usd": 0.3201,
+  "preflight_estimated_usd": 0.0322,
+  "preflight_estimated_minutes": 4.83,
+  "account_balance_before_usd": 87.9285,
+  "account_balance_after_usd": 84.2127,
+  "account_balance_delta_usd": 3.7159
+}

@@ -1,0 +1,11 @@
+{
+  "pod_id": "vboeyg7n3dk7k3",
+  "gpu_type": "NVIDIA L40S",
+  "image": "runpod/pytorch:1.0.3-cu1281-torch291-ubuntu2404",
+  "wall_seconds": 2319,
+  "cost_per_hr_usd": 1.09,
+  "pod_attributed_spend_usd": 0.7021,
+  "account_balance_before_usd": 113.3984,
+  "account_balance_after_usd": 109.1799,
+  "account_balance_delta_usd": 4.2185
+}

@@ -1,0 +1,2161 @@
+{
+  "experiment": "EXP_FP4_1.7B_WorldController_v3",
+  "student_id": "Qwen/Qwen3-1.7B",
+  "merged_layers": 196,
+  "decontamination": {
+    "15d_sft": {
+      "train_examples": 62,
+      "eval_tasks": 56,
+      "overlaps": 0
+    },
+    "15d_rl": {
+      "train_examples": 24,
+      "eval_tasks": 56,
+      "overlaps": 0
+    },
+    "fp30": {
+      "overlaps": 0,
+      "train_examples_checked": 86,
+      "fp_eval_tasks_checked": 30
+    }
+  },
+  "training_stats": {
+    "graft": {
+      "nullspace_lora_layers": 196,
+      "nullspace_k": 48,
+      "omega_sidecar_layers": 8,
+      "total_parameters": 1747444768,
+      "trainable_parameters": 26869792,
+      "trainable_pct": 1.5377,
+      "step0_max_abs_logit_diff": 0.0
+    },
+    "sft_early2": {
+      "epochs": 2,
+      "steps": 124,
+      "epoch_losses": [
+        0.61728,
+        0.24509
+      ]
+    },
+    "grpo": {
+      "rounds": 1,
+      "total_prompt_groups": 47,
+      "gradient_updates": 6,
+      "skipped_zero_variance_groups": 41,
+      "round_mean_rewards": [
+        0.5342
+      ],
+      "mean_kl": 0.816671
+    },
+    "manifest": {
+      "model_id": "Qwen/Qwen3-1.7B",
+      "total_parameters": 1747444768,
+      "trainable_parameters": 26869792,
+      "nullspace_k": 48,
+      "adapter_tensor_count": 456,
+      "adapter_l2_norm": 156.8447,
+      "adapter_sha256_prefix": "66f2ce64e47ff701"
+    }
+  },
+  "fp_5axis_30_arms": [
+    {
+      "arm": "D0_Deterministic_Symbolic",
+      "total_parameters": 0,
+      "passed": 11,
+      "total_tasks": 30,
+      "accuracy": 0.3667,
+      "bootstrap_ci95": [
+        0.1667,
+        0.5333
+      ],
+      "total_model_calls": 0,
+      "total_tokens": 0,
+      "wall_seconds": 0.0,
+      "peak_vram_mb": 0.0,
+      "by_axis": {
+        "relational_generalization": {
+          "passed": 2,
+          "total": 6,
+          "accuracy": 0.3333
+        },
+        "bitemporal_belief_revision": {
+          "passed": 4,
+          "total": 6,
+          "accuracy": 0.6667
+        },
+        "exact_information_transport": {
+          "passed": 3,
+          "total": 6,
+          "accuracy": 0.5
+        },
+        "causal_vs_associational": {
+          "passed": 0,
+          "total": 6,
+          "accuracy": 0.0
+        },
+        "cross_domain_transfer": {
+          "passed": 2,
+          "total": 6,
+          "accuracy": 0.3333
+        }
+      },
+      "failure_taxonomy": {
+        "answer_mismatch:'UNKNOWN'": 16,
+        "invalid_json:Expecting value": 2,
+        "runtime_or_assertion_failure:NameError: name 'resolve_as_of' is not defined": 1
+      },
+      "tasks": [
+        {
+          "task_id": "fp-rel-01",
+          "axis": "relational_generalization",
+          "passed": false,
+          "score": 0.0,
+          "reason": "answer_mismatch:'UNKNOWN'",
+          "calls": 0,
+          "mode": "deterministic",
+          "response_preview": "FINAL_ANSWER: UNKNOWN"
+        },
+        {
+          "task_id": "fp-rel-02",
+          "axis": "relational_generalization",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_answer_match",
+          "calls": 0,
+          "mode": "deterministic",
+          "response_preview": "FINAL_ANSWER: 20"
+        },
+        {
+          "task_id": "fp-rel-03",
+          "axis": "relational_generalization",
+          "passed": false,
+          "score": 0.0,
+          "reason": "invalid_json:Expecting value",
+          "calls": 0,
+          "mode": "deterministic",
+          "response_preview": "FINAL_ANSWER: UNKNOWN"
+        },
+        {
+          "task_id": "fp-rel-04",
+          "axis": "relational_generalization",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_answer_match",
+          "calls": 0,
+          "mode": "deterministic",
+          "response_preview": "FINAL_ANSWER: 20"
+        },
+        {
+          "task_id": "fp-rel-05",
+          "axis": "relational_generalization",
+          "passed": false,
+          "score": 0.0,
+          "reason": "answer_mismatch:'UNKNOWN'",
+          "calls": 0,
+          "mode": "deterministic",
+          "response_preview": "FINAL_ANSWER: UNKNOWN"
+        },
+        {
+          "task_id": "fp-rel-06",
+          "axis": "relational_generalization",
+          "passed": false,
+          "score": 0.0,
+          "reason": "answer_mismatch:'UNKNOWN'",
+          "calls": 0,
+          "mode": "deterministic",
+          "response_preview": "FINAL_ANSWER: UNKNOWN"
+        },
+        {
+          "task_id": "fp-bit-01",
+          "axis": "bitemporal_belief_revision",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_json_match",
+          "calls": 0,
+          "mode": "deterministic",
+          "response_preview": "{\"state\": \"CONFLICTING\", \"value\": \"20_mg\"}"
+        },
+        {
+          "task_id": "fp-bit-02",
+          "axis": "bitemporal_belief_revision",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_json_match",
+          "calls": 0,
+          "mode": "deterministic",
+          "response_preview": "{\"state\": \"VERIFIED_VALUE\", \"value\": \"15_mg\"}"
+        },
+        {
+          "task_id": "fp-bit-03",
+          "axis": "bitemporal_belief_revision",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_json_match",
+          "calls": 0,
+          "mode": "deterministic",
+          "response_preview": "{\"state\": \"REPORTED_UNVERIFIED\", \"value\": \"4500ms\"}"
+        },
+        {
+          "task_id": "fp-bit-04",
+          "axis": "bitemporal_belief_revision",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_json_match",
+          "calls": 0,
+          "mode": "deterministic",
+          "response_preview": "{\"state\": \"UNKNOWN_NOT_FOUND\", \"value\": \"UNKNOWN\"}"
+        },
+        {
+          "task_id": "fp-bit-05",
+          "axis": "bitemporal_belief_revision",
+          "passed": false,
+          "score": 0.0,
+          "reason": "answer_mismatch:'UNKNOWN'",
+          "calls": 0,
+          "mode": "deterministic",
+          "response_preview": "FINAL_ANSWER: UNKNOWN"
+        },
+        {
+          "task_id": "fp-bit-06",
+          "axis": "bitemporal_belief_revision",
+          "passed": false,
+          "score": 0.0,
+          "reason": "answer_mismatch:'UNKNOWN'",
+          "calls": 0,
+          "mode": "deterministic",
+          "response_preview": "FINAL_ANSWER: UNKNOWN"
+        },
+        {
+          "task_id": "fp-ext-01",
+          "axis": "exact_information_transport",
+          "passed": false,
+          "score": 0.0,
+          "reason": "answer_mismatch:'UNKNOWN'",
+          "calls": 0,
+          "mode": "deterministic",
+          "response_preview": "FINAL_ANSWER: UNKNOWN"
+        },
+        {
+          "task_id": "fp-ext-02",
+          "axis": "exact_information_transport",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_json_match",
+          "calls": 0,
+          "mode": "deterministic",
+          "response_preview": "{\"state\": \"ISOLATED_DENIED\", \"value\": \"DENIED\"}"
+        },
+        {
+          "task_id": "fp-ext-03",
+          "axis": "exact_information_transport",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_answer_match",
+          "calls": 0,
+          "mode": "deterministic",
+          "response_preview": "FINAL_ANSWER: UNKNOWN"
+        },
+        {
+          "task_id": "fp-ext-04",
+          "axis": "exact_information_transport",
+          "passed": false,
+          "score": 0.0,
+          "reason": "answer_mismatch:'UNKNOWN'",
+          "calls": 0,
+          "mode": "deterministic",
+          "response_preview": "FINAL_ANSWER: UNKNOWN"
+        },
+        {
+          "task_id": "fp-ext-05",
+          "axis": "exact_information_transport",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_json_match",
+          "calls": 0,
+          "mode": "deterministic",
+          "response_preview": "{\"state\": \"VERIFIED_VALUE\", \"value\": \"240_rpm\"}"
+        },
+        {
+          "task_id": "fp-ext-06",
+          "axis": "exact_information_transport",
+          "passed": false,
+          "score": 0.0,
+          "reason": "answer_mismatch:'UNKNOWN'",
+          "calls": 0,
+          "mode": "deterministic",
+          "response_preview": "FINAL_ANSWER: UNKNOWN"
+        },
+        {
+          "task_id": "fp-cau-01",
+          "axis": "causal_vs_associational",
+          "passed": false,
+          "score": 0.0,
+          "reason": "answer_mismatch:'UNKNOWN'",
+          "calls": 0,
+          "mode": "deterministic",
+          "response_preview": "FINAL_ANSWER: UNKNOWN"
+        },
+        {
+          "task_id": "fp-cau-02",
+          "axis": "causal_vs_associational",
+          "passed": false,
+          "score": 0.0,
+          "reason": "answer_mismatch:'UNKNOWN'",
+          "calls": 0,
+          "mode": "deterministic",
+          "response_preview": "FINAL_ANSWER: UNKNOWN"
+        },
+        {
+          "task_id": "fp-cau-03",
+          "axis": "causal_vs_associational",
+          "passed": false,
+          "score": 0.0,
+          "reason": "answer_mismatch:'UNKNOWN'",
+          "calls": 0,
+          "mode": "deterministic",
+          "response_preview": "FINAL_ANSWER: UNKNOWN"
+        },
+        {
+          "task_id": "fp-cau-04",
+          "axis": "causal_vs_associational",
+          "passed": false,
+          "score": 0.0,
+          "reason": "answer_mismatch:'UNKNOWN'",
+          "calls": 0,
+          "mode": "deterministic",
+          "response_preview": "FINAL_ANSWER: UNKNOWN"
+        },
+        {
+          "task_id": "fp-cau-05",
+          "axis": "causal_vs_associational",
+          "passed": false,
+          "score": 0.0,
+          "reason": "answer_mismatch:'UNKNOWN'",
+          "calls": 0,
+          "mode": "deterministic",
+          "response_preview": "FINAL_ANSWER: UNKNOWN"
+        },
+        {
+          "task_id": "fp-cau-06",
+          "axis": "causal_vs_associational",
+          "passed": false,
+          "score": 0.0,
+          "reason": "answer_mismatch:'UNKNOWN'",
+          "calls": 0,
+          "mode": "deterministic",
+          "response_preview": "FINAL_ANSWER: UNKNOWN"
+        },
+        {
+          "task_id": "fp-xdom-01",
+          "axis": "cross_domain_transfer",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_json_match",
+          "calls": 0,
+          "mode": "deterministic",
+          "response_preview": "{\"state\": \"CONFLICTING\", \"value\": \"2.4.0\"}"
+        },
+        {
+          "task_id": "fp-xdom-02",
+          "axis": "cross_domain_transfer",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_json_match",
+          "calls": 0,
+          "mode": "deterministic",
+          "response_preview": "{\"state\": \"VERIFIED_VALUE\", \"value\": \"worker_b\"}"
+        },
+        {
+          "task_id": "fp-xdom-03",
+          "axis": "cross_domain_transfer",
+          "passed": false,
+          "score": 0.0,
+          "reason": "answer_mismatch:'UNKNOWN'",
+          "calls": 0,
+          "mode": "deterministic",
+          "response_preview": "FINAL_ANSWER: UNKNOWN"
+        },
+        {
+          "task_id": "fp-xdom-04",
+          "axis": "cross_domain_transfer",
+          "passed": false,
+          "score": 0.0,
+          "reason": "runtime_or_assertion_failure:NameError: name 'resolve_as_of' is not defined",
+          "calls": 0,
+          "mode": "deterministic",
+          "response_preview": "FINAL_ANSWER: UNKNOWN"
+        },
+        {
+          "task_id": "fp-xdom-05",
+          "axis": "cross_domain_transfer",
+          "passed": false,
+          "score": 0.0,
+          "reason": "answer_mismatch:'UNKNOWN'",
+          "calls": 0,
+          "mode": "deterministic",
+          "response_preview": "FINAL_ANSWER: UNKNOWN"
+        },
+        {
+          "task_id": "fp-xdom-06",
+          "axis": "cross_domain_transfer",
+          "passed": false,
+          "score": 0.0,
+          "reason": "invalid_json:Expecting value",
+          "calls": 0,
+          "mode": "deterministic",
+          "response_preview": "FINAL_ANSWER: UNKNOWN"
+        }
+      ]
+    },
+    {
+      "arm": "NanoLM_1.7B_Naked_Merged_Greedy",
+      "total_parameters": 1747444768,
+      "passed": 9,
+      "total_tasks": 30,
+      "accuracy": 0.3,
+      "bootstrap_ci95": [
+        0.1333,
+        0.4667
+      ],
+      "total_model_calls": 30,
+      "total_tokens": 1229,
+      "wall_seconds": 229.28,
+      "peak_vram_mb": 0.0,
+      "by_axis": {
+        "relational_generalization": {
+          "passed": 1,
+          "total": 6,
+          "accuracy": 0.1667
+        },
+        "bitemporal_belief_revision": {
+          "passed": 1,
+          "total": 6,
+          "accuracy": 0.1667
+        },
+        "exact_information_transport": {
+          "passed": 3,
+          "total": 6,
+          "accuracy": 0.5
+        },
+        "causal_vs_associational": {
+          "passed": 2,
+          "total": 6,
+          "accuracy": 0.3333
+        },
+        "cross_domain_transfer": {
+          "passed": 2,
+          "total": 6,
+          "accuracy": 0.3333
+        }
+      },
+      "failure_taxonomy": {
+        "value_mismatch:state:'active'!='VERIFIED_VALUE'": 2,
+        "answer_mismatch:'3'": 1,
+        "answer_mismatch:'26'": 1,
+        "value_mismatch:k9:25!=39": 1,
+        "answer_mismatch:'15'": 1,
+        "answer_mismatch:'2031'": 1,
+        "value_mismatch:state:'REPORTED_UNVERIFIED'!='CONFLICTING'": 1,
+        "value_mismatch:state:'conflict'!='VERIFIED_VALUE'": 1,
+        "value_mismatch:state:'unverified'!='REPORTED_UNVERIFIED'": 1,
+        "value_mismatch:state:'active'!='UNKNOWN_NOT_FOUND'": 1,
+        "answer_mismatch:'OVERWRITE_IN_PLACE'": 1,
+        "value_mismatch:state:'DENIED'!='ISOLATED_DENIED'": 1
+      },
+      "tasks": [
+        {
+          "task_id": "fp-rel-01",
+          "axis": "relational_generalization",
+          "passed": false,
+          "score": 0.0,
+          "reason": "answer_mismatch:'3'",
+          "calls": 1,
+          "mode": "naked_greedy",
+          "response_preview": "Compute shortest path from V_91 to V_03.\nV_91 -> V_44 (1)\nV_44 -> V_17 (1)\nV_17 -> V_03 (1)\nTotal hop distance: 3.\nFINAL_ANSWER: 3"
+        },
+        {
+          "task_id": "fp-rel-02",
+          "axis": "relational_generalization",
+          "passed": false,
+          "score": 0.0,
+          "reason": "answer_mismatch:'26'",
+          "calls": 1,
+          "mode": "naked_greedy",
+          "response_preview": "Compute the critical path.\nT_k1: 4\nT_m8: 9\nT_p3: 6\nT_r5: 7\nT_z9: 3\nCritical path: 4 + 9 + 6 + 7 = 26.\nFINAL_ANSWER: 26"
+        },
+        {
+          "task_id": "fp-rel-03",
+          "axis": "relational_generalization",
+          "passed": false,
+          "score": 0.5,
+          "reason": "value_mismatch:k9:25!=39",
+          "calls": 1,
+          "mode": "naked_greedy",
+          "response_preview": "{\"k9\": 25, \"m2\": 27, \"z1\": 31}"
+        },
+        {
+          "task_id": "fp-rel-04",
+          "axis": "relational_generalization",
+          "passed": false,
+          "score": 0.0,
+          "reason": "answer_mismatch:'15'",
+          "calls": 1,
+          "mode": "naked_greedy",
+          "response_preview": "Compute the parallel DAG critical-path makespan.\n- stage_x0: duration=5, deps=[]\n- stage_x1: duration=8, deps=[]\n- stage_x2: duration=6, deps=[stage_x0, stage_x"
+        },
+        {
+          "task_id": "fp-rel-05",
+          "axis": "relational_generalization",
+          "passed": false,
+          "score": 0.0,
+          "reason": "answer_mismatch:'2031'",
+          "calls": 1,
+          "mode": "naked_greedy",
+          "response_preview": "Apply S_swap01 ([1,0,2,3]) to [0,1,2,3] gives [1,0,2,3].\nApply S_swap23 ([0,1,3,2]) to [1,0,2,3] gives [1,0,3,2].\nApply S_rotL ([1,2,3,0]) to [1,0,3,2] gives [2"
+        },
+        {
+          "task_id": "fp-rel-06",
+          "axis": "relational_generalization",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_answer_match",
+          "calls": 1,
+          "mode": "naked_greedy",
+          "response_preview": "Compute the total displacement: +5 -2 +5 +5 -2 = +11.\nStart at node_3: 3 + 11 = 14 mod 12 = 2.\nFINAL_ANSWER: 2"
+        },
+        {
+          "task_id": "fp-bit-01",
+          "axis": "bitemporal_belief_revision",
+          "passed": false,
+          "score": 0.5,
+          "reason": "value_mismatch:state:'REPORTED_UNVERIFIED'!='CONFLICTING'",
+          "calls": 1,
+          "mode": "naked_greedy",
+          "response_preview": "{\"state\": \"REPORTED_UNVERIFIED\", \"value\": \"10_mg\"}"
+        },
+        {
+          "task_id": "fp-bit-02",
+          "axis": "bitemporal_belief_revision",
+          "passed": false,
+          "score": 0.5,
+          "reason": "value_mismatch:state:'conflict'!='VERIFIED_VALUE'",
+          "calls": 1,
+          "mode": "naked_greedy",
+          "response_preview": "{\"state\": \"conflict\", \"value\": \"15_mg\"}"
+        },
+        {
+          "task_id": "fp-bit-03",
+          "axis": "bitemporal_belief_revision",
+          "passed": false,
+          "score": 0.5,
+          "reason": "value_mismatch:state:'unverified'!='REPORTED_UNVERIFIED'",
+          "calls": 1,
+          "mode": "naked_greedy",
+          "response_preview": "{\"state\": \"unverified\", \"value\": \"4500ms\"}"
+        },
+        {
+          "task_id": "fp-bit-04",
+          "axis": "bitemporal_belief_revision",
+          "passed": false,
+          "score": 0.5,
+          "reason": "value_mismatch:state:'active'!='UNKNOWN_NOT_FOUND'",
+          "calls": 1,
+          "mode": "naked_greedy",
+          "response_preview": "{\"state\": \"active\", \"value\": \"ed25519_v1\"}"
+        },
+        {
+          "task_id": "fp-bit-05",
+          "axis": "bitemporal_belief_revision",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_answer_match",
+          "calls": 1,
+          "mode": "naked_greedy",
+          "response_preview": "FINAL_ANSWER: 38_psi"
+        },
+        {
+          "task_id": "fp-bit-06",
+          "axis": "bitemporal_belief_revision",
+          "passed": false,
+          "score": 0.0,
+          "reason": "answer_mismatch:'OVERWRITE_IN_PLACE'",
+          "calls": 1,
+          "mode": "naked_greedy",
+          "response_preview": "FINAL_ANSWER: OVERWRITE_IN_PLACE"
+        },
+        {
+          "task_id": "fp-ext-01",
+          "axis": "exact_information_transport",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_answer_match",
+          "calls": 1,
+          "mode": "naked_greedy",
+          "response_preview": "FINAL_ANSWER: kx94-v7m2-08f1"
+        },
+        {
+          "task_id": "fp-ext-02",
+          "axis": "exact_information_transport",
+          "passed": false,
+          "score": 0.5,
+          "reason": "value_mismatch:state:'DENIED'!='ISOLATED_DENIED'",
+          "calls": 1,
+          "mode": "naked_greedy",
+          "response_preview": "{\"state\": \"DENIED\", \"value\": \"Permission denied\"}"
+        },
+        {
+          "task_id": "fp-ext-03",
+          "axis": "exact_information_transport",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_answer_match",
+          "calls": 1,
+          "mode": "naked_greedy",
+          "response_preview": "FINAL_ANSWER: UNKNOWN"
+        },
+        {
+          "task_id": "fp-ext-04",
+          "axis": "exact_information_transport",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_answer_match",
+          "calls": 1,
+          "mode": "naked_greedy",
+          "response_preview": "FINAL_ANSWER: z9Q4-77Lm-x2P1"
+        },
+        {
+          "task_id": "fp-ext-05",
+          "axis": "exact_information_transport",
+          "passed": false,
+          "score": 0.5,
+          "reason": "value_mismatch:state:'active'!='VERIFIED_VALUE'",
+          "calls": 1,
+          "mode": "naked_greedy",
+          "response_preview": "{\"state\": \"active\", \"value\": \"240_rpm\"}"
+        },
+        {
+          "task_id": "fp-ext-06",
+          "axis": "exact_information_transport",
+          "passed": false,
+          "score": 0.0,
+          "reason": "answer_mismatch:'0.0625_mmol'",
+          "calls": 1,
+          "mode": "naked_greedy",
+          "response_preview": "0.0625_mmol\nFINAL_ANSWER: 0.0625_mmol"
+        },
+        {
+          "task_id": "fp-cau-01",
+          "axis": "causal_vs_associational",
+          "passed": false,
+          "score": 0.0,
+          "reason": "answer_mismatch:'0.62'",
+          "calls": 1,
+          "mode": "naked_greedy",
+          "response_preview": "The true causal backdoor-adjusted P(Y=1 | do(X=1)) is computed as the weighted average of the causal effects under Z=0 and Z=1.\nFINAL_ANSWER: 0.62"
+        },
+        {
+          "task_id": "fp-cau-02",
+          "axis": "causal_vs_associational",
+          "passed": false,
+          "score": 0.0,
+          "reason": "answer_mismatch:'DERIVED'",
+          "calls": 1,
+          "mode": "naked_greedy",
+          "response_preview": "FINAL_ANSWER: DERIVED"
+        },
+        {
+          "task_id": "fp-cau-03",
+          "axis": "causal_vs_associational",
+          "passed": false,
+          "score": 0.0,
+          "reason": "answer_mismatch:'18.4'",
+          "calls": 1,
+          "mode": "naked_greedy",
+          "response_preview": "CAN_EXCEED\nFINAL_ANSWER: 18.4"
+        },
+        {
+          "task_id": "fp-cau-04",
+          "axis": "causal_vs_associational",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_answer_match",
+          "calls": 1,
+          "mode": "naked_greedy",
+          "response_preview": "Compute P(Y=1 | do(X=1)) = P(Y=1 | X=1, Z=0) * P(Z=0) + P(Y=1 | X=1, Z=1) * P(Z=1) = 0.90 * 0.30 + 0.50 * 0.70 = 0.27 + 0.35 = 0.62.\nCompute P(Y=1 | do(X=0)) = "
+        },
+        {
+          "task_id": "fp-cau-05",
+          "axis": "causal_vs_associational",
+          "passed": false,
+          "score": 0.0,
+          "reason": "answer_mismatch:'INCREASES_WETNESS'",
+          "calls": 1,
+          "mode": "naked_greedy",
+          "response_preview": "FINAL_ANSWER: INCREASES_WETNESS"
+        },
+        {
+          "task_id": "fp-cau-06",
+          "axis": "causal_vs_associational",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_answer_match",
+          "calls": 1,
+          "mode": "naked_greedy",
+          "response_preview": "Compute the product of the rotation and damping.\nFINAL_ANSWER: 25"
+        },
+        {
+          "task_id": "fp-xdom-01",
+          "axis": "cross_domain_transfer",
+          "passed": false,
+          "score": 0.5,
+          "reason": "value_mismatch:state:'conflict'!='CONFLICTING'",
+          "calls": 1,
+          "mode": "naked_greedy",
+          "response_preview": "{\"state\": \"conflict\", \"value\": \"2.4.0\"}"
+        },
+        {
+          "task_id": "fp-xdom-02",
+          "axis": "cross_domain_transfer",
+          "passed": false,
+          "score": 0.5,
+          "reason": "value_mismatch:state:'active'!='VERIFIED_VALUE'",
+          "calls": 1,
+          "mode": "naked_greedy",
+          "response_preview": "{\"state\": \"active\", \"value\": \"worker_b\"}"
+        },
+        {
+          "task_id": "fp-xdom-03",
+          "axis": "cross_domain_transfer",
+          "passed": false,
+          "score": 0.0,
+          "reason": "answer_mismatch:'230'",
+          "calls": 1,
+          "mode": "naked_greedy",
+          "response_preview": "Compute the sum of the initial values: 120 + 85 + 95 = 300.\nCompute the sum of the transfers: 35 + 20 + 15 = 70.\nSubtract the transfers from the initial sum: 30"
+        },
+        {
+          "task_id": "fp-xdom-04",
+          "axis": "cross_domain_transfer",
+          "passed": true,
+          "score": 1.0,
+          "reason": "all_assertions_passed",
+          "calls": 1,
+          "mode": "naked_greedy",
+          "response_preview": "```python\ndef resolve_as_of(events: list[dict], cutoff: float) -> str:\n    filtered = [e for e in events if e['record_time'] <= cutoff and not e['superseded']]\n"
+        },
+        {
+          "task_id": "fp-xdom-05",
+          "axis": "cross_domain_transfer",
+          "passed": false,
+          "score": 0.0,
+          "reason": "answer_mismatch:'16'",
+          "calls": 1,
+          "mode": "naked_greedy",
+          "response_preview": "Compute product 7 * 5^3 mod 19:\nCompute 5^3 = 125 mod 19 = 12.\nCompute 7 * 12 = 84 mod 19 = 16.\nFINAL_ANSWER: 16"
+        },
+        {
+          "task_id": "fp-xdom-06",
+          "axis": "cross_domain_transfer",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_json_match",
+          "calls": 1,
+          "mode": "naked_greedy",
+          "response_preview": "{\"domain\": \"physics_telemetry\", \"verifiable\": false, \"state\": \"REPORTED_UNVERIFIED\"}"
+        }
+      ]
+    },
+    {
+      "arm": "NanoLM_1.7B_EqualCompute_SC3",
+      "total_parameters": 1747444768,
+      "passed": 9,
+      "total_tasks": 30,
+      "accuracy": 0.3,
+      "bootstrap_ci95": [
+        0.1333,
+        0.4667
+      ],
+      "total_model_calls": 90,
+      "total_tokens": 4036,
+      "wall_seconds": 656.22,
+      "peak_vram_mb": 0.0,
+      "by_axis": {
+        "relational_generalization": {
+          "passed": 1,
+          "total": 6,
+          "accuracy": 0.1667
+        },
+        "bitemporal_belief_revision": {
+          "passed": 1,
+          "total": 6,
+          "accuracy": 0.1667
+        },
+        "exact_information_transport": {
+          "passed": 3,
+          "total": 6,
+          "accuracy": 0.5
+        },
+        "causal_vs_associational": {
+          "passed": 2,
+          "total": 6,
+          "accuracy": 0.3333
+        },
+        "cross_domain_transfer": {
+          "passed": 2,
+          "total": 6,
+          "accuracy": 0.3333
+        }
+      },
+      "failure_taxonomy": {
+        "value_mismatch:state:'active'!='VERIFIED_VALUE'": 2,
+        "answer_mismatch:'3'": 1,
+        "answer_mismatch:'26'": 1,
+        "value_mismatch:k9:25!=39": 1,
+        "answer_mismatch:'15'": 1,
+        "answer_mismatch:'2031'": 1,
+        "value_mismatch:state:'REPORTED_UNVERIFIED'!='CONFLICTING'": 1,
+        "value_mismatch:state:'conflict'!='VERIFIED_VALUE'": 1,
+        "value_mismatch:state:'unverified'!='REPORTED_UNVERIFIED'": 1,
+        "value_mismatch:state:'active'!='UNKNOWN_NOT_FOUND'": 1,
+        "answer_mismatch:'OVERWRITE_IN_PLACE'": 1,
+        "value_mismatch:state:'DENIED'!='ISOLATED_DENIED'": 1
+      },
+      "tasks": [
+        {
+          "task_id": "fp-rel-01",
+          "axis": "relational_generalization",
+          "passed": false,
+          "score": 0.0,
+          "reason": "answer_mismatch:'3'",
+          "calls": 3,
+          "mode": "self_consistency_3",
+          "response_preview": "Compute shortest path from V_91 to V_03.\nV_91 -> V_44 (1)\nV_44 -> V_17 (1)\nV_17 -> V_03 (1)\nTotal hop distance: 3.\nFINAL_ANSWER: 3"
+        },
+        {
+          "task_id": "fp-rel-02",
+          "axis": "relational_generalization",
+          "passed": false,
+          "score": 0.0,
+          "reason": "answer_mismatch:'26'",
+          "calls": 3,
+          "mode": "self_consistency_3",
+          "response_preview": "Compute the critical path.\nT_k1: 4\nT_m8: 9\nT_p3: 6\nT_r5: 7\nT_z9: 3\nCritical path: 4 + 9 + 6 + 7 = 26.\nFINAL_ANSWER: 26"
+        },
+        {
+          "task_id": "fp-rel-03",
+          "axis": "relational_generalization",
+          "passed": false,
+          "score": 0.5,
+          "reason": "value_mismatch:k9:25!=39",
+          "calls": 3,
+          "mode": "self_consistency_3",
+          "response_preview": "{\"k9\": 25, \"m2\": 27, \"z1\": 31}"
+        },
+        {
+          "task_id": "fp-rel-04",
+          "axis": "relational_generalization",
+          "passed": false,
+          "score": 0.0,
+          "reason": "answer_mismatch:'15'",
+          "calls": 3,
+          "mode": "self_consistency_3",
+          "response_preview": "Compute the parallel DAG critical-path makespan.\n- stage_x0: duration=5, deps=[]\n- stage_x1: duration=8, deps=[]\n- stage_x2: duration=6, deps=[stage_x0, stage_x"
+        },
+        {
+          "task_id": "fp-rel-05",
+          "axis": "relational_generalization",
+          "passed": false,
+          "score": 0.0,
+          "reason": "answer_mismatch:'2031'",
+          "calls": 3,
+          "mode": "self_consistency_3",
+          "response_preview": "Apply S_swap01 ([1,0,2,3]) to [0,1,2,3] gives [1,0,2,3].\nApply S_swap23 ([0,1,3,2]) to [1,0,2,3] gives [1,0,3,2].\nApply S_rotL ([1,2,3,0]) to [1,0,3,2] gives [2"
+        },
+        {
+          "task_id": "fp-rel-06",
+          "axis": "relational_generalization",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_answer_match",
+          "calls": 3,
+          "mode": "self_consistency_3",
+          "response_preview": "Compute the total displacement: +5 -2 +5 +5 -2 = +11.\nStart at node_3: 3 + 11 = 14 mod 12 = 2.\nFINAL_ANSWER: 2"
+        },
+        {
+          "task_id": "fp-bit-01",
+          "axis": "bitemporal_belief_revision",
+          "passed": false,
+          "score": 0.5,
+          "reason": "value_mismatch:state:'REPORTED_UNVERIFIED'!='CONFLICTING'",
+          "calls": 3,
+          "mode": "self_consistency_3",
+          "response_preview": "{\"state\": \"REPORTED_UNVERIFIED\", \"value\": \"10_mg\"}"
+        },
+        {
+          "task_id": "fp-bit-02",
+          "axis": "bitemporal_belief_revision",
+          "passed": false,
+          "score": 0.5,
+          "reason": "value_mismatch:state:'conflict'!='VERIFIED_VALUE'",
+          "calls": 3,
+          "mode": "self_consistency_3",
+          "response_preview": "{\"state\": \"conflict\", \"value\": \"15_mg\"}"
+        },
+        {
+          "task_id": "fp-bit-03",
+          "axis": "bitemporal_belief_revision",
+          "passed": false,
+          "score": 0.5,
+          "reason": "value_mismatch:state:'unverified'!='REPORTED_UNVERIFIED'",
+          "calls": 3,
+          "mode": "self_consistency_3",
+          "response_preview": "{\"state\": \"unverified\", \"value\": \"4500ms\"}"
+        },
+        {
+          "task_id": "fp-bit-04",
+          "axis": "bitemporal_belief_revision",
+          "passed": false,
+          "score": 0.5,
+          "reason": "value_mismatch:state:'active'!='UNKNOWN_NOT_FOUND'",
+          "calls": 3,
+          "mode": "self_consistency_3",
+          "response_preview": "{\"state\": \"active\", \"value\": \"ed25519_v1\"}"
+        },
+        {
+          "task_id": "fp-bit-05",
+          "axis": "bitemporal_belief_revision",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_answer_match",
+          "calls": 3,
+          "mode": "self_consistency_3",
+          "response_preview": "FINAL_ANSWER: 38_psi"
+        },
+        {
+          "task_id": "fp-bit-06",
+          "axis": "bitemporal_belief_revision",
+          "passed": false,
+          "score": 0.0,
+          "reason": "answer_mismatch:'OVERWRITE_IN_PLACE'",
+          "calls": 3,
+          "mode": "self_consistency_3",
+          "response_preview": "FINAL_ANSWER: OVERWRITE_IN_PLACE"
+        },
+        {
+          "task_id": "fp-ext-01",
+          "axis": "exact_information_transport",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_answer_match",
+          "calls": 3,
+          "mode": "self_consistency_3",
+          "response_preview": "FINAL_ANSWER: kx94-v7m2-08f1"
+        },
+        {
+          "task_id": "fp-ext-02",
+          "axis": "exact_information_transport",
+          "passed": false,
+          "score": 0.5,
+          "reason": "value_mismatch:state:'DENIED'!='ISOLATED_DENIED'",
+          "calls": 3,
+          "mode": "self_consistency_3",
+          "response_preview": "{\"state\": \"DENIED\", \"value\": \"Permission denied\"}"
+        },
+        {
+          "task_id": "fp-ext-03",
+          "axis": "exact_information_transport",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_answer_match",
+          "calls": 3,
+          "mode": "self_consistency_3",
+          "response_preview": "FINAL_ANSWER: UNKNOWN"
+        },
+        {
+          "task_id": "fp-ext-04",
+          "axis": "exact_information_transport",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_answer_match",
+          "calls": 3,
+          "mode": "self_consistency_3",
+          "response_preview": "FINAL_ANSWER: z9Q4-77Lm-x2P1"
+        },
+        {
+          "task_id": "fp-ext-05",
+          "axis": "exact_information_transport",
+          "passed": false,
+          "score": 0.5,
+          "reason": "value_mismatch:state:'active'!='VERIFIED_VALUE'",
+          "calls": 3,
+          "mode": "self_consistency_3",
+          "response_preview": "{\"state\": \"active\", \"value\": \"240_rpm\"}"
+        },
+        {
+          "task_id": "fp-ext-06",
+          "axis": "exact_information_transport",
+          "passed": false,
+          "score": 0.0,
+          "reason": "answer_mismatch:'0.0625_mmol'",
+          "calls": 3,
+          "mode": "self_consistency_3",
+          "response_preview": "0.0625_mmol\nFINAL_ANSWER: 0.0625_mmol"
+        },
+        {
+          "task_id": "fp-cau-01",
+          "axis": "causal_vs_associational",
+          "passed": false,
+          "score": 0.0,
+          "reason": "answer_mismatch:'0.62'",
+          "calls": 3,
+          "mode": "self_consistency_3",
+          "response_preview": "The true causal backdoor-adjusted P(Y=1 | do(X=1)) is computed as the weighted average of the causal effects under Z=0 and Z=1.\nFINAL_ANSWER: 0.62"
+        },
+        {
+          "task_id": "fp-cau-02",
+          "axis": "causal_vs_associational",
+          "passed": false,
+          "score": 0.0,
+          "reason": "answer_mismatch:'DERIVED'",
+          "calls": 3,
+          "mode": "self_consistency_3",
+          "response_preview": "FINAL_ANSWER: DERIVED"
+        },
+        {
+          "task_id": "fp-cau-03",
+          "axis": "causal_vs_associational",
+          "passed": false,
+          "score": 0.0,
+          "reason": "answer_mismatch:'18.4'",
+          "calls": 3,
+          "mode": "self_consistency_3",
+          "response_preview": "CAN_EXCEED\nFINAL_ANSWER: 18.4"
+        },
+        {
+          "task_id": "fp-cau-04",
+          "axis": "causal_vs_associational",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_answer_match",
+          "calls": 3,
+          "mode": "self_consistency_3",
+          "response_preview": "Compute P(Y=1 | do(X=1)) = P(Y=1 | X=1, Z=0) * P(Z=0) + P(Y=1 | X=1, Z=1) * P(Z=1) = 0.90 * 0.30 + 0.50 * 0.70 = 0.27 + 0.35 = 0.62.\nCompute P(Y=1 | do(X=0)) = "
+        },
+        {
+          "task_id": "fp-cau-05",
+          "axis": "causal_vs_associational",
+          "passed": false,
+          "score": 0.0,
+          "reason": "answer_mismatch:'INCREASES_WETNESS'",
+          "calls": 3,
+          "mode": "self_consistency_3",
+          "response_preview": "FINAL_ANSWER: INCREASES_WETNESS"
+        },
+        {
+          "task_id": "fp-cau-06",
+          "axis": "causal_vs_associational",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_answer_match",
+          "calls": 3,
+          "mode": "self_consistency_3",
+          "response_preview": "Compute the product of the rotation and damping.\nFINAL_ANSWER: 25"
+        },
+        {
+          "task_id": "fp-xdom-01",
+          "axis": "cross_domain_transfer",
+          "passed": false,
+          "score": 0.5,
+          "reason": "value_mismatch:state:'conflict'!='CONFLICTING'",
+          "calls": 3,
+          "mode": "self_consistency_3",
+          "response_preview": "{\"state\": \"conflict\", \"value\": \"2.4.0\"}"
+        },
+        {
+          "task_id": "fp-xdom-02",
+          "axis": "cross_domain_transfer",
+          "passed": false,
+          "score": 0.5,
+          "reason": "value_mismatch:state:'active'!='VERIFIED_VALUE'",
+          "calls": 3,
+          "mode": "self_consistency_3",
+          "response_preview": "{\"state\": \"active\", \"value\": \"worker_b\"}"
+        },
+        {
+          "task_id": "fp-xdom-03",
+          "axis": "cross_domain_transfer",
+          "passed": false,
+          "score": 0.0,
+          "reason": "answer_mismatch:'230'",
+          "calls": 3,
+          "mode": "self_consistency_3",
+          "response_preview": "Compute the sum of the initial values: 120 + 85 + 95 = 300.\nCompute the sum of the transfers: 35 + 20 + 15 = 70.\nSubtract the transfers from the initial sum: 30"
+        },
+        {
+          "task_id": "fp-xdom-04",
+          "axis": "cross_domain_transfer",
+          "passed": true,
+          "score": 1.0,
+          "reason": "all_assertions_passed",
+          "calls": 3,
+          "mode": "self_consistency_3",
+          "response_preview": "```python\ndef resolve_as_of(events: list[dict], cutoff: float) -> str:\n    filtered = [e for e in events if e['record_time'] <= cutoff and not e['superseded']]\n"
+        },
+        {
+          "task_id": "fp-xdom-05",
+          "axis": "cross_domain_transfer",
+          "passed": false,
+          "score": 0.0,
+          "reason": "answer_mismatch:'16'",
+          "calls": 3,
+          "mode": "self_consistency_3",
+          "response_preview": "Compute product 7 * 5^3 mod 19:\nCompute 5^3 = 125 mod 19 = 12.\nCompute 7 * 12 = 84 mod 19 = 16.\nFINAL_ANSWER: 16"
+        },
+        {
+          "task_id": "fp-xdom-06",
+          "axis": "cross_domain_transfer",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_json_match",
+          "calls": 3,
+          "mode": "self_consistency_3",
+          "response_preview": "{\"domain\": \"physics_telemetry\", \"verifiable\": false, \"state\": \"REPORTED_UNVERIFIED\"}"
+        }
+      ]
+    },
+    {
+      "arm": "NanoLM_1.7B_WorldController_v3",
+      "total_parameters": 1747444768,
+      "passed": 15,
+      "total_tasks": 30,
+      "accuracy": 0.5,
+      "bootstrap_ci95": [
+        0.3333,
+        0.6667
+      ],
+      "total_model_calls": 64,
+      "total_tokens": 7410,
+      "wall_seconds": 1367.43,
+      "peak_vram_mb": 0.0,
+      "by_axis": {
+        "relational_generalization": {
+          "passed": 4,
+          "total": 6,
+          "accuracy": 0.6667
+        },
+        "bitemporal_belief_revision": {
+          "passed": 3,
+          "total": 6,
+          "accuracy": 0.5
+        },
+        "exact_information_transport": {
+          "passed": 4,
+          "total": 6,
+          "accuracy": 0.6667
+        },
+        "causal_vs_associational": {
+          "passed": 1,
+          "total": 6,
+          "accuracy": 0.1667
+        },
+        "cross_domain_transfer": {
+          "passed": 3,
+          "total": 6,
+          "accuracy": 0.5
+        }
+      },
+      "failure_taxonomy": {
+        "answer_mismatch:'26'": 1,
+        "answer_mismatch:'[0, 2, 3, 1]'": 1,
+        "value_mismatch:state:'active'!='UNKNOWN_NOT_FOUND'": 1,
+        "answer_mismatch:'UNKNOWN'": 1,
+        "answer_mismatch:'OVERWRITE_IN_PLACE'": 1,
+        "value_mismatch:state:'DENIED'!='ISOLATED_DENIED'": 1,
+        "answer_mismatch:'0.0625_mmol'": 1,
+        "answer_mismatch:'0.62'": 1,
+        "answer_mismatch:'DERIVED'": 1,
+        "answer_mismatch:'18.30818381609198'": 1,
+        "answer_mismatch:'INCREASES_WETNESS'": 1,
+        "answer_mismatch:'25.0'": 1
+      },
+      "tasks": [
+        {
+          "task_id": "fp-rel-01",
+          "axis": "relational_generalization",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_answer_match",
+          "calls": 2,
+          "mode": "SYMBOLIC_COMPUTE",
+          "response_preview": "Verified via symbolic Python execution.\nFINAL_ANSWER: 2"
+        },
+        {
+          "task_id": "fp-rel-02",
+          "axis": "relational_generalization",
+          "passed": false,
+          "score": 0.0,
+          "reason": "answer_mismatch:'26'",
+          "calls": 4,
+          "mode": "SYMBOLIC_COMPUTE",
+          "response_preview": "Compute the critical path.\nT_k1: 4\nT_m8: 9\nT_p3: 6\nT_r5: 7\nT_z9: 3\nCritical path: 4 + 9 + 6 + 7 = 26.\nFINAL_ANSWER: 26"
+        },
+        {
+          "task_id": "fp-rel-03",
+          "axis": "relational_generalization",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_json_match",
+          "calls": 2,
+          "mode": "STATE_JSON",
+          "response_preview": "{\"k9\": 39, \"m2\": 41, \"z1\": 34}"
+        },
+        {
+          "task_id": "fp-rel-04",
+          "axis": "relational_generalization",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_answer_match",
+          "calls": 3,
+          "mode": "SYMBOLIC_COMPUTE",
+          "response_preview": "Verified via symbolic Python execution.\nFINAL_ANSWER: 20"
+        },
+        {
+          "task_id": "fp-rel-05",
+          "axis": "relational_generalization",
+          "passed": false,
+          "score": 0.0,
+          "reason": "answer_mismatch:'[0, 2, 3, 1]'",
+          "calls": 2,
+          "mode": "SYMBOLIC_COMPUTE",
+          "response_preview": "Verified via symbolic Python execution.\nFINAL_ANSWER: [0, 2, 3, 1]"
+        },
+        {
+          "task_id": "fp-rel-06",
+          "axis": "relational_generalization",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_answer_match",
+          "calls": 3,
+          "mode": "SYMBOLIC_COMPUTE",
+          "response_preview": "Compute the total displacement: +5 -2 +5 +5 -2 = +11.\nStart at node_3: 3 + 11 = 14 mod 12 = 2.\nFINAL_ANSWER: 2"
+        },
+        {
+          "task_id": "fp-bit-01",
+          "axis": "bitemporal_belief_revision",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_json_match",
+          "calls": 1,
+          "mode": "WORLD_LEDGER_VERIFIED",
+          "response_preview": "{\"state\": \"CONFLICTING\", \"value\": \"20_mg\"}"
+        },
+        {
+          "task_id": "fp-bit-02",
+          "axis": "bitemporal_belief_revision",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_json_match",
+          "calls": 1,
+          "mode": "WORLD_LEDGER_VERIFIED",
+          "response_preview": "{\"state\": \"VERIFIED_VALUE\", \"value\": \"15_mg\"}"
+        },
+        {
+          "task_id": "fp-bit-03",
+          "axis": "bitemporal_belief_revision",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_json_match",
+          "calls": 1,
+          "mode": "WORLD_LEDGER_VERIFIED",
+          "response_preview": "{\"state\": \"REPORTED_UNVERIFIED\", \"value\": \"4500ms\"}"
+        },
+        {
+          "task_id": "fp-bit-04",
+          "axis": "bitemporal_belief_revision",
+          "passed": false,
+          "score": 0.5,
+          "reason": "value_mismatch:state:'active'!='UNKNOWN_NOT_FOUND'",
+          "calls": 3,
+          "mode": "STATE_JSON",
+          "response_preview": "{\"state\": \"active\", \"value\": \"ed25519_v1\"}"
+        },
+        {
+          "task_id": "fp-bit-05",
+          "axis": "bitemporal_belief_revision",
+          "passed": false,
+          "score": 0.0,
+          "reason": "answer_mismatch:'UNKNOWN'",
+          "calls": 1,
+          "mode": "WORLD_LEDGER_VERIFIED",
+          "response_preview": "Verified via immutable bitemporal ledger (UNKNOWN_NOT_FOUND).\nFINAL_ANSWER: UNKNOWN"
+        },
+        {
+          "task_id": "fp-bit-06",
+          "axis": "bitemporal_belief_revision",
+          "passed": false,
+          "score": 0.0,
+          "reason": "answer_mismatch:'OVERWRITE_IN_PLACE'",
+          "calls": 3,
+          "mode": "SYMBOLIC_COMPUTE",
+          "response_preview": "FINAL_ANSWER: OVERWRITE_IN_PLACE"
+        },
+        {
+          "task_id": "fp-ext-01",
+          "axis": "exact_information_transport",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_answer_match",
+          "calls": 3,
+          "mode": "SYMBOLIC_COMPUTE",
+          "response_preview": "FINAL_ANSWER: kx94-v7m2-08f1"
+        },
+        {
+          "task_id": "fp-ext-02",
+          "axis": "exact_information_transport",
+          "passed": false,
+          "score": 0.5,
+          "reason": "value_mismatch:state:'DENIED'!='ISOLATED_DENIED'",
+          "calls": 3,
+          "mode": "STATE_JSON",
+          "response_preview": "{\"state\": \"DENIED\", \"value\": \"DENIED\"}"
+        },
+        {
+          "task_id": "fp-ext-03",
+          "axis": "exact_information_transport",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_answer_match",
+          "calls": 3,
+          "mode": "SYMBOLIC_COMPUTE",
+          "response_preview": "FINAL_ANSWER: UNKNOWN"
+        },
+        {
+          "task_id": "fp-ext-04",
+          "axis": "exact_information_transport",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_answer_match",
+          "calls": 2,
+          "mode": "SYMBOLIC_COMPUTE",
+          "response_preview": "Verified via symbolic Python execution.\nFINAL_ANSWER: z9Q4-77Lm-x2P1"
+        },
+        {
+          "task_id": "fp-ext-05",
+          "axis": "exact_information_transport",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_json_match",
+          "calls": 1,
+          "mode": "WORLD_LEDGER_VERIFIED",
+          "response_preview": "{\"state\": \"VERIFIED_VALUE\", \"value\": \"240_rpm\"}"
+        },
+        {
+          "task_id": "fp-ext-06",
+          "axis": "exact_information_transport",
+          "passed": false,
+          "score": 0.0,
+          "reason": "answer_mismatch:'0.0625_mmol'",
+          "calls": 3,
+          "mode": "SYMBOLIC_COMPUTE",
+          "response_preview": "0.0625_mmol\nFINAL_ANSWER: 0.0625_mmol"
+        },
+        {
+          "task_id": "fp-cau-01",
+          "axis": "causal_vs_associational",
+          "passed": false,
+          "score": 0.0,
+          "reason": "answer_mismatch:'0.62'",
+          "calls": 4,
+          "mode": "SYMBOLIC_COMPUTE",
+          "response_preview": "The true causal backdoor-adjusted P(Y=1 | do(X=1)) is computed as the weighted average of the causal effects under Z=0 and Z=1.\nFINAL_ANSWER: 0.62"
+        },
+        {
+          "task_id": "fp-cau-02",
+          "axis": "causal_vs_associational",
+          "passed": false,
+          "score": 0.0,
+          "reason": "answer_mismatch:'DERIVED'",
+          "calls": 1,
+          "mode": "DIRECT_FAST",
+          "response_preview": "FINAL_ANSWER: DERIVED"
+        },
+        {
+          "task_id": "fp-cau-03",
+          "axis": "causal_vs_associational",
+          "passed": false,
+          "score": 0.0,
+          "reason": "answer_mismatch:'18.30818381609198'",
+          "calls": 2,
+          "mode": "SYMBOLIC_COMPUTE",
+          "response_preview": "Verified via symbolic Python execution.\nFINAL_ANSWER: 18.30818381609198"
+        },
+        {
+          "task_id": "fp-cau-04",
+          "axis": "causal_vs_associational",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_answer_match",
+          "calls": 2,
+          "mode": "SYMBOLIC_COMPUTE",
+          "response_preview": "Verified via symbolic Python execution.\nFINAL_ANSWER: 0.2"
+        },
+        {
+          "task_id": "fp-cau-05",
+          "axis": "causal_vs_associational",
+          "passed": false,
+          "score": 0.0,
+          "reason": "answer_mismatch:'INCREASES_WETNESS'",
+          "calls": 4,
+          "mode": "SYMBOLIC_COMPUTE",
+          "response_preview": "FINAL_ANSWER: INCREASES_WETNESS"
+        },
+        {
+          "task_id": "fp-cau-06",
+          "axis": "causal_vs_associational",
+          "passed": false,
+          "score": 0.0,
+          "reason": "answer_mismatch:'25.0'",
+          "calls": 2,
+          "mode": "SYMBOLIC_COMPUTE",
+          "response_preview": "Verified via symbolic Python execution.\nFINAL_ANSWER: 25.0"
+        },
+        {
+          "task_id": "fp-xdom-01",
+          "axis": "cross_domain_transfer",
+          "passed": false,
+          "score": 0.5,
+          "reason": "value_mismatch:state:'VERIFIED_VALUE'!='CONFLICTING'",
+          "calls": 1,
+          "mode": "WORLD_LEDGER_VERIFIED",
+          "response_preview": "{\"state\": \"VERIFIED_VALUE\", \"value\": \"2.1.0\"}"
+        },
+        {
+          "task_id": "fp-xdom-02",
+          "axis": "cross_domain_transfer",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_json_match",
+          "calls": 1,
+          "mode": "WORLD_LEDGER_VERIFIED",
+          "response_preview": "{\"state\": \"VERIFIED_VALUE\", \"value\": \"worker_b\"}"
+        },
+        {
+          "task_id": "fp-xdom-03",
+          "axis": "cross_domain_transfer",
+          "passed": false,
+          "score": 0.0,
+          "reason": "answer_mismatch:'285'",
+          "calls": 2,
+          "mode": "SYMBOLIC_COMPUTE",
+          "response_preview": "Verified via symbolic Python execution.\nFINAL_ANSWER: 285"
+        },
+        {
+          "task_id": "fp-xdom-04",
+          "axis": "cross_domain_transfer",
+          "passed": false,
+          "score": 0.0,
+          "reason": "syntax_error:invalid syntax",
+          "calls": 1,
+          "mode": "WORLD_LEDGER_VERIFIED",
+          "response_preview": "Verified via immutable bitemporal ledger (ISOLATED_DENIED).\nFINAL_ANSWER: DENIED"
+        },
+        {
+          "task_id": "fp-xdom-05",
+          "axis": "cross_domain_transfer",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_answer_match",
+          "calls": 2,
+          "mode": "SYMBOLIC_COMPUTE",
+          "response_preview": "Verified via symbolic Python execution.\nFINAL_ANSWER: 1"
+        },
+        {
+          "task_id": "fp-xdom-06",
+          "axis": "cross_domain_transfer",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_json_match",
+          "calls": 1,
+          "mode": "STRUCTURED_JSON",
+          "response_preview": "{\"domain\": \"physics_telemetry\", \"verifiable\": false, \"state\": \"REPORTED_UNVERIFIED\"}"
+        }
+      ]
+    }
+  ],
+  "benchmark_15d_56": {
+    "arm": "NanoLM_FP_v3_1.7B_Controller_v3",
+    "total_parameters": 1747444768,
+    "passed": 41,
+    "total_tasks": 56,
+    "accuracy": 0.7321,
+    "bootstrap_ci95": [
+      0.625,
+      0.8393
+    ],
+    "controller_modes": {
+      "CODE_PYTHON": 4,
+      "SYMBOLIC_COMPUTE": 21,
+      "DIRECT_FAST": 16,
+      "STRUCTURED_JSON": 6,
+      "DIAGRAM_MERMAID": 3,
+      "STATE_JSON": 6
+    },
+    "controller_repairs": 21,
+    "by_dimension": {
+      "coding": {
+        "passed": 3,
+        "total": 4,
+        "accuracy": 0.75
+      },
+      "math_logic": {
+        "passed": 4,
+        "total": 4,
+        "accuracy": 1.0
+      },
+      "summarization": {
+        "passed": 4,
+        "total": 4,
+        "accuracy": 1.0
+      },
+      "structured_json": {
+        "passed": 2,
+        "total": 4,
+        "accuracy": 0.5
+      },
+      "diagrams_charts": {
+        "passed": 3,
+        "total": 4,
+        "accuracy": 0.75
+      },
+      "long_context": {
+        "passed": 2,
+        "total": 4,
+        "accuracy": 0.5
+      },
+      "general_knowledge": {
+        "passed": 4,
+        "total": 4,
+        "accuracy": 1.0
+      },
+      "multi_step_reasoning": {
+        "passed": 3,
+        "total": 4,
+        "accuracy": 0.75
+      },
+      "instruction_following": {
+        "passed": 3,
+        "total": 4,
+        "accuracy": 0.75
+      },
+      "tool_use": {
+        "passed": 4,
+        "total": 4,
+        "accuracy": 1.0
+      },
+      "planning_decomposition": {
+        "passed": 1,
+        "total": 4,
+        "accuracy": 0.25
+      },
+      "ood_robustness": {
+        "passed": 3,
+        "total": 4,
+        "accuracy": 0.75
+      },
+      "hallucination_resistance": {
+        "passed": 4,
+        "total": 4,
+        "accuracy": 1.0
+      },
+      "memory_retention": {
+        "passed": 1,
+        "total": 4,
+        "accuracy": 0.25
+      },
+      "inference_efficiency": {
+        "capability_accuracy": 0.7321,
+        "capability_per_billion_params": 0.419,
+        "tokens_per_sec": 2.54,
+        "kv_cache_mb_at_4k": 448.0,
+        "efficiency_composite_score": 0.4937,
+        "peak_vram_mb": 0.0
+      }
+    },
+    "failure_taxonomy": {
+      "runtime_or_assertion_failure:AssertionError": 1,
+      "value_mismatch:active_regions:['ca-central', 'eu-central', 'us-east']!=['ap-south', 'ca-central', 'us-east']": 1,
+      "value_mismatch:subtotal:400!=520": 1,
+      "value_mismatch:sum_total:109!=100": 1,
+      "value_mismatch:net_hours:8285!=165": 1,
+      "value_mismatch:remaining_crates:1!=13": 1,
+      "answer_mismatch:'E'": 1,
+      "forbidden_present:slow": 1,
+      "wrong_makespan:12!=9": 1,
+      "wrong_makespan:15!=13": 1,
+      "wrong_makespan:18!=10": 1,
+      "answer_mismatch:'24'": 1
+    },
+    "tasks": [
+      {
+        "task_id": "cod-01",
+        "dim": "coding",
+        "passed": true,
+        "score": 1.0,
+        "reason": "all_assertions_passed",
+        "mode": "CODE_PYTHON",
+        "repaired": false,
+        "repair_reason": "direct"
+      },
+      {
+        "task_id": "cod-02",
+        "dim": "coding",
+        "passed": true,
+        "score": 1.0,
+        "reason": "all_assertions_passed",
+        "mode": "CODE_PYTHON",
+        "repaired": false,
+        "repair_reason": "direct"
+      },
+      {
+        "task_id": "cod-03",
+        "dim": "coding",
+        "passed": false,
+        "score": 0.0,
+        "reason": "runtime_or_assertion_failure:AssertionError",
+        "mode": "CODE_PYTHON",
+        "repaired": false,
+        "repair_reason": "direct"
+      },
+      {
+        "task_id": "cod-04",
+        "dim": "coding",
+        "passed": true,
+        "score": 1.0,
+        "reason": "all_assertions_passed",
+        "mode": "CODE_PYTHON",
+        "repaired": false,
+        "repair_reason": "direct"
+      },
+      {
+        "task_id": "mth-01",
+        "dim": "math_logic",
+        "passed": true,
+        "score": 1.0,
+        "reason": "exact_answer_match",
+        "mode": "SYMBOLIC_COMPUTE",
+        "repaired": true,
+        "repair_reason": "python_symbolic_scalar"
+      },
+      {
+        "task_id": "mth-02",
+        "dim": "math_logic",
+        "passed": true,
+        "score": 1.0,
+        "reason": "exact_answer_match",
+        "mode": "SYMBOLIC_COMPUTE",
+        "repaired": true,
+        "repair_reason": "python_symbolic_scalar"
+      },
+      {
+        "task_id": "mth-03",
+        "dim": "math_logic",
+        "passed": true,
+        "score": 1.0,
+        "reason": "exact_answer_match",
+        "mode": "SYMBOLIC_COMPUTE",
+        "repaired": true,
+        "repair_reason": "python_symbolic_scalar"
+      },
+      {
+        "task_id": "mth-04",
+        "dim": "math_logic",
+        "passed": true,
+        "score": 1.0,
+        "reason": "exact_answer_match",
+        "mode": "SYMBOLIC_COMPUTE",
+        "repaired": true,
+        "repair_reason": "python_symbolic_scalar"
+      },
+      {
+        "task_id": "sum-01",
+        "dim": "summarization",
+        "passed": true,
+        "score": 1.0,
+        "reason": "verified_summary",
+        "mode": "DIRECT_FAST",
+        "repaired": false,
+        "repair_reason": "direct"
+      },
+      {
+        "task_id": "sum-02",
+        "dim": "summarization",
+        "passed": true,
+        "score": 1.0,
+        "reason": "verified_summary",
+        "mode": "DIRECT_FAST",
+        "repaired": false,
+        "repair_reason": "direct"
+      },
+      {
+        "task_id": "sum-03",
+        "dim": "summarization",
+        "passed": true,
+        "score": 1.0,
+        "reason": "verified_summary",
+        "mode": "DIRECT_FAST",
+        "repaired": false,
+        "repair_reason": "direct"
+      },
+      {
+        "task_id": "sum-04",
+        "dim": "summarization",
+        "passed": true,
+        "score": 1.0,
+        "reason": "verified_summary",
+        "mode": "DIRECT_FAST",
+        "repaired": false,
+        "repair_reason": "direct"
+      },
+      {
+        "task_id": "jsn-01",
+        "dim": "structured_json",
+        "passed": true,
+        "score": 1.0,
+        "reason": "exact_json_match",
+        "mode": "STRUCTURED_JSON",
+        "repaired": false,
+        "repair_reason": "direct"
+      },
+      {
+        "task_id": "jsn-02",
+        "dim": "structured_json",
+        "passed": true,
+        "score": 1.0,
+        "reason": "exact_json_match",
+        "mode": "SYMBOLIC_COMPUTE",
+        "repaired": true,
+        "repair_reason": "python_symbolic_json"
+      },
+      {
+        "task_id": "jsn-03",
+        "dim": "structured_json",
+        "passed": false,
+        "score": 0.5,
+        "reason": "value_mismatch:active_regions:['ca-central', 'eu-central', 'us-east']!=['ap-south', 'ca-central', 'us-east']",
+        "mode": "STRUCTURED_JSON",
+        "repaired": false,
+        "repair_reason": "direct"
+      },
+      {
+        "task_id": "jsn-04",
+        "dim": "structured_json",
+        "passed": false,
+        "score": 0.5,
+        "reason": "value_mismatch:subtotal:400!=520",
+        "mode": "SYMBOLIC_COMPUTE",
+        "repaired": true,
+        "repair_reason": "python_symbolic_json"
+      },
+      {
+        "task_id": "dia-01",
+        "dim": "diagrams_charts",
+        "passed": true,
+        "score": 1.0,
+        "reason": "verified_mermaid",
+        "mode": "DIAGRAM_MERMAID",
+        "repaired": true,
+        "repair_reason": "mermaid_edges_normalized"
+      },
+      {
+        "task_id": "dia-02",
+        "dim": "diagrams_charts",
+        "passed": true,
+        "score": 1.0,
+        "reason": "verified_mermaid",
+        "mode": "DIAGRAM_MERMAID",
+        "repaired": false,
+        "repair_reason": "direct"
+      },
+      {
+        "task_id": "dia-03",
+        "dim": "diagrams_charts",
+        "passed": true,
+        "score": 1.0,
+        "reason": "verified_mermaid",
+        "mode": "DIAGRAM_MERMAID",
+        "repaired": true,
+        "repair_reason": "mermaid_edges_normalized"
+      },
+      {
+        "task_id": "dia-04",
+        "dim": "diagrams_charts",
+        "passed": false,
+        "score": 0.5,
+        "reason": "value_mismatch:sum_total:109!=100",
+        "mode": "SYMBOLIC_COMPUTE",
+        "repaired": true,
+        "repair_reason": "python_symbolic_json"
+      },
+      {
+        "task_id": "lng-01",
+        "dim": "long_context",
+        "passed": true,
+        "score": 1.0,
+        "reason": "exact_json_match",
+        "mode": "STATE_JSON",
+        "repaired": false,
+        "repair_reason": "margin_confident_json"
+      },
+      {
+        "task_id": "lng-02",
+        "dim": "long_context",
+        "passed": false,
+        "score": 0.5,
+        "reason": "value_mismatch:net_hours:8285!=165",
+        "mode": "SYMBOLIC_COMPUTE",
+        "repaired": true,
+        "repair_reason": "python_symbolic_json"
+      },
+      {
+        "task_id": "lng-03",
+        "dim": "long_context",
+        "passed": true,
+        "score": 1.0,
+        "reason": "exact_json_match",
+        "mode": "STATE_JSON",
+        "repaired": false,
+        "repair_reason": "margin_confident_json"
+      },
+      {
+        "task_id": "lng-04",
+        "dim": "long_context",
+        "passed": false,
+        "score": 0.5,
+        "reason": "value_mismatch:remaining_crates:1!=13",
+        "mode": "SYMBOLIC_COMPUTE",
+        "repaired": false,
+        "repair_reason": "direct"
+      },
+      {
+        "task_id": "knw-01",
+        "dim": "general_knowledge",
+        "passed": true,
+        "score": 1.0,
+        "reason": "exact_answer_match",
+        "mode": "DIRECT_FAST",
+        "repaired": false,
+        "repair_reason": "direct"
+      },
+      {
+        "task_id": "knw-02",
+        "dim": "general_knowledge",
+        "passed": true,
+        "score": 1.0,
+        "reason": "exact_answer_match",
+        "mode": "DIRECT_FAST",
+        "repaired": false,
+        "repair_reason": "direct"
+      },
+      {
+        "task_id": "knw-03",
+        "dim": "general_knowledge",
+        "passed": true,
+        "score": 1.0,
+        "reason": "exact_answer_match",
+        "mode": "DIRECT_FAST",
+        "repaired": false,
+        "repair_reason": "direct"
+      },
+      {
+        "task_id": "knw-04",
+        "dim": "general_knowledge",
+        "passed": true,
+        "score": 1.0,
+        "reason": "exact_answer_match",
+        "mode": "DIRECT_FAST",
+        "repaired": false,
+        "repair_reason": "direct"
+      },
+      {
+        "task_id": "msr-01",
+        "dim": "multi_step_reasoning",
+        "passed": true,
+        "score": 1.0,
+        "reason": "exact_answer_match",
+        "mode": "SYMBOLIC_COMPUTE",
+        "repaired": true,
+        "repair_reason": "python_symbolic_scalar"
+      },
+      {
+        "task_id": "msr-02",
+        "dim": "multi_step_reasoning",
+        "passed": true,
+        "score": 1.0,
+        "reason": "exact_answer_match",
+        "mode": "SYMBOLIC_COMPUTE",
+        "repaired": true,
+        "repair_reason": "python_symbolic_scalar"
+      },
+      {
+        "task_id": "msr-03",
+        "dim": "multi_step_reasoning",
+        "passed": true,
+        "score": 1.0,
+        "reason": "exact_answer_match",
+        "mode": "SYMBOLIC_COMPUTE",
+        "repaired": true,
+        "repair_reason": "python_symbolic_scalar"
+      },
+      {
+        "task_id": "msr-04",
+        "dim": "multi_step_reasoning",
+        "passed": false,
+        "score": 0.0,
+        "reason": "answer_mismatch:'E'",
+        "mode": "SYMBOLIC_COMPUTE",
+        "repaired": true,
+        "repair_reason": "python_symbolic_scalar"
+      },
+      {
+        "task_id": "ins-01",
+        "dim": "instruction_following",
+        "passed": true,
+        "score": 1.0,
+        "reason": "all_constraints_satisfied",
+        "mode": "DIRECT_FAST",
+        "repaired": false,
+        "repair_reason": "direct"
+      },
+      {
+        "task_id": "ins-02",
+        "dim": "instruction_following",
+        "passed": true,
+        "score": 1.0,
+        "reason": "all_constraints_satisfied",
+        "mode": "DIRECT_FAST",
+        "repaired": false,
+        "repair_reason": "direct"
+      },
+      {
+        "task_id": "ins-03",
+        "dim": "instruction_following",
+        "passed": true,
+        "score": 1.0,
+        "reason": "all_constraints_satisfied",
+        "mode": "DIRECT_FAST",
+        "repaired": false,
+        "repair_reason": "direct"
+      },
+      {
+        "task_id": "ins-04",
+        "dim": "instruction_following",
+        "passed": false,
+        "score": 0.8571,
+        "reason": "forbidden_present:slow",
+        "mode": "DIRECT_FAST",
+        "repaired": false,
+        "repair_reason": "direct"
+      },
+      {
+        "task_id": "tol-01",
+        "dim": "tool_use",
+        "passed": true,
+        "score": 1.0,
+        "reason": "verified_tool_calls",
+        "mode": "STRUCTURED_JSON",
+        "repaired": false,
+        "repair_reason": "direct"
+      },
+      {
+        "task_id": "tol-02",
+        "dim": "tool_use",
+        "passed": true,
+        "score": 1.0,
+        "reason": "verified_tool_calls",
+        "mode": "STRUCTURED_JSON",
+        "repaired": false,
+        "repair_reason": "direct"
+      },
+      {
+        "task_id": "tol-03",
+        "dim": "tool_use",
+        "passed": true,
+        "score": 1.0,
+        "reason": "verified_tool_calls",
+        "mode": "STRUCTURED_JSON",
+        "repaired": false,
+        "repair_reason": "direct"
+      },
+      {
+        "task_id": "tol-04",
+        "dim": "tool_use",
+        "passed": true,
+        "score": 1.0,
+        "reason": "verified_tool_calls",
+        "mode": "STRUCTURED_JSON",
+        "repaired": false,
+        "repair_reason": "direct"
+      },
+      {
+        "task_id": "pln-01",
+        "dim": "planning_decomposition",
+        "passed": true,
+        "score": 1.0,
+        "reason": "verified_dag_schedule_and_makespan",
+        "mode": "SYMBOLIC_COMPUTE",
+        "repaired": false,
+        "repair_reason": "direct"
+      },
+      {
+        "task_id": "pln-02",
+        "dim": "planning_decomposition",
+        "passed": false,
+        "score": 0.7,
+        "reason": "wrong_makespan:12!=9",
+        "mode": "SYMBOLIC_COMPUTE",
+        "repaired": false,
+        "repair_reason": "direct"
+      },
+      {
+        "task_id": "pln-03",
+        "dim": "planning_decomposition",
+        "passed": false,
+        "score": 0.7,
+        "reason": "wrong_makespan:15!=13",
+        "mode": "SYMBOLIC_COMPUTE",
+        "repaired": false,
+        "repair_reason": "direct"
+      },
+      {
+        "task_id": "pln-04",
+        "dim": "planning_decomposition",
+        "passed": false,
+        "score": 0.7,
+        "reason": "wrong_makespan:18!=10",
+        "mode": "SYMBOLIC_COMPUTE",
+        "repaired": true,
+        "repair_reason": "python_symbolic_json"
+      },
+      {
+        "task_id": "ood-01",
+        "dim": "ood_robustness",
+        "passed": true,
+        "score": 1.0,
+        "reason": "exact_answer_match",
+        "mode": "SYMBOLIC_COMPUTE",
+        "repaired": true,
+        "repair_reason": "python_symbolic_scalar"
+      },
+      {
+        "task_id": "ood-02",
+        "dim": "ood_robustness",
+        "passed": false,
+        "score": 0.0,
+        "reason": "answer_mismatch:'24'",
+        "mode": "SYMBOLIC_COMPUTE",
+        "repaired": true,
+        "repair_reason": "python_symbolic_scalar"
+      },
+      {
+        "task_id": "ood-03",
+        "dim": "ood_robustness",
+        "passed": true,
+        "score": 1.0,
+        "reason": "exact_answer_match",
+        "mode": "SYMBOLIC_COMPUTE",
+        "repaired": true,
+        "repair_reason": "python_symbolic_scalar"
+      },
+      {
+        "task_id": "ood-04",
+        "dim": "ood_robustness",
+        "passed": true,
+        "score": 1.0,
+        "reason": "exact_answer_match",
+        "mode": "SYMBOLIC_COMPUTE",
+        "repaired": true,
+        "repair_reason": "python_symbolic_scalar"
+      },
+      {
+        "task_id": "hal-01",
+        "dim": "hallucination_resistance",
+        "passed": true,
+        "score": 1.0,
+        "reason": "calibrated_abstention",
+        "mode": "DIRECT_FAST",
+        "repaired": false,
+        "repair_reason": "direct"
+      },
+      {
+        "task_id": "hal-02",
+        "dim": "hallucination_resistance",
+        "passed": true,
+        "score": 1.0,
+        "reason": "calibrated_abstention",
+        "mode": "DIRECT_FAST",
+        "repaired": false,
+        "repair_reason": "direct"
+      },
+      {
+        "task_id": "hal-03",
+        "dim": "hallucination_resistance",
+        "passed": true,
+        "score": 1.0,
+        "reason": "calibrated_abstention",
+        "mode": "DIRECT_FAST",
+        "repaired": false,
+        "repair_reason": "direct"
+      },
+      {
+        "task_id": "hal-04",
+        "dim": "hallucination_resistance",
+        "passed": true,
+        "score": 1.0,
+        "reason": "calibrated_abstention",
+        "mode": "DIRECT_FAST",
+        "repaired": false,
+        "repair_reason": "direct"
+      },
+      {
+        "task_id": "mem-01",
+        "dim": "memory_retention",
+        "passed": true,
+        "score": 1.0,
+        "reason": "exact_json_match",
+        "mode": "STATE_JSON",
+        "repaired": false,
+        "repair_reason": "margin_confident_json"
+      },
+      {
+        "task_id": "mem-02",
+        "dim": "memory_retention",
+        "passed": false,
+        "score": 0.5,
+        "reason": "value_mismatch:ssd:2!=1",
+        "mode": "STATE_JSON",
+        "repaired": true,
+        "repair_reason": "python_state_json"
+      },
+      {
+        "task_id": "mem-03",
+        "dim": "memory_retention",
+        "passed": false,
+        "score": 0.5,
+        "reason": "value_mismatch:A:79!=80",
+        "mode": "STATE_JSON",
+        "repaired": true,
+        "repair_reason": "python_state_json"
+      },
+      {
+        "task_id": "mem-04",
+        "dim": "memory_retention",
+        "passed": false,
+        "score": 0.5,
+        "reason": "value_mismatch:branch:'main'!='release-1'",
+        "mode": "STATE_JSON",
+        "repaired": false,
+        "repair_reason": "margin_confident_json"
+      }
+    ]
+  }
+}

@@ -1,0 +1,19 @@
+/usr/local/lib/python3.12/dist-packages/torch/nn/functional.py:2920: UserWarning: Mismatch dtype between input and weight: input dtype = c10::BFloat16, weight dtype = float, Cannot dispatch to fused implementation. (Triggered internally at /pytorch/aten/src/ATen/native/layer_norm.cpp:344.)
+  return torch.rms_norm(input, normalized_shape, weight, eps)
+[X1] b0-transformer-small_x1        S4(L48/L96/L192)=0.021/0.031/0.073 Recall(10/20/40)=0.224/0.130/0.130
+[X1] b1-abelian-ssm-small_x1        S4(L48/L96/L192)=0.031/0.042/0.047 Recall(10/20/40)=0.281/0.188/0.245
+[X1] gen1-h1-hspa-spinor-small_x1   S4(L48/L96/L192)=0.042/0.068/0.042 Recall(10/20/40)=0.224/0.135/0.214
+[X1] gen1-h2-hspa-predcode-small_x1 S4(L48/L96/L192)=0.026/0.031/0.042 Recall(10/20/40)=0.088/0.068/0.094
+[X1] gen2-h3-hspa-evolved-small_x1  S4(L48/L96/L192)=0.052/0.073/0.042 Recall(10/20/40)=0.177/0.141/0.177
+[X2] b0-transformer-micro         bpb=0.3794+/-0.00090 tok/s=107438 dec_ms=8.94 state8k=24576.0KB reg=registered_baseline
+[X2] b1-abelian-ssm-micro         bpb=0.3826+/-0.00016 tok/s=20359 dec_ms=13.80 state8k=24.0KB reg=did_not_beat_best:0.3826_vs_0.3794
+[X2] gen1-h1-hspa-spinor-micro    bpb=0.3800+/-0.00040 tok/s=13803 dec_ms=19.08 state8k=24.0KB reg=did_not_beat_best:0.3800_vs_0.3794
+[X2] gen1-h2-hspa-predcode-micro  bpb=0.3723+/-0.00235 tok/s=13159 dec_ms=25.01 state8k=24.0KB reg=beat_best:b0-transformer-micro(0.3794->0.3723)
+[X2] gen2-h3-hspa-evolved-micro   bpb=0.3803+/-0.00180 tok/s=13188 dec_ms=21.37 state8k=33.0KB reg=did_not_beat_best:0.3803_vs_0.3723
+[X3] nanolm-transformer-4b    params=3,843,291,648 weights=7330.5MB rows=[(512, 35.932, 7622.35), (2048, 34.197, 8220.44), (8192, 34.511, 10607.49), (16384, 41.778, 13824.34)]
+[X3] nanolm-hspa-4b           params=3,845,356,032 weights=7334.4MB rows=[(512, 122.59, 10877.26), (2048, 144.367, 8308.06), (8192, 143.188, 8317.38), (16384, 135.042, 8318.09)]
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Fetching 2 files:   0%|          | 0/2 [00:00<?, ?it/s]Fetching 2 files:  50%|█████     | 1/2 [00:02<00:02,  2.39s/it]Fetching 2 files: 100%|██████████| 2/2 [00:08<00:00,  4.81s/it]Fetching 2 files: 100%|██████████| 2/2 [00:08<00:00,  4.45s/it]
+Loading weights:   0%|          | 0/311 [00:00<?, ?it/s]Loading weights: 100%|██████████| 311/311 [00:00<00:00, 4743.74it/s]
+[X4] Holonomic_SFT2_GRPO passed=35/56 acc=0.6250 grpo_updates=18 coding=2/4 planning=1/4
+HOLONOMY_CAMPAIGN_COMPLETE out_dir=artifacts/nanolm_holonomy_v1

@@ -1,0 +1,83 @@
+{
+  "experiment": "C2_X0_kernel_microbenchmark",
+  "has_triton": true,
+  "shape": {
+    "B": 4,
+    "R": 8,
+    "G": 48,
+    "d_fiber": 192
+  },
+  "iters": 6,
+  "rows": [
+    {
+      "seq_len": 256,
+      "pytorch_blelloch": {
+        "status": "ok",
+        "fwd_bwd_ms": 12.158,
+        "peak_vram_mb": 153.73
+      },
+      "triton_holonomy": {
+        "status": "ok",
+        "fwd_bwd_ms": 1.097,
+        "peak_vram_mb": 85.07
+      },
+      "speedup_x": 11.08
+    },
+    {
+      "seq_len": 512,
+      "pytorch_blelloch": {
+        "status": "ok",
+        "fwd_bwd_ms": 16.603,
+        "peak_vram_mb": 319.55
+      },
+      "triton_holonomy": {
+        "status": "ok",
+        "fwd_bwd_ms": 1.468,
+        "peak_vram_mb": 168.07
+      },
+      "speedup_x": 11.31
+    },
+    {
+      "seq_len": 1024,
+      "pytorch_blelloch": {
+        "status": "ok",
+        "fwd_bwd_ms": 31.652,
+        "peak_vram_mb": 685.55
+      },
+      "triton_holonomy": {
+        "status": "ok",
+        "fwd_bwd_ms": 1.348,
+        "peak_vram_mb": 336.07
+      },
+      "speedup_x": 23.48
+    },
+    {
+      "seq_len": 2048,
+      "pytorch_blelloch": {
+        "status": "ok",
+        "fwd_bwd_ms": 168.952,
+        "peak_vram_mb": 1467.05
+      },
+      "triton_holonomy": {
+        "status": "ok",
+        "fwd_bwd_ms": 4.986,
+        "peak_vram_mb": 672.07
+      },
+      "speedup_x": 33.89
+    },
+    {
+      "seq_len": 4096,
+      "pytorch_blelloch": {
+        "status": "ok",
+        "fwd_bwd_ms": 529.037,
+        "peak_vram_mb": 3126.05
+      },
+      "triton_holonomy": {
+        "status": "ok",
+        "fwd_bwd_ms": 15.116,
+        "peak_vram_mb": 1344.07
+      },
+      "speedup_x": 35.0
+    }
+  ]
+}

@@ -1,0 +1,450 @@
+{
+  "experiment": "X1_non_abelian_state_and_ood_extrapolation",
+  "seeds": [
+    101,
+    202,
+    303
+  ],
+  "arms": [
+    {
+      "config": {
+        "name": "b0-transformer-small_x1",
+        "family": "b0_transformer",
+        "total_parameters": 2460480,
+        "within_4b_ceiling": true,
+        "n_registers": 8,
+        "d_fiber": 128,
+        "state_bytes_at_seq": 786432,
+        "sample_seq_len": 512
+      },
+      "s4_summary": {
+        "L_16": {
+          "mean": 0.0469,
+          "std": 0.0128
+        },
+        "L_48": {
+          "mean": 0.0208,
+          "std": 0.0074
+        },
+        "L_96": {
+          "mean": 0.0312,
+          "std": 0.0255
+        },
+        "L_192": {
+          "mean": 0.0729,
+          "std": 0.0195
+        }
+      },
+      "recall_summary": {
+        "ev_10": {
+          "mean": 0.224,
+          "std": 0.0368
+        },
+        "ev_20": {
+          "mean": 0.1302,
+          "std": 0.0265
+        },
+        "ev_40": {
+          "mean": 0.1302,
+          "std": 0.0195
+        }
+      },
+      "per_seed": [
+        {
+          "seed": 101,
+          "s4_accuracy": {
+            "L_16": 0.0625,
+            "L_48": 0.0156,
+            "L_96": 0.0312,
+            "L_192": 0.0938
+          },
+          "override_recall": {
+            "ev_10": 0.1719,
+            "ev_20": 0.1406,
+            "ev_40": 0.1562
+          }
+        },
+        {
+          "seed": 202,
+          "s4_accuracy": {
+            "L_16": 0.0312,
+            "L_48": 0.0312,
+            "L_96": 0.0625,
+            "L_192": 0.0781
+          },
+          "override_recall": {
+            "ev_10": 0.25,
+            "ev_20": 0.1562,
+            "ev_40": 0.1094
+          }
+        },
+        {
+          "seed": 303,
+          "s4_accuracy": {
+            "L_16": 0.0469,
+            "L_48": 0.0156,
+            "L_96": 0.0,
+            "L_192": 0.0469
+          },
+          "override_recall": {
+            "ev_10": 0.25,
+            "ev_20": 0.0938,
+            "ev_40": 0.125
+          }
+        }
+      ]
+    },
+    {
+      "config": {
+        "name": "b1-abelian-ssm-small_x1",
+        "family": "b1_abelian_ssm",
+        "total_parameters": 2460864,
+        "within_4b_ceiling": true,
+        "n_registers": 8,
+        "d_fiber": 128,
+        "state_bytes_at_seq": 12288,
+        "sample_seq_len": 512
+      },
+      "s4_summary": {
+        "L_16": {
+          "mean": 0.0521,
+          "std": 0.0266
+        },
+        "L_48": {
+          "mean": 0.0312,
+          "std": 0.0128
+        },
+        "L_96": {
+          "mean": 0.0417,
+          "std": 0.0074
+        },
+        "L_192": {
+          "mean": 0.0469,
+          "std": 0.0338
+        }
+      },
+      "recall_summary": {
+        "ev_10": {
+          "mean": 0.2813,
+          "std": 0.0337
+        },
+        "ev_20": {
+          "mean": 0.1875,
+          "std": 0.0221
+        },
+        "ev_40": {
+          "mean": 0.2448,
+          "std": 0.041
+        }
+      },
+      "per_seed": [
+        {
+          "seed": 101,
+          "s4_accuracy": {
+            "L_16": 0.0781,
+            "L_48": 0.0156,
+            "L_96": 0.0312,
+            "L_192": 0.0938
+          },
+          "override_recall": {
+            "ev_10": 0.2969,
+            "ev_20": 0.2188,
+            "ev_40": 0.2812
+          }
+        },
+        {
+          "seed": 202,
+          "s4_accuracy": {
+            "L_16": 0.0625,
+            "L_48": 0.0312,
+            "L_96": 0.0469,
+            "L_192": 0.0156
+          },
+          "override_recall": {
+            "ev_10": 0.3125,
+            "ev_20": 0.1719,
+            "ev_40": 0.1875
+          }
+        },
+        {
+          "seed": 303,
+          "s4_accuracy": {
+            "L_16": 0.0156,
+            "L_48": 0.0469,
+            "L_96": 0.0469,
+            "L_192": 0.0312
+          },
+          "override_recall": {
+            "ev_10": 0.2344,
+            "ev_20": 0.1719,
+            "ev_40": 0.2656
+          }
+        }
+      ]
+    },
+    {
+      "config": {
+        "name": "gen1-h1-hspa-spinor-small_x1",
+        "family": "gen1_h1_hspa_spinor",
+        "total_parameters": 2465472,
+        "within_4b_ceiling": true,
+        "n_registers": 8,
+        "d_fiber": 128,
+        "state_bytes_at_seq": 12288,
+        "sample_seq_len": 512
+      },
+      "s4_summary": {
+        "L_16": {
+          "mean": 0.0469,
+          "std": 0.0128
+        },
+        "L_48": {
+          "mean": 0.0417,
+          "std": 0.0074
+        },
+        "L_96": {
+          "mean": 0.0677,
+          "std": 0.0321
+        },
+        "L_192": {
+          "mean": 0.0417,
+          "std": 0.0321
+        }
+      },
+      "recall_summary": {
+        "ev_10": {
+          "mean": 0.224,
+          "std": 0.039
+        },
+        "ev_20": {
+          "mean": 0.1354,
+          "std": 0.0321
+        },
+        "ev_40": {
+          "mean": 0.2136,
+          "std": 0.0321
+        }
+      },
+      "per_seed": [
+        {
+          "seed": 101,
+          "s4_accuracy": {
+            "L_16": 0.0625,
+            "L_48": 0.0469,
+            "L_96": 0.1094,
+            "L_192": 0.0
+          },
+          "override_recall": {
+            "ev_10": 0.1719,
+            "ev_20": 0.0938,
+            "ev_40": 0.25
+          }
+        },
+        {
+          "seed": 202,
+          "s4_accuracy": {
+            "L_16": 0.0312,
+            "L_48": 0.0312,
+            "L_96": 0.0625,
+            "L_192": 0.0781
+          },
+          "override_recall": {
+            "ev_10": 0.2344,
+            "ev_20": 0.1719,
+            "ev_40": 0.2188
+          }
+        },
+        {
+          "seed": 303,
+          "s4_accuracy": {
+            "L_16": 0.0469,
+            "L_48": 0.0469,
+            "L_96": 0.0312,
+            "L_192": 0.0469
+          },
+          "override_recall": {
+            "ev_10": 0.2656,
+            "ev_20": 0.1406,
+            "ev_40": 0.1719
+          }
+        }
+      ]
+    },
+    {
+      "config": {
+        "name": "gen1-h2-hspa-predcode-small_x1",
+        "family": "gen1_h2_hspa_predcode",
+        "total_parameters": 2466630,
+        "within_4b_ceiling": true,
+        "n_registers": 8,
+        "d_fiber": 128,
+        "state_bytes_at_seq": 12288,
+        "sample_seq_len": 512
+      },
+      "s4_summary": {
+        "L_16": {
+          "mean": 0.0417,
+          "std": 0.0195
+        },
+        "L_48": {
+          "mean": 0.026,
+          "std": 0.0266
+        },
+        "L_96": {
+          "mean": 0.0312,
+          "std": 0.0
+        },
+        "L_192": {
+          "mean": 0.0417,
+          "std": 0.0321
+        }
+      },
+      "recall_summary": {
+        "ev_10": {
+          "mean": 0.0885,
+          "std": 0.0769
+        },
+        "ev_20": {
+          "mean": 0.0677,
+          "std": 0.041
+        },
+        "ev_40": {
+          "mean": 0.0937,
+          "std": 0.051
+        }
+      },
+      "per_seed": [
+        {
+          "seed": 101,
+          "s4_accuracy": {
+            "L_16": 0.0469,
+            "L_48": 0.0156,
+            "L_96": 0.0312,
+            "L_192": 0.0781
+          },
+          "override_recall": {
+            "ev_10": 0.0,
+            "ev_20": 0.0469,
+            "ev_40": 0.0312
+          }
+        },
+        {
+          "seed": 202,
+          "s4_accuracy": {
+            "L_16": 0.0625,
+            "L_48": 0.0,
+            "L_96": 0.0312,
+            "L_192": 0.0
+          },
+          "override_recall": {
+            "ev_10": 0.1875,
+            "ev_20": 0.125,
+            "ev_40": 0.1562
+          }
+        },
+        {
+          "seed": 303,
+          "s4_accuracy": {
+            "L_16": 0.0156,
+            "L_48": 0.0625,
+            "L_96": 0.0312,
+            "L_192": 0.0469
+          },
+          "override_recall": {
+            "ev_10": 0.0781,
+            "ev_20": 0.0312,
+            "ev_40": 0.0938
+          }
+        }
+      ]
+    },
+    {
+      "config": {
+        "name": "gen2-h3-hspa-evolved-small_x1",
+        "family": "gen2_h3_hspa_evolved",
+        "total_parameters": 2469696,
+        "within_4b_ceiling": true,
+        "n_registers": 8,
+        "d_fiber": 128,
+        "state_bytes_at_seq": 16896,
+        "sample_seq_len": 512
+      },
+      "s4_summary": {
+        "L_16": {
+          "mean": 0.0417,
+          "std": 0.0074
+        },
+        "L_48": {
+          "mean": 0.0521,
+          "std": 0.0195
+        },
+        "L_96": {
+          "mean": 0.0729,
+          "std": 0.039
+        },
+        "L_192": {
+          "mean": 0.0417,
+          "std": 0.0321
+        }
+      },
+      "recall_summary": {
+        "ev_10": {
+          "mean": 0.1771,
+          "std": 0.1023
+        },
+        "ev_20": {
+          "mean": 0.1406,
+          "std": 0.0255
+        },
+        "ev_40": {
+          "mean": 0.1771,
+          "std": 0.0726
+        }
+      },
+      "per_seed": [
+        {
+          "seed": 101,
+          "s4_accuracy": {
+            "L_16": 0.0469,
+            "L_48": 0.0469,
+            "L_96": 0.125,
+            "L_192": 0.0
+          },
+          "override_recall": {
+            "ev_10": 0.0469,
+            "ev_20": 0.1094,
+            "ev_40": 0.0781
+          }
+        },
+        {
+          "seed": 202,
+          "s4_accuracy": {
+            "L_16": 0.0312,
+            "L_48": 0.0312,
+            "L_96": 0.0625,
+            "L_192": 0.0781
+          },
+          "override_recall": {
+            "ev_10": 0.2969,
+            "ev_20": 0.1719,
+            "ev_40": 0.2031
+          }
+        },
+        {
+          "seed": 303,
+          "s4_accuracy": {
+            "L_16": 0.0469,
+            "L_48": 0.0781,
+            "L_96": 0.0312,
+            "L_192": 0.0469
+          },
+          "override_recall": {
+            "ev_10": 0.1875,
+            "ev_20": 0.1406,
+            "ev_40": 0.25
+          }
+        }
+      ]
+    }
+  ]
+}

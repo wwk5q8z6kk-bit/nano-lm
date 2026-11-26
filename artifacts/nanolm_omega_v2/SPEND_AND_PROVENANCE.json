@@ -1,0 +1,31 @@
+{
+  "campaign": "nanolm_omega_v2",
+  "backend": "kaggle_free_gpu",
+  "machine_shape": "NvidiaTeslaT4",
+  "gpu_count": 2,
+  "gpu_names": [
+    "Tesla T4",
+    "Tesla T4"
+  ],
+  "gpu_vram_gb": [
+    14.56,
+    14.56
+  ],
+  "cuda_capability": [
+    7,
+    5
+  ],
+  "torch_version": "2.11.0+cu130",
+  "triton_version": "3.6.0",
+  "source_commit": "e2ef48f",
+  "wall_seconds": 1450.81,
+  "total_usd": 0.0,
+  "kaggle_kernel_slug": "hassaneljesr/nanolm-omega-v2",
+  "kernel_v1_scope": "pytest_cuda(30/30) + exp_omega4 + exp_omega5 + exp_omega6",
+  "kernel_v1_o4_o6_wall_seconds": 5151.73,
+  "kernel_v2_scope": "pytest_cuda(31/31) + exp_omega7",
+  "kernel_v2_o7_wall_seconds": 1450.81,
+  "total_wall_seconds": 6602.54,
+  "pytest_cuda_passed": "31/31",
+  "runpod_fallback_used": false
+}

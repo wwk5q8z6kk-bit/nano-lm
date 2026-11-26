@@ -1,0 +1,1177 @@
+{
+  "experiment": "EXP_FP2_Gen5_Sequence_Evolution",
+  "s4_results": [
+    {
+      "name": "b0-transformer-small_x1",
+      "params": 2460480,
+      "summary": {
+        "L_32": 0.0234,
+        "L_64": 0.0312,
+        "L_128": 0.0156,
+        "L_256": 0.0391
+      },
+      "per_seed": [
+        {
+          "seed": 101,
+          "accuracy": {
+            "L_32": 0.0156,
+            "L_64": 0.0625,
+            "L_128": 0.0312,
+            "L_256": 0.0312
+          }
+        },
+        {
+          "seed": 202,
+          "accuracy": {
+            "L_32": 0.0312,
+            "L_64": 0.0,
+            "L_128": 0.0,
+            "L_256": 0.0469
+          }
+        }
+      ]
+    },
+    {
+      "name": "b2-gated-deltanet-small_x1",
+      "params": 2438592,
+      "summary": {
+        "L_32": 0.0234,
+        "L_64": 0.0156,
+        "L_128": 0.0625,
+        "L_256": 0.0625
+      },
+      "per_seed": [
+        {
+          "seed": 101,
+          "accuracy": {
+            "L_32": 0.0156,
+            "L_64": 0.0156,
+            "L_128": 0.0625,
+            "L_256": 0.0781
+          }
+        },
+        {
+          "seed": 202,
+          "accuracy": {
+            "L_32": 0.0312,
+            "L_64": 0.0156,
+            "L_128": 0.0625,
+            "L_256": 0.0469
+          }
+        }
+      ]
+    },
+    {
+      "name": "gen1-h2-hspa-predcode-small_x1",
+      "params": 2466630,
+      "summary": {
+        "L_32": 0.0547,
+        "L_64": 0.0234,
+        "L_128": 0.0547,
+        "L_256": 0.0312
+      },
+      "per_seed": [
+        {
+          "seed": 101,
+          "accuracy": {
+            "L_32": 0.0469,
+            "L_64": 0.0,
+            "L_128": 0.0469,
+            "L_256": 0.0469
+          }
+        },
+        {
+          "seed": 202,
+          "accuracy": {
+            "L_32": 0.0625,
+            "L_64": 0.0469,
+            "L_128": 0.0625,
+            "L_256": 0.0156
+          }
+        }
+      ]
+    },
+    {
+      "name": "gen4-omega-so3-predcode-small_x1",
+      "params": 2466732,
+      "summary": {
+        "L_32": 1.0,
+        "L_64": 1.0,
+        "L_128": 1.0,
+        "L_256": 0.9766
+      },
+      "per_seed": [
+        {
+          "seed": 101,
+          "accuracy": {
+            "L_32": 1.0,
+            "L_64": 1.0,
+            "L_128": 1.0,
+            "L_256": 0.9531
+          }
+        },
+        {
+          "seed": 202,
+          "accuracy": {
+            "L_32": 1.0,
+            "L_64": 1.0,
+            "L_128": 1.0,
+            "L_256": 1.0
+          }
+        }
+      ]
+    },
+    {
+      "name": "gen5-fp-ph-holonomy-small_x1",
+      "params": 2487385,
+      "summary": {
+        "L_32": 0.0547,
+        "L_64": 0.0078,
+        "L_128": 0.0156,
+        "L_256": 0.0312
+      },
+      "per_seed": [
+        {
+          "seed": 101,
+          "accuracy": {
+            "L_32": 0.0625,
+            "L_64": 0.0156,
+            "L_128": 0.0156,
+            "L_256": 0.0312
+          }
+        },
+        {
+          "seed": 202,
+          "accuracy": {
+            "L_32": 0.0469,
+            "L_64": 0.0,
+            "L_128": 0.0156,
+            "L_256": 0.0312
+          }
+        }
+      ]
+    }
+  ],
+  "lm_results": [
+    {
+      "config": {
+        "name": "b0-transformer-micro",
+        "family": "b0_transformer",
+        "total_parameters": 13966464,
+        "within_4b_ceiling": true,
+        "n_registers": 8,
+        "d_fiber": 128,
+        "state_bytes_at_seq": 25165824,
+        "sample_seq_len": 8192
+      },
+      "metrics": {
+        "std_val_bpb": 0.00106,
+        "open_vocab_copy_acc": 0.0,
+        "bitemporal_probe_acc": 0.0,
+        "math_probe_acc": 0.0486,
+        "state_probe_acc": 0.0139,
+        "ece": 0.0041,
+        "tok_per_sec": 57914.7,
+        "peak_vram_mb": 1148.9,
+        "seed_runs": [
+          {
+            "seed": 42,
+            "optimizer": "adamw",
+            "mean_val_bpb": 0.3769,
+            "domain_bpb": {
+              "code": 0.212,
+              "math": 0.7247,
+              "prose": 0.0915,
+              "state": 0.4792
+            },
+            "probe_acc": {
+              "math": 0.0625,
+              "state": 0.0,
+              "copy_probes": 0.0,
+              "bit_probes": 0.0
+            },
+            "ece": 0.0065,
+            "tok_per_sec": 57690.2,
+            "peak_vram_mb": 1148.94
+          },
+          {
+            "seed": 137,
+            "optimizer": "adamw",
+            "mean_val_bpb": 0.3792,
+            "domain_bpb": {
+              "code": 0.2118,
+              "math": 0.724,
+              "prose": 0.0912,
+              "state": 0.4899
+            },
+            "probe_acc": {
+              "math": 0.0208,
+              "state": 0.0417,
+              "copy_probes": 0.0,
+              "bit_probes": 0.0
+            },
+            "ece": 0.0027,
+            "tok_per_sec": 58086.7,
+            "peak_vram_mb": 1148.94
+          },
+          {
+            "seed": 271,
+            "optimizer": "adamw",
+            "mean_val_bpb": 0.3791,
+            "domain_bpb": {
+              "code": 0.2118,
+              "math": 0.7234,
+              "prose": 0.0911,
+              "state": 0.4903
+            },
+            "probe_acc": {
+              "math": 0.0625,
+              "state": 0.0,
+              "copy_probes": 0.0,
+              "bit_probes": 0.0
+            },
+            "ece": 0.0031,
+            "tok_per_sec": 57967.1,
+            "peak_vram_mb": 1148.94
+          }
+        ]
+      },
+      "bpb": 0.3784,
+      "registry_decision": {
+        "promoted": true,
+        "reason": "registered_baseline"
+      }
+    },
+    {
+      "config": {
+        "name": "b2-gated-deltanet-micro",
+        "family": "b2_gated_deltanet",
+        "total_parameters": 14018688,
+        "within_4b_ceiling": true,
+        "n_registers": 8,
+        "d_fiber": 192,
+        "state_bytes_at_seq": 294912,
+        "sample_seq_len": 8192
+      },
+      "metrics": {
+        "std_val_bpb": 8e-05,
+        "open_vocab_copy_acc": 0.0,
+        "bitemporal_probe_acc": 0.0,
+        "math_probe_acc": 0.0417,
+        "state_probe_acc": 0.0139,
+        "ece": 0.0049,
+        "tok_per_sec": 6890.5,
+        "peak_vram_mb": 1982.7,
+        "seed_runs": [
+          {
+            "seed": 42,
+            "optimizer": "adamw",
+            "mean_val_bpb": 0.3785,
+            "domain_bpb": {
+              "code": 0.2112,
+              "math": 0.7231,
+              "prose": 0.0908,
+              "state": 0.4887
+            },
+            "probe_acc": {
+              "math": 0.0625,
+              "state": 0.0,
+              "copy_probes": 0.0,
+              "bit_probes": 0.0
+            },
+            "ece": 0.0031,
+            "tok_per_sec": 6856.5,
+            "peak_vram_mb": 1982.71
+          },
+          {
+            "seed": 137,
+            "optimizer": "adamw",
+            "mean_val_bpb": 0.3786,
+            "domain_bpb": {
+              "code": 0.2109,
+              "math": 0.724,
+              "prose": 0.0908,
+              "state": 0.4887
+            },
+            "probe_acc": {
+              "math": 0.0417,
+              "state": 0.0417,
+              "copy_probes": 0.0,
+              "bit_probes": 0.0
+            },
+            "ece": 0.0003,
+            "tok_per_sec": 6895.2,
+            "peak_vram_mb": 1982.71
+          },
+          {
+            "seed": 271,
+            "optimizer": "adamw",
+            "mean_val_bpb": 0.3784,
+            "domain_bpb": {
+              "code": 0.2111,
+              "math": 0.7228,
+              "prose": 0.0908,
+              "state": 0.4888
+            },
+            "probe_acc": {
+              "math": 0.0208,
+              "state": 0.0,
+              "copy_probes": 0.0,
+              "bit_probes": 0.0
+            },
+            "ece": 0.0114,
+            "tok_per_sec": 6919.9,
+            "peak_vram_mb": 1982.71
+          }
+        ]
+      },
+      "bpb": 0.3785,
+      "registry_decision": {
+        "candidate": "b2-gated-deltanet-micro",
+        "promoted": false,
+        "reason": "did_not_beat_best:0.3785_vs_0.3784"
+      }
+    },
+    {
+      "config": {
+        "name": "gen1-h2-hspa-predcode-micro",
+        "family": "gen1_h2_hspa_predcode",
+        "total_parameters": 14022536,
+        "within_4b_ceiling": true,
+        "n_registers": 8,
+        "d_fiber": 192,
+        "state_bytes_at_seq": 24576,
+        "sample_seq_len": 8192
+      },
+      "metrics": {
+        "std_val_bpb": 0.00217,
+        "open_vocab_copy_acc": 0.0,
+        "bitemporal_probe_acc": 0.0,
+        "math_probe_acc": 0.0417,
+        "state_probe_acc": 0.0417,
+        "ece": 0.0045,
+        "tok_per_sec": 6910.4,
+        "peak_vram_mb": 3781.7,
+        "seed_runs": [
+          {
+            "seed": 42,
+            "optimizer": "adamw",
+            "mean_val_bpb": 0.3749,
+            "domain_bpb": {
+              "code": 0.2107,
+              "math": 0.7235,
+              "prose": 0.0908,
+              "state": 0.4747
+            },
+            "probe_acc": {
+              "math": 0.0417,
+              "state": 0.0417,
+              "copy_probes": 0.0,
+              "bit_probes": 0.0
+            },
+            "ece": 0.0016,
+            "tok_per_sec": 6902.0,
+            "peak_vram_mb": 3781.71
+          },
+          {
+            "seed": 137,
+            "optimizer": "adamw",
+            "mean_val_bpb": 0.3726,
+            "domain_bpb": {
+              "code": 0.2106,
+              "math": 0.7228,
+              "prose": 0.0909,
+              "state": 0.4661
+            },
+            "probe_acc": {
+              "math": 0.0417,
+              "state": 0.0833,
+              "copy_probes": 0.0,
+              "bit_probes": 0.0
+            },
+            "ece": 0.0032,
+            "tok_per_sec": 6914.4,
+            "peak_vram_mb": 3781.71
+          },
+          {
+            "seed": 271,
+            "optimizer": "adamw",
+            "mean_val_bpb": 0.3779,
+            "domain_bpb": {
+              "code": 0.2112,
+              "math": 0.7228,
+              "prose": 0.0907,
+              "state": 0.4867
+            },
+            "probe_acc": {
+              "math": 0.0417,
+              "state": 0.0,
+              "copy_probes": 0.0,
+              "bit_probes": 0.0
+            },
+            "ece": 0.0088,
+            "tok_per_sec": 6914.8,
+            "peak_vram_mb": 3781.71
+          }
+        ]
+      },
+      "bpb": 0.3751,
+      "registry_decision": {
+        "candidate": "gen1-h2-hspa-predcode-micro",
+        "promoted": true,
+        "reason": "beat_best:b0-transformer-micro(0.3784->0.3751)"
+      }
+    },
+    {
+      "config": {
+        "name": "gen4-omega-so3-predcode-micro",
+        "family": "gen4_omega_so3_predcode",
+        "total_parameters": 13948944,
+        "within_4b_ceiling": true,
+        "n_registers": 8,
+        "d_fiber": 192,
+        "state_bytes_at_seq": 24576,
+        "sample_seq_len": 8192
+      },
+      "metrics": {
+        "std_val_bpb": 0.00243,
+        "open_vocab_copy_acc": 0.0,
+        "bitemporal_probe_acc": 0.0,
+        "math_probe_acc": 0.0417,
+        "state_probe_acc": 0.0139,
+        "ece": 0.0073,
+        "tok_per_sec": 7735.5,
+        "peak_vram_mb": 3221.6,
+        "seed_runs": [
+          {
+            "seed": 42,
+            "optimizer": "adamw",
+            "mean_val_bpb": 0.3792,
+            "domain_bpb": {
+              "code": 0.2118,
+              "math": 0.7236,
+              "prose": 0.0909,
+              "state": 0.4904
+            },
+            "probe_acc": {
+              "math": 0.0625,
+              "state": 0.0,
+              "copy_probes": 0.0,
+              "bit_probes": 0.0
+            },
+            "ece": 0.004,
+            "tok_per_sec": 7726.5,
+            "peak_vram_mb": 3221.57
+          },
+          {
+            "seed": 137,
+            "optimizer": "adamw",
+            "mean_val_bpb": 0.3793,
+            "domain_bpb": {
+              "code": 0.2114,
+              "math": 0.7251,
+              "prose": 0.0911,
+              "state": 0.4896
+            },
+            "probe_acc": {
+              "math": 0.0208,
+              "state": 0.0208,
+              "copy_probes": 0.0,
+              "bit_probes": 0.0
+            },
+            "ece": 0.0091,
+            "tok_per_sec": 7740.6,
+            "peak_vram_mb": 3221.57
+          },
+          {
+            "seed": 271,
+            "optimizer": "adamw",
+            "mean_val_bpb": 0.3741,
+            "domain_bpb": {
+              "code": 0.2113,
+              "math": 0.7238,
+              "prose": 0.0909,
+              "state": 0.4706
+            },
+            "probe_acc": {
+              "math": 0.0417,
+              "state": 0.0208,
+              "copy_probes": 0.0,
+              "bit_probes": 0.0
+            },
+            "ece": 0.0087,
+            "tok_per_sec": 7739.4,
+            "peak_vram_mb": 3221.57
+          }
+        ]
+      },
+      "bpb": 0.3775,
+      "registry_decision": {
+        "candidate": "gen4-omega-so3-predcode-micro",
+        "promoted": false,
+        "reason": "did_not_beat_best:0.3775_vs_0.3751"
+      }
+    },
+    {
+      "config": {
+        "name": "gen5-fp-ph-holonomy-micro",
+        "family": "gen5_fp_ph_holonomy",
+        "total_parameters": 14008545,
+        "within_4b_ceiling": true,
+        "n_registers": 8,
+        "d_fiber": 192,
+        "state_bytes_at_seq": 51200,
+        "sample_seq_len": 8192
+      },
+      "metrics": {
+        "std_val_bpb": 0.0,
+        "open_vocab_copy_acc": 0.0429,
+        "bitemporal_probe_acc": 0.9667,
+        "math_probe_acc": 0.0486,
+        "state_probe_acc": 0.0278,
+        "ece": 0.2913,
+        "tok_per_sec": 6881.6,
+        "peak_vram_mb": 4031.5,
+        "seed_runs": [
+          {
+            "seed": 42,
+            "optimizer": "adamw",
+            "mean_val_bpb": 0.3756,
+            "domain_bpb": {
+              "code": 0.1974,
+              "math": 0.7242,
+              "prose": 0.0912,
+              "state": 0.4895
+            },
+            "probe_acc": {
+              "math": 0.0625,
+              "state": 0.0208,
+              "copy_probes": 0.0429,
+              "bit_probes": 0.9714
+            },
+            "ece": 0.2953,
+            "tok_per_sec": 6882.4,
+            "peak_vram_mb": 4031.47
+          },
+          {
+            "seed": 137,
+            "optimizer": "adamw",
+            "mean_val_bpb": 0.3756,
+            "domain_bpb": {
+              "code": 0.1978,
+              "math": 0.7245,
+              "prose": 0.0907,
+              "state": 0.4895
+            },
+            "probe_acc": {
+              "math": 0.0625,
+              "state": 0.0417,
+              "copy_probes": 0.0286,
+              "bit_probes": 0.9429
+            },
+            "ece": 0.2854,
+            "tok_per_sec": 6884.4,
+            "peak_vram_mb": 4031.47
+          },
+          {
+            "seed": 271,
+            "optimizer": "adamw",
+            "mean_val_bpb": 0.3756,
+            "domain_bpb": {
+              "code": 0.1978,
+              "math": 0.724,
+              "prose": 0.0908,
+              "state": 0.4897
+            },
+            "probe_acc": {
+              "math": 0.0208,
+              "state": 0.0208,
+              "copy_probes": 0.0571,
+              "bit_probes": 0.9857
+            },
+            "ece": 0.2933,
+            "tok_per_sec": 6877.9,
+            "peak_vram_mb": 4031.47
+          }
+        ]
+      },
+      "bpb": 0.3756,
+      "registry_decision": {
+        "candidate": "gen5-fp-ph-holonomy-micro",
+        "promoted": false,
+        "reason": "did_not_beat_best:0.3756_vs_0.3751"
+      }
+    },
+    {
+      "config": {
+        "name": "gen5-fp-nocopy-micro",
+        "family": "gen5_fp_ph_holonomy",
+        "total_parameters": 13971296,
+        "within_4b_ceiling": true,
+        "n_registers": 8,
+        "d_fiber": 192,
+        "state_bytes_at_seq": 24576,
+        "sample_seq_len": 8192
+      },
+      "metrics": {
+        "std_val_bpb": 0.0001,
+        "open_vocab_copy_acc": 0.0,
+        "bitemporal_probe_acc": 0.0048,
+        "math_probe_acc": 0.0417,
+        "state_probe_acc": 0.0,
+        "ece": 0.0068,
+        "tok_per_sec": 6967.1,
+        "peak_vram_mb": 3824.4,
+        "seed_runs": [
+          {
+            "seed": 42,
+            "optimizer": "adamw",
+            "mean_val_bpb": 0.3788,
+            "domain_bpb": {
+              "code": 0.2111,
+              "math": 0.7233,
+              "prose": 0.0908,
+              "state": 0.49
+            },
+            "probe_acc": {
+              "math": 0.0417,
+              "state": 0.0,
+              "copy_probes": 0.0,
+              "bit_probes": 0.0143
+            },
+            "ece": 0.0037,
+            "tok_per_sec": 6967.1,
+            "peak_vram_mb": 3824.38
+          },
+          {
+            "seed": 137,
+            "optimizer": "adamw",
+            "mean_val_bpb": 0.379,
+            "domain_bpb": {
+              "code": 0.2115,
+              "math": 0.7235,
+              "prose": 0.0908,
+              "state": 0.4902
+            },
+            "probe_acc": {
+              "math": 0.0417,
+              "state": 0.0,
+              "copy_probes": 0.0,
+              "bit_probes": 0.0
+            },
+            "ece": 0.0084,
+            "tok_per_sec": 6969.6,
+            "peak_vram_mb": 3824.38
+          },
+          {
+            "seed": 271,
+            "optimizer": "adamw",
+            "mean_val_bpb": 0.3788,
+            "domain_bpb": {
+              "code": 0.2112,
+              "math": 0.7241,
+              "prose": 0.0908,
+              "state": 0.489
+            },
+            "probe_acc": {
+              "math": 0.0417,
+              "state": 0.0,
+              "copy_probes": 0.0,
+              "bit_probes": 0.0
+            },
+            "ece": 0.0084,
+            "tok_per_sec": 6964.6,
+            "peak_vram_mb": 3824.38
+          }
+        ]
+      },
+      "bpb": 0.3789,
+      "registry_decision": {
+        "candidate": "gen5-fp-nocopy-micro",
+        "promoted": false,
+        "reason": "did_not_beat_best:0.3789_vs_0.3751"
+      }
+    }
+  ],
+  "registry": {
+    "higher_is_better": false,
+    "baseline": {
+      "name": "b0-transformer-micro",
+      "family": "b0_transformer",
+      "total_parameters": 13966464,
+      "mean_primary_metric": 0.3784,
+      "seed_scores": [
+        0.3769,
+        0.3792,
+        0.3791
+      ],
+      "metrics": {
+        "std_val_bpb": 0.00106,
+        "open_vocab_copy_acc": 0.0,
+        "bitemporal_probe_acc": 0.0,
+        "math_probe_acc": 0.0486,
+        "state_probe_acc": 0.0139,
+        "ece": 0.0041,
+        "tok_per_sec": 57914.7,
+        "peak_vram_mb": 1148.9,
+        "seed_runs": [
+          {
+            "seed": 42,
+            "optimizer": "adamw",
+            "mean_val_bpb": 0.3769,
+            "domain_bpb": {
+              "code": 0.212,
+              "math": 0.7247,
+              "prose": 0.0915,
+              "state": 0.4792
+            },
+            "probe_acc": {
+              "math": 0.0625,
+              "state": 0.0,
+              "copy_probes": 0.0,
+              "bit_probes": 0.0
+            },
+            "ece": 0.0065,
+            "tok_per_sec": 57690.2,
+            "peak_vram_mb": 1148.94
+          },
+          {
+            "seed": 137,
+            "optimizer": "adamw",
+            "mean_val_bpb": 0.3792,
+            "domain_bpb": {
+              "code": 0.2118,
+              "math": 0.724,
+              "prose": 0.0912,
+              "state": 0.4899
+            },
+            "probe_acc": {
+              "math": 0.0208,
+              "state": 0.0417,
+              "copy_probes": 0.0,
+              "bit_probes": 0.0
+            },
+            "ece": 0.0027,
+            "tok_per_sec": 58086.7,
+            "peak_vram_mb": 1148.94
+          },
+          {
+            "seed": 271,
+            "optimizer": "adamw",
+            "mean_val_bpb": 0.3791,
+            "domain_bpb": {
+              "code": 0.2118,
+              "math": 0.7234,
+              "prose": 0.0911,
+              "state": 0.4903
+            },
+            "probe_acc": {
+              "math": 0.0625,
+              "state": 0.0,
+              "copy_probes": 0.0,
+              "bit_probes": 0.0
+            },
+            "ece": 0.0031,
+            "tok_per_sec": 57967.1,
+            "peak_vram_mb": 1148.94
+          }
+        ]
+      },
+      "notes": ""
+    },
+    "best": {
+      "name": "gen1-h2-hspa-predcode-micro",
+      "family": "gen1_h2_hspa_predcode",
+      "total_parameters": 14022536,
+      "mean_primary_metric": 0.3751,
+      "seed_scores": [
+        0.3749,
+        0.3726,
+        0.3779
+      ],
+      "metrics": {
+        "std_val_bpb": 0.00217,
+        "open_vocab_copy_acc": 0.0,
+        "bitemporal_probe_acc": 0.0,
+        "math_probe_acc": 0.0417,
+        "state_probe_acc": 0.0417,
+        "ece": 0.0045,
+        "tok_per_sec": 6910.4,
+        "peak_vram_mb": 3781.7,
+        "seed_runs": [
+          {
+            "seed": 42,
+            "optimizer": "adamw",
+            "mean_val_bpb": 0.3749,
+            "domain_bpb": {
+              "code": 0.2107,
+              "math": 0.7235,
+              "prose": 0.0908,
+              "state": 0.4747
+            },
+            "probe_acc": {
+              "math": 0.0417,
+              "state": 0.0417,
+              "copy_probes": 0.0,
+              "bit_probes": 0.0
+            },
+            "ece": 0.0016,
+            "tok_per_sec": 6902.0,
+            "peak_vram_mb": 3781.71
+          },
+          {
+            "seed": 137,
+            "optimizer": "adamw",
+            "mean_val_bpb": 0.3726,
+            "domain_bpb": {
+              "code": 0.2106,
+              "math": 0.7228,
+              "prose": 0.0909,
+              "state": 0.4661
+            },
+            "probe_acc": {
+              "math": 0.0417,
+              "state": 0.0833,
+              "copy_probes": 0.0,
+              "bit_probes": 0.0
+            },
+            "ece": 0.0032,
+            "tok_per_sec": 6914.4,
+            "peak_vram_mb": 3781.71
+          },
+          {
+            "seed": 271,
+            "optimizer": "adamw",
+            "mean_val_bpb": 0.3779,
+            "domain_bpb": {
+              "code": 0.2112,
+              "math": 0.7228,
+              "prose": 0.0907,
+              "state": 0.4867
+            },
+            "probe_acc": {
+              "math": 0.0417,
+              "state": 0.0,
+              "copy_probes": 0.0,
+              "bit_probes": 0.0
+            },
+            "ece": 0.0088,
+            "tok_per_sec": 6914.8,
+            "peak_vram_mb": 3781.71
+          }
+        ]
+      },
+      "notes": ""
+    },
+    "experimental": {
+      "name": "gen5-fp-nocopy-micro",
+      "family": "gen5_fp_ph_holonomy",
+      "total_parameters": 13971296,
+      "mean_primary_metric": 0.3789,
+      "seed_scores": [
+        0.3788,
+        0.379,
+        0.3788
+      ],
+      "metrics": {
+        "std_val_bpb": 0.0001,
+        "open_vocab_copy_acc": 0.0,
+        "bitemporal_probe_acc": 0.0048,
+        "math_probe_acc": 0.0417,
+        "state_probe_acc": 0.0,
+        "ece": 0.0068,
+        "tok_per_sec": 6967.1,
+        "peak_vram_mb": 3824.4,
+        "seed_runs": [
+          {
+            "seed": 42,
+            "optimizer": "adamw",
+            "mean_val_bpb": 0.3788,
+            "domain_bpb": {
+              "code": 0.2111,
+              "math": 0.7233,
+              "prose": 0.0908,
+              "state": 0.49
+            },
+            "probe_acc": {
+              "math": 0.0417,
+              "state": 0.0,
+              "copy_probes": 0.0,
+              "bit_probes": 0.0143
+            },
+            "ece": 0.0037,
+            "tok_per_sec": 6967.1,
+            "peak_vram_mb": 3824.38
+          },
+          {
+            "seed": 137,
+            "optimizer": "adamw",
+            "mean_val_bpb": 0.379,
+            "domain_bpb": {
+              "code": 0.2115,
+              "math": 0.7235,
+              "prose": 0.0908,
+              "state": 0.4902
+            },
+            "probe_acc": {
+              "math": 0.0417,
+              "state": 0.0,
+              "copy_probes": 0.0,
+              "bit_probes": 0.0
+            },
+            "ece": 0.0084,
+            "tok_per_sec": 6969.6,
+            "peak_vram_mb": 3824.38
+          },
+          {
+            "seed": 271,
+            "optimizer": "adamw",
+            "mean_val_bpb": 0.3788,
+            "domain_bpb": {
+              "code": 0.2112,
+              "math": 0.7241,
+              "prose": 0.0908,
+              "state": 0.489
+            },
+            "probe_acc": {
+              "math": 0.0417,
+              "state": 0.0,
+              "copy_probes": 0.0,
+              "bit_probes": 0.0
+            },
+            "ece": 0.0084,
+            "tok_per_sec": 6964.6,
+            "peak_vram_mb": 3824.38
+          }
+        ]
+      },
+      "notes": ""
+    },
+    "audit_log": [
+      {
+        "event": "register_baseline",
+        "name": "b0-transformer-micro",
+        "metric": 0.3784
+      },
+      {
+        "candidate": "b2-gated-deltanet-micro",
+        "promoted": false,
+        "reason": "did_not_beat_best:0.3785_vs_0.3784"
+      },
+      {
+        "candidate": "gen1-h2-hspa-predcode-micro",
+        "promoted": true,
+        "reason": "beat_best:b0-transformer-micro(0.3784->0.3751)"
+      },
+      {
+        "candidate": "gen4-omega-so3-predcode-micro",
+        "promoted": false,
+        "reason": "did_not_beat_best:0.3775_vs_0.3751"
+      },
+      {
+        "candidate": "gen5-fp-ph-holonomy-micro",
+        "promoted": false,
+        "reason": "did_not_beat_best:0.3756_vs_0.3751"
+      },
+      {
+        "candidate": "gen5-fp-nocopy-micro",
+        "promoted": false,
+        "reason": "did_not_beat_best:0.3789_vs_0.3751"
+      }
+    ]
+  },
+  "muon_cross": [
+    {
+      "name": "b0-transformer-micro",
+      "optimizer": "muon_hybrid",
+      "mean_val_bpb": 0.3849,
+      "open_vocab_copy_acc": 0.0,
+      "per_seed": [
+        {
+          "seed": 42,
+          "optimizer": "muon",
+          "mean_val_bpb": 0.3845,
+          "domain_bpb": {
+            "code": 0.2165,
+            "math": 0.7348,
+            "prose": 0.094,
+            "state": 0.4928
+          },
+          "probe_acc": {
+            "math": 0.0625,
+            "state": 0.0,
+            "copy_probes": 0.0,
+            "bit_probes": 0.0
+          },
+          "ece": 0.0118,
+          "tok_per_sec": 35359.7,
+          "peak_vram_mb": 1101.68
+        },
+        {
+          "seed": 137,
+          "optimizer": "muon",
+          "mean_val_bpb": 0.3852,
+          "domain_bpb": {
+            "code": 0.2208,
+            "math": 0.7338,
+            "prose": 0.0931,
+            "state": 0.4932
+          },
+          "probe_acc": {
+            "math": 0.0625,
+            "state": 0.0208,
+            "copy_probes": 0.0,
+            "bit_probes": 0.0
+          },
+          "ece": 0.0081,
+          "tok_per_sec": 35567.1,
+          "peak_vram_mb": 1101.68
+        }
+      ]
+    },
+    {
+      "name": "b2-gated-deltanet-micro",
+      "optimizer": "muon_hybrid",
+      "mean_val_bpb": 0.3865,
+      "open_vocab_copy_acc": 0.0,
+      "per_seed": [
+        {
+          "seed": 42,
+          "optimizer": "muon",
+          "mean_val_bpb": 0.3887,
+          "domain_bpb": {
+            "code": 0.239,
+            "math": 0.7296,
+            "prose": 0.0942,
+            "state": 0.492
+          },
+          "probe_acc": {
+            "math": 0.0833,
+            "state": 0.0,
+            "copy_probes": 0.0,
+            "bit_probes": 0.0
+          },
+          "ece": 0.0094,
+          "tok_per_sec": 6484.4,
+          "peak_vram_mb": 1935.27
+        },
+        {
+          "seed": 137,
+          "optimizer": "muon",
+          "mean_val_bpb": 0.3843,
+          "domain_bpb": {
+            "code": 0.2239,
+            "math": 0.7335,
+            "prose": 0.0917,
+            "state": 0.4881
+          },
+          "probe_acc": {
+            "math": 0.0833,
+            "state": 0.0,
+            "copy_probes": 0.0,
+            "bit_probes": 0.0
+          },
+          "ece": 0.0096,
+          "tok_per_sec": 6482.6,
+          "peak_vram_mb": 1935.27
+        }
+      ]
+    },
+    {
+      "name": "gen1-h2-hspa-predcode-micro",
+      "optimizer": "muon_hybrid",
+      "mean_val_bpb": 0.3749,
+      "open_vocab_copy_acc": 0.0,
+      "per_seed": [
+        {
+          "seed": 42,
+          "optimizer": "muon",
+          "mean_val_bpb": 0.375,
+          "domain_bpb": {
+            "code": 0.2181,
+            "math": 0.728,
+            "prose": 0.0935,
+            "state": 0.4604
+          },
+          "probe_acc": {
+            "math": 0.0833,
+            "state": 0.0208,
+            "copy_probes": 0.0,
+            "bit_probes": 0.0
+          },
+          "ece": 0.0131,
+          "tok_per_sec": 6433.3,
+          "peak_vram_mb": 3734.36
+        },
+        {
+          "seed": 137,
+          "optimizer": "muon",
+          "mean_val_bpb": 0.3748,
+          "domain_bpb": {
+            "code": 0.2157,
+            "math": 0.7294,
+            "prose": 0.0938,
+            "state": 0.4601
+          },
+          "probe_acc": {
+            "math": 0.0625,
+            "state": 0.0625,
+            "copy_probes": 0.0,
+            "bit_probes": 0.0
+          },
+          "ece": 0.0103,
+          "tok_per_sec": 6433.6,
+          "peak_vram_mb": 3734.36
+        }
+      ]
+    },
+    {
+      "name": "gen5-fp-ph-holonomy-micro",
+      "optimizer": "muon_hybrid",
+      "mean_val_bpb": 0.3793,
+      "open_vocab_copy_acc": 0.0072,
+      "per_seed": [
+        {
+          "seed": 42,
+          "optimizer": "muon",
+          "mean_val_bpb": 0.3772,
+          "domain_bpb": {
+            "code": 0.2084,
+            "math": 0.7328,
+            "prose": 0.0944,
+            "state": 0.4734
+          },
+          "probe_acc": {
+            "math": 0.0417,
+            "state": 0.0,
+            "copy_probes": 0.0143,
+            "bit_probes": 0.7143
+          },
+          "ece": 0.198,
+          "tok_per_sec": 6422.4,
+          "peak_vram_mb": 3984.26
+        },
+        {
+          "seed": 137,
+          "optimizer": "muon",
+          "mean_val_bpb": 0.3814,
+          "domain_bpb": {
+            "code": 0.2099,
+            "math": 0.7318,
+            "prose": 0.0949,
+            "state": 0.4891
+          },
+          "probe_acc": {
+            "math": 0.0417,
+            "state": 0.0208,
+            "copy_probes": 0.0,
+            "bit_probes": 0.8857
+          },
+          "ece": 0.2466,
+          "tok_per_sec": 6424.2,
+          "peak_vram_mb": 3984.26
+        }
+      ]
+    }
+  ]
+}

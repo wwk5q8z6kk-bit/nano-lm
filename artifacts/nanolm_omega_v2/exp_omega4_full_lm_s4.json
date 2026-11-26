@@ -1,0 +1,254 @@
+{
+  "experiment": "EXP_Omega4_FullLM_S4_8xOOD",
+  "seeds": [
+    101,
+    202,
+    303
+  ],
+  "steps": 1200,
+  "train_len": 32,
+  "lengths": [
+    32,
+    64,
+    128,
+    256
+  ],
+  "arms": [
+    {
+      "config": {
+        "name": "b0-transformer-small_x1",
+        "family": "b0_transformer",
+        "total_parameters": 2460480,
+        "within_4b_ceiling": true,
+        "n_registers": 8,
+        "d_fiber": 128,
+        "state_bytes_at_seq": 393216,
+        "sample_seq_len": 256
+      },
+      "summary": {
+        "L_32": {
+          "mean": 0.0416,
+          "std": 0.0148
+        },
+        "L_64": {
+          "mean": 0.0208,
+          "std": 0.0148
+        },
+        "L_128": {
+          "mean": 0.0625,
+          "std": 0.0225
+        },
+        "L_256": {
+          "mean": 0.0277,
+          "std": 0.0049
+        }
+      },
+      "per_seed": [
+        {
+          "seed": 101,
+          "accuracy": {
+            "L_32": 0.0312,
+            "L_64": 0.0104,
+            "L_128": 0.0729,
+            "L_256": 0.0208
+          }
+        },
+        {
+          "seed": 202,
+          "accuracy": {
+            "L_32": 0.0312,
+            "L_64": 0.0417,
+            "L_128": 0.0312,
+            "L_256": 0.0312
+          }
+        },
+        {
+          "seed": 303,
+          "accuracy": {
+            "L_32": 0.0625,
+            "L_64": 0.0104,
+            "L_128": 0.0833,
+            "L_256": 0.0312
+          }
+        }
+      ]
+    },
+    {
+      "config": {
+        "name": "b1-abelian-ssm-small_x1",
+        "family": "b1_abelian_ssm",
+        "total_parameters": 2460864,
+        "within_4b_ceiling": true,
+        "n_registers": 8,
+        "d_fiber": 128,
+        "state_bytes_at_seq": 12288,
+        "sample_seq_len": 256
+      },
+      "summary": {
+        "L_32": {
+          "mean": 0.0382,
+          "std": 0.0177
+        },
+        "L_64": {
+          "mean": 0.0452,
+          "std": 0.0049
+        },
+        "L_128": {
+          "mean": 0.0347,
+          "std": 0.013
+        },
+        "L_256": {
+          "mean": 0.0556,
+          "std": 0.0196
+        }
+      },
+      "per_seed": [
+        {
+          "seed": 101,
+          "accuracy": {
+            "L_32": 0.0625,
+            "L_64": 0.0417,
+            "L_128": 0.0312,
+            "L_256": 0.0417
+          }
+        },
+        {
+          "seed": 202,
+          "accuracy": {
+            "L_32": 0.0208,
+            "L_64": 0.0417,
+            "L_128": 0.0521,
+            "L_256": 0.0417
+          }
+        },
+        {
+          "seed": 303,
+          "accuracy": {
+            "L_32": 0.0312,
+            "L_64": 0.0521,
+            "L_128": 0.0208,
+            "L_256": 0.0833
+          }
+        }
+      ]
+    },
+    {
+      "config": {
+        "name": "gen1-h2-hspa-predcode-small_x1",
+        "family": "gen1_h2_hspa_predcode",
+        "total_parameters": 2466630,
+        "within_4b_ceiling": true,
+        "n_registers": 8,
+        "d_fiber": 128,
+        "state_bytes_at_seq": 12288,
+        "sample_seq_len": 256
+      },
+      "summary": {
+        "L_32": {
+          "mean": 0.0416,
+          "std": 0.0148
+        },
+        "L_64": {
+          "mean": 0.0416,
+          "std": 0.0148
+        },
+        "L_128": {
+          "mean": 0.0382,
+          "std": 0.013
+        },
+        "L_256": {
+          "mean": 0.0625,
+          "std": 0.0085
+        }
+      },
+      "per_seed": [
+        {
+          "seed": 101,
+          "accuracy": {
+            "L_32": 0.0625,
+            "L_64": 0.0312,
+            "L_128": 0.0417,
+            "L_256": 0.0729
+          }
+        },
+        {
+          "seed": 202,
+          "accuracy": {
+            "L_32": 0.0312,
+            "L_64": 0.0625,
+            "L_128": 0.0208,
+            "L_256": 0.0521
+          }
+        },
+        {
+          "seed": 303,
+          "accuracy": {
+            "L_32": 0.0312,
+            "L_64": 0.0312,
+            "L_128": 0.0521,
+            "L_256": 0.0625
+          }
+        }
+      ]
+    },
+    {
+      "config": {
+        "name": "gen4-omega-so3-predcode-small_x1",
+        "family": "gen4_omega_so3_predcode",
+        "total_parameters": 2466732,
+        "within_4b_ceiling": true,
+        "n_registers": 8,
+        "d_fiber": 128,
+        "state_bytes_at_seq": 12288,
+        "sample_seq_len": 256
+      },
+      "summary": {
+        "L_32": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "L_64": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "L_128": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "L_256": {
+          "mean": 0.9306,
+          "std": 0.0354
+        }
+      },
+      "per_seed": [
+        {
+          "seed": 101,
+          "accuracy": {
+            "L_32": 1.0,
+            "L_64": 1.0,
+            "L_128": 1.0,
+            "L_256": 0.9167
+          }
+        },
+        {
+          "seed": 202,
+          "accuracy": {
+            "L_32": 1.0,
+            "L_64": 1.0,
+            "L_128": 1.0,
+            "L_256": 0.9792
+          }
+        },
+        {
+          "seed": 303,
+          "accuracy": {
+            "L_32": 1.0,
+            "L_64": 1.0,
+            "L_128": 1.0,
+            "L_256": 0.8958
+          }
+        }
+      ]
+    }
+  ]
+}
