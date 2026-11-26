@@ -86,3 +86,4 @@ python3 -m pytest -q benchmarks/
 - The existing RunPod campaign allows $180 autonomous spend, $200 hard cap and a $20 owner reserve. Shut down idle resources promptly.
 - Use `origin/master` as development truth. Preserve unmerged experiments and distinguish a measured branch result from code integrated on master.
 - NanoScribe, including its P1 backlog, is historical. Maintain its reproduction path. Future work on a separate application requires its own scope.
+- Multi-agent/worktree coordination: follow [`docs/AGENT_CONTRACT.md`](docs/AGENT_CONTRACT.md); start each session with `bash scripts/agent_bootstrap.sh <agent> "<task>" [paths]`.

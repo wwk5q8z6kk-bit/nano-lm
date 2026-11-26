@@ -1,0 +1,76 @@
+#!/usr/bin/env bash
+# Universal pre-commit guardrails for autonomous multi-worktree agents.
+set -u
+
+top=$(git rev-parse --show-toplevel 2>/dev/null || pwd)
+common=$(git rev-parse --path-format=absolute --git-common-dir 2>/dev/null || echo "$top/.git")
+cd "$top" || exit 1
+
+files=$(git diff --cached --name-only)
+[ -z "$files" ] && exit 0
+
+if [ -f "$top/scripts/agent_coord.py" ]; then
+  COORD_PY="$top/scripts/agent_coord.py"
+elif [ -f "$common/agent-coord/agent_coord.py" ]; then
+  COORD_PY="$common/agent-coord/agent_coord.py"
+else
+  COORD_PY=""
+fi
+
+# 1. Evidence-protected paths (AGENTS.md + check_docs_integrity.py)
+prot='^(papers/EVIDENCE_LEDGER|papers/EMPIRICAL_FOUNDATION\.md$|papers/PREREG_|papers/RESULT_|EVIDENCE_CURRENT\.md$|POST_ALPHA_EVIDENCE_FREEZE|FREEZE_VERIFICATION_REPORT|SHA256SUMS$|trajectory/results_|freeze/)'
+if echo "$files" | grep -Eq "$prot" && [ "${AGENT_ALLOW_EVIDENCE:-0}" != 1 ]; then
+  echo "pre-commit: evidence-protected path staged. Set AGENT_ALLOW_EVIDENCE=1 only inside an authorized experiment." >&2
+  echo "$files" | grep -E "$prot" >&2
+  exit 1
+fi
+
+# 2. Monolithic shared JSON ban (use sharded coordination/ records instead)
+mono='^(NANOLM_CROSS_WORKTREE_LEDGER\.json|NANOLM_EXPERIMENT_REGISTRY\.json)$'
+if echo "$files" | grep -Eq "$mono" && [ "${AGENT_ALLOW_LEGACY_LEDGER:-0}" != 1 ]; then
+  echo "pre-commit: monolithic shared JSON staged; these cause cross-worktree collisions." >&2
+  echo "Use instead:" >&2
+  echo "  python3 scripts/agent_coord.py record-experiment --id <ID> --status <STATUS> --verdict <VERDICT>" >&2
+  echo "  python3 scripts/agent_coord.py record-finding --id <ID> --focus \"<text>\" --finding \"<text>\"" >&2
+  echo "  python3 scripts/agent_coord.py announce --agent <NAME> --status ACTIVE --scope \"<text>\"" >&2
+  echo "(Override only if explicitly needed: AGENT_ALLOW_LEGACY_LEDGER=1)" >&2
+  exit 1
+fi
+
+# 3. ACTIVE_NOW md/json synchronization
+if echo "$files" | grep -Eq '^docs/ACTIVE_NOW\.(json|md)$' && [ -f "$top/scripts/check_active_now.py" ]; then
+  python3 "$top/scripts/check_active_now.py" >/dev/null || {
+    echo "pre-commit: docs/ACTIVE_NOW.md and docs/ACTIVE_NOW.json are out of sync." >&2
+    python3 "$top/scripts/check_active_now.py" >&2 || true
+    exit 1
+  }
+fi
+
+# 4. Validate sharded coordination records when staged
+if echo "$files" | grep -Eq '^coordination/' && [ -n "$COORD_PY" ]; then
+  python3 "$COORD_PY" compile-registry --repo-root "$top" --check >/dev/null || {
+    python3 "$COORD_PY" compile-registry --repo-root "$top" --check >&2 || true
+    exit 1
+  }
+fi
+
+# 5. Cross-worktree lease check (NUL-delimited for spaces)
+if [ -n "$COORD_PY" ] && [ "${AGENT_BYPASS_LEASE:-0}" != 1 ]; then
+  lease_err=$(mktemp)
+  if ! git diff --cached --name-only -z | python3 "$COORD_PY" check --stdin-nul 2>"$lease_err"; then
+    cat "$lease_err" >&2
+    rm -f "$lease_err"
+    echo "pre-commit: staged file(s) claimed by another live agent lease (see: python3 $COORD_PY status)." >&2
+    exit 1
+  fi
+  rm -f "$lease_err"
+fi
+
+# 6. Secret scan on added lines
+if git diff --cached -U0 -- . ':!.githooks' ':!scripts/test_agent_coord.py' | \
+   grep -Eq '^\+.*(RUNPOD_API_KEY[[:space:]]*=|sk-[A-Za-z0-9]{20,}|AKIA[0-9A-Z]{16}|ghp_[A-Za-z0-9]{30,}|AIza[0-9A-Za-z_-]{35}|BEGIN (RSA|OPENSSH|EC) PRIVATE KEY)'; then
+  echo "pre-commit: possible secret detected in staged diff." >&2
+  exit 1
+fi
+
+exit 0

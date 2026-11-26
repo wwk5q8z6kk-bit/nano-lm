@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+# Universal pre-push guardrails: block master pushes, freeze tags, badly stale bases, and merge conflicts.
+set -u
+
+while read -r lref lsha rref rsha; do
+  case "$rref" in
+    refs/heads/master|refs/heads/main)
+      echo "pre-push: direct push to ${rref#refs/heads/} blocked; push a feature branch and open a PR." >&2
+      exit 1
+      ;;
+    refs/tags/*freeze*|refs/tags/paper-alpha*)
+      echo "pre-push: freeze tags are immutable for agents." >&2
+      exit 1
+      ;;
+  esac
+
+  [ "$lsha" = 0000000000000000000000000000000000000000 ] && continue
+
+  git fetch -q origin master 2>/dev/null || true
+  if git rev-parse --verify --quiet origin/master >/dev/null 2>&1; then
+    behind=$(git rev-list --count "$lsha..origin/master" 2>/dev/null || echo 0)
+    if [ "$behind" -gt "${AGENT_MAX_BEHIND:-100}" ] && [ "${AGENT_ALLOW_STALE:-0}" != 1 ]; then
+      echo "pre-push: branch is $behind commits behind origin/master (> ${AGENT_MAX_BEHIND:-100})." >&2
+      echo "Run: git rebase origin/master (or merge origin/master). Override: AGENT_ALLOW_STALE=1" >&2
+      exit 1
+    fi
+
+    if [ "${AGENT_ALLOW_CONFLICT:-0}" != 1 ]; then
+      if ! git merge-tree --write-tree origin/master "$lsha" >/dev/null 2>&1; then
+        echo "pre-push: branch has merge conflicts with origin/master." >&2
+        echo "Rebase onto origin/master and resolve conflicts before pushing (override: AGENT_ALLOW_CONFLICT=1)." >&2
+        exit 1
+      fi
+    fi
+  fi
+done
+
+exit 0

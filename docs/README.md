@@ -61,6 +61,7 @@ Agent operational map: [`knowledge/AGENT_PROGRAM_KNOWLEDGE.md`](knowledge/AGENT_
 |----------|---------|
 | [infrastructure/RUNPOD.md](infrastructure/RUNPOD.md) | Primary GPU training backend (active; experiment-scoped costly runs) |
 | [infrastructure/REPRODUCIBILITY.md](infrastructure/REPRODUCIBILITY.md) | Tags, manifests, recompute |
+| [AGENT_CONTRACT.md](AGENT_CONTRACT.md) | Multi-agent & multi-worktree autonomy, leases, compute locks, and sharded ledgers |
 
 ## Archive
 
