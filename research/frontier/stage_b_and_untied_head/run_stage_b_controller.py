@@ -267,7 +267,7 @@ def main():
 
             if time.time() - last_log_poll >= 15:
                 last_log_poll = time.time()
-                rc_l, out_l, _ = run_cmd(["runpodctl", "pod", "logs", pid], 120)
+                rc_l, out_l, _ = run_cmd(["runpodctl", "pod", "logs", pid, "--since", "4h", "--source", "container"], 120)
                 for ln in out_l.splitlines():
                     try:
                         j = json.loads(ln)

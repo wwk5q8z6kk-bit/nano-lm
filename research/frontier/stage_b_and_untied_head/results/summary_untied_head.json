@@ -1,0 +1,384 @@
+{
+  "seeds": [
+    1000,
+    1001,
+    1002
+  ],
+  "provenance_verified": {
+    "code_sha256_unique": [
+      "280d4443373d2d3669edacc7da1f0f3fd0c068b2a4d0edf174d526346e8d0c4c"
+    ],
+    "val_sha256": {
+      "web": "28c1dbcb75eab107a5db5bd61a9e023d05eacd22b5479779163b545b4439f27e",
+      "textbook": "e6fc2bcea248793296af68fe05be1adda6ef6c64d6e4dad7b4d3c3806f22c90e",
+      "math": "ea56aed8922cbf2cba3076bf51749da0354ee03a1bbd16817b4984343066dcb6",
+      "code": "a2ed084bcaa56e70be3eb86a7690472326050a9b559fff909a243db9ba208053"
+    },
+    "run_receipt_sha256": {
+      "run_dense_tied_57m_M_s1000.json": "f126b2265750c266ad4a1e051f08ac953a9d1e282457ef7d84c2ef13ded1147e",
+      "run_dense_tied_57m_M_s1001.json": "9b149fe9abcbe4f2e498057a0a707ca08483cbeb3ec7bc0ba6552365124ae65c",
+      "run_dense_tied_57m_M_s1002.json": "9a68f850240b99cd8f14720e6260c23885e9b096cdd0e885131a7b457685764c",
+      "run_dense_tied_M_s1000.json": "434dc0062289b59202b25a4ca0ec65bffa3212936ea17f5e6efec18fca985bde",
+      "run_dense_tied_M_s1001.json": "f5ec1d798bc6c08306e4fd63ca7f86f118009427bd51635d1ce123e6c9b9a189",
+      "run_dense_tied_M_s1002.json": "ac2aefb78ab8bebf9e9c96e0ff6fad7f66a2337bef3d7cba58026d758e399655",
+      "run_dense_untied_M_s1000.json": "4f91f22c12f651e9f46c226174abaaa2b4043c2f2d2064dda9440827cf665467",
+      "run_dense_untied_M_s1001.json": "dc5e84f813ebd8aea2a1dc044ca10e2e03889beee2ae95ead4eec2e39a8f2f8c",
+      "run_dense_untied_M_s1002.json": "b957c0f1d74fee77e219f8554d92e815e6772b49476e60f86bbec4062a759e51",
+      "run_dense_untied_vr_M_s1000.json": "ee344eff91f99d99239acba8c17c0cc449937d119110822497e1e21cdd85eb19",
+      "run_dense_untied_vr_M_s1001.json": "b5c79131a083f57c84c5c1fc73467cb85c8c9ff67f15f0666b14f6a90147e227",
+      "run_dense_untied_vr_M_s1002.json": "653edc71cad256d3dc4307ac28e7897cf4016067612fb26b4ea35ec67e081f9e"
+    }
+  },
+  "arms": {
+    "dense_tied": {
+      "params": 40379904,
+      "non_embed_params": 23602688,
+      "equal_tokens_mix_mean": 1.0163,
+      "equal_tokens_mix_sd": 0.00064,
+      "equal_tokens_per_seed": [
+        1.016,
+        1.017,
+        1.0158
+      ],
+      "equal_wallclock_to_dense_tied_mix_mean": 1.0163,
+      "equal_wallclock_per_seed": [
+        1.016,
+        1.017,
+        1.0158
+      ],
+      "domains_mean": {
+        "web": 1.0802,
+        "textbook": 0.7609,
+        "math": 1.1407,
+        "code": 0.8282
+      },
+      "mean_tokens_per_second": 261412,
+      "mean_train_sec": 3058.5,
+      "rank_buckets_mix_mean": {
+        "rank1_calib": 0.0441,
+        "rank2_8_rerank": 0.2891,
+        "rank9_64_mid": 0.2951,
+        "rank65plus_miss": 0.388,
+        "top1_acc": 0.2184,
+        "top64_acc": 0.866
+      },
+      "downstream_7tasks_mean": {
+        "arc_challenge": 0.2335,
+        "arc_easy": 0.3977,
+        "hellaswag": 0.2823,
+        "lambada": 0.2331,
+        "lambada_ppl": 173.65,
+        "openbookqa": 0.2807,
+        "piqa": 0.5885,
+        "winogrande": 0.5104
+      },
+      "causal_ablation_delta_mix_mean": {}
+    },
+    "dense_untied": {
+      "params": 57157120,
+      "non_embed_params": 23602688,
+      "equal_tokens_mix_mean": 1.0193,
+      "equal_tokens_mix_sd": 0.00049,
+      "equal_tokens_per_seed": [
+        1.0196,
+        1.0187,
+        1.0195
+      ],
+      "equal_wallclock_to_dense_tied_mix_mean": 1.0198,
+      "equal_wallclock_per_seed": [
+        1.0202,
+        1.0192,
+        1.0201
+      ],
+      "domains_mean": {
+        "web": 1.0828,
+        "textbook": 0.7625,
+        "math": 1.1444,
+        "code": 0.8333
+      },
+      "mean_tokens_per_second": 257800,
+      "mean_train_sec": 3101.4,
+      "rank_buckets_mix_mean": {
+        "rank1_calib": 0.0443,
+        "rank2_8_rerank": 0.289,
+        "rank9_64_mid": 0.2955,
+        "rank65plus_miss": 0.3904,
+        "top1_acc": 0.2184,
+        "top64_acc": 0.8649
+      },
+      "downstream_7tasks_mean": {
+        "arc_challenge": 0.2261,
+        "arc_easy": 0.4081,
+        "hellaswag": 0.2802,
+        "lambada": 0.2032,
+        "lambada_ppl": 243.08,
+        "openbookqa": 0.276,
+        "piqa": 0.583,
+        "winogrande": 0.5209
+      },
+      "causal_ablation_delta_mix_mean": {}
+    },
+    "dense_untied_vr": {
+      "params": 57157127,
+      "non_embed_params": 23602695,
+      "equal_tokens_mix_mean": 1.0099,
+      "equal_tokens_mix_sd": 0.001,
+      "equal_tokens_per_seed": [
+        1.0089,
+        1.0109,
+        1.01
+      ],
+      "equal_wallclock_to_dense_tied_mix_mean": 1.0122,
+      "equal_wallclock_per_seed": [
+        1.0113,
+        1.013,
+        1.0122
+      ],
+      "domains_mean": {
+        "web": 1.0747,
+        "textbook": 0.7548,
+        "math": 1.132,
+        "code": 0.8194
+      },
+      "mean_tokens_per_second": 254310,
+      "mean_train_sec": 3144.0,
+      "rank_buckets_mix_mean": {
+        "rank1_calib": 0.044,
+        "rank2_8_rerank": 0.2899,
+        "rank9_64_mid": 0.2931,
+        "rank65plus_miss": 0.383,
+        "top1_acc": 0.2198,
+        "top64_acc": 0.8675
+      },
+      "downstream_7tasks_mean": {
+        "arc_challenge": 0.2346,
+        "arc_easy": 0.4125,
+        "hellaswag": 0.2848,
+        "lambada": 0.2062,
+        "lambada_ppl": 218.66,
+        "openbookqa": 0.268,
+        "piqa": 0.5854,
+        "winogrande": 0.5143
+      },
+      "causal_ablation_delta_mix_mean": {
+        "no_skip": 1.3335,
+        "ablate_late_6_7": 0.7765,
+        "ablate_mid_3_4": 0.0136,
+        "perm_v0": 0.705
+      }
+    },
+    "dense_tied_57m": {
+      "params": 57355904,
+      "non_embed_params": 36384384,
+      "equal_tokens_mix_mean": 0.9916,
+      "equal_tokens_mix_sd": 0.00095,
+      "equal_tokens_per_seed": [
+        0.9927,
+        0.991,
+        0.9911
+      ],
+      "equal_wallclock_to_dense_tied_mix_mean": 1.0453,
+      "equal_wallclock_per_seed": [
+        1.0465,
+        1.0447,
+        1.0448
+      ],
+      "domains_mean": {
+        "web": 1.0578,
+        "textbook": 0.7339,
+        "math": 1.1094,
+        "code": 0.801
+      },
+      "mean_tokens_per_second": 189619,
+      "mean_train_sec": 4216.5,
+      "rank_buckets_mix_mean": {
+        "rank1_calib": 0.0437,
+        "rank2_8_rerank": 0.2882,
+        "rank9_64_mid": 0.2901,
+        "rank65plus_miss": 0.3695,
+        "top1_acc": 0.2229,
+        "top64_acc": 0.8723
+      },
+      "downstream_7tasks_mean": {
+        "arc_challenge": 0.2349,
+        "arc_easy": 0.4119,
+        "hellaswag": 0.2869,
+        "lambada": 0.234,
+        "lambada_ppl": 155.63,
+        "openbookqa": 0.2767,
+        "piqa": 0.5941,
+        "winogrande": 0.5193
+      },
+      "causal_ablation_delta_mix_mean": {}
+    }
+  },
+  "comparisons": {
+    "dense_untied_vs_dense_tied": {
+      "equal_tokens_gain": {
+        "n": 3,
+        "mean": -0.003,
+        "sd": 0.00113,
+        "se": 0.00065,
+        "t": -4.611,
+        "sig_95": true,
+        "all_positive": false,
+        "per_seed": [
+          -0.0036,
+          -0.0017,
+          -0.0037
+        ]
+      },
+      "equal_wallclock_gain": {
+        "n": 3,
+        "mean": -0.00356,
+        "sd": 0.00118,
+        "se": 0.00068,
+        "t": -5.249,
+        "sig_95": true,
+        "all_positive": false,
+        "per_seed": [
+          -0.00419,
+          -0.00221,
+          -0.00429
+        ]
+      }
+    },
+    "dense_untied_vr_vs_dense_tied": {
+      "equal_tokens_gain": {
+        "n": 3,
+        "mean": 0.00633,
+        "sd": 0.00068,
+        "se": 0.00039,
+        "t": 16.116,
+        "sig_95": true,
+        "all_positive": true,
+        "per_seed": [
+          0.0071,
+          0.0061,
+          0.0058
+        ]
+      },
+      "equal_wallclock_gain": {
+        "n": 3,
+        "mean": 0.00407,
+        "sd": 0.00056,
+        "se": 0.00033,
+        "t": 12.504,
+        "sig_95": true,
+        "all_positive": true,
+        "per_seed": [
+          0.00467,
+          0.00398,
+          0.00355
+        ]
+      }
+    },
+    "dense_tied_57m_vs_dense_tied": {
+      "equal_tokens_gain": {
+        "n": 3,
+        "mean": 0.02467,
+        "sd": 0.00135,
+        "se": 0.00078,
+        "t": 31.64,
+        "sig_95": true,
+        "all_positive": true,
+        "per_seed": [
+          0.0233,
+          0.026,
+          0.0247
+        ]
+      },
+      "equal_wallclock_gain": {
+        "n": 3,
+        "mean": -0.02907,
+        "sd": 0.00145,
+        "se": 0.00084,
+        "t": -34.811,
+        "sig_95": true,
+        "all_positive": false,
+        "per_seed": [
+          -0.03054,
+          -0.02765,
+          -0.02902
+        ]
+      }
+    },
+    "dense_untied_vr_vs_dense_untied": {
+      "equal_tokens_gain": {
+        "n": 3,
+        "mean": 0.00933,
+        "sd": 0.00146,
+        "se": 0.00084,
+        "t": 11.094,
+        "sig_95": true,
+        "all_positive": true,
+        "per_seed": [
+          0.0107,
+          0.0078,
+          0.0095
+        ]
+      },
+      "equal_wallclock_gain": {
+        "n": 3,
+        "mean": 0.00763,
+        "sd": 0.00135,
+        "se": 0.00078,
+        "t": 9.816,
+        "sig_95": true,
+        "all_positive": true,
+        "per_seed": [
+          0.00886,
+          0.00619,
+          0.00784
+        ]
+      }
+    },
+    "dense_tied_57m_vs_dense_untied": {
+      "equal_tokens_gain": {
+        "n": 3,
+        "mean": 0.02767,
+        "sd": 0.00075,
+        "se": 0.00043,
+        "t": 63.846,
+        "sig_95": true,
+        "all_positive": true,
+        "per_seed": [
+          0.0269,
+          0.0277,
+          0.0284
+        ]
+      },
+      "equal_wallclock_gain": {
+        "n": 3,
+        "mean": -0.02551,
+        "sd": 0.00081,
+        "se": 0.00047,
+        "t": -54.218,
+        "sig_95": true,
+        "all_positive": false,
+        "per_seed": [
+          -0.02635,
+          -0.02544,
+          -0.02473
+        ]
+      }
+    }
+  },
+  "interaction_telemetry": {
+    "untied_share_of_57m_tied_equal_token_gain": -0.1216,
+    "vr_marginal_gain_when_untied": 0.00933,
+    "pr214_vr_marginal_gain_when_tied": 0.0059,
+    "untied_vr_final_layer_lambda_mean": 0.16459,
+    "untied_vr_final_layer_lambda_per_seed": [
+      0.12132,
+      0.18288,
+      0.18957
+    ],
+    "pr214_tied_vr_final_layer_lambda_mean": 0.123,
+    "dense_untied_mean_cos_emb_vs_lm_head": 0.00235
+  },
+  "verdicts": {
+    "U_G1_untied_head_gate": "REJECT_UNTIED_HEAD_FOR_SUB4B_TRUNK",
+    "U_G2_valueres_interaction": "ADDITIVE_OR_INDEPENDENT_OF_HEAD_TYING"
+  }
+}

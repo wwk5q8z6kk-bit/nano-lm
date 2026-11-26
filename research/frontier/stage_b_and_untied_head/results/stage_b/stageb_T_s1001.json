@@ -1,0 +1,244 @@
+{
+  "schema": "nanolm_stage_b_smollm2_135m_v1",
+  "completed": true,
+  "job_name": "T_s1001",
+  "arm": "T",
+  "seed": 1001,
+  "params": 151928140,
+  "kept_attn_layers": [
+    1,
+    2,
+    3,
+    4,
+    21,
+    22,
+    23,
+    24
+  ],
+  "converted_gdn_layers": [
+    0,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    25,
+    26,
+    27,
+    28,
+    29
+  ],
+  "device": "cuda:0",
+  "gpu_name": "NVIDIA H100 80GB HBM3",
+  "peak_gpu_gib": 57.523,
+  "nonfinite_steps": 0,
+  "recipe": {
+    "batch_size": 32,
+    "seq": 1024,
+    "align_steps": 640,
+    "e2e_steps": 7000,
+    "total_student_tokens": 250347520
+  },
+  "provenance": {
+    "code_sha256": "db73d7d764fb9772f3ba0ad0d1b754e328d16a48aeeee47b315aa600c4c0a513",
+    "teacher_model": "HuggingFaceTB/SmolLM2-135M",
+    "teacher_revision": "93efa2f097d58c2a74874c7e644dbc9b0cee75a2",
+    "build_seconds": 221.4,
+    "train_tokens": 270008320,
+    "train_head64mb_sha256": "1333f2504a379b8528f6eb1d381784c5dda777f7aa4cb8ca40937ed8767b57e4",
+    "val_sha256": {
+      "web": "a4a5f266630dd0a0aec1132ab646e5015ce665526a5e47ad71781a2e71fc066a",
+      "textbook": "1bbd00c153888fa9c31075b73d591d4ea929c451cc7b37bcff998be6c1df25c0",
+      "math": "9be70b712c108f9479af1135db8cd7c7acc77bdf29b3f5991b123840c42d92a9",
+      "code": "bcc9dde71ed13b6daa678e8afa916e9576321a0a14ec1fb2903a75bbaf8158c6"
+    },
+    "tasks_sha256": "9a281bb487ceb72207874d7bd47f1a8fe4a91c8058a928a867472fdc18658aac",
+    "sources_pinned": {
+      "web": [
+        "HuggingFaceFW/fineweb-edu",
+        "sample/10BT/",
+        "text",
+        "87f09149ef4734204d70ed1d046ddc9ca3f2b8f9"
+      ],
+      "textbook": [
+        "HuggingFaceTB/smollm-corpus",
+        "cosmopedia-v2/",
+        "text",
+        "3ba9d605774198c5868892d7a8deda78031a781f"
+      ],
+      "math": [
+        "HuggingFaceTB/finemath",
+        "finemath-4plus/",
+        "text",
+        "e92b25a616738fe95dc186b64dfb19f9c8525594"
+      ],
+      "code": [
+        "codeparrot/github-code-clean",
+        "data/",
+        "code",
+        "c48d40f9e70f0196f8236901ee35807f7d6c44c0"
+      ]
+    }
+  },
+  "align_summary": {
+    "align_steps": 640,
+    "align_tokens": 20971520,
+    "mean_layer_rel_mse_final": 0.19722,
+    "post_align_heldout_nats": {
+      "web": 3.11345,
+      "textbook": 2.27892,
+      "math": 2.57037,
+      "code": 2.12473,
+      "mix": 2.81571
+    },
+    "align_sec": 193.17
+  },
+  "curve": [
+    {
+      "phase": "post_stage1_align",
+      "step": 640,
+      "student_tokens": 20971520,
+      "train_sec": 193.17,
+      "web": 3.11345,
+      "textbook": 2.27892,
+      "math": 2.57037,
+      "code": 2.12473,
+      "mix": 2.81571
+    },
+    {
+      "phase": "stage2_e2e",
+      "step": 2040,
+      "e2e_step": 1400,
+      "student_tokens": 66846720,
+      "train_sec": 805.15,
+      "tokens_per_second": 83024,
+      "kd_ce_loss": 1.3961,
+      "grad_norm": 0.3052,
+      "web": 2.89538,
+      "textbook": 2.0113,
+      "math": 2.12485,
+      "code": 1.39924,
+      "mix": 2.50074
+    },
+    {
+      "phase": "stage2_e2e",
+      "step": 3440,
+      "e2e_step": 2800,
+      "student_tokens": 112721920,
+      "train_sec": 1417.16,
+      "tokens_per_second": 79541,
+      "kd_ce_loss": 1.3061,
+      "grad_norm": 0.2479,
+      "web": 2.87177,
+      "textbook": 1.97564,
+      "math": 2.08628,
+      "code": 1.34888,
+      "mix": 2.47041
+    },
+    {
+      "phase": "stage2_e2e",
+      "step": 4840,
+      "e2e_step": 4200,
+      "student_tokens": 158597120,
+      "train_sec": 2029.5,
+      "tokens_per_second": 78146,
+      "kd_ce_loss": 1.2299,
+      "grad_norm": 0.2673,
+      "web": 2.85576,
+      "textbook": 1.95733,
+      "math": 2.05786,
+      "code": 1.32111,
+      "mix": 2.45108
+    },
+    {
+      "phase": "stage2_e2e",
+      "step": 6240,
+      "e2e_step": 5600,
+      "student_tokens": 204472320,
+      "train_sec": 2643.04,
+      "tokens_per_second": 77363,
+      "kd_ce_loss": 1.4267,
+      "grad_norm": 0.245,
+      "web": 2.84602,
+      "textbook": 1.9469,
+      "math": 2.04597,
+      "code": 1.3045,
+      "mix": 2.44015
+    },
+    {
+      "phase": "stage2_e2e",
+      "step": 7640,
+      "e2e_step": 7000,
+      "student_tokens": 250347520,
+      "train_sec": 3257.19,
+      "tokens_per_second": 76860,
+      "kd_ce_loss": 1.2004,
+      "grad_norm": 0.2906,
+      "web": 2.84291,
+      "textbook": 1.94136,
+      "math": 2.03677,
+      "code": 1.30029,
+      "mix": 2.4358
+    }
+  ],
+  "final_heldout_nats": {
+    "web": 2.84291,
+    "textbook": 1.94136,
+    "math": 2.03677,
+    "code": 1.30029,
+    "mix": 2.4358
+  },
+  "downstream_7tasks": {
+    "hellaswag": {
+      "acc": 0.3381,
+      "n": 10042,
+      "chance": 0.25,
+      "acc_norm": 0.4038
+    },
+    "arc_easy": {
+      "acc": 0.6157,
+      "n": 2376,
+      "chance": 0.25,
+      "acc_norm": 0.5652
+    },
+    "arc_challenge": {
+      "acc": 0.2628,
+      "n": 1172,
+      "chance": 0.25,
+      "acc_norm": 0.2875
+    },
+    "piqa": {
+      "acc": 0.6665,
+      "n": 1838,
+      "chance": 0.5,
+      "acc_norm": 0.6643
+    },
+    "winogrande": {
+      "acc": 0.5217,
+      "n": 1267,
+      "chance": 0.5
+    },
+    "openbookqa": {
+      "acc": 0.212,
+      "n": 500,
+      "chance": 0.25,
+      "acc_norm": 0.322
+    },
+    "lambada": {
+      "acc": 0.3759,
+      "ppl": 28.79,
+      "n": 5153
+    }
+  }
+}
