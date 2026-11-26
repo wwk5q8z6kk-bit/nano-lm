@@ -1,0 +1,55 @@
+{
+  "commit": "10e141081475afa6ef76b26f9350c8c5caf00635",
+  "modules": {
+    "common": {
+      "upstream": "lab/arch/model.py",
+      "source_sha256": "c747d8d80929e8bc991f0f92d6e0e076309e3ddbbf64fe07b4d5e75f136372d1",
+      "symbols": [
+        "RMSNorm",
+        "rope_cache",
+        "apply_rope",
+        "ShortConv"
+      ]
+    },
+    "kernels": {
+      "upstream": "nanolm/kernels/fast_delta.py",
+      "source_sha256": "66e1e46fa37466005021c655491b7a09310970051a341029ac61315c83cd5abd",
+      "symbols": [
+        "_block2x2_unit_tril_inv",
+        "nilpotent_wy_inverse"
+      ]
+    },
+    "gen4": {
+      "upstream": "lab/arch/gen4_physics_math.py",
+      "source_sha256": "4aae85a2d625481d2f9b186527ce4c0327b42314116bc547a3f361296b0d1c7c",
+      "symbols": [
+        "apply_data_dependent_rotor",
+        "IdentityConv3"
+      ]
+    },
+    "gen3": {
+      "upstream": "lab/arch/gen3.py",
+      "source_sha256": "3388cf3b72080a3254eb909f53358aac924f2dc796cf95d14e4942ff06f59670",
+      "symbols": [
+        "Gen3Cfg",
+        "_lambda_init",
+        "Gen3Attention",
+        "Gen3DeltaMixer",
+        "IdentityInitCausalConv",
+        "Gen3Block",
+        "Gen3LM"
+      ]
+    },
+    "gen5": {
+      "upstream": "lab/arch/gen5_foundations.py",
+      "source_sha256": "c79672347cb6ab15582280066041d49dc89343b1021e6f9c50feb0a0b3c5334d",
+      "symbols": [
+        "Gen5Cfg",
+        "Gen5GibbsDiffAttention",
+        "Gen5CoboundaryHouseholderDelta",
+        "Gen5Block",
+        "Gen5LM"
+      ]
+    }
+  }
+}

@@ -1,0 +1,336 @@
+{
+  "schema": "nano.h7-evaluation-capture-validation.v1",
+  "attempt_archive_sha256": "c9150c96c9622d84b59cf87a1853a0aa2bef7895bf5561221465e02b90e41f60",
+  "attempt_archive_bytes": 445368,
+  "result_archive_sha256": "6d7141ab141768ed105a7242bf36a5d02e71687727abf144a52bb0670ce4f386",
+  "result_archive_bytes": 244018,
+  "result_path": "/Users/mac/Projects/nano-lm/artifacts/runops/h7-20261022/downloads/evaluation-capture-reviewed/verified-results/results/h7_screen_evaluation.json",
+  "result_sha256": "9d1b8035b87b8af9419ead92a0dffd66806df1e77720abdf6a1d1deb98951d49",
+  "training_capture_sha256": "8f1ad0f5a09ce0c457cfcd033a0de2499079a4ddfe7f82c35e72e02aa278811f",
+  "canonical_reservation_verified": true,
+  "all_attempt_members_verified": true,
+  "all_result_members_verified": true,
+  "training_candidate_identities_verified": true,
+  "result_checksum_anomalies": [
+    {
+      "type": "frozen_checksum_temporary_self_entry",
+      "path": "results/SHA256SUMS.tmp",
+      "sha256": "6ce96d18dc204200bee88655176adb7395fef26b790fed1a488b422025113f29",
+      "prefix_bytes": 199,
+      "verification": "Absent final temporary path; digest equals exact preceding checksum bytes; every actual result member independently verified."
+    }
+  ],
+  "capture_verifier_original_sha256": "d1a0d6cf34a648fa2a5bb26b90b67e248c3ee3f23eafde9973d7f238d7be0526",
+  "recorded_evaluator_invocations": 1,
+  "runtime": {
+    "python": "3.13.15",
+    "torch": "2.11.0+cpu",
+    "torch_cuda": null,
+    "cuda_available": false,
+    "tokenizers": "0.22.2",
+    "pytest": "9.0.2"
+  },
+  "terminal": {
+    "attempt_id": "abd33a51-419d-44c9-87ff-4b165acfd235",
+    "elapsed_seconds": 322.758,
+    "error": null,
+    "exit_code": 0,
+    "finished_at_utc": "2026-10-22T20:48:39Z",
+    "phase": "completed",
+    "reservation_sha256": "79e974fd17893aef88a282da5a587308fac6f255a1199a3b5acd1b185beef425",
+    "retry_authorized": false,
+    "stage": "evaluation",
+    "started_at_utc": "2026-10-22T20:43:16Z",
+    "status": "completed"
+  },
+  "total_training_and_evaluation_runtime_seconds": 4017.4649999999997,
+  "stored_result_validation": {
+    "comparison_group": "h7_fresh_boundary_screen",
+    "scope": "Fresh 1000-record/250-world synthetic screen, 5000 fields; control versus two treatment seeds on this screen only. A PASS is a mechanism result, not P1 completion.",
+    "comparable_to_other_groups": false,
+    "status": "STORED_RESULT_IMPORTED",
+    "decision": "REJECT",
+    "sha256": "9d1b8035b87b8af9419ead92a0dffd66806df1e77720abdf6a1d1deb98951d49",
+    "bytes": 10300474,
+    "verification": "Pinned bytes and stored result contract checked. Model outputs, checkpoint bytes, and training reports were not independently replayed or authenticated here.",
+    "arms": [
+      {
+        "candidate": {
+          "checkpoint_bytes": 13168916,
+          "checkpoint_sha256": "07547ec5c01b46fa87e8d53a40497a7c4b4a6bc92b596dddd67f4be4d18c89e0",
+          "epoch": 2,
+          "label": "control-h6-seed-20260805-epoch-2",
+          "seed": null,
+          "training_report_sha256": null
+        },
+        "metrics": {
+          "decode_failure_items": 0,
+          "joint_exact_accuracy": 0.032,
+          "state_accuracy": 0.032
+        },
+        "mechanism": {
+          "binding_error_fields": 4840,
+          "binding_only_error_fields": 0,
+          "combined_error_fields": 4840,
+          "disjoint_or_speaker_mismatch_fields": 0,
+          "field_collapse_count": 0,
+          "field_collapse_modal_counts": {},
+          "field_total": 5000,
+          "joint_correct_fields": 160,
+          "raw_state_counts_by_field": {
+            "allergy": {
+              "absent": 185,
+              "conflicting": 6,
+              "missing": 30,
+              "supported": 739,
+              "uncertain": 40
+            },
+            "chief_complaint": {
+              "conflicting": 14,
+              "missing": 50,
+              "supported": 907,
+              "uncertain": 29
+            },
+            "duration": {
+              "conflicting": 50,
+              "missing": 19,
+              "supported": 796,
+              "uncertain": 135
+            },
+            "medication": {
+              "absent": 141,
+              "conflicting": 30,
+              "missing": 51,
+              "supported": 738,
+              "uncertain": 40
+            },
+            "severity": {
+              "conflicting": 64,
+              "missing": 10,
+              "supported": 900,
+              "uncertain": 26
+            }
+          },
+          "span_relations": {
+            "count_mismatch": 4840
+          },
+          "state_only_error_fields": 0
+        }
+      },
+      {
+        "candidate": {
+          "checkpoint_bytes": 13168916,
+          "checkpoint_sha256": "3ca81cb4aaa9ef05a0faa7e1a5760cdee2533004a78b2cb076b10758f04372a0",
+          "epoch": 2,
+          "label": "treatment-seed-20260805",
+          "seed": 20260805,
+          "training_report_sha256": "7a6a192c4df10ccb7c0a5c89fc13fed6d182eb3a329255fdd250acf6a3c3a19e"
+        },
+        "metrics": {
+          "decode_failure_items": 0,
+          "joint_exact_accuracy": 0.0278,
+          "state_accuracy": 0.0278
+        },
+        "mechanism": {
+          "binding_error_fields": 4861,
+          "binding_only_error_fields": 0,
+          "combined_error_fields": 4861,
+          "disjoint_or_speaker_mismatch_fields": 0,
+          "field_collapse_count": 0,
+          "field_collapse_modal_counts": {},
+          "field_total": 5000,
+          "joint_correct_fields": 139,
+          "raw_state_counts_by_field": {
+            "allergy": {
+              "absent": 198,
+              "conflicting": 17,
+              "missing": 27,
+              "supported": 728,
+              "uncertain": 30
+            },
+            "chief_complaint": {
+              "conflicting": 38,
+              "missing": 50,
+              "supported": 881,
+              "uncertain": 31
+            },
+            "duration": {
+              "conflicting": 50,
+              "missing": 15,
+              "supported": 858,
+              "uncertain": 77
+            },
+            "medication": {
+              "absent": 197,
+              "conflicting": 42,
+              "missing": 47,
+              "supported": 658,
+              "uncertain": 56
+            },
+            "severity": {
+              "conflicting": 72,
+              "supported": 885,
+              "uncertain": 43
+            }
+          },
+          "span_relations": {
+            "count_mismatch": 4861
+          },
+          "state_only_error_fields": 0
+        }
+      },
+      {
+        "candidate": {
+          "checkpoint_bytes": 13168916,
+          "checkpoint_sha256": "abe4caa57bd97538744391c6b046b3ddc2e6569aa830106a4a3345152fa0efac",
+          "epoch": 2,
+          "label": "treatment-seed-20260806",
+          "seed": 20260806,
+          "training_report_sha256": "a5e6a282aa4f380cba55f2c3d5f1b33500695e1e66f31f0eb50aec6f154c9357"
+        },
+        "metrics": {
+          "decode_failure_items": 0,
+          "joint_exact_accuracy": 0.0348,
+          "state_accuracy": 0.0348
+        },
+        "mechanism": {
+          "binding_error_fields": 4826,
+          "binding_only_error_fields": 0,
+          "combined_error_fields": 4826,
+          "disjoint_or_speaker_mismatch_fields": 0,
+          "field_collapse_count": 0,
+          "field_collapse_modal_counts": {},
+          "field_total": 5000,
+          "joint_correct_fields": 174,
+          "raw_state_counts_by_field": {
+            "allergy": {
+              "absent": 234,
+              "conflicting": 11,
+              "missing": 27,
+              "supported": 700,
+              "uncertain": 28
+            },
+            "chief_complaint": {
+              "conflicting": 77,
+              "missing": 50,
+              "supported": 815,
+              "uncertain": 58
+            },
+            "duration": {
+              "conflicting": 225,
+              "missing": 44,
+              "supported": 606,
+              "uncertain": 125
+            },
+            "medication": {
+              "absent": 609,
+              "missing": 11,
+              "supported": 365,
+              "uncertain": 15
+            },
+            "severity": {
+              "conflicting": 50,
+              "missing": 42,
+              "supported": 854,
+              "uncertain": 54
+            }
+          },
+          "span_relations": {
+            "count_mismatch": 4826
+          },
+          "state_only_error_fields": 0
+        }
+      }
+    ],
+    "comparisons": [
+      {
+        "all_pass_bars": false,
+        "bars": {
+          "binding_relative_reduction_at_least_0_20": false,
+          "no_disjoint_or_speaker_mismatch_increase": true,
+          "no_field_collapse": true,
+          "shared_state_span_gain_at_least_0_05": false,
+          "state_noninferiority_minus_0_01": true,
+          "zero_decode_failures": true
+        },
+        "binding_error_fields": {
+          "control": 4840,
+          "relative_reduction": -0.0043388429752066115,
+          "treatment": 4861
+        },
+        "boundary_improvement_bars_met": false,
+        "disjoint_or_speaker_mismatch_delta": 0,
+        "safety_or_state_violation": false,
+        "span_exact_on_shared_state_correct": {
+          "absolute_gain": 0.0,
+          "control_numerator": 123,
+          "control_rate": 1.0,
+          "denominator": 123,
+          "treatment_numerator": 123,
+          "treatment_rate": 1.0
+        },
+        "state_accuracy_delta": -0.004200000000000002,
+        "treatment_seed": 20260805
+      },
+      {
+        "all_pass_bars": false,
+        "bars": {
+          "binding_relative_reduction_at_least_0_20": false,
+          "no_disjoint_or_speaker_mismatch_increase": true,
+          "no_field_collapse": true,
+          "shared_state_span_gain_at_least_0_05": false,
+          "state_noninferiority_minus_0_01": true,
+          "zero_decode_failures": true
+        },
+        "binding_error_fields": {
+          "control": 4840,
+          "relative_reduction": 0.002892561983471074,
+          "treatment": 4826
+        },
+        "boundary_improvement_bars_met": false,
+        "disjoint_or_speaker_mismatch_delta": 0,
+        "safety_or_state_violation": false,
+        "span_exact_on_shared_state_correct": {
+          "absolute_gain": 0.0,
+          "control_numerator": 113,
+          "control_rate": 1.0,
+          "denominator": 113,
+          "treatment_numerator": 113,
+          "treatment_rate": 1.0
+        },
+        "state_accuracy_delta": 0.002799999999999997,
+        "treatment_seed": 20260806
+      }
+    ]
+  },
+  "recorded_row_validation": {
+    "arms": [
+      {
+        "seed": null,
+        "items": 1000,
+        "field_denominator": 5000,
+        "decoded_fields": 5000,
+        "decode_failure_items": 0
+      },
+      {
+        "seed": 20260805,
+        "items": 1000,
+        "field_denominator": 5000,
+        "decoded_fields": 5000,
+        "decode_failure_items": 0
+      },
+      {
+        "seed": 20260806,
+        "items": 1000,
+        "field_denominator": 5000,
+        "decoded_fields": 5000,
+        "decode_failure_items": 0
+      }
+    ],
+    "aggregate_and_per_field_metrics_verified": true,
+    "mechanism_and_shared_state_comparisons_verified": true,
+    "decision_verified": true,
+    "limitation": "Stored diagnostics only: no gold-truth or omitted normalized gold.value verification; by-gold-state, target-challenge and auxiliary acceptance summaries are not independently recomputed."
+  },
+  "verification_limit": "No model replay or screen input access. Invocation evidence is checked against the canonical reservation; independent provider execution history is not audited."
+}

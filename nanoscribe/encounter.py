@@ -7,6 +7,7 @@ canonical JSON, and fail-closed invariants. It does not extract facts.
 from __future__ import annotations
 
 import json
+import re
 import unicodedata
 from collections.abc import Iterable, Mapping, Sequence
 from dataclasses import dataclass
@@ -16,6 +17,10 @@ from typing import Any
 SCHEMA_VERSION = "nano.encounter.v0"
 STRIP_ARTICLES_NFKC = "strip_articles_nfkc"
 _SURROUNDING = " \t\r\n.,;:!?\"'`‘’"
+
+# A period introducing a fractional number is part of its value. Preserve it
+# even when the source quote also includes surrounding punctuation.
+_LEADING_PUNCTUATION = re.compile(rf"^(?:[{re.escape(_SURROUNDING.replace('.', ''))}]|\.(?!\d))+")
 
 
 class EncounterError(ValueError):
@@ -166,10 +171,10 @@ def _canonical_json(value: Mapping[str, Any]) -> str:
 def normalize_value(value: str) -> str:
     """Named superficial normalization. Does not change clinical meaning."""
     normalized = unicodedata.normalize("NFKC", value).casefold()
-    normalized = " ".join(normalized.split()).strip(_SURROUNDING)
+    normalized = _LEADING_PUNCTUATION.sub("", " ".join(normalized.split()).rstrip(_SURROUNDING))
     for article in ("a ", "an ", "the "):
         if normalized.startswith(article):
-            return normalized[len(article) :].strip(_SURROUNDING)
+            return _LEADING_PUNCTUATION.sub("", normalized[len(article) :])
     return normalized
 
 

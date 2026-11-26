@@ -1,0 +1,3358 @@
+[
+  {
+    "example_id": "pilot-00-canonical",
+    "world_id": "pilot-world-00",
+    "variant": "canonical",
+    "generation": {
+      "raw": "CC:S[jaw pain]|DUR:S[11 days]|SEV:S[moderate]|MED:S[naproxen]|ALG:S[nickel]",
+      "generated_tokens": 36,
+      "token_limit_reached": false,
+      "generation_seconds": 20.734384875002434,
+      "device": "cpu"
+    },
+    "raw_parse_error": null,
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "pilot-00-canonical",
+      "source_sha256": "449f638874a2ac25924d4c2d465c1c36fb197144f1a43dcb1b55f71a6848aaa4",
+      "status": "draft",
+      "disposition": "review",
+      "extraction": {
+        "schema_version": "nano.scribe.v0",
+        "item_id": "pilot-00-canonical",
+        "solver_id": "compact/qwen2.5-1.5b-state-span",
+        "fields": [
+          {
+            "field": "chief_complaint",
+            "state": "supported",
+            "value": "jaw pain",
+            "evidence": [
+              {
+                "start": 71,
+                "end": 79,
+                "text": "jaw pain",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "duration",
+            "state": "supported",
+            "value": "11 days",
+            "evidence": [
+              {
+                "start": 141,
+                "end": 148,
+                "text": "11 days",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "severity",
+            "state": "supported",
+            "value": "moderate",
+            "evidence": [
+              {
+                "start": 212,
+                "end": 220,
+                "text": "moderate",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "medication",
+            "state": "supported",
+            "value": "naproxen",
+            "evidence": [
+              {
+                "start": 288,
+                "end": 296,
+                "text": "naproxen",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "allergy",
+            "state": "supported",
+            "value": "nickel",
+            "evidence": [
+              {
+                "start": 366,
+                "end": 372,
+                "text": "nickel",
+                "speaker": "patient"
+              }
+            ]
+          }
+        ]
+      },
+      "encounter": {
+        "schema_version": "nano.encounter.v0",
+        "encounter_id": "pilot-00-canonical",
+        "sources": [
+          {
+            "source_id": "source",
+            "text": "Doctor: What brings you to the clinic today?\nPatient: I've been having jaw pain.\nDoctor: How long has this been going on?\nPatient: For about 11 days now.\nDoctor: How bad would you say it is?\nPatient: I'd call it moderate.\nDoctor: Have you taken anything for it?\nPatient: I've been taking naproxen.\nDoctor: Any allergies I should know about?\nPatient: I'm allergic to nickel.",
+            "turns": [
+              {
+                "turn_id": "source:t0",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 8,
+                "end": 44,
+                "text": "What brings you to the clinic today?"
+              },
+              {
+                "turn_id": "source:t1",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 54,
+                "end": 80,
+                "text": "I've been having jaw pain."
+              },
+              {
+                "turn_id": "source:t2",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 89,
+                "end": 121,
+                "text": "How long has this been going on?"
+              },
+              {
+                "turn_id": "source:t3",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 131,
+                "end": 153,
+                "text": "For about 11 days now."
+              },
+              {
+                "turn_id": "source:t4",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 162,
+                "end": 190,
+                "text": "How bad would you say it is?"
+              },
+              {
+                "turn_id": "source:t5",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 200,
+                "end": 221,
+                "text": "I'd call it moderate."
+              },
+              {
+                "turn_id": "source:t6",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 230,
+                "end": 261,
+                "text": "Have you taken anything for it?"
+              },
+              {
+                "turn_id": "source:t7",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 271,
+                "end": 297,
+                "text": "I've been taking naproxen."
+              },
+              {
+                "turn_id": "source:t8",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 306,
+                "end": 340,
+                "text": "Any allergies I should know about?"
+              },
+              {
+                "turn_id": "source:t9",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 350,
+                "end": 373,
+                "text": "I'm allergic to nickel."
+              }
+            ]
+          }
+        ],
+        "evidence": [
+          {
+            "evidence_id": "e:chief_complaint:0",
+            "source_id": "source",
+            "turn_id": "source:t1",
+            "speaker": "patient",
+            "start": 71,
+            "end": 79,
+            "text": "jaw pain"
+          },
+          {
+            "evidence_id": "e:duration:0",
+            "source_id": "source",
+            "turn_id": "source:t3",
+            "speaker": "patient",
+            "start": 141,
+            "end": 148,
+            "text": "11 days"
+          },
+          {
+            "evidence_id": "e:severity:0",
+            "source_id": "source",
+            "turn_id": "source:t5",
+            "speaker": "patient",
+            "start": 212,
+            "end": 220,
+            "text": "moderate"
+          },
+          {
+            "evidence_id": "e:medication:0",
+            "source_id": "source",
+            "turn_id": "source:t7",
+            "speaker": "patient",
+            "start": 288,
+            "end": 296,
+            "text": "naproxen"
+          },
+          {
+            "evidence_id": "e:allergy:0",
+            "source_id": "source",
+            "turn_id": "source:t9",
+            "speaker": "patient",
+            "start": 366,
+            "end": 372,
+            "text": "nickel"
+          }
+        ],
+        "atoms": [
+          {
+            "atom_id": "a:chief_complaint",
+            "atom_type": "symptom",
+            "raw_value": "jaw pain",
+            "normalized_value": null,
+            "assertion_state": "asserted",
+            "speaker": "patient",
+            "experiencer": "patient",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "stated",
+            "evidence_ids": [
+              "e:chief_complaint:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          },
+          {
+            "atom_id": "a:duration",
+            "atom_type": "symptom",
+            "raw_value": "11 days",
+            "normalized_value": null,
+            "assertion_state": "asserted",
+            "speaker": "patient",
+            "experiencer": "patient",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "stated",
+            "evidence_ids": [
+              "e:duration:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          },
+          {
+            "atom_id": "a:severity",
+            "atom_type": "symptom",
+            "raw_value": "moderate",
+            "normalized_value": null,
+            "assertion_state": "asserted",
+            "speaker": "patient",
+            "experiencer": "patient",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "stated",
+            "evidence_ids": [
+              "e:severity:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          },
+          {
+            "atom_id": "a:medication",
+            "atom_type": "medication",
+            "raw_value": "naproxen",
+            "normalized_value": null,
+            "assertion_state": "asserted",
+            "speaker": "patient",
+            "experiencer": "patient",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "stated",
+            "evidence_ids": [
+              "e:medication:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          },
+          {
+            "atom_id": "a:allergy",
+            "atom_type": "allergy",
+            "raw_value": "nickel",
+            "normalized_value": null,
+            "assertion_state": "asserted",
+            "speaker": "patient",
+            "experiencer": "patient",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "stated",
+            "evidence_ids": [
+              "e:allergy:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          }
+        ],
+        "conflicts": [],
+        "unresolved": [
+          {
+            "unresolved_id": "u:scope",
+            "topic": "scope",
+            "reason": "Five patient-reported fields only; source checks are bounded and human review is required. No diagnosis, plan, or full encounter completeness is established.",
+            "review_required": true,
+            "evidence_ids": []
+          }
+        ]
+      },
+      "note": {
+        "claims": [
+          {
+            "field": "chief_complaint",
+            "state": "supported",
+            "value": "jaw pain",
+            "evidence_ids": [
+              "e:chief_complaint:0"
+            ]
+          },
+          {
+            "field": "duration",
+            "state": "supported",
+            "value": "11 days",
+            "evidence_ids": [
+              "e:duration:0"
+            ]
+          },
+          {
+            "field": "severity",
+            "state": "supported",
+            "value": "moderate",
+            "evidence_ids": [
+              "e:severity:0"
+            ]
+          },
+          {
+            "field": "medication",
+            "state": "supported",
+            "value": "naproxen",
+            "evidence_ids": [
+              "e:medication:0"
+            ]
+          },
+          {
+            "field": "allergy",
+            "state": "supported",
+            "value": "nickel",
+            "evidence_ids": [
+              "e:allergy:0"
+            ]
+          }
+        ],
+        "text": "Patient-reported encounter draft — human review required\nChief complaint: patient reports \"jaw pain\" [e:chief_complaint:0]\nDuration: patient reports \"11 days\" [e:duration:0]\nSeverity: patient reports \"moderate\" [e:severity:0]\nMedication: patient reports \"naproxen\" [e:medication:0]\nAllergy: patient reports \"nickel\" [e:allergy:0]",
+        "review_required": true
+      },
+      "verification": {
+        "passed": true,
+        "errors": [],
+        "scope": "bounded_source_and_representation"
+      },
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "solver": {
+        "solver_id": "compact/qwen2.5-1.5b-state-span",
+        "kind": "legacy_adapter",
+        "version": "989aa7980e4cf806f80c7fef2b1adb7bc71aa306",
+        "parameter_count": 1543714816,
+        "artifact_bytes": null
+      },
+      "failure": null
+    },
+    "total_seconds": 31.717755958001362
+  },
+  {
+    "example_id": "pilot-00-paraphrase",
+    "world_id": "pilot-world-00",
+    "variant": "paraphrase",
+    "generation": {
+      "raw": "CC:S[jaw pain]|DUR:S[11 days]|SEV:S[moderate]|MED:S[naproxen]|ALG:S[nickel]",
+      "generated_tokens": 36,
+      "token_limit_reached": false,
+      "generation_seconds": 39.141026375000365,
+      "device": "cpu"
+    },
+    "raw_parse_error": null,
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "pilot-00-paraphrase",
+      "source_sha256": "e9b4629a7810603e8132d201bca9a05c28349a21c2583c719d5150be29f41aec",
+      "status": "draft",
+      "disposition": "abstain",
+      "extraction": {
+        "schema_version": "nano.scribe.v0",
+        "item_id": "pilot-00-paraphrase",
+        "solver_id": "compact/qwen2.5-1.5b-state-span",
+        "fields": [
+          {
+            "field": "chief_complaint",
+            "state": "uncertain",
+            "value": null,
+            "evidence": [
+              {
+                "start": 78,
+                "end": 86,
+                "text": "jaw pain",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "duration",
+            "state": "uncertain",
+            "value": null,
+            "evidence": [
+              {
+                "start": 162,
+                "end": 169,
+                "text": "11 days",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "severity",
+            "state": "uncertain",
+            "value": null,
+            "evidence": [
+              {
+                "start": 237,
+                "end": 245,
+                "text": "moderate",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "medication",
+            "state": "uncertain",
+            "value": null,
+            "evidence": [
+              {
+                "start": 327,
+                "end": 335,
+                "text": "naproxen",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "allergy",
+            "state": "uncertain",
+            "value": null,
+            "evidence": [
+              {
+                "start": 420,
+                "end": 426,
+                "text": "nickel",
+                "speaker": "patient"
+              }
+            ]
+          }
+        ]
+      },
+      "encounter": {
+        "schema_version": "nano.encounter.v0",
+        "encounter_id": "pilot-00-paraphrase",
+        "sources": [
+          {
+            "source_id": "source",
+            "text": "Doctor: Describe the problem that brought you here.\nPatient: I've been having jaw pain.\nDoctor: For what length of time have you noticed this?\nPatient: For about 11 days now.\nDoctor: Describe how intense this feels.\nPatient: I'd call it moderate.\nDoctor: What medicine have you used for this problem?\nPatient: I've been taking naproxen.\nDoctor: Tell me about any substances you are allergic to.\nPatient: I'm allergic to nickel.",
+            "turns": [
+              {
+                "turn_id": "source:t0",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 8,
+                "end": 51,
+                "text": "Describe the problem that brought you here."
+              },
+              {
+                "turn_id": "source:t1",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 61,
+                "end": 87,
+                "text": "I've been having jaw pain."
+              },
+              {
+                "turn_id": "source:t2",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 96,
+                "end": 142,
+                "text": "For what length of time have you noticed this?"
+              },
+              {
+                "turn_id": "source:t3",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 152,
+                "end": 174,
+                "text": "For about 11 days now."
+              },
+              {
+                "turn_id": "source:t4",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 183,
+                "end": 215,
+                "text": "Describe how intense this feels."
+              },
+              {
+                "turn_id": "source:t5",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 225,
+                "end": 246,
+                "text": "I'd call it moderate."
+              },
+              {
+                "turn_id": "source:t6",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 255,
+                "end": 300,
+                "text": "What medicine have you used for this problem?"
+              },
+              {
+                "turn_id": "source:t7",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 310,
+                "end": 336,
+                "text": "I've been taking naproxen."
+              },
+              {
+                "turn_id": "source:t8",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 345,
+                "end": 394,
+                "text": "Tell me about any substances you are allergic to."
+              },
+              {
+                "turn_id": "source:t9",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 404,
+                "end": 427,
+                "text": "I'm allergic to nickel."
+              }
+            ]
+          }
+        ],
+        "evidence": [
+          {
+            "evidence_id": "e:chief_complaint:0",
+            "source_id": "source",
+            "turn_id": "source:t1",
+            "speaker": "patient",
+            "start": 78,
+            "end": 86,
+            "text": "jaw pain"
+          },
+          {
+            "evidence_id": "e:duration:0",
+            "source_id": "source",
+            "turn_id": "source:t3",
+            "speaker": "patient",
+            "start": 162,
+            "end": 169,
+            "text": "11 days"
+          },
+          {
+            "evidence_id": "e:severity:0",
+            "source_id": "source",
+            "turn_id": "source:t5",
+            "speaker": "patient",
+            "start": 237,
+            "end": 245,
+            "text": "moderate"
+          },
+          {
+            "evidence_id": "e:medication:0",
+            "source_id": "source",
+            "turn_id": "source:t7",
+            "speaker": "patient",
+            "start": 327,
+            "end": 335,
+            "text": "naproxen"
+          },
+          {
+            "evidence_id": "e:allergy:0",
+            "source_id": "source",
+            "turn_id": "source:t9",
+            "speaker": "patient",
+            "start": 420,
+            "end": 426,
+            "text": "nickel"
+          },
+          {
+            "evidence_id": "e:source:t0",
+            "source_id": "source",
+            "turn_id": "source:t0",
+            "speaker": "clinician",
+            "start": 8,
+            "end": 51,
+            "text": "Describe the problem that brought you here."
+          },
+          {
+            "evidence_id": "e:source:t2",
+            "source_id": "source",
+            "turn_id": "source:t2",
+            "speaker": "clinician",
+            "start": 96,
+            "end": 142,
+            "text": "For what length of time have you noticed this?"
+          },
+          {
+            "evidence_id": "e:source:t4",
+            "source_id": "source",
+            "turn_id": "source:t4",
+            "speaker": "clinician",
+            "start": 183,
+            "end": 215,
+            "text": "Describe how intense this feels."
+          },
+          {
+            "evidence_id": "e:source:t6",
+            "source_id": "source",
+            "turn_id": "source:t6",
+            "speaker": "clinician",
+            "start": 255,
+            "end": 300,
+            "text": "What medicine have you used for this problem?"
+          },
+          {
+            "evidence_id": "e:source:t8",
+            "source_id": "source",
+            "turn_id": "source:t8",
+            "speaker": "clinician",
+            "start": 345,
+            "end": 394,
+            "text": "Tell me about any substances you are allergic to."
+          }
+        ],
+        "atoms": [
+          {
+            "atom_id": "a:chief_complaint",
+            "atom_type": "symptom",
+            "raw_value": "jaw pain",
+            "normalized_value": null,
+            "assertion_state": "uncertain",
+            "speaker": "patient",
+            "experiencer": "unknown",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "uncertain",
+            "evidence_ids": [
+              "e:chief_complaint:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          },
+          {
+            "atom_id": "a:duration",
+            "atom_type": "symptom",
+            "raw_value": "11 days",
+            "normalized_value": null,
+            "assertion_state": "uncertain",
+            "speaker": "patient",
+            "experiencer": "unknown",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "uncertain",
+            "evidence_ids": [
+              "e:duration:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          },
+          {
+            "atom_id": "a:severity",
+            "atom_type": "symptom",
+            "raw_value": "moderate",
+            "normalized_value": null,
+            "assertion_state": "uncertain",
+            "speaker": "patient",
+            "experiencer": "unknown",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "uncertain",
+            "evidence_ids": [
+              "e:severity:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          },
+          {
+            "atom_id": "a:medication",
+            "atom_type": "medication",
+            "raw_value": "naproxen",
+            "normalized_value": null,
+            "assertion_state": "uncertain",
+            "speaker": "patient",
+            "experiencer": "unknown",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "uncertain",
+            "evidence_ids": [
+              "e:medication:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          },
+          {
+            "atom_id": "a:allergy",
+            "atom_type": "allergy",
+            "raw_value": "nickel",
+            "normalized_value": null,
+            "assertion_state": "uncertain",
+            "speaker": "patient",
+            "experiencer": "unknown",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "uncertain",
+            "evidence_ids": [
+              "e:allergy:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          }
+        ],
+        "conflicts": [],
+        "unresolved": [
+          {
+            "unresolved_id": "u:chief_complaint",
+            "topic": "chief_complaint",
+            "reason": "uncertain",
+            "review_required": true,
+            "evidence_ids": [
+              "e:chief_complaint:0"
+            ]
+          },
+          {
+            "unresolved_id": "u:duration",
+            "topic": "duration",
+            "reason": "uncertain",
+            "review_required": true,
+            "evidence_ids": [
+              "e:duration:0"
+            ]
+          },
+          {
+            "unresolved_id": "u:severity",
+            "topic": "severity",
+            "reason": "uncertain",
+            "review_required": true,
+            "evidence_ids": [
+              "e:severity:0"
+            ]
+          },
+          {
+            "unresolved_id": "u:medication",
+            "topic": "medication",
+            "reason": "uncertain",
+            "review_required": true,
+            "evidence_ids": [
+              "e:medication:0"
+            ]
+          },
+          {
+            "unresolved_id": "u:allergy",
+            "topic": "allergy",
+            "reason": "uncertain",
+            "review_required": true,
+            "evidence_ids": [
+              "e:allergy:0"
+            ]
+          },
+          {
+            "unresolved_id": "u:source:t0",
+            "topic": "unhandled_source_turn",
+            "reason": "Content outside the checked five-field path; inspect for omissions or corrections.",
+            "review_required": true,
+            "evidence_ids": [
+              "e:source:t0"
+            ]
+          },
+          {
+            "unresolved_id": "u:source:t2",
+            "topic": "unhandled_source_turn",
+            "reason": "Content outside the checked five-field path; inspect for omissions or corrections.",
+            "review_required": true,
+            "evidence_ids": [
+              "e:source:t2"
+            ]
+          },
+          {
+            "unresolved_id": "u:source:t4",
+            "topic": "unhandled_source_turn",
+            "reason": "Content outside the checked five-field path; inspect for omissions or corrections.",
+            "review_required": true,
+            "evidence_ids": [
+              "e:source:t4"
+            ]
+          },
+          {
+            "unresolved_id": "u:source:t6",
+            "topic": "unhandled_source_turn",
+            "reason": "Content outside the checked five-field path; inspect for omissions or corrections.",
+            "review_required": true,
+            "evidence_ids": [
+              "e:source:t6"
+            ]
+          },
+          {
+            "unresolved_id": "u:source:t8",
+            "topic": "unhandled_source_turn",
+            "reason": "Content outside the checked five-field path; inspect for omissions or corrections.",
+            "review_required": true,
+            "evidence_ids": [
+              "e:source:t8"
+            ]
+          },
+          {
+            "unresolved_id": "u:scope",
+            "topic": "scope",
+            "reason": "Five patient-reported fields only; source checks are bounded and human review is required. No diagnosis, plan, or full encounter completeness is established.",
+            "review_required": true,
+            "evidence_ids": []
+          }
+        ]
+      },
+      "note": {
+        "claims": [
+          {
+            "field": "chief_complaint",
+            "state": "uncertain",
+            "value": null,
+            "evidence_ids": [
+              "e:chief_complaint:0"
+            ]
+          },
+          {
+            "field": "duration",
+            "state": "uncertain",
+            "value": null,
+            "evidence_ids": [
+              "e:duration:0"
+            ]
+          },
+          {
+            "field": "severity",
+            "state": "uncertain",
+            "value": null,
+            "evidence_ids": [
+              "e:severity:0"
+            ]
+          },
+          {
+            "field": "medication",
+            "state": "uncertain",
+            "value": null,
+            "evidence_ids": [
+              "e:medication:0"
+            ]
+          },
+          {
+            "field": "allergy",
+            "state": "uncertain",
+            "value": null,
+            "evidence_ids": [
+              "e:allergy:0"
+            ]
+          }
+        ],
+        "text": "Patient-reported encounter draft — human review required\nChief complaint: not asserted (uncertain); review required [e:chief_complaint:0]\nDuration: not asserted (uncertain); review required [e:duration:0]\nSeverity: not asserted (uncertain); review required [e:severity:0]\nMedication: not asserted (uncertain); review required [e:medication:0]\nAllergy: not asserted (uncertain); review required [e:allergy:0]",
+        "review_required": true
+      },
+      "verification": {
+        "passed": true,
+        "errors": [],
+        "scope": "bounded_source_and_representation"
+      },
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "solver": {
+        "solver_id": "compact/qwen2.5-1.5b-state-span",
+        "kind": "legacy_adapter",
+        "version": "989aa7980e4cf806f80c7fef2b1adb7bc71aa306",
+        "parameter_count": 1543714816,
+        "artifact_bytes": null
+      },
+      "failure": null
+    },
+    "total_seconds": 39.147015666996595
+  },
+  {
+    "example_id": "pilot-01-canonical",
+    "world_id": "pilot-world-01",
+    "variant": "canonical",
+    "generation": {
+      "raw": "CC:S[ankle soreness]|DUR:S[6 weeks]|SEV:S[mild]|MED:S[acetaminophen]|ALG:S[latex]",
+      "generated_tokens": 37,
+      "token_limit_reached": false,
+      "generation_seconds": 5.282489459001226,
+      "device": "cpu"
+    },
+    "raw_parse_error": null,
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "pilot-01-canonical",
+      "source_sha256": "a501edaa6957c2f90592794579dbdc9c0406326e3b7368a19162277bc6e1a51a",
+      "status": "draft",
+      "disposition": "review",
+      "extraction": {
+        "schema_version": "nano.scribe.v0",
+        "item_id": "pilot-01-canonical",
+        "solver_id": "compact/qwen2.5-1.5b-state-span",
+        "fields": [
+          {
+            "field": "chief_complaint",
+            "state": "supported",
+            "value": "ankle soreness",
+            "evidence": [
+              {
+                "start": 71,
+                "end": 85,
+                "text": "ankle soreness",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "duration",
+            "state": "supported",
+            "value": "6 weeks",
+            "evidence": [
+              {
+                "start": 147,
+                "end": 154,
+                "text": "6 weeks",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "severity",
+            "state": "supported",
+            "value": "mild",
+            "evidence": [
+              {
+                "start": 218,
+                "end": 222,
+                "text": "mild",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "medication",
+            "state": "supported",
+            "value": "acetaminophen",
+            "evidence": [
+              {
+                "start": 290,
+                "end": 303,
+                "text": "acetaminophen",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "allergy",
+            "state": "supported",
+            "value": "latex",
+            "evidence": [
+              {
+                "start": 373,
+                "end": 378,
+                "text": "latex",
+                "speaker": "patient"
+              }
+            ]
+          }
+        ]
+      },
+      "encounter": {
+        "schema_version": "nano.encounter.v0",
+        "encounter_id": "pilot-01-canonical",
+        "sources": [
+          {
+            "source_id": "source",
+            "text": "Doctor: What brings you to the clinic today?\nPatient: I've been having ankle soreness.\nDoctor: How long has this been going on?\nPatient: For about 6 weeks now.\nDoctor: How bad would you say it is?\nPatient: I'd call it mild.\nDoctor: Have you taken anything for it?\nPatient: I've been taking acetaminophen.\nDoctor: Any allergies I should know about?\nPatient: I'm allergic to latex.",
+            "turns": [
+              {
+                "turn_id": "source:t0",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 8,
+                "end": 44,
+                "text": "What brings you to the clinic today?"
+              },
+              {
+                "turn_id": "source:t1",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 54,
+                "end": 86,
+                "text": "I've been having ankle soreness."
+              },
+              {
+                "turn_id": "source:t2",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 95,
+                "end": 127,
+                "text": "How long has this been going on?"
+              },
+              {
+                "turn_id": "source:t3",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 137,
+                "end": 159,
+                "text": "For about 6 weeks now."
+              },
+              {
+                "turn_id": "source:t4",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 168,
+                "end": 196,
+                "text": "How bad would you say it is?"
+              },
+              {
+                "turn_id": "source:t5",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 206,
+                "end": 223,
+                "text": "I'd call it mild."
+              },
+              {
+                "turn_id": "source:t6",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 232,
+                "end": 263,
+                "text": "Have you taken anything for it?"
+              },
+              {
+                "turn_id": "source:t7",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 273,
+                "end": 304,
+                "text": "I've been taking acetaminophen."
+              },
+              {
+                "turn_id": "source:t8",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 313,
+                "end": 347,
+                "text": "Any allergies I should know about?"
+              },
+              {
+                "turn_id": "source:t9",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 357,
+                "end": 379,
+                "text": "I'm allergic to latex."
+              }
+            ]
+          }
+        ],
+        "evidence": [
+          {
+            "evidence_id": "e:chief_complaint:0",
+            "source_id": "source",
+            "turn_id": "source:t1",
+            "speaker": "patient",
+            "start": 71,
+            "end": 85,
+            "text": "ankle soreness"
+          },
+          {
+            "evidence_id": "e:duration:0",
+            "source_id": "source",
+            "turn_id": "source:t3",
+            "speaker": "patient",
+            "start": 147,
+            "end": 154,
+            "text": "6 weeks"
+          },
+          {
+            "evidence_id": "e:severity:0",
+            "source_id": "source",
+            "turn_id": "source:t5",
+            "speaker": "patient",
+            "start": 218,
+            "end": 222,
+            "text": "mild"
+          },
+          {
+            "evidence_id": "e:medication:0",
+            "source_id": "source",
+            "turn_id": "source:t7",
+            "speaker": "patient",
+            "start": 290,
+            "end": 303,
+            "text": "acetaminophen"
+          },
+          {
+            "evidence_id": "e:allergy:0",
+            "source_id": "source",
+            "turn_id": "source:t9",
+            "speaker": "patient",
+            "start": 373,
+            "end": 378,
+            "text": "latex"
+          }
+        ],
+        "atoms": [
+          {
+            "atom_id": "a:chief_complaint",
+            "atom_type": "symptom",
+            "raw_value": "ankle soreness",
+            "normalized_value": null,
+            "assertion_state": "asserted",
+            "speaker": "patient",
+            "experiencer": "patient",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "stated",
+            "evidence_ids": [
+              "e:chief_complaint:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          },
+          {
+            "atom_id": "a:duration",
+            "atom_type": "symptom",
+            "raw_value": "6 weeks",
+            "normalized_value": null,
+            "assertion_state": "asserted",
+            "speaker": "patient",
+            "experiencer": "patient",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "stated",
+            "evidence_ids": [
+              "e:duration:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          },
+          {
+            "atom_id": "a:severity",
+            "atom_type": "symptom",
+            "raw_value": "mild",
+            "normalized_value": null,
+            "assertion_state": "asserted",
+            "speaker": "patient",
+            "experiencer": "patient",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "stated",
+            "evidence_ids": [
+              "e:severity:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          },
+          {
+            "atom_id": "a:medication",
+            "atom_type": "medication",
+            "raw_value": "acetaminophen",
+            "normalized_value": null,
+            "assertion_state": "asserted",
+            "speaker": "patient",
+            "experiencer": "patient",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "stated",
+            "evidence_ids": [
+              "e:medication:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          },
+          {
+            "atom_id": "a:allergy",
+            "atom_type": "allergy",
+            "raw_value": "latex",
+            "normalized_value": null,
+            "assertion_state": "asserted",
+            "speaker": "patient",
+            "experiencer": "patient",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "stated",
+            "evidence_ids": [
+              "e:allergy:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          }
+        ],
+        "conflicts": [],
+        "unresolved": [
+          {
+            "unresolved_id": "u:scope",
+            "topic": "scope",
+            "reason": "Five patient-reported fields only; source checks are bounded and human review is required. No diagnosis, plan, or full encounter completeness is established.",
+            "review_required": true,
+            "evidence_ids": []
+          }
+        ]
+      },
+      "note": {
+        "claims": [
+          {
+            "field": "chief_complaint",
+            "state": "supported",
+            "value": "ankle soreness",
+            "evidence_ids": [
+              "e:chief_complaint:0"
+            ]
+          },
+          {
+            "field": "duration",
+            "state": "supported",
+            "value": "6 weeks",
+            "evidence_ids": [
+              "e:duration:0"
+            ]
+          },
+          {
+            "field": "severity",
+            "state": "supported",
+            "value": "mild",
+            "evidence_ids": [
+              "e:severity:0"
+            ]
+          },
+          {
+            "field": "medication",
+            "state": "supported",
+            "value": "acetaminophen",
+            "evidence_ids": [
+              "e:medication:0"
+            ]
+          },
+          {
+            "field": "allergy",
+            "state": "supported",
+            "value": "latex",
+            "evidence_ids": [
+              "e:allergy:0"
+            ]
+          }
+        ],
+        "text": "Patient-reported encounter draft — human review required\nChief complaint: patient reports \"ankle soreness\" [e:chief_complaint:0]\nDuration: patient reports \"6 weeks\" [e:duration:0]\nSeverity: patient reports \"mild\" [e:severity:0]\nMedication: patient reports \"acetaminophen\" [e:medication:0]\nAllergy: patient reports \"latex\" [e:allergy:0]",
+        "review_required": true
+      },
+      "verification": {
+        "passed": true,
+        "errors": [],
+        "scope": "bounded_source_and_representation"
+      },
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "solver": {
+        "solver_id": "compact/qwen2.5-1.5b-state-span",
+        "kind": "legacy_adapter",
+        "version": "989aa7980e4cf806f80c7fef2b1adb7bc71aa306",
+        "parameter_count": 1543714816,
+        "artifact_bytes": null
+      },
+      "failure": null
+    },
+    "total_seconds": 5.286708500003442
+  },
+  {
+    "example_id": "pilot-01-paraphrase",
+    "world_id": "pilot-world-01",
+    "variant": "paraphrase",
+    "generation": {
+      "raw": "CC:S[ankle soreness]|DUR:S[6 weeks]|SEV:S[mild]|MED:S[acetaminophen]|ALG:S[latex]",
+      "generated_tokens": 37,
+      "token_limit_reached": false,
+      "generation_seconds": 3.4326303749985527,
+      "device": "cpu"
+    },
+    "raw_parse_error": null,
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "pilot-01-paraphrase",
+      "source_sha256": "bc5f635de82c01fc4e1fd04f796f2d61f1733dcdc8a12547b28b81cda6e9d313",
+      "status": "draft",
+      "disposition": "abstain",
+      "extraction": {
+        "schema_version": "nano.scribe.v0",
+        "item_id": "pilot-01-paraphrase",
+        "solver_id": "compact/qwen2.5-1.5b-state-span",
+        "fields": [
+          {
+            "field": "chief_complaint",
+            "state": "uncertain",
+            "value": null,
+            "evidence": [
+              {
+                "start": 78,
+                "end": 92,
+                "text": "ankle soreness",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "duration",
+            "state": "uncertain",
+            "value": null,
+            "evidence": [
+              {
+                "start": 168,
+                "end": 175,
+                "text": "6 weeks",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "severity",
+            "state": "uncertain",
+            "value": null,
+            "evidence": [
+              {
+                "start": 243,
+                "end": 247,
+                "text": "mild",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "medication",
+            "state": "uncertain",
+            "value": null,
+            "evidence": [
+              {
+                "start": 329,
+                "end": 342,
+                "text": "acetaminophen",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "allergy",
+            "state": "uncertain",
+            "value": null,
+            "evidence": [
+              {
+                "start": 427,
+                "end": 432,
+                "text": "latex",
+                "speaker": "patient"
+              }
+            ]
+          }
+        ]
+      },
+      "encounter": {
+        "schema_version": "nano.encounter.v0",
+        "encounter_id": "pilot-01-paraphrase",
+        "sources": [
+          {
+            "source_id": "source",
+            "text": "Doctor: Describe the problem that brought you here.\nPatient: I've been having ankle soreness.\nDoctor: For what length of time have you noticed this?\nPatient: For about 6 weeks now.\nDoctor: Describe how intense this feels.\nPatient: I'd call it mild.\nDoctor: What medicine have you used for this problem?\nPatient: I've been taking acetaminophen.\nDoctor: Tell me about any substances you are allergic to.\nPatient: I'm allergic to latex.",
+            "turns": [
+              {
+                "turn_id": "source:t0",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 8,
+                "end": 51,
+                "text": "Describe the problem that brought you here."
+              },
+              {
+                "turn_id": "source:t1",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 61,
+                "end": 93,
+                "text": "I've been having ankle soreness."
+              },
+              {
+                "turn_id": "source:t2",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 102,
+                "end": 148,
+                "text": "For what length of time have you noticed this?"
+              },
+              {
+                "turn_id": "source:t3",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 158,
+                "end": 180,
+                "text": "For about 6 weeks now."
+              },
+              {
+                "turn_id": "source:t4",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 189,
+                "end": 221,
+                "text": "Describe how intense this feels."
+              },
+              {
+                "turn_id": "source:t5",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 231,
+                "end": 248,
+                "text": "I'd call it mild."
+              },
+              {
+                "turn_id": "source:t6",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 257,
+                "end": 302,
+                "text": "What medicine have you used for this problem?"
+              },
+              {
+                "turn_id": "source:t7",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 312,
+                "end": 343,
+                "text": "I've been taking acetaminophen."
+              },
+              {
+                "turn_id": "source:t8",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 352,
+                "end": 401,
+                "text": "Tell me about any substances you are allergic to."
+              },
+              {
+                "turn_id": "source:t9",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 411,
+                "end": 433,
+                "text": "I'm allergic to latex."
+              }
+            ]
+          }
+        ],
+        "evidence": [
+          {
+            "evidence_id": "e:chief_complaint:0",
+            "source_id": "source",
+            "turn_id": "source:t1",
+            "speaker": "patient",
+            "start": 78,
+            "end": 92,
+            "text": "ankle soreness"
+          },
+          {
+            "evidence_id": "e:duration:0",
+            "source_id": "source",
+            "turn_id": "source:t3",
+            "speaker": "patient",
+            "start": 168,
+            "end": 175,
+            "text": "6 weeks"
+          },
+          {
+            "evidence_id": "e:severity:0",
+            "source_id": "source",
+            "turn_id": "source:t5",
+            "speaker": "patient",
+            "start": 243,
+            "end": 247,
+            "text": "mild"
+          },
+          {
+            "evidence_id": "e:medication:0",
+            "source_id": "source",
+            "turn_id": "source:t7",
+            "speaker": "patient",
+            "start": 329,
+            "end": 342,
+            "text": "acetaminophen"
+          },
+          {
+            "evidence_id": "e:allergy:0",
+            "source_id": "source",
+            "turn_id": "source:t9",
+            "speaker": "patient",
+            "start": 427,
+            "end": 432,
+            "text": "latex"
+          },
+          {
+            "evidence_id": "e:source:t0",
+            "source_id": "source",
+            "turn_id": "source:t0",
+            "speaker": "clinician",
+            "start": 8,
+            "end": 51,
+            "text": "Describe the problem that brought you here."
+          },
+          {
+            "evidence_id": "e:source:t2",
+            "source_id": "source",
+            "turn_id": "source:t2",
+            "speaker": "clinician",
+            "start": 102,
+            "end": 148,
+            "text": "For what length of time have you noticed this?"
+          },
+          {
+            "evidence_id": "e:source:t4",
+            "source_id": "source",
+            "turn_id": "source:t4",
+            "speaker": "clinician",
+            "start": 189,
+            "end": 221,
+            "text": "Describe how intense this feels."
+          },
+          {
+            "evidence_id": "e:source:t6",
+            "source_id": "source",
+            "turn_id": "source:t6",
+            "speaker": "clinician",
+            "start": 257,
+            "end": 302,
+            "text": "What medicine have you used for this problem?"
+          },
+          {
+            "evidence_id": "e:source:t8",
+            "source_id": "source",
+            "turn_id": "source:t8",
+            "speaker": "clinician",
+            "start": 352,
+            "end": 401,
+            "text": "Tell me about any substances you are allergic to."
+          }
+        ],
+        "atoms": [
+          {
+            "atom_id": "a:chief_complaint",
+            "atom_type": "symptom",
+            "raw_value": "ankle soreness",
+            "normalized_value": null,
+            "assertion_state": "uncertain",
+            "speaker": "patient",
+            "experiencer": "unknown",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "uncertain",
+            "evidence_ids": [
+              "e:chief_complaint:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          },
+          {
+            "atom_id": "a:duration",
+            "atom_type": "symptom",
+            "raw_value": "6 weeks",
+            "normalized_value": null,
+            "assertion_state": "uncertain",
+            "speaker": "patient",
+            "experiencer": "unknown",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "uncertain",
+            "evidence_ids": [
+              "e:duration:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          },
+          {
+            "atom_id": "a:severity",
+            "atom_type": "symptom",
+            "raw_value": "mild",
+            "normalized_value": null,
+            "assertion_state": "uncertain",
+            "speaker": "patient",
+            "experiencer": "unknown",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "uncertain",
+            "evidence_ids": [
+              "e:severity:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          },
+          {
+            "atom_id": "a:medication",
+            "atom_type": "medication",
+            "raw_value": "acetaminophen",
+            "normalized_value": null,
+            "assertion_state": "uncertain",
+            "speaker": "patient",
+            "experiencer": "unknown",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "uncertain",
+            "evidence_ids": [
+              "e:medication:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          },
+          {
+            "atom_id": "a:allergy",
+            "atom_type": "allergy",
+            "raw_value": "latex",
+            "normalized_value": null,
+            "assertion_state": "uncertain",
+            "speaker": "patient",
+            "experiencer": "unknown",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "uncertain",
+            "evidence_ids": [
+              "e:allergy:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          }
+        ],
+        "conflicts": [],
+        "unresolved": [
+          {
+            "unresolved_id": "u:chief_complaint",
+            "topic": "chief_complaint",
+            "reason": "uncertain",
+            "review_required": true,
+            "evidence_ids": [
+              "e:chief_complaint:0"
+            ]
+          },
+          {
+            "unresolved_id": "u:duration",
+            "topic": "duration",
+            "reason": "uncertain",
+            "review_required": true,
+            "evidence_ids": [
+              "e:duration:0"
+            ]
+          },
+          {
+            "unresolved_id": "u:severity",
+            "topic": "severity",
+            "reason": "uncertain",
+            "review_required": true,
+            "evidence_ids": [
+              "e:severity:0"
+            ]
+          },
+          {
+            "unresolved_id": "u:medication",
+            "topic": "medication",
+            "reason": "uncertain",
+            "review_required": true,
+            "evidence_ids": [
+              "e:medication:0"
+            ]
+          },
+          {
+            "unresolved_id": "u:allergy",
+            "topic": "allergy",
+            "reason": "uncertain",
+            "review_required": true,
+            "evidence_ids": [
+              "e:allergy:0"
+            ]
+          },
+          {
+            "unresolved_id": "u:source:t0",
+            "topic": "unhandled_source_turn",
+            "reason": "Content outside the checked five-field path; inspect for omissions or corrections.",
+            "review_required": true,
+            "evidence_ids": [
+              "e:source:t0"
+            ]
+          },
+          {
+            "unresolved_id": "u:source:t2",
+            "topic": "unhandled_source_turn",
+            "reason": "Content outside the checked five-field path; inspect for omissions or corrections.",
+            "review_required": true,
+            "evidence_ids": [
+              "e:source:t2"
+            ]
+          },
+          {
+            "unresolved_id": "u:source:t4",
+            "topic": "unhandled_source_turn",
+            "reason": "Content outside the checked five-field path; inspect for omissions or corrections.",
+            "review_required": true,
+            "evidence_ids": [
+              "e:source:t4"
+            ]
+          },
+          {
+            "unresolved_id": "u:source:t6",
+            "topic": "unhandled_source_turn",
+            "reason": "Content outside the checked five-field path; inspect for omissions or corrections.",
+            "review_required": true,
+            "evidence_ids": [
+              "e:source:t6"
+            ]
+          },
+          {
+            "unresolved_id": "u:source:t8",
+            "topic": "unhandled_source_turn",
+            "reason": "Content outside the checked five-field path; inspect for omissions or corrections.",
+            "review_required": true,
+            "evidence_ids": [
+              "e:source:t8"
+            ]
+          },
+          {
+            "unresolved_id": "u:scope",
+            "topic": "scope",
+            "reason": "Five patient-reported fields only; source checks are bounded and human review is required. No diagnosis, plan, or full encounter completeness is established.",
+            "review_required": true,
+            "evidence_ids": []
+          }
+        ]
+      },
+      "note": {
+        "claims": [
+          {
+            "field": "chief_complaint",
+            "state": "uncertain",
+            "value": null,
+            "evidence_ids": [
+              "e:chief_complaint:0"
+            ]
+          },
+          {
+            "field": "duration",
+            "state": "uncertain",
+            "value": null,
+            "evidence_ids": [
+              "e:duration:0"
+            ]
+          },
+          {
+            "field": "severity",
+            "state": "uncertain",
+            "value": null,
+            "evidence_ids": [
+              "e:severity:0"
+            ]
+          },
+          {
+            "field": "medication",
+            "state": "uncertain",
+            "value": null,
+            "evidence_ids": [
+              "e:medication:0"
+            ]
+          },
+          {
+            "field": "allergy",
+            "state": "uncertain",
+            "value": null,
+            "evidence_ids": [
+              "e:allergy:0"
+            ]
+          }
+        ],
+        "text": "Patient-reported encounter draft — human review required\nChief complaint: not asserted (uncertain); review required [e:chief_complaint:0]\nDuration: not asserted (uncertain); review required [e:duration:0]\nSeverity: not asserted (uncertain); review required [e:severity:0]\nMedication: not asserted (uncertain); review required [e:medication:0]\nAllergy: not asserted (uncertain); review required [e:allergy:0]",
+        "review_required": true
+      },
+      "verification": {
+        "passed": true,
+        "errors": [],
+        "scope": "bounded_source_and_representation"
+      },
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "solver": {
+        "solver_id": "compact/qwen2.5-1.5b-state-span",
+        "kind": "legacy_adapter",
+        "version": "989aa7980e4cf806f80c7fef2b1adb7bc71aa306",
+        "parameter_count": 1543714816,
+        "artifact_bytes": null
+      },
+      "failure": null
+    },
+    "total_seconds": 3.4343853749887785
+  },
+  {
+    "example_id": "pilot-02-canonical",
+    "world_id": "pilot-world-02",
+    "variant": "canonical",
+    "generation": {
+      "raw": "CC:S[dry cough]|DUR:S[9 days]|SEV:S[severe]|MED:A|M|ALG:A",
+      "generated_tokens": 28,
+      "token_limit_reached": false,
+      "generation_seconds": 2.805469416998676,
+      "device": "cpu"
+    },
+    "raw_parse_error": "native-state summary must contain exactly five ordered slots",
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "pilot-02-canonical",
+      "source_sha256": "dbcc9cb65640365fa04382d17abe2aedfd549ab09f3c34f32715f020c10fac72",
+      "status": "failed",
+      "disposition": "abstain",
+      "extraction": null,
+      "encounter": null,
+      "note": null,
+      "verification": null,
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "failure": {
+        "category": "solver_exception",
+        "message": "native-state summary must contain exactly five ordered slots",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      }
+    },
+    "total_seconds": 2.8068502499954775
+  },
+  {
+    "example_id": "pilot-02-paraphrase",
+    "world_id": "pilot-world-02",
+    "variant": "paraphrase",
+    "generation": {
+      "raw": "CC:S[dry cough]|DUR:S[9 days]|SEV:S[severe]|MED:A|ALG:A",
+      "generated_tokens": 27,
+      "token_limit_reached": false,
+      "generation_seconds": 2.747546667000279,
+      "device": "cpu"
+    },
+    "raw_parse_error": "A must carry an evidence bracket",
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "pilot-02-paraphrase",
+      "source_sha256": "0c3ce9b4e003ef9ea972630861ec3fe9ed20f3cf1765bcaaf958f6e20acc4fbb",
+      "status": "failed",
+      "disposition": "abstain",
+      "extraction": null,
+      "encounter": null,
+      "note": null,
+      "verification": null,
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "failure": {
+        "category": "solver_exception",
+        "message": "A must carry an evidence bracket",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      }
+    },
+    "total_seconds": 2.7488542499922914
+  },
+  {
+    "example_id": "pilot-03-canonical",
+    "world_id": "pilot-world-03",
+    "variant": "canonical",
+    "generation": {
+      "raw": "CC:S[wrist ache]|DUR:C[moderate]|SEV:S[allergic to amoxicillin]",
+      "generated_tokens": 25,
+      "token_limit_reached": false,
+      "generation_seconds": 2.640495750005357,
+      "device": "cpu"
+    },
+    "raw_parse_error": "native-state summary must contain exactly five ordered slots",
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "pilot-03-canonical",
+      "source_sha256": "ea8bb581301db9bcc38d8ba4f14e0ebee88cc30ff687010eea181f86b88bad9a",
+      "status": "failed",
+      "disposition": "abstain",
+      "extraction": null,
+      "encounter": null,
+      "note": null,
+      "verification": null,
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "failure": {
+        "category": "solver_exception",
+        "message": "native-state summary must contain exactly five ordered slots",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      }
+    },
+    "total_seconds": 2.6415427079919027
+  },
+  {
+    "example_id": "pilot-03-paraphrase",
+    "world_id": "pilot-world-03",
+    "variant": "paraphrase",
+    "generation": {
+      "raw": "CC:S[wrist ache]|DUR:A[moderate]|SEV:S[allergic to amoxicillin]",
+      "generated_tokens": 25,
+      "token_limit_reached": false,
+      "generation_seconds": 3.566631082998356,
+      "device": "cpu"
+    },
+    "raw_parse_error": "native-state summary must contain exactly five ordered slots",
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "pilot-03-paraphrase",
+      "source_sha256": "bf3cc9f6048151152b356611140192a77f8f0cd576f35b24992d149bb86bea19",
+      "status": "failed",
+      "disposition": "abstain",
+      "extraction": null,
+      "encounter": null,
+      "note": null,
+      "verification": null,
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "failure": {
+        "category": "solver_exception",
+        "message": "native-state summary must contain exactly five ordered slots",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      }
+    },
+    "total_seconds": 3.5676195840060245
+  },
+  {
+    "example_id": "pilot-04-canonical",
+    "world_id": "pilot-world-04",
+    "variant": "canonical",
+    "generation": {
+      "raw": "CC:S[ear pressure]|DUR:S[about 3 weeks]|SEV:S[?]|MED:S[ibuprofen]|ALG:A",
+      "generated_tokens": 32,
+      "token_limit_reached": false,
+      "generation_seconds": 3.472072417003801,
+      "device": "cpu"
+    },
+    "raw_parse_error": "native-state evidence is not exact text inside a Patient turn",
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "pilot-04-canonical",
+      "source_sha256": "21ef56097ac2bd1462d21e5450f337e648e8fe264076e94b6cddd371c8180403",
+      "status": "failed",
+      "disposition": "abstain",
+      "extraction": null,
+      "encounter": null,
+      "note": null,
+      "verification": null,
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "failure": {
+        "category": "solver_exception",
+        "message": "native-state evidence is not exact text inside a Patient turn",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      }
+    },
+    "total_seconds": 3.4745869170001242
+  },
+  {
+    "example_id": "pilot-04-paraphrase",
+    "world_id": "pilot-world-04",
+    "variant": "paraphrase",
+    "generation": {
+      "raw": "CC:S[eart pressure]|DUR:S[about 3 weeks]|SEV:S[Mild]|MED:S[ibuprofen]|ALG:A[]",
+      "generated_tokens": 33,
+      "token_limit_reached": false,
+      "generation_seconds": 3.1232236250070855,
+      "device": "cpu"
+    },
+    "raw_parse_error": "native-state evidence is not exact text inside a Patient turn",
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "pilot-04-paraphrase",
+      "source_sha256": "2082438de9d919a8e6b7934ffe04176d14f74b86ab24d2bb4d0ecc601b4a230a",
+      "status": "failed",
+      "disposition": "abstain",
+      "extraction": null,
+      "encounter": null,
+      "note": null,
+      "verification": null,
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "failure": {
+        "category": "solver_exception",
+        "message": "native-state evidence is not exact text inside a Patient turn",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      }
+    },
+    "total_seconds": 3.124362042013672
+  },
+  {
+    "example_id": "pilot-05-canonical",
+    "world_id": "pilot-world-05",
+    "variant": "canonical",
+    "generation": {
+      "raw": "CC:S[heel pain]|DUR:C[unknown]|SEV:S[mild]|MED:A[adhesive]|ALG:S[adhesive]",
+      "generated_tokens": 32,
+      "token_limit_reached": false,
+      "generation_seconds": 3.1304891250038054,
+      "device": "cpu"
+    },
+    "raw_parse_error": "C must carry exactly two edge-trimmed evidence spans",
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "pilot-05-canonical",
+      "source_sha256": "c028a577d3e81e535c1a61edec6a7804a8200b2b093ef3dc20456072c6323840",
+      "status": "failed",
+      "disposition": "abstain",
+      "extraction": null,
+      "encounter": null,
+      "note": null,
+      "verification": null,
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "failure": {
+        "category": "solver_exception",
+        "message": "C must carry exactly two edge-trimmed evidence spans",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      }
+    },
+    "total_seconds": 3.1316386249964125
+  },
+  {
+    "example_id": "pilot-05-paraphrase",
+    "world_id": "pilot-world-05",
+    "variant": "paraphrase",
+    "generation": {
+      "raw": "CC:S[heel pain]|DUR:C[Mildly since birth]|SEV:S[mild]|MED:A[adhesive]|ALG:A[adhesive]",
+      "generated_tokens": 35,
+      "token_limit_reached": false,
+      "generation_seconds": 3.325520457990933,
+      "device": "cpu"
+    },
+    "raw_parse_error": "C must carry exactly two edge-trimmed evidence spans",
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "pilot-05-paraphrase",
+      "source_sha256": "7bce03f26f12678efe69b77ffddfe17026b063794cb630cc19a2b07cc30fcaf0",
+      "status": "failed",
+      "disposition": "abstain",
+      "extraction": null,
+      "encounter": null,
+      "note": null,
+      "verification": null,
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "failure": {
+        "category": "solver_exception",
+        "message": "C must carry exactly two edge-trimmed evidence spans",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      }
+    },
+    "total_seconds": 3.3266059159941506
+  },
+  {
+    "example_id": "pilot-06-canonical",
+    "world_id": "pilot-world-06",
+    "variant": "canonical",
+    "generation": {
+      "raw": "CC:S[eye irritation]|DUR:S[8 days]|SEV:A[I am not sure how intense it is.]|MED:S[loratadine]|ALG:A[No allergies.]",
+      "generated_tokens": 42,
+      "token_limit_reached": false,
+      "generation_seconds": 3.8263011669914704,
+      "device": "cpu"
+    },
+    "raw_parse_error": "$.evidence: absent fields require an explicit denial for that field [absence_without_denial]",
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "pilot-06-canonical",
+      "source_sha256": "df6bcd9acc82c9c89823c05834db583e126e641d95ee2b151ac248e447527c31",
+      "status": "draft",
+      "disposition": "abstain",
+      "extraction": {
+        "schema_version": "nano.scribe.v0",
+        "item_id": "pilot-06-canonical",
+        "solver_id": "compact/qwen2.5-1.5b-state-span",
+        "fields": [
+          {
+            "field": "chief_complaint",
+            "state": "supported",
+            "value": "eye irritation",
+            "evidence": [
+              {
+                "start": 71,
+                "end": 85,
+                "text": "eye irritation",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "duration",
+            "state": "supported",
+            "value": "8 days",
+            "evidence": [
+              {
+                "start": 147,
+                "end": 153,
+                "text": "8 days",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "severity",
+            "state": "uncertain",
+            "value": null,
+            "evidence": [
+              {
+                "start": 205,
+                "end": 237,
+                "text": "I am not sure how intense it is.",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "medication",
+            "state": "supported",
+            "value": "loratadine",
+            "evidence": [
+              {
+                "start": 304,
+                "end": 314,
+                "text": "loratadine",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "allergy",
+            "state": "absent",
+            "value": null,
+            "evidence": [
+              {
+                "start": 368,
+                "end": 381,
+                "text": "No allergies.",
+                "speaker": "patient"
+              }
+            ]
+          }
+        ]
+      },
+      "encounter": {
+        "schema_version": "nano.encounter.v0",
+        "encounter_id": "pilot-06-canonical",
+        "sources": [
+          {
+            "source_id": "source",
+            "text": "Doctor: What brings you to the clinic today?\nPatient: I've been having eye irritation.\nDoctor: How long has this been going on?\nPatient: For about 8 days now.\nDoctor: How bad would you say it is?\nPatient: I am not sure how intense it is.\nDoctor: Have you taken anything for it?\nPatient: I've been taking loratadine.\nDoctor: Any allergies I should know about?\nPatient: No allergies.",
+            "turns": [
+              {
+                "turn_id": "source:t0",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 8,
+                "end": 44,
+                "text": "What brings you to the clinic today?"
+              },
+              {
+                "turn_id": "source:t1",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 54,
+                "end": 86,
+                "text": "I've been having eye irritation."
+              },
+              {
+                "turn_id": "source:t2",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 95,
+                "end": 127,
+                "text": "How long has this been going on?"
+              },
+              {
+                "turn_id": "source:t3",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 137,
+                "end": 158,
+                "text": "For about 8 days now."
+              },
+              {
+                "turn_id": "source:t4",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 167,
+                "end": 195,
+                "text": "How bad would you say it is?"
+              },
+              {
+                "turn_id": "source:t5",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 205,
+                "end": 237,
+                "text": "I am not sure how intense it is."
+              },
+              {
+                "turn_id": "source:t6",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 246,
+                "end": 277,
+                "text": "Have you taken anything for it?"
+              },
+              {
+                "turn_id": "source:t7",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 287,
+                "end": 315,
+                "text": "I've been taking loratadine."
+              },
+              {
+                "turn_id": "source:t8",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 324,
+                "end": 358,
+                "text": "Any allergies I should know about?"
+              },
+              {
+                "turn_id": "source:t9",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 368,
+                "end": 381,
+                "text": "No allergies."
+              }
+            ]
+          }
+        ],
+        "evidence": [
+          {
+            "evidence_id": "e:chief_complaint:0",
+            "source_id": "source",
+            "turn_id": "source:t1",
+            "speaker": "patient",
+            "start": 71,
+            "end": 85,
+            "text": "eye irritation"
+          },
+          {
+            "evidence_id": "e:duration:0",
+            "source_id": "source",
+            "turn_id": "source:t3",
+            "speaker": "patient",
+            "start": 147,
+            "end": 153,
+            "text": "8 days"
+          },
+          {
+            "evidence_id": "e:severity:0",
+            "source_id": "source",
+            "turn_id": "source:t5",
+            "speaker": "patient",
+            "start": 205,
+            "end": 237,
+            "text": "I am not sure how intense it is."
+          },
+          {
+            "evidence_id": "e:medication:0",
+            "source_id": "source",
+            "turn_id": "source:t7",
+            "speaker": "patient",
+            "start": 304,
+            "end": 314,
+            "text": "loratadine"
+          },
+          {
+            "evidence_id": "e:allergy:0",
+            "source_id": "source",
+            "turn_id": "source:t9",
+            "speaker": "patient",
+            "start": 368,
+            "end": 381,
+            "text": "No allergies."
+          }
+        ],
+        "atoms": [
+          {
+            "atom_id": "a:chief_complaint",
+            "atom_type": "symptom",
+            "raw_value": "eye irritation",
+            "normalized_value": null,
+            "assertion_state": "uncertain",
+            "speaker": "patient",
+            "experiencer": "unknown",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "uncertain",
+            "evidence_ids": [
+              "e:chief_complaint:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          },
+          {
+            "atom_id": "a:duration",
+            "atom_type": "symptom",
+            "raw_value": "8 days",
+            "normalized_value": null,
+            "assertion_state": "uncertain",
+            "speaker": "patient",
+            "experiencer": "unknown",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "uncertain",
+            "evidence_ids": [
+              "e:duration:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          },
+          {
+            "atom_id": "a:severity",
+            "atom_type": "symptom",
+            "raw_value": "I am not sure how intense it is.",
+            "normalized_value": null,
+            "assertion_state": "uncertain",
+            "speaker": "patient",
+            "experiencer": "unknown",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "uncertain",
+            "evidence_ids": [
+              "e:severity:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          },
+          {
+            "atom_id": "a:medication",
+            "atom_type": "medication",
+            "raw_value": "loratadine",
+            "normalized_value": null,
+            "assertion_state": "uncertain",
+            "speaker": "patient",
+            "experiencer": "unknown",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "uncertain",
+            "evidence_ids": [
+              "e:medication:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          },
+          {
+            "atom_id": "a:allergy",
+            "atom_type": "allergy",
+            "raw_value": "No allergies.",
+            "normalized_value": null,
+            "assertion_state": "uncertain",
+            "speaker": "patient",
+            "experiencer": "unknown",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "uncertain",
+            "evidence_ids": [
+              "e:allergy:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          }
+        ],
+        "conflicts": [],
+        "unresolved": [
+          {
+            "unresolved_id": "u:chief_complaint",
+            "topic": "chief_complaint",
+            "reason": "unverified_source_observation",
+            "review_required": true,
+            "evidence_ids": [
+              "e:chief_complaint:0"
+            ]
+          },
+          {
+            "unresolved_id": "u:duration",
+            "topic": "duration",
+            "reason": "unverified_source_observation",
+            "review_required": true,
+            "evidence_ids": [
+              "e:duration:0"
+            ]
+          },
+          {
+            "unresolved_id": "u:severity",
+            "topic": "severity",
+            "reason": "uncertain",
+            "review_required": true,
+            "evidence_ids": [
+              "e:severity:0"
+            ]
+          },
+          {
+            "unresolved_id": "u:medication",
+            "topic": "medication",
+            "reason": "unverified_source_observation",
+            "review_required": true,
+            "evidence_ids": [
+              "e:medication:0"
+            ]
+          },
+          {
+            "unresolved_id": "u:allergy",
+            "topic": "allergy",
+            "reason": "unverified_source_observation",
+            "review_required": true,
+            "evidence_ids": [
+              "e:allergy:0"
+            ]
+          },
+          {
+            "unresolved_id": "u:scope",
+            "topic": "scope",
+            "reason": "Five patient-reported fields only; source checks are bounded and human review is required. No diagnosis, plan, or full encounter completeness is established.",
+            "review_required": true,
+            "evidence_ids": []
+          }
+        ]
+      },
+      "note": {
+        "claims": [
+          {
+            "field": "chief_complaint",
+            "state": "uncertain",
+            "value": null,
+            "evidence_ids": [
+              "e:chief_complaint:0"
+            ]
+          },
+          {
+            "field": "duration",
+            "state": "uncertain",
+            "value": null,
+            "evidence_ids": [
+              "e:duration:0"
+            ]
+          },
+          {
+            "field": "severity",
+            "state": "uncertain",
+            "value": null,
+            "evidence_ids": [
+              "e:severity:0"
+            ]
+          },
+          {
+            "field": "medication",
+            "state": "uncertain",
+            "value": null,
+            "evidence_ids": [
+              "e:medication:0"
+            ]
+          },
+          {
+            "field": "allergy",
+            "state": "uncertain",
+            "value": null,
+            "evidence_ids": [
+              "e:allergy:0"
+            ]
+          }
+        ],
+        "text": "Patient-reported encounter draft — human review required\nChief complaint: not asserted (uncertain); review required [e:chief_complaint:0]\nDuration: not asserted (uncertain); review required [e:duration:0]\nSeverity: not asserted (uncertain); review required [e:severity:0]\nMedication: not asserted (uncertain); review required [e:medication:0]\nAllergy: not asserted (uncertain); review required [e:allergy:0]",
+        "review_required": true
+      },
+      "verification": {
+        "passed": true,
+        "errors": [],
+        "scope": "bounded_source_and_representation"
+      },
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "solver": {
+        "solver_id": "compact/qwen2.5-1.5b-state-span",
+        "kind": "legacy_adapter",
+        "version": "989aa7980e4cf806f80c7fef2b1adb7bc71aa306",
+        "parameter_count": 1543714816,
+        "artifact_bytes": null
+      },
+      "failure": null
+    },
+    "total_seconds": 3.8282667079911334
+  },
+  {
+    "example_id": "pilot-06-paraphrase",
+    "world_id": "pilot-world-06",
+    "variant": "paraphrase",
+    "generation": {
+      "raw": "CC:S[eye irritation]|DUR:S[8 days]|SEV:U[I am not sure how intense it is.]|MED:A[I've been taking loratadine]|ALG:A",
+      "generated_tokens": 42,
+      "token_limit_reached": false,
+      "generation_seconds": 3.844390250000288,
+      "device": "cpu"
+    },
+    "raw_parse_error": "A must carry an evidence bracket",
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "pilot-06-paraphrase",
+      "source_sha256": "68a995c5230f1a37dfd7b62f18ec26a72f9cbfef5f2b288a54a5781d9c16a8ed",
+      "status": "failed",
+      "disposition": "abstain",
+      "extraction": null,
+      "encounter": null,
+      "note": null,
+      "verification": null,
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "failure": {
+        "category": "solver_exception",
+        "message": "A must carry an evidence bracket",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      }
+    },
+    "total_seconds": 3.8457135829958133
+  },
+  {
+    "example_id": "pilot-07-canonical",
+    "world_id": "pilot-world-07",
+    "variant": "canonical",
+    "generation": {
+      "raw": "CC:S[shoulder ache]|DUR:C[4 days;7 days]|SEV:S[moderate]|MED:S[aspirin]|ALG:A",
+      "generated_tokens": 35,
+      "token_limit_reached": false,
+      "generation_seconds": 3.1583619580051163,
+      "device": "cpu"
+    },
+    "raw_parse_error": "A must carry an evidence bracket",
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "pilot-07-canonical",
+      "source_sha256": "971c100288119c496f4714fd6c893b3f85c290d899cf2ba2a86af0e7491547c8",
+      "status": "failed",
+      "disposition": "abstain",
+      "extraction": null,
+      "encounter": null,
+      "note": null,
+      "verification": null,
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "failure": {
+        "category": "solver_exception",
+        "message": "A must carry an evidence bracket",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      }
+    },
+    "total_seconds": 3.159787166005117
+  },
+  {
+    "example_id": "pilot-07-paraphrase",
+    "world_id": "pilot-world-07",
+    "variant": "paraphrase",
+    "generation": {
+      "raw": "CC:S[shoulder ache]|DUR:C[4 days;7 days]|SEV:S[moderate]|MED:S[aspirin]|ALG:A",
+      "generated_tokens": 35,
+      "token_limit_reached": false,
+      "generation_seconds": 3.1972885839932133,
+      "device": "cpu"
+    },
+    "raw_parse_error": "A must carry an evidence bracket",
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "pilot-07-paraphrase",
+      "source_sha256": "80a99128cfdb3d5eee5c94a38d05d45edb011e8b1cb50b3e7c61a592337701e2",
+      "status": "failed",
+      "disposition": "abstain",
+      "extraction": null,
+      "encounter": null,
+      "note": null,
+      "verification": null,
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "failure": {
+        "category": "solver_exception",
+        "message": "A must carry an evidence bracket",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      }
+    },
+    "total_seconds": 3.1986155829945346
+  },
+  {
+    "example_id": "pilot-08-canonical",
+    "world_id": "pilot-world-08",
+    "variant": "canonical",
+    "generation": {
+      "raw": "CC:S[nasal congestion]|DUR:S[2 weeks]|SEV:S[mild]|MED:S[cetirizine]|ALG:S[penicillin]",
+      "generated_tokens": 37,
+      "token_limit_reached": false,
+      "generation_seconds": 3.2799786669929745,
+      "device": "cpu"
+    },
+    "raw_parse_error": null,
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "pilot-08-canonical",
+      "source_sha256": "ec465d04bc6d25dd40781c91c5dcc400bb8ece0915789f618f9c2efb953ec1ab",
+      "status": "draft",
+      "disposition": "abstain",
+      "extraction": {
+        "schema_version": "nano.scribe.v0",
+        "item_id": "pilot-08-canonical",
+        "solver_id": "compact/qwen2.5-1.5b-state-span",
+        "fields": [
+          {
+            "field": "chief_complaint",
+            "state": "supported",
+            "value": "nasal congestion",
+            "evidence": [
+              {
+                "start": 71,
+                "end": 87,
+                "text": "nasal congestion",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "duration",
+            "state": "supported",
+            "value": "2 weeks",
+            "evidence": [
+              {
+                "start": 149,
+                "end": 156,
+                "text": "2 weeks",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "severity",
+            "state": "supported",
+            "value": "mild",
+            "evidence": [
+              {
+                "start": 220,
+                "end": 224,
+                "text": "mild",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "medication",
+            "state": "uncertain",
+            "value": null,
+            "evidence": [
+              {
+                "start": 292,
+                "end": 302,
+                "text": "cetirizine",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "allergy",
+            "state": "supported",
+            "value": "penicillin",
+            "evidence": [
+              {
+                "start": 438,
+                "end": 448,
+                "text": "penicillin",
+                "speaker": "patient"
+              }
+            ]
+          }
+        ]
+      },
+      "encounter": {
+        "schema_version": "nano.encounter.v0",
+        "encounter_id": "pilot-08-canonical",
+        "sources": [
+          {
+            "source_id": "source",
+            "text": "Doctor: What brings you to the clinic today?\nPatient: I've been having nasal congestion.\nDoctor: How long has this been going on?\nPatient: For about 2 weeks now.\nDoctor: How bad would you say it is?\nPatient: I'd call it mild.\nDoctor: Have you taken anything for it?\nPatient: I've been taking cetirizine.\nDoctor: Have you taken anything for it?\nPatient: No, nothing yet.\nDoctor: Any allergies I should know about?\nPatient: I'm allergic to penicillin.",
+            "turns": [
+              {
+                "turn_id": "source:t0",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 8,
+                "end": 44,
+                "text": "What brings you to the clinic today?"
+              },
+              {
+                "turn_id": "source:t1",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 54,
+                "end": 88,
+                "text": "I've been having nasal congestion."
+              },
+              {
+                "turn_id": "source:t2",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 97,
+                "end": 129,
+                "text": "How long has this been going on?"
+              },
+              {
+                "turn_id": "source:t3",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 139,
+                "end": 161,
+                "text": "For about 2 weeks now."
+              },
+              {
+                "turn_id": "source:t4",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 170,
+                "end": 198,
+                "text": "How bad would you say it is?"
+              },
+              {
+                "turn_id": "source:t5",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 208,
+                "end": 225,
+                "text": "I'd call it mild."
+              },
+              {
+                "turn_id": "source:t6",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 234,
+                "end": 265,
+                "text": "Have you taken anything for it?"
+              },
+              {
+                "turn_id": "source:t7",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 275,
+                "end": 303,
+                "text": "I've been taking cetirizine."
+              },
+              {
+                "turn_id": "source:t8",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 312,
+                "end": 343,
+                "text": "Have you taken anything for it?"
+              },
+              {
+                "turn_id": "source:t9",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 353,
+                "end": 369,
+                "text": "No, nothing yet."
+              },
+              {
+                "turn_id": "source:t10",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 378,
+                "end": 412,
+                "text": "Any allergies I should know about?"
+              },
+              {
+                "turn_id": "source:t11",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 422,
+                "end": 449,
+                "text": "I'm allergic to penicillin."
+              }
+            ]
+          }
+        ],
+        "evidence": [
+          {
+            "evidence_id": "e:chief_complaint:0",
+            "source_id": "source",
+            "turn_id": "source:t1",
+            "speaker": "patient",
+            "start": 71,
+            "end": 87,
+            "text": "nasal congestion"
+          },
+          {
+            "evidence_id": "e:duration:0",
+            "source_id": "source",
+            "turn_id": "source:t3",
+            "speaker": "patient",
+            "start": 149,
+            "end": 156,
+            "text": "2 weeks"
+          },
+          {
+            "evidence_id": "e:severity:0",
+            "source_id": "source",
+            "turn_id": "source:t5",
+            "speaker": "patient",
+            "start": 220,
+            "end": 224,
+            "text": "mild"
+          },
+          {
+            "evidence_id": "e:medication:0",
+            "source_id": "source",
+            "turn_id": "source:t7",
+            "speaker": "patient",
+            "start": 292,
+            "end": 302,
+            "text": "cetirizine"
+          },
+          {
+            "evidence_id": "e:allergy:0",
+            "source_id": "source",
+            "turn_id": "source:t11",
+            "speaker": "patient",
+            "start": 438,
+            "end": 448,
+            "text": "penicillin"
+          },
+          {
+            "evidence_id": "e:source:t9",
+            "source_id": "source",
+            "turn_id": "source:t9",
+            "speaker": "patient",
+            "start": 353,
+            "end": 369,
+            "text": "No, nothing yet."
+          }
+        ],
+        "atoms": [
+          {
+            "atom_id": "a:chief_complaint",
+            "atom_type": "symptom",
+            "raw_value": "nasal congestion",
+            "normalized_value": null,
+            "assertion_state": "uncertain",
+            "speaker": "patient",
+            "experiencer": "unknown",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "uncertain",
+            "evidence_ids": [
+              "e:chief_complaint:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          },
+          {
+            "atom_id": "a:duration",
+            "atom_type": "symptom",
+            "raw_value": "2 weeks",
+            "normalized_value": null,
+            "assertion_state": "uncertain",
+            "speaker": "patient",
+            "experiencer": "unknown",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "uncertain",
+            "evidence_ids": [
+              "e:duration:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          },
+          {
+            "atom_id": "a:severity",
+            "atom_type": "symptom",
+            "raw_value": "mild",
+            "normalized_value": null,
+            "assertion_state": "uncertain",
+            "speaker": "patient",
+            "experiencer": "unknown",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "uncertain",
+            "evidence_ids": [
+              "e:severity:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          },
+          {
+            "atom_id": "a:medication",
+            "atom_type": "medication",
+            "raw_value": "cetirizine",
+            "normalized_value": null,
+            "assertion_state": "uncertain",
+            "speaker": "patient",
+            "experiencer": "unknown",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "uncertain",
+            "evidence_ids": [
+              "e:medication:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          },
+          {
+            "atom_id": "a:allergy",
+            "atom_type": "allergy",
+            "raw_value": "penicillin",
+            "normalized_value": null,
+            "assertion_state": "uncertain",
+            "speaker": "patient",
+            "experiencer": "unknown",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "uncertain",
+            "evidence_ids": [
+              "e:allergy:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          }
+        ],
+        "conflicts": [],
+        "unresolved": [
+          {
+            "unresolved_id": "u:chief_complaint",
+            "topic": "chief_complaint",
+            "reason": "unhandled_source_context",
+            "review_required": true,
+            "evidence_ids": [
+              "e:chief_complaint:0"
+            ]
+          },
+          {
+            "unresolved_id": "u:duration",
+            "topic": "duration",
+            "reason": "unhandled_source_context",
+            "review_required": true,
+            "evidence_ids": [
+              "e:duration:0"
+            ]
+          },
+          {
+            "unresolved_id": "u:severity",
+            "topic": "severity",
+            "reason": "unhandled_source_context",
+            "review_required": true,
+            "evidence_ids": [
+              "e:severity:0"
+            ]
+          },
+          {
+            "unresolved_id": "u:medication",
+            "topic": "medication",
+            "reason": "uncertain",
+            "review_required": true,
+            "evidence_ids": [
+              "e:medication:0"
+            ]
+          },
+          {
+            "unresolved_id": "u:allergy",
+            "topic": "allergy",
+            "reason": "unhandled_source_context",
+            "review_required": true,
+            "evidence_ids": [
+              "e:allergy:0"
+            ]
+          },
+          {
+            "unresolved_id": "u:source:t9",
+            "topic": "unhandled_source_turn",
+            "reason": "Content outside the checked five-field path; inspect for omissions or corrections.",
+            "review_required": true,
+            "evidence_ids": [
+              "e:source:t9"
+            ]
+          },
+          {
+            "unresolved_id": "u:scope",
+            "topic": "scope",
+            "reason": "Five patient-reported fields only; source checks are bounded and human review is required. No diagnosis, plan, or full encounter completeness is established.",
+            "review_required": true,
+            "evidence_ids": []
+          }
+        ]
+      },
+      "note": {
+        "claims": [
+          {
+            "field": "chief_complaint",
+            "state": "uncertain",
+            "value": null,
+            "evidence_ids": [
+              "e:chief_complaint:0"
+            ]
+          },
+          {
+            "field": "duration",
+            "state": "uncertain",
+            "value": null,
+            "evidence_ids": [
+              "e:duration:0"
+            ]
+          },
+          {
+            "field": "severity",
+            "state": "uncertain",
+            "value": null,
+            "evidence_ids": [
+              "e:severity:0"
+            ]
+          },
+          {
+            "field": "medication",
+            "state": "uncertain",
+            "value": null,
+            "evidence_ids": [
+              "e:medication:0"
+            ]
+          },
+          {
+            "field": "allergy",
+            "state": "uncertain",
+            "value": null,
+            "evidence_ids": [
+              "e:allergy:0"
+            ]
+          }
+        ],
+        "text": "Patient-reported encounter draft — human review required\nChief complaint: not asserted (uncertain); review required [e:chief_complaint:0]\nDuration: not asserted (uncertain); review required [e:duration:0]\nSeverity: not asserted (uncertain); review required [e:severity:0]\nMedication: not asserted (uncertain); review required [e:medication:0]\nAllergy: not asserted (uncertain); review required [e:allergy:0]",
+        "review_required": true
+      },
+      "verification": {
+        "passed": true,
+        "errors": [],
+        "scope": "bounded_source_and_representation"
+      },
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "solver": {
+        "solver_id": "compact/qwen2.5-1.5b-state-span",
+        "kind": "legacy_adapter",
+        "version": "989aa7980e4cf806f80c7fef2b1adb7bc71aa306",
+        "parameter_count": 1543714816,
+        "artifact_bytes": null
+      },
+      "failure": null
+    },
+    "total_seconds": 3.281989875002182
+  },
+  {
+    "example_id": "pilot-08-paraphrase",
+    "world_id": "pilot-world-08",
+    "variant": "paraphrase",
+    "generation": {
+      "raw": "CC:S[nasal congestion]|DUR:S[about 2 weeks]|SEV:S[mild]|MED:A[penicillin]|ALG:A[penicillin]",
+      "generated_tokens": 37,
+      "token_limit_reached": false,
+      "generation_seconds": 3.4026837080018595,
+      "device": "cpu"
+    },
+    "raw_parse_error": "one exact evidence span cannot be duplicated across field proposals",
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "pilot-08-paraphrase",
+      "source_sha256": "b63a819920a959a677b12c6e1dcf21ed7f1ec0abc6bc2076067f87b66b1f8f6d",
+      "status": "failed",
+      "disposition": "abstain",
+      "extraction": null,
+      "encounter": null,
+      "note": null,
+      "verification": null,
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "failure": {
+        "category": "solver_exception",
+        "message": "one exact evidence span cannot be duplicated across field proposals",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      }
+    },
+    "total_seconds": 3.4039908749982715
+  },
+  {
+    "example_id": "pilot-09-canonical",
+    "world_id": "pilot-world-09",
+    "variant": "canonical",
+    "generation": {
+      "raw": "CC:S[finger soreness]|DUR:A[n/A]|SEV:A[n/A]|MED:A[n/A]|ALG:A[no allergies]",
+      "generated_tokens": 32,
+      "token_limit_reached": false,
+      "generation_seconds": 3.2988516249897657,
+      "device": "cpu"
+    },
+    "raw_parse_error": "native-state evidence is not exact text inside a Patient turn",
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "pilot-09-canonical",
+      "source_sha256": "2caf2e7797d038cd0124d9a786c8bf05b163c584ef2440a311a79071f4952c68",
+      "status": "failed",
+      "disposition": "abstain",
+      "extraction": null,
+      "encounter": null,
+      "note": null,
+      "verification": null,
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "failure": {
+        "category": "solver_exception",
+        "message": "native-state evidence is not exact text inside a Patient turn",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      }
+    },
+    "total_seconds": 3.3000904170039576
+  },
+  {
+    "example_id": "pilot-09-paraphrase",
+    "world_id": "pilot-world-09",
+    "variant": "paraphrase",
+    "generation": {
+      "raw": "CC:S[finger soreness]|DUR:M[Avoiding specific details]|SEV:M|MED:A|ALG:A",
+      "generated_tokens": 27,
+      "token_limit_reached": false,
+      "generation_seconds": 2.7740915000031237,
+      "device": "cpu"
+    },
+    "raw_parse_error": "M must not carry an evidence bracket",
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "pilot-09-paraphrase",
+      "source_sha256": "b719795e4c2e68feb231d92af2958113941795d2d8488883b560e90341d31419",
+      "status": "failed",
+      "disposition": "abstain",
+      "extraction": null,
+      "encounter": null,
+      "note": null,
+      "verification": null,
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "failure": {
+        "category": "solver_exception",
+        "message": "M must not carry an evidence bracket",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      }
+    },
+    "total_seconds": 2.7752657500095665
+  }
+]

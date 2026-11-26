@@ -18,9 +18,9 @@ Agent operational map: [`knowledge/AGENT_PROGRAM_KNOWLEDGE.md`](knowledge/AGENT_
 
 | Document | Purpose |
 |----------|---------|
-| [PROJECT_CHARTER.md](PROJECT_CHARTER.md) | Mission, optimization target, medical-first rationale |
+| [PROJECT_CHARTER.md](PROJECT_CHARTER.md) | General-purpose model objective and scope |
 | [PROJECT_AUTHORITY.md](PROJECT_AUTHORITY.md) | What document wins when sources conflict |
-| [CAPABILITY_LADDER.md](CAPABILITY_LADDER.md) | P1 Scribing → P9 Adaptation |
+| [CAPABILITY_LADDER.md](CAPABILITY_LADDER.md) | General-model capabilities and historical P1–P9 ladder |
 | [SYSTEM_ARCHITECTURE.md](SYSTEM_ARCHITECTURE.md) | Nano Core, DomainPacks, model/software co-design |
 | [ROADMAP.md](ROADMAP.md) | Historical arc → current program |
 | [ACTIVE_NOW.md](ACTIVE_NOW.md) | Current state and gate |
@@ -33,16 +33,17 @@ Agent operational map: [`knowledge/AGENT_PROGRAM_KNOWLEDGE.md`](knowledge/AGENT_
 
 | Document | Purpose |
 |----------|---------|
-| [research/MODEL_RESEARCH_PROGRAM.md](research/MODEL_RESEARCH_PROGRAM.md) | Mechanism / compact / teacher model layers |
+| [research/MODEL_RESEARCH_PROGRAM.md](research/MODEL_RESEARCH_PROGRAM.md) | Native, adapted and tool-assisted model research |
+| [November 17 foundation proposal](research/FOUNDATION_INTELLIGENCE_PROGRAM.md) | Historical architecture portfolio, research questions and candidate experiments |
 | [research/SYSTEM_RESEARCH_PROGRAM.md](research/SYSTEM_RESEARCH_PROGRAM.md) | Retrieval, memory, verifiers, routing |
 | [research/EXPERIMENT_STRATEGY.md](research/EXPERIMENT_STRATEGY.md) | Prereg, gates, failure-to-architecture loop |
 
-## Domains
+## Historical medical application
 
 | Document | Purpose |
 |----------|---------|
 | [domains/medical/README.md](domains/medical/README.md) | Medical DomainPack overview |
-| [domains/medical/SCRIBING.md](domains/medical/SCRIBING.md) | P1 scribing target and exit gate |
+| [domains/medical/SCRIBING.md](domains/medical/SCRIBING.md) | Former P1 scribing target and application-specific gate |
 | [domains/medical/SUMMARIZATION_AND_CHARTING.md](domains/medical/SUMMARIZATION_AND_CHARTING.md) | P2/P3 future contract |
 | [domains/medical/DATA_REGISTRY.md](domains/medical/DATA_REGISTRY.md) | Data boundaries (no PHI in git) |
 | [domains/medical/EVALUATION_PROTOCOL.md](domains/medical/EVALUATION_PROTOCOL.md) | External + human evaluation requirements |

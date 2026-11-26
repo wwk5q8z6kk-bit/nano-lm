@@ -1,32 +1,18 @@
-# Project Charter — NanoLM
+# Project charter
 
-## Mission
+Build a general-purpose language model that can compete at the frontier. NanoLM's research question is how much language understanding, reasoning and adaptability its own trained weights can deliver at a given training and inference cost. Frontier capability is the objective. Establishing it requires independently reproducible comparisons against contemporary models on multiple domains.
 
-> **Build the most capable, reliable, and efficient general-purpose foundation language model achievable within a strict 2.0–4.0 billion parameter budget—maximizing useful intelligence per parameter, training token, unit of compute, and byte of inference memory.**
+## What counts as progress
 
-NanoLM is **the foundation model itself**—not a domain-specific Scribe engine, clinical workflow, DevX feature, or hardcoded agent wrapper. Earlier medical scribing and 3.15M–160M mechanism studies remain preserved as historical empirical records ([`archive/legacy/PROJECT_CHARTER_SCRIBE_ERA_20261012.md`](archive/legacy/PROJECT_CHARTER_SCRIBE_ERA_20261012.md), [`PROJECT_AUTHORITY.md`](PROJECT_AUTHORITY.md)), not architectural or roadmap constraints.
+- Train or recover native Nano checkpoints and establish their identity, training data, tokenizer and measured behavior.
+- Compare architectures at matched data and token budgets. Report parameters, compute, memory, throughput and quality together so a change in one can be weighed against its cost.
+- Measure transfer to held-out sources and tasks. Report results for the base model, adapted model and any system using tools or retrieval separately. Teachers and external weights can supply useful comparisons.
+- Scale candidates when a repeatable improvement justifies the next experiment. Model size, architecture and deployment hardware remain research choices.
 
-## Hard Parameter & Efficiency Constraints
+## Program boundary
 
-| Constraint | Specification |
-|------------|---------------|
-| Preferred target | **~2.0B** deployed parameters (`nanolm-2b-*` at `2.04B`) |
-| Permitted range | **2.0B – 4.0B** deployed parameters |
-| Hard maximum | **4,000,000,000** deployed parameters (never exceeded; enforced in [`nanolm/config.py`](../nanolm/config.py)) |
-| Accounting rule | Counts embeddings, output projections, all routed + shared experts, routers, norms, and deployed MTP heads |
+NanoScribe was the prior medical application. It is outside the active research, product and compute program. Its code and evaluations remain available to reproduce historical results. A future standalone application would need its own scope and evidence. The former scribing, summarization and charting sequence places no prerequisites on general-model research.
 
-## Core Capability Objectives
+The original 3.15M from-scratch LM anchors the model lineage. Paper α, E1, E4 and the terminal H6/H7 decisions retain their original scientific scope. Public or explicitly licensed research data are eligible under their terms. Private owner data and PHI are outside authorization.
 
-1. **Software Engineering & Programming** — Multi-language generation, debugging, refactoring, algorithms, and repository-level comprehension verified by executable test suites.
-2. **Mathematical & Logical Reasoning** — Multi-step quantitative, deductive, constraint-satisfaction, and scientific reasoning with genuine out-of-distribution generalization.
-3. **Information Processing & Summarization** — Long-document synthesis and compression preserving exact metrics, relationships, qualifications, and exceptions.
-4. **Structured Generation, Charts, and Diagrams** — Native reasoning into strict JSON schemas, chart specifications (valid chart types, axes, units, values), and Mermaid diagrams (`flowchart`, `sequenceDiagram`, `stateDiagram`) with verified topology and directionality.
-5. **General Language & Knowledge** — High-clarity instruction following, technical communication, and broad factual synthesis.
-6. **Long-Context Intelligence** — Accurate multi-needle retrieval, cross-document connection, and distant contradiction detection across context positions.
-
-## Canonical NanoLM Documentation
-
-- [Official NanoLM Charter](nanolm/CHARTER.md)
-- [Phase 1 Ground-Truth Audit](nanolm/PHASE1_AUDIT.md)
-- [Architecture, Data & Training Specification](nanolm/ARCHITECTURE_AND_TRAINING.md)
-- [Active Program Status](ACTIVE_NOW.md) · [RunPod Compute Policy](infrastructure/RUNPOD.md)
+The current experiments, compute rules and evidence requirements are in the [execution plan](EXECUTION_PLAN.md) and [active state](ACTIVE_NOW.md).

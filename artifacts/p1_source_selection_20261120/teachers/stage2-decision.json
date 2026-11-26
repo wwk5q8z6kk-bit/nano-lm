@@ -1,0 +1,12 @@
+{
+  "expand": true,
+  "rule": "sealed plan.md",
+  "stage1_paired": {
+    "fields": 160,
+    "different_exact": 11,
+    "flash_only_exact": 7,
+    "pro_only_exact": 4,
+    "different_licensing": 0,
+    "pro_net_exact_assertions": -2
+  }
+}

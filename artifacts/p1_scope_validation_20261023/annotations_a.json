@@ -1,0 +1,983 @@
+[
+  {
+    "case_id": "scope-01",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "sore throat"
+        ],
+        "rationale": "The patient explicitly identifies the sore throat as the reason for the visit."
+      },
+      "DUR": {
+        "state": "S",
+        "spans": [
+          "Three days"
+        ],
+        "rationale": "The patient supplies one duration; Monday evening is a compatible onset description."
+      },
+      "SEV": {
+        "state": "S",
+        "spans": [
+          "mild"
+        ],
+        "rationale": "The patient clearly calls the complaint mild."
+      },
+      "MED": {
+        "state": "S",
+        "spans": [
+          "acetaminophen last night"
+        ],
+        "rationale": "The patient names one medication used for this complaint and when it was taken."
+      },
+      "ALG": {
+        "state": "S",
+        "spans": [
+          "Penicillin gives me hives."
+        ],
+        "rationale": "One medication reaction is directly reported."
+      }
+    }
+  },
+  {
+    "case_id": "scope-02",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "My left knee aches when I walk downstairs"
+        ],
+        "rationale": "The complaint includes its location and activity context."
+      },
+      "DUR": {
+        "state": "S",
+        "spans": [
+          "About two weeks ago"
+        ],
+        "rationale": "The approximate onset is clearly reported."
+      },
+      "SEV": {
+        "state": "U",
+        "spans": [
+          "Two sitting here, but five on the stairs."
+        ],
+        "rationale": "Two compatible activity-specific severities cannot be retained as one scalar severity; they are not contradictory."
+      },
+      "MED": {
+        "state": "A",
+        "spans": [
+          "I haven't taken any tablets or used a cream."
+        ],
+        "rationale": "The patient explicitly denies tablets and cream for the complaint."
+      },
+      "ALG": {
+        "state": "U",
+        "spans": [
+          "None that I know of."
+        ],
+        "rationale": "This is a knowledge-qualified denial rather than an unqualified absence report. Applying the rubric rule for qualified lack of knowledge is debatable here but is my best reading."
+      }
+    }
+  },
+  {
+    "case_id": "scope-03",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "dry cough"
+        ],
+        "rationale": "The patient supplies a clear symptom with its character."
+      },
+      "DUR": {
+        "state": "S",
+        "spans": [
+          "Six days now"
+        ],
+        "rationale": "One duration is explicitly reported."
+      },
+      "SEV": {
+        "state": "S",
+        "spans": [
+          "Moderate"
+        ],
+        "rationale": "The patient clearly describes severity as moderate."
+      },
+      "MED": {
+        "state": "S",
+        "spans": [
+          "A dextromethorphan cough syrup at bedtime"
+        ],
+        "rationale": "One current treatment and timing are reported."
+      },
+      "ALG": {
+        "state": "A",
+        "spans": [
+          "I don't have any medicine allergies."
+        ],
+        "rationale": "Explicit denial in the allergy-question context."
+      }
+    }
+  },
+  {
+    "case_id": "scope-04",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "The right one feels full, like it won't pop"
+        ],
+        "rationale": "The local question supplies ear as the antecedent of one; the patient supplies right-sided fullness."
+      },
+      "DUR": {
+        "state": "S",
+        "spans": [
+          "Yesterday morning"
+        ],
+        "rationale": "The initial onset is explicit; the later since-yesterday report is compatible."
+      },
+      "SEV": {
+        "state": "S",
+        "spans": [
+          "three out of ten"
+        ],
+        "rationale": "The patient provides a numeric discomfort severity."
+      },
+      "MED": {
+        "state": "U",
+        "spans": [
+          "I take loratadine every morning for my seasonal allergies.",
+          "I haven't used anything else for the ear."
+        ],
+        "rationale": "Loratadine use is definite, but its stated indication is seasonal allergies. Anything else for the ear may imply its use for the ear, yet does not clearly establish that link. Current-complaint treatment attribution is genuinely ambiguous."
+      },
+      "ALG": {
+        "state": "S",
+        "spans": [
+          "Sulfa antibiotics caused a rash when I was a teenager."
+        ],
+        "rationale": "One named medication class and reaction are reported, with historical timing."
+      }
+    }
+  },
+  {
+    "case_id": "scope-05",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "headache across my forehead"
+        ],
+        "rationale": "The complaint and location are explicit."
+      },
+      "DUR": {
+        "state": "U",
+        "spans": [
+          "Sometime over the weekend. I honestly can't remember which day."
+        ],
+        "rationale": "The patient explicitly cannot remember the onset day. This uncertainty remains localized to duration."
+      },
+      "SEV": {
+        "state": "S",
+        "spans": [
+          "Seven out of ten"
+        ],
+        "rationale": "Current severity is clearly stated."
+      },
+      "MED": {
+        "state": "S",
+        "spans": [
+          "Acetaminophen this morning"
+        ],
+        "rationale": "Drug identity and timing are clear despite uncertainty about tablet strength."
+      },
+      "ALG": {
+        "state": "A",
+        "spans": [
+          "No known allergies."
+        ],
+        "rationale": "This is a conventional direct denial of known allergies, without an expressed memory gap or unresolved candidate. Its knowledge-limited wording makes the A/U boundary debatable; I treat the reported known-allergy status as absent."
+      }
+    }
+  },
+  {
+    "case_id": "scope-06",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "burning feeling in my upper stomach"
+        ],
+        "rationale": "The symptom and location are directly reported."
+      },
+      "DUR": {
+        "state": "S",
+        "spans": [
+          "after breakfast this morning"
+        ],
+        "rationale": "Onset is clear at the stated resolution. Later uncertainty about the exact breakfast clock time does not erase this value."
+      },
+      "SEV": {
+        "state": "S",
+        "spans": [
+          "Mild"
+        ],
+        "rationale": "Severity is directly stated and subsequently reaffirmed."
+      },
+      "MED": {
+        "state": "A",
+        "spans": [
+          "None today."
+        ],
+        "rationale": "The current complaint began today; the patient explicitly denies medication use today."
+      },
+      "ALG": {
+        "state": "U",
+        "spans": [
+          "I don't know.",
+          "My old chart has an allergy flag, but I don't remember ever having a reaction or which medicine it means."
+        ],
+        "rationale": "The patient explicitly does not know their allergy status or the medicine implicated."
+      }
+    }
+  },
+  {
+    "case_id": "scope-07",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "My right shoulder hurts when I reach up to a shelf"
+        ],
+        "rationale": "The complaint includes a clear side, location, and provoking activity."
+      },
+      "DUR": {
+        "state": "S",
+        "spans": [
+          "Nine days"
+        ],
+        "rationale": "The patient clearly reports a duration."
+      },
+      "SEV": {
+        "state": "U",
+        "spans": [
+          "Barely one out of ten when I'm still, but around six when I lift my arm.",
+          "I can't give you one number for the whole day."
+        ],
+        "rationale": "The compatible activity-dependent severities do not resolve to one scalar, and the patient explicitly declines one number."
+      },
+      "MED": {
+        "state": "S",
+        "spans": [
+          "Ibuprofen a couple of times"
+        ],
+        "rationale": "Identity and frequency of treatment are clear. Missing tablet strength does not make this reported treatment uncertain."
+      },
+      "ALG": {
+        "state": "A",
+        "spans": [
+          "No."
+        ],
+        "rationale": "A direct negative answer to the medication-allergy question."
+      }
+    }
+  },
+  {
+    "case_id": "scope-08",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "My nose is blocked on both sides"
+        ],
+        "rationale": "Bilateral nasal blockage is explicitly reported."
+      },
+      "DUR": {
+        "state": "S",
+        "spans": [
+          "two days"
+        ],
+        "rationale": "The complaint has a clear duration."
+      },
+      "SEV": {
+        "state": "U",
+        "spans": [
+          "I don't know how to choose between those."
+        ],
+        "rationale": "The patient explicitly cannot select a severity category. Functional descriptions are not converted into an inferred severity."
+      },
+      "MED": {
+        "state": "A",
+        "spans": [
+          "No."
+        ],
+        "rationale": "A direct denial of trying medicine or nasal spray for this complaint."
+      },
+      "ALG": {
+        "state": "U",
+        "spans": [
+          "An antibiotic gave me a rash years ago, but I can't remember its name."
+        ],
+        "rationale": "A historical reaction is reported but the medication identity is explicitly unknown."
+      }
+    }
+  },
+  {
+    "case_id": "scope-09",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "a cough"
+        ],
+        "rationale": "The patient reports their own cough. The mother's asthma is separately attributed."
+      },
+      "DUR": {
+        "state": "S",
+        "spans": [
+          "four days"
+        ],
+        "rationale": "The patient directly dates their cough."
+      },
+      "SEV": {
+        "state": "S",
+        "spans": [
+          "Mild"
+        ],
+        "rationale": "The patient supplies a clear severity."
+      },
+      "MED": {
+        "state": "A",
+        "spans": [
+          "I haven't taken anything for this."
+        ],
+        "rationale": "Complete denial clause for this complaint; the inhaler belongs to the mother."
+      },
+      "ALG": {
+        "state": "A",
+        "spans": [
+          "None."
+        ],
+        "rationale": "Direct denial about the patient's own allergies; penicillin allergy is explicitly the mother's."
+      }
+    }
+  },
+  {
+    "case_id": "scope-10",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "My left wrist has been sore"
+        ],
+        "rationale": "The complaint and side are clear."
+      },
+      "DUR": {
+        "state": "S",
+        "spans": [
+          "ten days"
+        ],
+        "rationale": "The patient reports a clear duration."
+      },
+      "SEV": {
+        "state": "S",
+        "spans": [
+          "About four out of ten when I'm typing"
+        ],
+        "rationale": "The approximate severity is retained with its activity qualifier."
+      },
+      "MED": {
+        "state": "S",
+        "spans": [
+          "ibuprofen yesterday"
+        ],
+        "rationale": "The patient reports their own ibuprofen use; coworker naproxen is explicitly excluded."
+      },
+      "ALG": {
+        "state": "S",
+        "spans": [
+          "Amoxicillin gives me hives."
+        ],
+        "rationale": "The patient directly reports one medication reaction."
+      }
+    }
+  },
+  {
+    "case_id": "scope-11",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "itchy patch on my left forearm"
+        ],
+        "rationale": "One localized complaint is clear; the notebook text is explicitly not about the patient's arm."
+      },
+      "DUR": {
+        "state": "S",
+        "spans": [
+          "a week"
+        ],
+        "rationale": "One-week duration is reported. Last Friday is a compatible refinement without a supplied encounter date establishing conflict."
+      },
+      "SEV": {
+        "state": "S",
+        "spans": [
+          "Moderate"
+        ],
+        "rationale": "The patient describes their own itch as moderate. Unattributed notebook wording is excluded."
+      },
+      "MED": {
+        "state": "A",
+        "spans": [
+          "I haven't."
+        ],
+        "rationale": "A complete context-dependent denial clause in response to applying or taking treatment; the bottle belongs to the housemate."
+      },
+      "ALG": {
+        "state": "A",
+        "spans": [
+          "No known ones."
+        ],
+        "rationale": "A conventional explicit denial of known medicine allergies. I treat this as an absent reported known-allergy status, although the knowledge qualifier makes A versus U debatable."
+      }
+    }
+  },
+  {
+    "case_id": "scope-12",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "dull ache in my lower back"
+        ],
+        "rationale": "The patient directly describes a localized ache; the article and brother's condition are separately attributed."
+      },
+      "DUR": {
+        "state": "S",
+        "spans": [
+          "since yesterday afternoon"
+        ],
+        "rationale": "One explicit onset description."
+      },
+      "SEV": {
+        "state": "S",
+        "spans": [
+          "Mild, maybe two out of ten"
+        ],
+        "rationale": "One coherent severity description with an approximate numeric qualifier; mild itself is explicit."
+      },
+      "MED": {
+        "state": "A",
+        "spans": [
+          "I haven't taken anything for my back."
+        ],
+        "rationale": "Explicit treatment denial for the patient's back complaint; tramadol is part of an article."
+      },
+      "ALG": {
+        "state": "A",
+        "spans": [
+          "No known drug allergies."
+        ],
+        "rationale": "A conventional direct denial of known drug allergies. I treat the reported known-allergy status as absent, while recognizing the knowledge qualifier as a debatable A/U boundary."
+      }
+    }
+  },
+  {
+    "case_id": "scope-13",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "My eyes have been itchy"
+        ],
+        "rationale": "The patient directly reports itchy eyes."
+      },
+      "DUR": {
+        "state": "S",
+        "spans": [
+          "five days"
+        ],
+        "rationale": "A clear duration is reported."
+      },
+      "SEV": {
+        "state": "S",
+        "spans": [
+          "Mild"
+        ],
+        "rationale": "The itch is clearly characterized as mild."
+      },
+      "MED": {
+        "state": "S",
+        "spans": [
+          "cetirizine every evening"
+        ],
+        "rationale": "Current cetirizine is clear and linked to pollen-related symptoms. Loratadine was explicitly stopped last year."
+      },
+      "ALG": {
+        "state": "S",
+        "spans": [
+          "Penicillin gave me hives."
+        ],
+        "rationale": "One medication reaction is explicit. Pollen bothering the patient is an environmental symptom trigger, not an explicit named material allergy report in this text; I do not infer another allergy from it. That scope decision is debatable."
+      }
+    }
+  },
+  {
+    "case_id": "scope-14",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "a headache",
+          "across the back of my head"
+        ],
+        "rationale": "The headache and its location appear in separate patient clauses; both are preserved without inventing a combined quotation."
+      },
+      "DUR": {
+        "state": "S",
+        "spans": [
+          "since yesterday"
+        ],
+        "rationale": "A clear onset is reported."
+      },
+      "SEV": {
+        "state": "S",
+        "spans": [
+          "moderate"
+        ],
+        "rationale": "Severity is explicitly stated."
+      },
+      "MED": {
+        "state": "A",
+        "spans": [
+          "Not for the headache.",
+          "I haven't even taken a painkiller."
+        ],
+        "rationale": "The patient explicitly denies treatment for the headache. Regular levothyroxine is distinguished from headache treatment."
+      },
+      "ALG": {
+        "state": "A",
+        "spans": [
+          "I don't have any known drug allergies."
+        ],
+        "rationale": "The patient denies known drug allergies and does not claim codeine nausea was an allergy. I retain the reported denial rather than infer an allergy from nausea. The knowledge-qualified denial and unevaluated reaction make this boundary debatable."
+      }
+    }
+  },
+  {
+    "case_id": "scope-15",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "itchy rash around my ankles"
+        ],
+        "rationale": "The complaint includes rash character and location."
+      },
+      "DUR": {
+        "state": "S",
+        "spans": [
+          "three days ago"
+        ],
+        "rationale": "The onset is clear."
+      },
+      "SEV": {
+        "state": "S",
+        "spans": [
+          "moderate"
+        ],
+        "rationale": "The patient explicitly calls the itching moderate."
+      },
+      "MED": {
+        "state": "S",
+        "spans": [
+          "Hydrocortisone cream once last night"
+        ],
+        "rationale": "One topical treatment, frequency, and timing are clear. Denial of tablets does not negate cream use."
+      },
+      "ALG": {
+        "state": "U",
+        "spans": [
+          "I'm not sure.",
+          "I once developed a rash while taking amoxicillin, but I also had a new detergent then. Nobody worked out which it was."
+        ],
+        "rationale": "The patient explicitly reports unresolved attribution between a medication and detergent; neither is established as the allergy."
+      }
+    }
+  },
+  {
+    "case_id": "scope-16",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "sore right ankle"
+        ],
+        "rationale": "The complaint and side are explicitly stated."
+      },
+      "DUR": {
+        "state": "S",
+        "spans": [
+          {
+            "text": "four days",
+            "start": 81
+          }
+        ],
+        "rationale": "The patient clearly dates onset to the ankle-rolling event. The offset for 'four days' identifies its first matching patient occurrence because the text repeats in the transcript."
+      },
+      "SEV": {
+        "state": "S",
+        "spans": [
+          "Four out of ten when I walk"
+        ],
+        "rationale": "The severity is clear with its activity qualifier."
+      },
+      "MED": {
+        "state": "S",
+        "spans": [
+          "naproxen yesterday for the ankle"
+        ],
+        "rationale": "One treatment for the ankle is explicit. No regular prescriptions and no aspirin do not contradict this episodic naproxen use."
+      },
+      "ALG": {
+        "state": "S",
+        "spans": [
+          "aspirin causes hives for me"
+        ],
+        "rationale": "The patient directly reports one medication reaction."
+      }
+    }
+  },
+  {
+    "case_id": "scope-17",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "it's this left one that hurts",
+          "the left ear"
+        ],
+        "rationale": "The patient explicitly corrects right to left; the second span identifies the local antecedent of one. The corrected left ear pain is resolved rather than conflicting."
+      },
+      "DUR": {
+        "state": "S",
+        "spans": [
+          "two days"
+        ],
+        "rationale": "The patient explicitly retracts two weeks and corrects it to two days."
+      },
+      "SEV": {
+        "state": "S",
+        "spans": [
+          "Mild, about two out of ten"
+        ],
+        "rationale": "One compatible categorical and approximate numeric severity is given."
+      },
+      "MED": {
+        "state": "A",
+        "spans": [
+          "No medicine for it, and I don't take regular medicine."
+        ],
+        "rationale": "Explicit denial of complaint-related and regular medicine."
+      },
+      "ALG": {
+        "state": "U",
+        "spans": [
+          "None that I'm aware of."
+        ],
+        "rationale": "This is explicitly limited to awareness. I apply the rubric's qualified-lack-of-knowledge rule; the boundary with a conventional denial is debatable."
+      }
+    }
+  },
+  {
+    "case_id": "scope-18",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "My throat has been sore"
+        ],
+        "rationale": "The complaint is clear."
+      },
+      "DUR": {
+        "state": "S",
+        "spans": [
+          "five days"
+        ],
+        "rationale": "One clear duration is reported."
+      },
+      "SEV": {
+        "state": "S",
+        "spans": [
+          "moderate"
+        ],
+        "rationale": "The patient explicitly replaces severe with moderate; this is a resolved correction."
+      },
+      "MED": {
+        "state": "S",
+        "spans": [
+          "acetaminophen before work this morning"
+        ],
+        "rationale": "The patient explicitly corrects the initial nothing report and confirms the same medicine again later."
+      },
+      "ALG": {
+        "state": "A",
+        "spans": [
+          "No known allergies."
+        ],
+        "rationale": "A conventional explicit denial of known allergies, treated as absent reported known-allergy status; the knowledge-limited wording leaves a debatable A/U boundary."
+      }
+    }
+  },
+  {
+    "case_id": "scope-19",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "A cough"
+        ],
+        "rationale": "The complaint is directly stated."
+      },
+      "DUR": {
+        "state": "S",
+        "spans": [
+          {
+            "text": "eight days",
+            "start": 77
+          }
+        ],
+        "rationale": "Duration is directly stated and later reaffirmed. The offset for 'eight days' identifies its first matching patient occurrence because the text repeats in the transcript."
+      },
+      "SEV": {
+        "state": "U",
+        "spans": [
+          "Mild during the day, but the nighttime coughing feels severe."
+        ],
+        "rationale": "Daytime and nighttime severities can coexist but cannot be represented by one scalar severity."
+      },
+      "MED": {
+        "state": "S",
+        "spans": [
+          "Dextromethorphan syrup at night"
+        ],
+        "rationale": "One current treatment with timing is clear and later reaffirmed."
+      },
+      "ALG": {
+        "state": "A",
+        "spans": [
+          "I don't have any known medicine allergies myself."
+        ],
+        "rationale": "The patient explicitly retracts penicillin as belonging to their sister and denies known allergies of their own. The conventional knowledge-qualified denial is treated as A, with the same debatable A/U boundary as other no-known reports."
+      }
+    }
+  },
+  {
+    "case_id": "scope-20",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "My left knee has been stiff and sore"
+        ],
+        "rationale": "One complaint phrase encompasses compatible stiffness and soreness in the same knee."
+      },
+      "DUR": {
+        "state": "S",
+        "spans": [
+          "three weeks"
+        ],
+        "rationale": "The duration is clear."
+      },
+      "SEV": {
+        "state": "S",
+        "spans": [
+          "Around five out of ten"
+        ],
+        "rationale": "The reported severity retains its approximation."
+      },
+      "MED": {
+        "state": "C",
+        "spans": [
+          "Ibuprofen every day.",
+          "I haven't taken any ibuprofen this week.",
+          "I know, but I can't sort it out without checking the packets at home. I may be mixing up this week and last week."
+        ],
+        "rationale": "Current daily ibuprofen and no ibuprofen this week are incompatible reports. The patient acknowledges but does not resolve them; speculation about mixing weeks is not a clear temporal correction. C rather than U is debatable because the patient also expresses uncertainty, but the incompatible observations remain."
+      },
+      "ALG": {
+        "state": "S",
+        "spans": [
+          "Sulfa antibiotics gave me hives."
+        ],
+        "rationale": "One medication-class reaction is directly reported."
+      }
+    }
+  },
+  {
+    "case_id": "scope-21",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "a cough"
+        ],
+        "rationale": "The patient directly reports a cough."
+      },
+      "DUR": {
+        "state": "S",
+        "spans": [
+          {
+            "text": "three days",
+            "start": 61
+          }
+        ],
+        "rationale": "The patient supplies three days and explicitly corrects the unrelated form entry of last week. The offset for 'three days' identifies its first matching patient occurrence because the text repeats in the transcript."
+      },
+      "SEV": {
+        "state": "S",
+        "spans": [
+          "Mild"
+        ],
+        "rationale": "The patient directly states severity."
+      },
+      "MED": {
+        "state": "U",
+        "spans": [
+          "No."
+        ],
+        "rationale": "One negative answer follows a combined medication and allergy question. It could answer both or only one, so medication denial attribution is genuinely ambiguous."
+      },
+      "ALG": {
+        "state": "U",
+        "spans": [
+          "No."
+        ],
+        "rationale": "One negative answer follows a combined medication and allergy question. It could answer both or only one, so allergy denial attribution is genuinely ambiguous."
+      }
+    }
+  },
+  {
+    "case_id": "scope-22",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "dull headache around my temples"
+        ],
+        "rationale": "A clear symptom and location are directly reported."
+      },
+      "DUR": {
+        "state": "U",
+        "spans": [
+          "I can't pin it down right now."
+        ],
+        "rationale": "Yes does not disambiguate the alternative onset question, and the patient later explicitly cannot pin down onset."
+      },
+      "SEV": {
+        "state": "S",
+        "spans": [
+          "moderate"
+        ],
+        "rationale": "The patient clearly selects moderate despite the earlier mild-or-severe wording."
+      },
+      "MED": {
+        "state": "S",
+        "spans": [
+          "acetaminophen this morning"
+        ],
+        "rationale": "One treatment and timing are clear."
+      },
+      "ALG": {
+        "state": "A",
+        "spans": [
+          "No known drug allergies."
+        ],
+        "rationale": "A conventional explicit denial of known drug allergies, treated as absent reported known-allergy status; the knowledge qualifier makes A versus U debatable."
+      }
+    }
+  },
+  {
+    "case_id": "scope-23",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "My left shoulder has been aching"
+        ],
+        "rationale": "The patient directly reports the complaint and side."
+      },
+      "DUR": {
+        "state": "S",
+        "spans": [
+          {
+            "text": "four days",
+            "start": 85
+          }
+        ],
+        "rationale": "The initial duration is explicitly reaffirmed. The offset for 'four days' identifies its first matching patient occurrence because the text repeats in the transcript."
+      },
+      "SEV": {
+        "state": "U",
+        "spans": [
+          "I haven't decided what number to give it."
+        ],
+        "rationale": "The patient explicitly has not supplied a severity number. The doctor's severe assertion is not endorsed and cannot establish patient severity."
+      },
+      "MED": {
+        "state": "A",
+        "spans": [
+          "No, nothing for it."
+        ],
+        "rationale": "Direct denial of treatment for the shoulder; the following sentence also denies regular medication."
+      },
+      "ALG": {
+        "state": "U",
+        "spans": [
+          "I don't remember what the old record says."
+        ],
+        "rationale": "The patient expresses inability to remember allergy information rather than endorsing the doctor's assumption."
+      }
+    }
+  },
+  {
+    "case_id": "scope-24",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "A blocked nose and a sore throat"
+        ],
+        "rationale": "The two symptoms are explicitly combined into one clear chief-complaint phrase."
+      },
+      "DUR": {
+        "state": "U",
+        "spans": [
+          "The nose started a week ago; the throat started yesterday."
+        ],
+        "rationale": "Different symptom-specific onsets are compatible but cannot become one scalar duration. The throat onset is later reaffirmed."
+      },
+      "SEV": {
+        "state": "U",
+        "spans": [
+          "The blocked nose is mild. The throat is moderate when I swallow."
+        ],
+        "rationale": "Different severities for the two symptoms are compatible but cannot become one scalar severity. The earlier ambiguous yes does not resolve prioritization."
+      },
+      "MED": {
+        "state": "S",
+        "spans": [
+          "loratadine, one tablet each morning"
+        ],
+        "rationale": "One current medication with regimen is explicitly reported in the treatment question context. No spray excludes an additional treatment."
+      },
+      "ALG": {
+        "state": "A",
+        "spans": [
+          "I don't have any known allergies."
+        ],
+        "rationale": "The patient separates general worry about new medicines from an explicit denial of known allergies. I treat the conventional no-known report as A, while recognizing the knowledge-qualified A/U boundary as debatable."
+      }
+    }
+  }
+]

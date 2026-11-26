@@ -1,0 +1,27 @@
+{
+  "role": "separate logical annotation review by the same coding agent; no independent human review",
+  "decision": "ADMIT_REVISED_DEVELOPMENT_CORPUS",
+  "records_reviewed": 20,
+  "worlds_reviewed": 10,
+  "review_checks": [
+    "All CC claims are explicitly patient-authored symptoms.",
+    "Supported durations and severities have exact value spans.",
+    "Absent medication/allergy slots quote entire explicit denials.",
+    "Missing slots have neither question nor answer.",
+    "Uncertainty quotes explicitly decline to supply duration or severity.",
+    "World 07 gives incompatible durations for the same unresolved question.",
+    "World 08 now gives a positive medication report and explicit denial; neither is marked a correction.",
+    "Each paraphrase changes only Doctor questions; Patient turns and labels remain equal."
+  ],
+  "correction": "Two medications can be concurrent. Replaced world 08 second medication with an explicit medication denial before the complete pilot.",
+  "attempt_01": "Interrupted after one completed generation and while generating the next; original source and raw failure retained. This is an exposed development pilot, not a sealed or one-shot evaluation.",
+  "quotas_from_world_design": {
+    "supported": 66,
+    "absent": 14,
+    "missing": 12,
+    "uncertain": 4,
+    "conflicting": 4
+  },
+  "dialogues_sha256": "92ca64bfc9de5e994623d8ef695893609837b1f882811f094744a408e53dda8f",
+  "spec_sha256": "6665adf24bcad7d0b7142de68be3494369e182efc0f645696637cb76098429d7"
+}

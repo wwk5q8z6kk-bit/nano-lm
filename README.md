@@ -1,44 +1,67 @@
-# NanoLM
+# nano-lm
 
-**NanoLM is an independent general-purpose foundation language model research and development project targeting maximum practical intelligence within a strict 2.0–4.0 billion parameter budget.**
+NanoLM is a research program building a general-purpose language model with frontier capability as its goal. The original 3.15M-parameter model was trained from scratch. Current work tests which architectures improve language modeling, reasoning and transfer at an affordable training and inference cost.
 
-NanoLM is the foundation model itself—not a clinical Scribe wrapper, IDE subsystem, or hardcoded application runtime. Earlier medical-scribing and 3.15M–160M closed-world copying experiments are preserved intact as historical evidence ([`papers/EVIDENCE_LEDGER.md`](papers/EVIDENCE_LEDGER.md), [`docs/archive/legacy/`](docs/archive/legacy/)), while active architecture, tokenization, data, training, and evaluation research lives in [`nanolm/`](nanolm/).
+NanoScribe was an earlier medical application. Its implementation and experimental record remain available for reproduction. General-model development proceeds independently of its results.
 
-## Hard Parameter & Architecture Policy
+## Current work
 
-- **Preferred target:** ~`2.0B` deployed parameters (`nanolm-2b-hybrid-swa` & `nanolm-2b-dense` at `2.041B`; `nanolm-2b-mla` at `2.121B`).
-- **Permitted expansion range:** `2.0B – 4.0B` deployed parameters (`nanolm-3.3b-dense` at `3.314B`; `nanolm-3.8b-moe` at `3.895B` total / `0.989B` active).
-- **Hard ceiling:** **4,000,000,000 parameters** across all inference-resident weights (embeddings, output projections, all routed/shared experts, routers, norms, and deployed MTP heads), enforced programmatically in [`nanolm/config.py`](nanolm/config.py).
+1. Recover native checkpoints and measure them on the same held-out text. Record tokenizer, training provenance, context length, loss, throughput and memory.
+2. Compare promising dense and hybrid architectures with matched data and training budgets. Test whether improvements persist across sources and seeds before increasing scale.
+3. Evaluate instruction following and reasoning separately, recording any contribution from adaptation, tools or external models.
 
-## Package Architecture (`nanolm/`)
+Start with the [current experiments](docs/EXECUTION_PLAN.md), [machine-readable status](docs/ACTIVE_NOW.json) and [model research map](docs/research/MODEL_RESEARCH_PROGRAM.md). The [project charter](docs/PROJECT_CHARTER.md) defines the objective, and the [documentation index](docs/README.md) links the supporting material.
 
-| Module | Role |
-|--------|------|
-| [`nanolm/config.py`](nanolm/config.py) | Strict parameter/FLOP/KV-cache accounting and verified 2B–4B + research-rung presets |
-| [`nanolm/model/`](nanolm/model/__init__.py) | First-principles PyTorch implementations of `GQA+QKNorm`, `3:1 HybridSWA`, `MLA`, `Aux-Loss-Free Fine-Grained MoE`, `Depth-Loop`, and `Multi-Token Prediction (MTP)` |
-| [`nanolm/tokenizer/`](nanolm/tokenizer/__init__.py) | Byte-Level BPE trainer with individual digit splitting, 32 special tokens, and 6-domain fertility auditing |
-| [`nanolm/data/`](nanolm/data/__init__.py) | Intra-document causal sequence packing (`doc_ids` + per-document RoPE `position_ids` reset) and 13-gram benchmark decontamination |
-| [`nanolm/train/`](nanolm/train/__init__.py) | Reproducible `WSD` / Cosine trainer with `bfloat16` MPS/CUDA autocast, tokenizer-invariant `Bits-Per-Byte (BPB)` validation, and atomic checkpoint resume |
-| [`nanolm/eval/`](nanolm/eval/__init__.py) | Independent 6-suite programmatic evaluation: subprocess Python code execution, math/logic, exception-preserving summarization, JSON schema validation, Mermaid/chart validation, and long-context reasoning |
-| [`nanolm/infra/`](nanolm/infra/__init__.py) | Live hardware preflight benchmark (`bfloat16` MPS/CUDA) and 8xH100 / 4xB200 compute-cost scaling estimator |
+## Established findings (scoped)
 
-## Canonical Documentation
+| Result | Scoped finding |
+|--------|----------------|
+| Original Nano | Full 3.15M pretrain → alignment stack built from scratch |
+| Scribe v1/v2 | Faithfulness failures exposed template/OOD limits |
+| Stage A | Verification achieved measured presented precision under synthetic verifier relation |
+| Stage S | Average task bars improved; held-out tail gap persisted |
+| Paper α | Open-vocabulary held-out copying failure localized |
+| E1 | Classical won on **old closed-task** utility (not program kill) |
+| E4 | Classical won on **tested R★** |
+| H6 | One-shot development evaluation **REJECTED** the exact coupling: copying passed, abstention calibration failed |
 
-- [Official NanoLM Charter](docs/nanolm/CHARTER.md)
-- [Phase 1 Technical Audit](docs/nanolm/PHASE1_AUDIT.md)
-- [Architecture, Data & Training Specification](docs/nanolm/ARCHITECTURE_AND_TRAINING.md)
-- [Empirical Baseline, Decisions & Compute Roadmap](docs/nanolm/ROADMAP_AND_COMPUTE.md)
-- [Verified Empirical Baseline JSON](docs/nanolm/EMPIRICAL_BASELINE_V1.json)
-- [Active Program Status](docs/ACTIVE_NOW.md) · [RunPod Compute Policy](docs/infrastructure/RUNPOD.md)
+## Repository map
 
-## Quick Verification
+| Path | Role |
+|------|------|
+| `docs/` | Current program truth |
+| `papers/` | Science and evidence |
+| `trajectory/` | Experimental records |
+| `pretrain/`, `sft/`, `scribe/` | Original pretraining, alignment and historical scribing experiments |
+| `nano_ai/` | Learned Nano transcript-to-structure research through frozen H6 (integrated) |
+| `nano/` | Domain-general contracts, evidence, state, retrieval, and runtime (integrated) |
+| `nanoscribe/` | Historical P1 encounter proposal, constrained evidence binding, and evaluation |
+| `artifacts/nano_h6/` | H6 terminal decision and authenticated evaluation output |
+| `fabric/` | Verification harness (integrated) |
+| `wedge_v1/` | Verified document intelligence (integrated) |
+| `frontier/` | Branch notes only |
+
+## Frozen evidence snapshot — 2026-07-31
+
+**E1 (one sentence):** Under frozen E1 utility on the **old closed scribe task**, classical beat official LoRA-160M (**KILL** scoped to that task).
+
+| | |
+|---|---|
+| **Freeze tag** | `post-alpha-evidence-freeze-2026-07-31` |
+| **Ledger** | [`papers/EVIDENCE_LEDGER.md`](papers/EVIDENCE_LEDGER.md) |
+| **Outsider summary** | [`papers/PUBLIC_ONE_PAGER.md`](papers/PUBLIC_ONE_PAGER.md) |
+
+Full table: [`audit/discussion-to-implementation/CANONICAL_STATUS_TABLE.md`](audit/discussion-to-implementation/CANONICAL_STATUS_TABLE.md)
+
+## Quick repository verification
 
 ```bash
-python3 scripts/check_active_now.py
-python3 scripts/check_docs_integrity.py
-python3 -m pytest -q nanolm/tests fabric trajectory
-python3 scripts/nanolm/pretrain_cli.py presets
+python scripts/check_active_now.py
+python scripts/check_docs_integrity.py
+pytest fabric/test_fabric.py trajectory/test_recompute_c3.py -q
 ```
+
+Full reproduction of papers/training: [`trajectory/REPRODUCIBILITY.md`](trajectory/REPRODUCIBILITY.md)
 
 ## License
 

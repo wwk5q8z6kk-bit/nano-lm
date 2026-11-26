@@ -1,0 +1,156 @@
+{
+  "started_utc": "2026-10-26T13:38:41.785440+00:00",
+  "commands": [
+    {
+      "command": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "-o",
+        "addopts=",
+        "nanoscribe"
+      ],
+      "exit_code": 0,
+      "seconds": 0.94,
+      "log": "verification/nanoscribe-final.log",
+      "passed": 472,
+      "skipped": 0,
+      "note": "Rerun after final review guards and two regression cases; initial log preserved."
+    },
+    {
+      "command": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "-o",
+        "addopts=",
+        "nano"
+      ],
+      "exit_code": 0,
+      "seconds": 13.338925709016621,
+      "log": "verification/nano.log",
+      "passed": 316,
+      "skipped": 0
+    },
+    {
+      "command": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "-o",
+        "addopts=",
+        "nano_ai/tests"
+      ],
+      "exit_code": 0,
+      "seconds": 110.06203245796496,
+      "log": "verification/learned.log",
+      "passed": 499,
+      "skipped": 1
+    },
+    {
+      "command": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "-o",
+        "addopts=",
+        "benchmarks/"
+      ],
+      "exit_code": 0,
+      "seconds": 3.280334083014168,
+      "log": "verification/benchmarks.log",
+      "passed": 500,
+      "skipped": 1
+    },
+    {
+      "command": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "-o",
+        "addopts=",
+        "fabric",
+        "trajectory",
+        "wedge_v1"
+      ],
+      "exit_code": 0,
+      "seconds": 1.0304536250187084,
+      "log": "verification/foundations.log",
+      "passed": 32,
+      "skipped": 0
+    },
+    {
+      "command": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "-o",
+        "addopts=",
+        "scripts/test_reconcile_p1_comparison.py",
+        "scripts/test_run_h7_kaggle.py",
+        "scripts/test_run_p1_pilot.py",
+        "scripts/test_run_p1_independent_dev.py"
+      ],
+      "exit_code": 0,
+      "seconds": 4.542158832948189,
+      "log": "verification/scripts.log",
+      "passed": 121,
+      "skipped": 0
+    },
+    {
+      "command": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "fabric/test_fabric.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.04410008300328627,
+      "log": "verification/fabric-direct.log",
+      "passed": 0,
+      "skipped": 0
+    },
+    {
+      "command": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "trajectory/test_recompute_c3.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.030450291000306606,
+      "log": "verification/trajectory-direct.log",
+      "passed": 0,
+      "skipped": 0
+    },
+    {
+      "command": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "nanoscribe/benchmark.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.054283417004626244,
+      "log": "verification/benchmark-direct.log",
+      "passed": 0,
+      "skipped": 0
+    }
+  ],
+  "total_passed": 1940,
+  "total_skipped": 2,
+  "completed_utc": "2026-10-26T13:40:56.045483+00:00",
+  "updated_utc": "2026-10-26T13:42:09.130598+00:00"
+}

@@ -1,0 +1,38 @@
+# Campaign dataset partition tests.
+from __future__ import annotations
+
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+from nanoscribe.campaign_datasets import (
+    campaign_cases,
+    fixture_lines_for_encounter,
+    suite_manifest,
+)
+
+
+def test_campaign_v1_has_three_encounters() -> None:
+    cases = campaign_cases("campaign_v1")
+    ids = {c.encounter_id for c in cases}
+    assert ids == {"enc-1", "enc-2", "enc-3"}
+
+
+def test_suite_manifest_revision() -> None:
+    manifest = suite_manifest()
+    assert manifest["schema"] == "nano.campaign.dataset.v1"
+    assert "campaign_v1" in manifest["partitions"]
+
+
+def test_fixture_lines_cover_campaign_v1() -> None:
+    for case in campaign_cases("campaign_v1"):
+        lines = fixture_lines_for_encounter(case.encounter_id)
+        assert set(lines) == {spec.atom_id for spec in case.atom_specs}
+
+
+if __name__ == "__main__":
+    test_campaign_v1_has_three_encounters()
+    test_suite_manifest_revision()
+    test_fixture_lines_cover_campaign_v1()
+    print("campaign_dataset pins: 3/3 PASS")

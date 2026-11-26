@@ -1,0 +1,122 @@
+[
+  {
+    "case_id": "fresh-01",
+    "stratum": "conventional_controls",
+    "transcript": "Doctor: What brought you in?\nPatient: I have a headache.\nDoctor: How long has it been there?\nPatient: Three days.\nDoctor: How bad is it?\nPatient: Mild.\nDoctor: Have you taken anything for it?\nPatient: I took ibuprofen this morning.\nDoctor: Any medication allergies?\nPatient: I'm allergic to penicillin."
+  },
+  {
+    "case_id": "fresh-02",
+    "stratum": "conventional_controls",
+    "transcript": "Doctor: Tell me about the problem today.\nPatient: A cough is bothering me.\nDoctor: When did the cough start?\nPatient: One week ago.\nDoctor: Would you call it mild, moderate, or severe?\nPatient: Moderate.\nDoctor: What have you used for it so far?\nPatient: Nothing. I haven't taken any medicine for it.\nDoctor: Do you have any drug allergies?\nPatient: No medication allergies."
+  },
+  {
+    "case_id": "fresh-03",
+    "stratum": "conventional_controls",
+    "transcript": "Doctor: What's the main reason for this visit?\nPatient: My throat is sore.\nDoctor: For how many days?\nPatient: Two days now.\nDoctor: How would you describe the severity?\nPatient: It's severe."
+  },
+  {
+    "case_id": "fresh-04",
+    "stratum": "conventional_controls",
+    "transcript": "Doctor: Where are you having trouble?\nPatient: My lower back hurts.\nDoctor: How intense is that pain?\nPatient: Mild, really.\nDoctor: Have you tried a medicine for the back pain?\nPatient: No, I haven't tried any.\nDoctor: Are you allergic to any medications?\nPatient: Penicillin."
+  },
+  {
+    "case_id": "fresh-05",
+    "stratum": "medication_uncertainty_nonuse",
+    "transcript": "Doctor: What's troubling you?\nPatient: I've got a headache.\nDoctor: When did it begin, and how strong is it?\nPatient: It began yesterday. It's moderate.\nDoctor: Did you take anything for the headache?\nPatient: I may have, but I honestly can't remember whether I took a tablet or just got the packet out.\nDoctor: Can you be certain either way?\nPatient: No, I can't say.\nDoctor: Any allergies to medicines?\nPatient: None that I know of."
+  },
+  {
+    "case_id": "fresh-06",
+    "stratum": "medication_uncertainty_nonuse",
+    "transcript": "Doctor: Tell me what hurts.\nPatient: My throat. It's been sore for four days.\nDoctor: How bad does it feel?\nPatient: Mild.\nDoctor: Have you used anything from the medicine cabinet?\nPatient: I haven't taken so much as a lozenge or a pill for this.\nDoctor: And your medication allergies?\nPatient: I'm allergic to penicillin."
+  },
+  {
+    "case_id": "fresh-07",
+    "stratum": "medication_uncertainty_nonuse",
+    "transcript": "Doctor: What are we discussing today?\nPatient: A headache that started two days ago.\nDoctor: How severe is the headache?\nPatient: Moderate.\nDoctor: What have you taken for it?\nPatient: One capsule from my travel pouch, but I can't tell you what it was called.\nDoctor: Do you remember the name on the packet?\nPatient: There wasn't a packet in the pouch. I don't know the name.\nDoctor: Any medication allergies?\nPatient: No, none."
+  },
+  {
+    "case_id": "fresh-08",
+    "stratum": "medication_uncertainty_nonuse",
+    "transcript": "Doctor: What symptom is bothering you most?\nPatient: A sore throat, since yesterday morning.\nDoctor: Is it mild, moderate, or severe?\nPatient: Moderate.\nDoctor: Have you tried ibuprofen or anything else?\nPatient: I thought about taking ibuprofen and bought some, but the box is still unopened. I haven't used any medicine for this.\nDoctor: Any drugs you are allergic to?\nPatient: No medication allergies."
+  },
+  {
+    "case_id": "fresh-09",
+    "stratum": "medication_conflict_coexistence",
+    "transcript": "Doctor: Why have you come in?\nPatient: I've had a mild headache for three days.\nDoctor: What did you take for it?\nPatient: Ibuprofen last night.\nDoctor: Have you taken anything else?\nPatient: I haven't taken any medicine at all for this headache.\nDoctor: Earlier you said ibuprofen last night. Which account should I use?\nPatient: I'm mixing things up, and I can't settle which is right.\nDoctor: Any medication allergies?\nPatient: Penicillin."
+  },
+  {
+    "case_id": "fresh-10",
+    "stratum": "medication_conflict_coexistence",
+    "transcript": "Doctor: What's the problem today?\nPatient: My lower back has hurt for six days.\nDoctor: How severe is it?\nPatient: Moderate.\nDoctor: What have you tried for the pain?\nPatient: Acetaminophen on Monday and ibuprofen on Tuesday.\nDoctor: Were those both for this back pain?\nPatient: Yes, both of them were for this same episode.\nDoctor: Any medication allergies?\nPatient: I don't have any."
+  },
+  {
+    "case_id": "fresh-11",
+    "stratum": "medication_conflict_coexistence",
+    "transcript": "Doctor: What brought you here?\nPatient: A moderate headache that's lasted four days.\nDoctor: Which medicine have you tried for it?\nPatient: Aspirin.\nDoctor: When did you take the aspirin?\nPatient: Sorry, that was for a headache months ago. For this one I took ibuprofen yesterday, not aspirin.\nDoctor: Did you take any other medicine for the current headache?\nPatient: No, just the ibuprofen.\nDoctor: Do you have any medication allergies?\nPatient: Penicillin."
+  },
+  {
+    "case_id": "fresh-12",
+    "stratum": "medication_conflict_coexistence",
+    "transcript": "Doctor: What's been bothering you?\nPatient: A sore throat for two days.\nDoctor: How bad is the soreness?\nPatient: Mild.\nDoctor: Any medicine tried for this?\nPatient: Nothing yet.\nDoctor: You mentioned a tablet earlier. Was that for this throat?\nPatient: Yes. I was describing how things were before yesterday. I took acetaminophen last night for the throat.\nDoctor: Any other medicine for it since then?\nPatient: No, that was the only one.\nDoctor: Any drug allergies?\nPatient: None."
+  },
+  {
+    "case_id": "fresh-13",
+    "stratum": "allergy_uncertainty_negation_coexistence",
+    "transcript": "Doctor: What would you like to discuss?\nPatient: I've had a headache for five days.\nDoctor: How intense is it?\nPatient: Moderate.\nDoctor: Have you tried any medication?\nPatient: I took ibuprofen yesterday.\nDoctor: Are you allergic to any medicines?\nPatient: I'm not sure about penicillin. Someone once said I had a rash as a child, but I don't know whether it was an allergy.\nDoctor: Has that ever been confirmed?\nPatient: No, I don't know that it has."
+  },
+  {
+    "case_id": "fresh-14",
+    "stratum": "allergy_uncertainty_negation_coexistence",
+    "transcript": "Doctor: What is the main complaint?\nPatient: A mild cough for three days.\nDoctor: Have you taken a medicine for it?\nPatient: No medicine for the cough.\nDoctor: The intake question mentions penicillin. Is that an allergy you have?\nPatient: No, I'm not allergic to penicillin. I have no medication allergies.\nDoctor: Is there another symptom you want to discuss?\nPatient: No, just the cough."
+  },
+  {
+    "case_id": "fresh-15",
+    "stratum": "allergy_uncertainty_negation_coexistence",
+    "transcript": "Doctor: Tell me about today's symptom.\nPatient: A sore throat. It started two days ago and feels moderate.\nDoctor: What have you taken for it?\nPatient: Acetaminophen this morning.\nDoctor: Which medicines are you allergic to?\nPatient: Penicillin and sulfa antibiotics.\nDoctor: Are you naming two separate allergies?\nPatient: Yes. Both are allergies I have been told I have."
+  },
+  {
+    "case_id": "fresh-16",
+    "stratum": "allergy_uncertainty_negation_coexistence",
+    "transcript": "Doctor: What's the concern today?\nPatient: A headache for one week. It's mild.\nDoctor: Any medication tried for it?\nPatient: Ibuprofen.\nDoctor: Any medication allergies?\nPatient: There is one, but I can't remember whether the name was penicillin or a sulfa antibiotic.\nDoctor: Can you identify it more precisely?\nPatient: No. I don't have the old card, and I would be guessing."
+  },
+  {
+    "case_id": "fresh-17",
+    "stratum": "partial_information",
+    "transcript": "Doctor: What is bothering you?\nPatient: A headache.\nDoctor: How long have you had it?\nPatient: Since that stretch when everything was happening. I can't place it on a day or say how long ago.\nDoctor: How bad is the headache?\nPatient: Moderate.\nDoctor: Have you tried any medicine for it?\nPatient: Ibuprofen yesterday.\nDoctor: What medication allergies do you have?\nPatient: Penicillin."
+  },
+  {
+    "case_id": "fresh-18",
+    "stratum": "partial_information",
+    "transcript": "Doctor: What symptom are you here for?\nPatient: My throat has been sore for three days.\nDoctor: How would you rate the severity?\nPatient: It's somewhere between a nuisance and a real problem. I can't choose mild, moderate, or severe.\nDoctor: What medicine have you tried?\nPatient: Acetaminophen last night.\nDoctor: Any medication allergies?\nPatient: No medication allergies."
+  },
+  {
+    "case_id": "fresh-19",
+    "stratum": "partial_information",
+    "transcript": "Doctor: How was the bus ride over?\nPatient: Quiet. I watched the rain on the window.\nDoctor: What brings you in today?\nPatient: A cough.\nDoctor: How long have you had it?\nPatient: Four days.\nDoctor: How bad would you say it is?\nPatient: Mild.\nDoctor: Have you tried any medicine for the cough?\nPatient: Nothing at all.\nDoctor: Any medication allergies?\nPatient: I'm allergic to penicillin."
+  },
+  {
+    "case_id": "fresh-20",
+    "stratum": "partial_information",
+    "transcript": "Doctor: What has been hurting?\nPatient: My lower back for five days.\nDoctor: What level of pain is it?\nPatient: Moderate.\nDoctor: Have you taken anything for it?\nPatient: A little green tablet from a packet I no longer have. I don't know its name.\nDoctor: Can you tell me anything else about that tablet?\nPatient: No, that's all I remember about it.\nDoctor: Any medication allergies?\nPatient: Penicillin."
+  },
+  {
+    "case_id": "fresh-21",
+    "stratum": "context_complications",
+    "transcript": "Doctor: What's the main reason you're here?\nPatient: The headache. I've also had a cough, but the headache is what I want to discuss.\nDoctor: How long has each been going on?\nPatient: The headache started three days ago. The cough started a week ago.\nDoctor: How severe is the headache?\nPatient: Moderate. The cough is only mild.\nDoctor: Any medicine tried for the headache?\nPatient: No, nothing for the headache.\nDoctor: Do you have any medication allergies?\nPatient: Penicillin."
+  },
+  {
+    "case_id": "fresh-22",
+    "stratum": "context_complications",
+    "transcript": "Doctor: What is troubling you?\nPatient: I've had a headache for two days.\nDoctor: You look uncomfortable; I'll describe the headache as severe.\nPatient: Could I open the window a little?\nDoctor: Have you taken a medicine for the headache?\nPatient: I took ibuprofen last night.\nDoctor: Do you have any medication allergies?\nPatient: No medication allergies."
+  },
+  {
+    "case_id": "fresh-23",
+    "stratum": "context_complications",
+    "transcript": "Doctor: Tell me what's brought you in.\nPatient: It's a headache. I was hoping it would pass, and I kept putting the visit off, but the headache is the reason I'm here.\nDoctor: When did this episode start?\nPatient: Four days ago. I remember because it began while I was tidying the kitchen, then it was still there when I sat down that evening.\nDoctor: How would you describe its severity?\nPatient: Moderate is the best word. I notice it throughout the day, but I wouldn't call it severe, and mild doesn't really describe it either.\nDoctor: What have you tried for it?\nPatient: I took ibuprofen yesterday. I had to look around for the packet first, but that is definitely the medicine I used for this headache.\nDoctor: Any medication allergies?\nPatient: No. I've been asked that a few times, and I don't have any known medication allergies."
+  },
+  {
+    "case_id": "fresh-24",
+    "stratum": "context_complications",
+    "transcript": "Doctor: What would you like us to focus on?\nPatient: This headache. My back used to bother me, but that isn't the problem now.\nDoctor: When did it begin?\nPatient: Two days ago.\nDoctor: How bad is it?\nPatient: Mild.\nDoctor: Have you tried ibuprofen for it?\nPatient: Yes, I took it last night.\nDoctor: Are you allergic to penicillin?\nPatient: Yes, I am. That is my only medication allergy."
+  }
+]

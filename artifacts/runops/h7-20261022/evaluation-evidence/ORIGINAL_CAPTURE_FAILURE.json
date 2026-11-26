@@ -1,0 +1,6 @@
+{
+  "status": "CAPTURE_VALIDATION_FAILED",
+  "error": "ValueError: Member digest mismatch: results/SHA256SUMS.tmp",
+  "retry_authorized": false,
+  "attempt_archive": "artifacts/runops/h7-20261022/downloads/evaluation-v2/h7-evaluation/nano-h7-evaluation-attempt-evidence.tar.gz"
+}

@@ -1,55 +1,19 @@
-# Execution Plan
+# Execution plan
 
-Executable tasks under [ACTIVE_NOW.md](ACTIVE_NOW.md). Historical queue preserved at `papers/EXECUTION_QUEUE.md` (superseded stub).
+## General-model experiments
 
-## Phase A — Documentation reset v2 (CLOSED)
+| Work | Design | Decision |
+|---|---|---|
+| Recover native baselines | Validate the architecture, tokenizer, checkpoint hash and training provenance for recovered native weights. Evaluate the same text and context across eligible models with a simple control. Report domain-level results and sample sizes. | Identify the strongest reproducible reference and the limits of the comparison. |
+| Test architecture choices | Compare the candidate to a competitive dense or hybrid reference. Match tokens, training data, tokenizer and evaluation protocol. Record actual throughput, compute and cache accounting. Replicate promising differences across seeds. | Choose which architecture warrants the next larger training run. |
+| Test generalization | Use separate held-out sources and evaluate language modeling, instruction following and reasoning. Track overlaps, include simple baselines and report model-only and tool-assisted outcomes separately. | Identify a specific capability gap for pretraining or post-training. |
 
-| ID | Task | Done when |
-|----|------|-----------|
-| A1 | Branch from `origin/master` @ `2ad06d2` (exclude `9fe5b6b6`) | Done |
-| A2 | Typed `PROJECT_AUTHORITY` + full legacy archives | Done |
-| A3 | Strengthen CI (`check_active_now`, `check_docs_integrity`) | Done |
-| A4 | Owner review + merge to `master` | **CLOSED** @ `0107b7a` |
+These experiments are exploratory. Attach code and data revisions, seed, termination condition, artifact destination and budget to paid runs. Keep input rights and possible pretraining overlap visible. Use local resources or free Kaggle when they fit, Google Cloud within the verified credit allocation, and RunPod under its separate campaign limits. Confirmatory research retains the preregistration and authorization rules in [active state](ACTIVE_NOW.md).
 
-## Phase B — P1 scribe foundation (BUILT)
+## Historical scribing program
 
-| ID | Task | Done when |
-|----|------|-----------|
-| B1 | Encounter representation schema v0 | **Done** — PR #37 |
-| B2 | Constrained evidence transport | **Done** — PR #38 |
-| B3 | Model adapter and baseline bridge | **Done** — PR #40 |
-| B4 | Three-track inference harness | **Done** — PR #41 |
-| B5 | Nano Core, learned Nano AI, benchmark integration | **Done** — PRs #107–#110 |
+NanoScribe is outside active execution. Preserve open work and historical results for a separate disposition. The previous plan records phases A–C, their artifacts and the clinical evaluation boundaries. [Earlier scribing program](https://github.com/wwk5q8z6kk-bit/nano-lm/blob/46c65f0044e81ac73251e18a5a7d69a7299a8079/docs/EXECUTION_PLAN.md)
 
-## Phase C — P1 learned intelligence (CURRENT)
+## Verification
 
-| ID | Task | Done when |
-|----|------|-----------|
-| C1 | Reconcile H6 terminal evidence | **Done** — exact historical result and decision are present on `master`; hashes verify |
-| C2 | Localize H6 failures | **Done** — authenticated row-level analysis separates state selection from evidence binding; threshold and verifier effects remain explicitly unassessed |
-| C3 | Define the next bounded intervention | **Done** — H7-BM isolates local evidence-boundary ranking; H6 is not rerun or relabeled |
-| C4 | Run cheapest valid screen | **Current** — two-stage Kaggle CPU package is locally verified with screen absent from training; execute two fixed seeds, freeze report hashes, then perform the single preregistered control/treatment scoring pass |
-| C5 | Re-evaluate P1 exit gap | Automatic evidence plus external human-review plan; no mastery claim from synthetic data |
-
-## Explicitly out of scope (until separately authorized)
-
-- P2/P3 implementation beyond interface contract
-- Evidence Core / ledger edits
-- Clinical deployment claims
-- PHI / private clinical data on cloud (including RunPod)
-
-## Training / compute (standing)
-
-Kaggle and RunPod are complementary active backends. Prefer Kaggle when the
-free runtime fits; use RunPod for exact GPU/runtime requirements, persistence,
-or managed inference. Materially costly or confirmatory runs remain
-experiment-scoped under the active plan’s budget and authorization rules.
-
-## Verification commands
-
-```bash
-python3 scripts/check_active_now.py
-python3 scripts/check_docs_integrity.py
-python3 fabric/test_fabric.py
-python3 trajectory/test_recompute_c3.py
-```
+Run the repository checks in [AGENTS.md](../AGENTS.md) and the experiment-specific replay documented with each result.

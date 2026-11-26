@@ -1,0 +1,61 @@
+{
+  "training_draws_per_seed": 8000,
+  "validation_windows_by_domain": {
+    "web": 64,
+    "textbook": 64,
+    "math": 64,
+    "code": 64
+  },
+  "contiguous_token_matches_by_seed_and_length": {
+    "0": {
+      "32": {
+        "train_draws_with_any_match": 1,
+        "matched_val_windows": [
+          {
+            "domain": "math",
+            "length": 512,
+            "index": 15
+          }
+        ],
+        "val_windows_with_any_match": {
+          "web": 0,
+          "textbook": 0,
+          "math": 1,
+          "code": 0
+        }
+      },
+      "128": {
+        "train_draws_with_any_match": 0,
+        "matched_val_windows": [],
+        "val_windows_with_any_match": {
+          "web": 0,
+          "textbook": 0,
+          "math": 0,
+          "code": 0
+        }
+      }
+    },
+    "1": {
+      "32": {
+        "train_draws_with_any_match": 0,
+        "matched_val_windows": [],
+        "val_windows_with_any_match": {
+          "web": 0,
+          "textbook": 0,
+          "math": 0,
+          "code": 0
+        }
+      },
+      "128": {
+        "train_draws_with_any_match": 0,
+        "matched_val_windows": [],
+        "val_windows_with_any_match": {
+          "web": 0,
+          "textbook": 0,
+          "math": 0,
+          "code": 0
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "checked_utc": "2026-10-26T13:54:07.086991+00:00",
+  "commands": [
+    {
+      "command": "python3 scripts/check_active_now.py",
+      "exit_code": 0,
+      "log": "verification/active-now-final.log",
+      "log_sha256": "4acc14c05985045df6210d5cf475125c4decaedaafae1c6c863af5964cc369f8"
+    },
+    {
+      "command": "python3 scripts/check_docs_integrity.py",
+      "exit_code": 0,
+      "log": "verification/docs-integrity-final.log",
+      "log_sha256": "38904305ae0220383dec54aa06b915e9ca453dfdd6f963bf6e6a4337120207cf"
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0,
+      "log": "verification/diff-check-final.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

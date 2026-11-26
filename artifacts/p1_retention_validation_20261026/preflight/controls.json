@@ -1,0 +1,2188 @@
+{
+  "input_hashes": {
+    "annotation_lock.json": "db7f8ef86b95b6ed9c4318484b236c7a936775dfae31f34c51f60ffc2cbcd109",
+    "sources.json": "0a8d45569f8bcec8e387c0ed7db94c6dd4f9f636b6679cf4126ab3fc1893c628",
+    "annotations_a.json": "fa4b74e0447043f673f19bbf5fbe6baea7d6a23ae46ecd5b98d593ebde318cc0",
+    "annotations_b.json": "a6a3be5c1c3ffd131d8356d1164cc3979000c4bcc967c6c6ff8a327779a49297",
+    "gold.json": "14899430ba5f2e4cf1c32cace97a4f1a82d1e2b8d050aee5d7a23ddd9f67e6c9",
+    "annotation_a_process.md": "82e397378154e93a8457e8d78514128d1face31a8e4423046d7ee8d8c3b84a32",
+    "annotation_b_process.md": "623b53bfb59864dfe1976cb3be3f47abf5fbc88c82691cba382352173f63050b",
+    "adjudication.md": "b91297440e3131d50e405165eef5b32207255ede09e88b16b31a4bc29cb082b6",
+    "annotation_rubric.md": "01d1781a620e8a1d42018715569b4eb5571b4bca04741982bcc98c7a0bc27657",
+    "authoring.md": "15879defc0cdad00135ceaaaba7982edc78c3ad75369450d4b1219f62f876523",
+    "protocol.md": "948a6d0c4eb94007321f91b7404f331f04a4143fd1503e56822b58a2a5631a42",
+    "implementation_lock.json": "11a2b93a610d857dc268626f47aecda047bfc2cccb5d6e79ae18b3be13b5c031"
+  },
+  "primary_oracle": {
+    "cases": 24,
+    "fields": 120,
+    "metrics": {
+      "raw": {
+        "fields": 120,
+        "state_correct": 120,
+        "normalized_content_correct": 120,
+        "exact_evidence_aligned": 120,
+        "grounded_exact_correct": 120,
+        "complete_evidence_exact_correct": 120,
+        "emitted_asserted_fields": 80,
+        "asserted_state_or_content_mismatch": 0,
+        "asserted_exact_evidence_mismatch": 0,
+        "asserted_exact_field_mismatch": 0,
+        "gold_asserted_fields": 80,
+        "correct_asserted_fields": 80,
+        "gold_conflict_fields": 4,
+        "conflict_state_recalled": 4,
+        "conflict_exact_recalled": 4,
+        "state_accuracy": 1.0,
+        "normalized_content_accuracy": 1.0,
+        "grounded_exact_field_accuracy": 1.0,
+        "complete_evidence_exact_field_accuracy": 1.0,
+        "conflict_state_recall": 1.0,
+        "conflict_exact_recall": 1.0,
+        "state_confusion": {
+          "supported": {
+            "supported": 61
+          },
+          "absent": {
+            "absent": 19
+          },
+          "uncertain": {
+            "uncertain": 16
+          },
+          "conflicting": {
+            "conflicting": 4
+          },
+          "missing": {
+            "missing": 20
+          }
+        }
+      },
+      "checked": {
+        "fields": 120,
+        "state_correct": 120,
+        "normalized_content_correct": 120,
+        "exact_evidence_aligned": 120,
+        "grounded_exact_correct": 120,
+        "complete_evidence_exact_correct": 120,
+        "emitted_asserted_fields": 80,
+        "asserted_state_or_content_mismatch": 0,
+        "asserted_exact_evidence_mismatch": 0,
+        "asserted_exact_field_mismatch": 0,
+        "gold_asserted_fields": 80,
+        "correct_asserted_fields": 80,
+        "gold_conflict_fields": 4,
+        "conflict_state_recalled": 4,
+        "conflict_exact_recalled": 4,
+        "state_accuracy": 1.0,
+        "normalized_content_accuracy": 1.0,
+        "grounded_exact_field_accuracy": 1.0,
+        "complete_evidence_exact_field_accuracy": 1.0,
+        "conflict_state_recall": 1.0,
+        "conflict_exact_recall": 1.0,
+        "state_confusion": {
+          "supported": {
+            "supported": 61
+          },
+          "absent": {
+            "absent": 19
+          },
+          "uncertain": {
+            "uncertain": 16
+          },
+          "conflicting": {
+            "conflicting": 4
+          },
+          "missing": {
+            "missing": 20
+          }
+        }
+      }
+    },
+    "by_field": {
+      "allergy": {
+        "raw": {
+          "fields": 24,
+          "state_accuracy": 1.0,
+          "grounded_exact_field_accuracy": 1.0
+        },
+        "checked": {
+          "fields": 24,
+          "state_accuracy": 1.0,
+          "grounded_exact_field_accuracy": 1.0
+        }
+      },
+      "chief_complaint": {
+        "raw": {
+          "fields": 24,
+          "state_accuracy": 1.0,
+          "grounded_exact_field_accuracy": 1.0
+        },
+        "checked": {
+          "fields": 24,
+          "state_accuracy": 1.0,
+          "grounded_exact_field_accuracy": 1.0
+        }
+      },
+      "duration": {
+        "raw": {
+          "fields": 24,
+          "state_accuracy": 1.0,
+          "grounded_exact_field_accuracy": 1.0
+        },
+        "checked": {
+          "fields": 24,
+          "state_accuracy": 1.0,
+          "grounded_exact_field_accuracy": 1.0
+        }
+      },
+      "medication": {
+        "raw": {
+          "fields": 24,
+          "state_accuracy": 1.0,
+          "grounded_exact_field_accuracy": 1.0
+        },
+        "checked": {
+          "fields": 24,
+          "state_accuracy": 1.0,
+          "grounded_exact_field_accuracy": 1.0
+        }
+      },
+      "severity": {
+        "raw": {
+          "fields": 24,
+          "state_accuracy": 1.0,
+          "grounded_exact_field_accuracy": 1.0
+        },
+        "checked": {
+          "fields": 24,
+          "state_accuracy": 1.0,
+          "grounded_exact_field_accuracy": 1.0
+        }
+      }
+    },
+    "by_stratum": {
+      "corrections and unresolved conflicts": {
+        "raw": {
+          "fields": 20,
+          "state_accuracy": 1.0,
+          "grounded_exact_field_accuracy": 1.0
+        },
+        "checked": {
+          "fields": 20,
+          "state_accuracy": 1.0,
+          "grounded_exact_field_accuracy": 1.0
+        }
+      },
+      "field-local uncertainty": {
+        "raw": {
+          "fields": 20,
+          "state_accuracy": 1.0,
+          "grounded_exact_field_accuracy": 1.0
+        },
+        "checked": {
+          "fields": 20,
+          "state_accuracy": 1.0,
+          "grounded_exact_field_accuracy": 1.0
+        }
+      },
+      "irrelevant history/other speakers": {
+        "raw": {
+          "fields": 20,
+          "state_accuracy": 1.0,
+          "grounded_exact_field_accuracy": 1.0
+        },
+        "checked": {
+          "fields": 20,
+          "state_accuracy": 1.0,
+          "grounded_exact_field_accuracy": 1.0
+        }
+      },
+      "medication/allergy scope": {
+        "raw": {
+          "fields": 20,
+          "state_accuracy": 1.0,
+          "grounded_exact_field_accuracy": 1.0
+        },
+        "checked": {
+          "fields": 20,
+          "state_accuracy": 1.0,
+          "grounded_exact_field_accuracy": 1.0
+        }
+      },
+      "missing/compound requests": {
+        "raw": {
+          "fields": 20,
+          "state_accuracy": 1.0,
+          "grounded_exact_field_accuracy": 1.0
+        },
+        "checked": {
+          "fields": 20,
+          "state_accuracy": 1.0,
+          "grounded_exact_field_accuracy": 1.0
+        }
+      },
+      "ordinary current-fact replies": {
+        "raw": {
+          "fields": 20,
+          "state_accuracy": 1.0,
+          "grounded_exact_field_accuracy": 1.0
+        },
+        "checked": {
+          "fields": 20,
+          "state_accuracy": 1.0,
+          "grounded_exact_field_accuracy": 1.0
+        }
+      }
+    },
+    "final_note": {
+      "emitted_asserted_fields": 0,
+      "asserted_state_or_content_mismatch": 0,
+      "asserted_exact_field_mismatch": 0,
+      "gold_asserted_fields": 80,
+      "correct_asserted_fields_emitted": 0
+    },
+    "paired_changes": {
+      "exact_fields_salvaged": 0,
+      "exact_fields_lost": 0,
+      "correct_asserted_fields_lost": 0,
+      "correct_asserted_fields_salvaged": 0,
+      "correct_asserted_fields_retained": 80,
+      "asserted_normalized_content_mismatches_removed": 0,
+      "asserted_normalized_content_mismatches_introduced": 0,
+      "asserted_exact_mismatches_removed": 0,
+      "asserted_exact_mismatches_introduced": 0
+    },
+    "malformed_raw_cases": 0,
+    "checked_inference_failure_cases": 0,
+    "gold_usable_cases": 24,
+    "whole_note_abstention_with_gold_usable_content": 0,
+    "whole_note_abstention_with_gold_usable_content_rate": 0.0,
+    "definitions": {
+      "state_accuracy": "Correct state; all fields of malformed/missing outputs count incorrect.",
+      "normalized_content_accuracy": "Correct state and, for S, normalized first annotated value; span boundaries ignored.",
+      "grounded_exact_field_accuracy": "Correct normalized content plus at least one exact annotated span for S/A or every annotated span for C; U/M need only the state.",
+      "complete_evidence_exact_field_accuracy": "Correct normalized content and identical complete evidence sets, including U/C evidence.",
+      "checked": "Checked extraction scores precede note withholding; final_note separately measures actually emitted claims.",
+      "asserted_exact_field_mismatch": "Exact annotation mismatch, not an adjudicated clinical error count.",
+      "whole_note_abstention": "ABSTAIN disposition on a source with at least one gold S/A; it does not establish the safety of a draft.",
+      "independence": "Agent annotation independence must be documented separately; not human or clinician evaluation."
+    }
+  },
+  "primary_all_missing": {
+    "cases": 24,
+    "fields": 120,
+    "metrics": {
+      "raw": {
+        "fields": 120,
+        "state_correct": 20,
+        "normalized_content_correct": 20,
+        "exact_evidence_aligned": 20,
+        "grounded_exact_correct": 20,
+        "complete_evidence_exact_correct": 20,
+        "emitted_asserted_fields": 0,
+        "asserted_state_or_content_mismatch": 0,
+        "asserted_exact_evidence_mismatch": 0,
+        "asserted_exact_field_mismatch": 0,
+        "gold_asserted_fields": 80,
+        "correct_asserted_fields": 0,
+        "gold_conflict_fields": 4,
+        "conflict_state_recalled": 0,
+        "conflict_exact_recalled": 0,
+        "state_accuracy": 0.16666666666666666,
+        "normalized_content_accuracy": 0.16666666666666666,
+        "grounded_exact_field_accuracy": 0.16666666666666666,
+        "complete_evidence_exact_field_accuracy": 0.16666666666666666,
+        "conflict_state_recall": 0.0,
+        "conflict_exact_recall": 0.0,
+        "state_confusion": {
+          "supported": {
+            "missing": 61
+          },
+          "absent": {
+            "missing": 19
+          },
+          "uncertain": {
+            "missing": 16
+          },
+          "conflicting": {
+            "missing": 4
+          },
+          "missing": {
+            "missing": 20
+          }
+        }
+      },
+      "checked": {
+        "fields": 120,
+        "state_correct": 20,
+        "normalized_content_correct": 20,
+        "exact_evidence_aligned": 20,
+        "grounded_exact_correct": 20,
+        "complete_evidence_exact_correct": 20,
+        "emitted_asserted_fields": 0,
+        "asserted_state_or_content_mismatch": 0,
+        "asserted_exact_evidence_mismatch": 0,
+        "asserted_exact_field_mismatch": 0,
+        "gold_asserted_fields": 80,
+        "correct_asserted_fields": 0,
+        "gold_conflict_fields": 4,
+        "conflict_state_recalled": 0,
+        "conflict_exact_recalled": 0,
+        "state_accuracy": 0.16666666666666666,
+        "normalized_content_accuracy": 0.16666666666666666,
+        "grounded_exact_field_accuracy": 0.16666666666666666,
+        "complete_evidence_exact_field_accuracy": 0.16666666666666666,
+        "conflict_state_recall": 0.0,
+        "conflict_exact_recall": 0.0,
+        "state_confusion": {
+          "supported": {
+            "missing": 61
+          },
+          "absent": {
+            "missing": 19
+          },
+          "uncertain": {
+            "missing": 16
+          },
+          "conflicting": {
+            "missing": 4
+          },
+          "missing": {
+            "missing": 20
+          }
+        }
+      }
+    },
+    "by_field": {
+      "allergy": {
+        "raw": {
+          "fields": 24,
+          "state_accuracy": 0.20833333333333334,
+          "grounded_exact_field_accuracy": 0.20833333333333334
+        },
+        "checked": {
+          "fields": 24,
+          "state_accuracy": 0.20833333333333334,
+          "grounded_exact_field_accuracy": 0.20833333333333334
+        }
+      },
+      "chief_complaint": {
+        "raw": {
+          "fields": 24,
+          "state_accuracy": 0.0,
+          "grounded_exact_field_accuracy": 0.0
+        },
+        "checked": {
+          "fields": 24,
+          "state_accuracy": 0.0,
+          "grounded_exact_field_accuracy": 0.0
+        }
+      },
+      "duration": {
+        "raw": {
+          "fields": 24,
+          "state_accuracy": 0.16666666666666666,
+          "grounded_exact_field_accuracy": 0.16666666666666666
+        },
+        "checked": {
+          "fields": 24,
+          "state_accuracy": 0.16666666666666666,
+          "grounded_exact_field_accuracy": 0.16666666666666666
+        }
+      },
+      "medication": {
+        "raw": {
+          "fields": 24,
+          "state_accuracy": 0.20833333333333334,
+          "grounded_exact_field_accuracy": 0.20833333333333334
+        },
+        "checked": {
+          "fields": 24,
+          "state_accuracy": 0.20833333333333334,
+          "grounded_exact_field_accuracy": 0.20833333333333334
+        }
+      },
+      "severity": {
+        "raw": {
+          "fields": 24,
+          "state_accuracy": 0.25,
+          "grounded_exact_field_accuracy": 0.25
+        },
+        "checked": {
+          "fields": 24,
+          "state_accuracy": 0.25,
+          "grounded_exact_field_accuracy": 0.25
+        }
+      }
+    },
+    "by_stratum": {
+      "corrections and unresolved conflicts": {
+        "raw": {
+          "fields": 20,
+          "state_accuracy": 0.05,
+          "grounded_exact_field_accuracy": 0.05
+        },
+        "checked": {
+          "fields": 20,
+          "state_accuracy": 0.05,
+          "grounded_exact_field_accuracy": 0.05
+        }
+      },
+      "field-local uncertainty": {
+        "raw": {
+          "fields": 20,
+          "state_accuracy": 0.0,
+          "grounded_exact_field_accuracy": 0.0
+        },
+        "checked": {
+          "fields": 20,
+          "state_accuracy": 0.0,
+          "grounded_exact_field_accuracy": 0.0
+        }
+      },
+      "irrelevant history/other speakers": {
+        "raw": {
+          "fields": 20,
+          "state_accuracy": 0.45,
+          "grounded_exact_field_accuracy": 0.45
+        },
+        "checked": {
+          "fields": 20,
+          "state_accuracy": 0.45,
+          "grounded_exact_field_accuracy": 0.45
+        }
+      },
+      "medication/allergy scope": {
+        "raw": {
+          "fields": 20,
+          "state_accuracy": 0.0,
+          "grounded_exact_field_accuracy": 0.0
+        },
+        "checked": {
+          "fields": 20,
+          "state_accuracy": 0.0,
+          "grounded_exact_field_accuracy": 0.0
+        }
+      },
+      "missing/compound requests": {
+        "raw": {
+          "fields": 20,
+          "state_accuracy": 0.5,
+          "grounded_exact_field_accuracy": 0.5
+        },
+        "checked": {
+          "fields": 20,
+          "state_accuracy": 0.5,
+          "grounded_exact_field_accuracy": 0.5
+        }
+      },
+      "ordinary current-fact replies": {
+        "raw": {
+          "fields": 20,
+          "state_accuracy": 0.0,
+          "grounded_exact_field_accuracy": 0.0
+        },
+        "checked": {
+          "fields": 20,
+          "state_accuracy": 0.0,
+          "grounded_exact_field_accuracy": 0.0
+        }
+      }
+    },
+    "final_note": {
+      "emitted_asserted_fields": 0,
+      "asserted_state_or_content_mismatch": 0,
+      "asserted_exact_field_mismatch": 0,
+      "gold_asserted_fields": 80,
+      "correct_asserted_fields_emitted": 0
+    },
+    "paired_changes": {
+      "exact_fields_salvaged": 0,
+      "exact_fields_lost": 0,
+      "correct_asserted_fields_lost": 0,
+      "correct_asserted_fields_salvaged": 0,
+      "correct_asserted_fields_retained": 0,
+      "asserted_normalized_content_mismatches_removed": 0,
+      "asserted_normalized_content_mismatches_introduced": 0,
+      "asserted_exact_mismatches_removed": 0,
+      "asserted_exact_mismatches_introduced": 0
+    },
+    "malformed_raw_cases": 0,
+    "checked_inference_failure_cases": 0,
+    "gold_usable_cases": 24,
+    "whole_note_abstention_with_gold_usable_content": 0,
+    "whole_note_abstention_with_gold_usable_content_rate": 0.0,
+    "definitions": {
+      "state_accuracy": "Correct state; all fields of malformed/missing outputs count incorrect.",
+      "normalized_content_accuracy": "Correct state and, for S, normalized first annotated value; span boundaries ignored.",
+      "grounded_exact_field_accuracy": "Correct normalized content plus at least one exact annotated span for S/A or every annotated span for C; U/M need only the state.",
+      "complete_evidence_exact_field_accuracy": "Correct normalized content and identical complete evidence sets, including U/C evidence.",
+      "checked": "Checked extraction scores precede note withholding; final_note separately measures actually emitted claims.",
+      "asserted_exact_field_mismatch": "Exact annotation mismatch, not an adjudicated clinical error count.",
+      "whole_note_abstention": "ABSTAIN disposition on a source with at least one gold S/A; it does not establish the safety of a draft.",
+      "independence": "Agent annotation independence must be documented separately; not human or clinician evaluation."
+    }
+  },
+  "field_state_counts": {
+    "chief_complaint": {
+      "supported": 22,
+      "uncertain": 1,
+      "conflicting": 1
+    },
+    "duration": {
+      "supported": 16,
+      "uncertain": 3,
+      "conflicting": 1,
+      "missing": 4
+    },
+    "severity": {
+      "supported": 14,
+      "uncertain": 3,
+      "conflicting": 1,
+      "missing": 6
+    },
+    "medication": {
+      "supported": 5,
+      "absent": 9,
+      "uncertain": 4,
+      "conflicting": 1,
+      "missing": 5
+    },
+    "allergy": {
+      "absent": 10,
+      "supported": 4,
+      "uncertain": 5,
+      "missing": 5
+    }
+  },
+  "contract_transport_errors": [
+    {
+      "case_id": "retain-01",
+      "field": "allergy",
+      "error": "$.evidence: absent fields require an explicit denial for that field [absence_without_denial]"
+    },
+    {
+      "case_id": "retain-02",
+      "field": "medication",
+      "error": "$.evidence: absent fields require an explicit denial for that field [absence_without_denial]"
+    },
+    {
+      "case_id": "retain-03",
+      "field": "allergy",
+      "error": "$.evidence: absent fields require an explicit denial for that field [absence_without_denial]"
+    },
+    {
+      "case_id": "retain-04",
+      "field": "medication",
+      "error": "$.evidence: absent fields require an explicit denial for that field [absence_without_denial]"
+    },
+    {
+      "case_id": "retain-04",
+      "field": "allergy",
+      "error": "$.evidence: absent fields require an explicit denial for that field [absence_without_denial]"
+    },
+    {
+      "case_id": "retain-09",
+      "field": "medication",
+      "error": "$.evidence: absent fields require an explicit denial for that field [absence_without_denial]"
+    },
+    {
+      "case_id": "retain-09",
+      "field": "allergy",
+      "error": "$.evidence: absent fields require an explicit denial for that field [absence_without_denial]"
+    },
+    {
+      "case_id": "retain-10",
+      "field": "allergy",
+      "error": "$.evidence: absent fields require an explicit denial for that field [absence_without_denial]"
+    },
+    {
+      "case_id": "retain-11",
+      "field": "medication",
+      "error": "$.evidence: absent fields require an explicit denial for that field [absence_without_denial]"
+    },
+    {
+      "case_id": "retain-12",
+      "field": "allergy",
+      "error": "$.evidence: absent fields require an explicit denial for that field [absence_without_denial]"
+    },
+    {
+      "case_id": "retain-13",
+      "field": "medication",
+      "error": "$.evidence: absent fields require an explicit denial for that field [absence_without_denial]"
+    },
+    {
+      "case_id": "retain-13",
+      "field": "allergy",
+      "error": "$.evidence: absent fields require an explicit denial for that field [absence_without_denial]"
+    },
+    {
+      "case_id": "retain-14",
+      "field": "allergy",
+      "error": "$.evidence: absent fields require an explicit denial for that field [absence_without_denial]"
+    },
+    {
+      "case_id": "retain-15",
+      "field": "medication",
+      "error": "$.evidence: absent fields require an explicit denial for that field [absence_without_denial]"
+    },
+    {
+      "case_id": "retain-17",
+      "field": "medication",
+      "error": "$.evidence: absent fields require an explicit denial for that field [absence_without_denial]"
+    },
+    {
+      "case_id": "retain-17",
+      "field": "allergy",
+      "error": "$.evidence: absent fields require an explicit denial for that field [absence_without_denial]"
+    },
+    {
+      "case_id": "retain-21",
+      "field": "medication",
+      "error": "$.evidence: absent fields require an explicit denial for that field [absence_without_denial]"
+    },
+    {
+      "case_id": "retain-23",
+      "field": "medication",
+      "error": "$.evidence: absent fields require an explicit denial for that field [absence_without_denial]"
+    },
+    {
+      "case_id": "retain-24",
+      "field": "allergy",
+      "error": "$.evidence: absent fields require an explicit denial for that field [absence_without_denial]"
+    }
+  ],
+  "secondary_transportable_case_count": 9,
+  "secondary_transportable_oracle": {
+    "schema_version": "nano.evaluation.v0",
+    "solver": {
+      "solver_id": "control/annotation-oracle",
+      "kind": "reference",
+      "version": "0",
+      "parameter_count": null,
+      "artifact_bytes": null
+    },
+    "quality": {
+      "items": 9,
+      "fields": 45,
+      "inference_success_count": 9,
+      "inference_success_rate": 1.0,
+      "contract_valid_output_count": 9,
+      "contract_valid_output_rate": 1.0,
+      "exact_field_count": 45,
+      "exact_field_accuracy": 1.0,
+      "normalized_field_count": 45,
+      "normalized_field_accuracy": 1.0,
+      "grounded_exact_field_count": 45,
+      "grounded_exact_field_accuracy": 1.0,
+      "grounded_normalized_field_count": 45,
+      "grounded_normalized_field_accuracy": 1.0,
+      "state_correct_count": 45,
+      "state_accuracy": 1.0,
+      "presented_field_count": 19,
+      "coverage": 0.4222222222222222,
+      "presented_content_correct_count": 19,
+      "content_selective_accuracy": 1.0,
+      "presented_correct_count": 19,
+      "selective_accuracy": 1.0,
+      "normalized_presented_content_correct_count": 19,
+      "normalized_content_selective_accuracy": 1.0,
+      "normalized_presented_correct_count": 19,
+      "normalized_selective_accuracy": 1.0,
+      "false_presented_count": 0,
+      "false_presented_rate": 0.0,
+      "intentional_abstention_count": 26,
+      "intentional_abstention_rate": 0.5777777777777777,
+      "failed_inference_field_count": 0,
+      "assertion_grounded_count": 19,
+      "assertion_grounded_rate": 1.0,
+      "evidence_required_field_count": 20,
+      "evidence_aligned_field_count": 20,
+      "evidence_alignment_rate": 1.0,
+      "contract_evidence_span_count": 36,
+      "contract_evidence_span_valid_count": 36,
+      "contract_evidence_span_valid_rate": 1.0,
+      "by_field": {
+        "chief_complaint": {
+          "exact": 9,
+          "normalized": 9,
+          "grounded_exact": 9,
+          "grounded_normalized": 9,
+          "state_correct": 9,
+          "evidence_aligned": 8,
+          "evidence_required": 8,
+          "total": 9,
+          "exact_accuracy": 1.0,
+          "normalized_accuracy": 1.0,
+          "grounded_exact_accuracy": 1.0,
+          "grounded_normalized_accuracy": 1.0,
+          "state_accuracy": 1.0,
+          "evidence_alignment_rate": 1.0
+        },
+        "duration": {
+          "exact": 9,
+          "normalized": 9,
+          "grounded_exact": 9,
+          "grounded_normalized": 9,
+          "state_correct": 9,
+          "evidence_aligned": 4,
+          "evidence_required": 4,
+          "total": 9,
+          "exact_accuracy": 1.0,
+          "normalized_accuracy": 1.0,
+          "grounded_exact_accuracy": 1.0,
+          "grounded_normalized_accuracy": 1.0,
+          "state_accuracy": 1.0,
+          "evidence_alignment_rate": 1.0
+        },
+        "severity": {
+          "exact": 9,
+          "normalized": 9,
+          "grounded_exact": 9,
+          "grounded_normalized": 9,
+          "state_correct": 9,
+          "evidence_aligned": 3,
+          "evidence_required": 3,
+          "total": 9,
+          "exact_accuracy": 1.0,
+          "normalized_accuracy": 1.0,
+          "grounded_exact_accuracy": 1.0,
+          "grounded_normalized_accuracy": 1.0,
+          "state_accuracy": 1.0,
+          "evidence_alignment_rate": 1.0
+        },
+        "medication": {
+          "exact": 9,
+          "normalized": 9,
+          "grounded_exact": 9,
+          "grounded_normalized": 9,
+          "state_correct": 9,
+          "evidence_aligned": 2,
+          "evidence_required": 2,
+          "total": 9,
+          "exact_accuracy": 1.0,
+          "normalized_accuracy": 1.0,
+          "grounded_exact_accuracy": 1.0,
+          "grounded_normalized_accuracy": 1.0,
+          "state_accuracy": 1.0,
+          "evidence_alignment_rate": 1.0
+        },
+        "allergy": {
+          "exact": 9,
+          "normalized": 9,
+          "grounded_exact": 9,
+          "grounded_normalized": 9,
+          "state_correct": 9,
+          "evidence_aligned": 3,
+          "evidence_required": 3,
+          "total": 9,
+          "exact_accuracy": 1.0,
+          "normalized_accuracy": 1.0,
+          "grounded_exact_accuracy": 1.0,
+          "grounded_normalized_accuracy": 1.0,
+          "state_accuracy": 1.0,
+          "evidence_alignment_rate": 1.0
+        }
+      },
+      "state_confusion": {
+        "supported": {
+          "supported": 19,
+          "absent": 0,
+          "missing": 0,
+          "uncertain": 0,
+          "conflicting": 0
+        },
+        "absent": {
+          "supported": 0,
+          "absent": 0,
+          "missing": 0,
+          "uncertain": 0,
+          "conflicting": 0
+        },
+        "missing": {
+          "supported": 0,
+          "absent": 0,
+          "missing": 12,
+          "uncertain": 0,
+          "conflicting": 0
+        },
+        "uncertain": {
+          "supported": 0,
+          "absent": 0,
+          "missing": 0,
+          "uncertain": 13,
+          "conflicting": 0
+        },
+        "conflicting": {
+          "supported": 0,
+          "absent": 0,
+          "missing": 0,
+          "uncertain": 0,
+          "conflicting": 1
+        }
+      },
+      "held_seen": null,
+      "paired_robustness": null
+    },
+    "failures": {
+      "count": 0,
+      "rate": 0.0,
+      "by_category": {
+        "invalid_request": 0,
+        "invalid_solver": 0,
+        "solver_exception": 0,
+        "invalid_output_type": 0,
+        "invalid_diagnostics": 0,
+        "solver_id_mismatch": 0,
+        "contract_violation": 0
+      },
+      "synthetic_abstentions_created": 0
+    },
+    "operational": {
+      "latency_measured": false,
+      "inference_latency_ms_p50": null,
+      "inference_latency_ms_p95": null,
+      "cold_load_ms": null,
+      "parameter_count": null,
+      "artifact_bytes": null,
+      "peak_memory_bytes": null
+    },
+    "pipeline": {
+      "diagnostic_protocol_counts": {},
+      "raw_proposal": {
+        "available": false,
+        "protocol_version": null,
+        "items": 0,
+        "fields": 0,
+        "presented_field_count": 0,
+        "coverage": null,
+        "strict_content_correct_count": 0,
+        "strict_content_selective_accuracy": null,
+        "strict_false_presented_count": 0,
+        "strict_false_presented_rate": null,
+        "normalized_content_correct_count": 0,
+        "normalized_content_selective_accuracy": null,
+        "normalized_false_presented_count": 0,
+        "normalized_false_presented_rate": null,
+        "native_abstention_count": 0,
+        "by_field": {
+          "chief_complaint": {
+            "presented": 0,
+            "exact_presented_correct": 0,
+            "normalized_presented_correct": 0,
+            "native_abstention": 0,
+            "total": 0,
+            "coverage": null,
+            "strict_content_selective_accuracy": null,
+            "normalized_content_selective_accuracy": null
+          },
+          "duration": {
+            "presented": 0,
+            "exact_presented_correct": 0,
+            "normalized_presented_correct": 0,
+            "native_abstention": 0,
+            "total": 0,
+            "coverage": null,
+            "strict_content_selective_accuracy": null,
+            "normalized_content_selective_accuracy": null
+          },
+          "severity": {
+            "presented": 0,
+            "exact_presented_correct": 0,
+            "normalized_presented_correct": 0,
+            "native_abstention": 0,
+            "total": 0,
+            "coverage": null,
+            "strict_content_selective_accuracy": null,
+            "normalized_content_selective_accuracy": null
+          },
+          "medication": {
+            "presented": 0,
+            "exact_presented_correct": 0,
+            "normalized_presented_correct": 0,
+            "native_abstention": 0,
+            "total": 0,
+            "coverage": null,
+            "strict_content_selective_accuracy": null,
+            "normalized_content_selective_accuracy": null
+          },
+          "allergy": {
+            "presented": 0,
+            "exact_presented_correct": 0,
+            "normalized_presented_correct": 0,
+            "native_abstention": 0,
+            "total": 0,
+            "coverage": null,
+            "strict_content_selective_accuracy": null,
+            "normalized_content_selective_accuracy": null
+          }
+        }
+      },
+      "verification": {
+        "decision_counts": {
+          "accepted_supported": 0,
+          "accepted_absent": 0,
+          "rejected_ungrounded": 0,
+          "rejected_unproven_absence": 0,
+          "preserved_conflict": 0,
+          "native_abstention": 0
+        },
+        "accepted_count": 0,
+        "rejected_count": 0,
+        "preserved_conflict_count": 0,
+        "native_abstention_count": 0,
+        "acceptance_rate_over_decisions": null
+      }
+    },
+    "items": [
+      {
+        "case_id": "retain-05",
+        "partition": "development",
+        "status": "ok",
+        "failure": null,
+        "output": {
+          "schema_version": "nano.scribe.v0",
+          "item_id": "retain-05",
+          "solver_id": "control/annotation-oracle",
+          "fields": [
+            {
+              "field": "chief_complaint",
+              "state": "supported",
+              "value": "headache across my forehead",
+              "evidence": [
+                {
+                  "start": 53,
+                  "end": 80,
+                  "text": "headache across my forehead",
+                  "speaker": "patient"
+                }
+              ]
+            },
+            {
+              "field": "duration",
+              "state": "uncertain",
+              "value": null,
+              "evidence": [
+                {
+                  "start": 132,
+                  "end": 198,
+                  "text": "Two days, or perhaps three. I can't pin down which day it started.",
+                  "speaker": "patient"
+                }
+              ]
+            },
+            {
+              "field": "severity",
+              "state": "uncertain",
+              "value": null,
+              "evidence": [
+                {
+                  "start": 235,
+                  "end": 295,
+                  "text": "I honestly can't decide whether to call it mild or moderate.",
+                  "speaker": "patient"
+                }
+              ]
+            },
+            {
+              "field": "medication",
+              "state": "supported",
+              "value": "acetaminophen",
+              "evidence": [
+                {
+                  "start": 355,
+                  "end": 368,
+                  "text": "Acetaminophen",
+                  "speaker": "patient"
+                }
+              ]
+            },
+            {
+              "field": "allergy",
+              "state": "uncertain",
+              "value": null,
+              "evidence": [
+                {
+                  "start": 441,
+                  "end": 477,
+                  "text": "I can't remember whether I have any.",
+                  "speaker": "patient"
+                }
+              ]
+            }
+          ]
+        },
+        "diagnostics": null,
+        "field_results": [
+          {
+            "field": "chief_complaint",
+            "gold_state": "supported",
+            "gold_value": "headache across my forehead",
+            "predicted_state": "supported",
+            "predicted_value": "headache across my forehead",
+            "exact": true,
+            "normalized": true,
+            "grounded_exact": true,
+            "grounded_normalized": true,
+            "state_correct": true,
+            "evidence_aligned": true
+          },
+          {
+            "field": "duration",
+            "gold_state": "uncertain",
+            "gold_value": null,
+            "predicted_state": "uncertain",
+            "predicted_value": null,
+            "exact": true,
+            "normalized": true,
+            "grounded_exact": true,
+            "grounded_normalized": true,
+            "state_correct": true,
+            "evidence_aligned": null
+          },
+          {
+            "field": "severity",
+            "gold_state": "uncertain",
+            "gold_value": null,
+            "predicted_state": "uncertain",
+            "predicted_value": null,
+            "exact": true,
+            "normalized": true,
+            "grounded_exact": true,
+            "grounded_normalized": true,
+            "state_correct": true,
+            "evidence_aligned": null
+          },
+          {
+            "field": "medication",
+            "gold_state": "supported",
+            "gold_value": "acetaminophen",
+            "predicted_state": "supported",
+            "predicted_value": "acetaminophen",
+            "exact": true,
+            "normalized": true,
+            "grounded_exact": true,
+            "grounded_normalized": true,
+            "state_correct": true,
+            "evidence_aligned": true
+          },
+          {
+            "field": "allergy",
+            "gold_state": "uncertain",
+            "gold_value": null,
+            "predicted_state": "uncertain",
+            "predicted_value": null,
+            "exact": true,
+            "normalized": true,
+            "grounded_exact": true,
+            "grounded_normalized": true,
+            "state_correct": true,
+            "evidence_aligned": null
+          }
+        ]
+      },
+      {
+        "case_id": "retain-06",
+        "partition": "development",
+        "status": "ok",
+        "failure": null,
+        "output": {
+          "schema_version": "nano.scribe.v0",
+          "item_id": "retain-06",
+          "solver_id": "control/annotation-oracle",
+          "fields": [
+            {
+              "field": "chief_complaint",
+              "state": "uncertain",
+              "value": null,
+              "evidence": [
+                {
+                  "start": 43,
+                  "end": 93,
+                  "text": "I can't tell if it's an earache or pain in my jaw.",
+                  "speaker": "patient"
+                }
+              ]
+            },
+            {
+              "field": "duration",
+              "state": "supported",
+              "value": "four days ago",
+              "evidence": [
+                {
+                  "start": 154,
+                  "end": 167,
+                  "text": "Four days ago",
+                  "speaker": "patient"
+                }
+              ]
+            },
+            {
+              "field": "severity",
+              "state": "supported",
+              "value": "mild, but annoying",
+              "evidence": [
+                {
+                  "start": 211,
+                  "end": 229,
+                  "text": "Mild, but annoying",
+                  "speaker": "patient"
+                }
+              ]
+            },
+            {
+              "field": "medication",
+              "state": "uncertain",
+              "value": null,
+              "evidence": [
+                {
+                  "start": 271,
+                  "end": 359,
+                  "text": "I may have taken a tablet for it yesterday, but I can't remember whether I actually did.",
+                  "speaker": "patient"
+                }
+              ]
+            },
+            {
+              "field": "allergy",
+              "state": "supported",
+              "value": "latex",
+              "evidence": [
+                {
+                  "start": 426,
+                  "end": 431,
+                  "text": "latex",
+                  "speaker": "patient"
+                }
+              ]
+            }
+          ]
+        },
+        "diagnostics": null,
+        "field_results": [
+          {
+            "field": "chief_complaint",
+            "gold_state": "uncertain",
+            "gold_value": null,
+            "predicted_state": "uncertain",
+            "predicted_value": null,
+            "exact": true,
+            "normalized": true,
+            "grounded_exact": true,
+            "grounded_normalized": true,
+            "state_correct": true,
+            "evidence_aligned": null
+          },
+          {
+            "field": "duration",
+            "gold_state": "supported",
+            "gold_value": "four days ago",
+            "predicted_state": "supported",
+            "predicted_value": "four days ago",
+            "exact": true,
+            "normalized": true,
+            "grounded_exact": true,
+            "grounded_normalized": true,
+            "state_correct": true,
+            "evidence_aligned": true
+          },
+          {
+            "field": "severity",
+            "gold_state": "supported",
+            "gold_value": "mild, but annoying",
+            "predicted_state": "supported",
+            "predicted_value": "mild, but annoying",
+            "exact": true,
+            "normalized": true,
+            "grounded_exact": true,
+            "grounded_normalized": true,
+            "state_correct": true,
+            "evidence_aligned": true
+          },
+          {
+            "field": "medication",
+            "gold_state": "uncertain",
+            "gold_value": null,
+            "predicted_state": "uncertain",
+            "predicted_value": null,
+            "exact": true,
+            "normalized": true,
+            "grounded_exact": true,
+            "grounded_normalized": true,
+            "state_correct": true,
+            "evidence_aligned": null
+          },
+          {
+            "field": "allergy",
+            "gold_state": "supported",
+            "gold_value": "latex",
+            "predicted_state": "supported",
+            "predicted_value": "latex",
+            "exact": true,
+            "normalized": true,
+            "grounded_exact": true,
+            "grounded_normalized": true,
+            "state_correct": true,
+            "evidence_aligned": true
+          }
+        ]
+      },
+      {
+        "case_id": "retain-07",
+        "partition": "development",
+        "status": "ok",
+        "failure": null,
+        "output": {
+          "schema_version": "nano.scribe.v0",
+          "item_id": "retain-07",
+          "solver_id": "control/annotation-oracle",
+          "fields": [
+            {
+              "field": "chief_complaint",
+              "state": "supported",
+              "value": "dry cough",
+              "evidence": [
+                {
+                  "start": 46,
+                  "end": 55,
+                  "text": "dry cough",
+                  "speaker": "patient"
+                }
+              ]
+            },
+            {
+              "field": "duration",
+              "state": "uncertain",
+              "value": null,
+              "evidence": [
+                {
+                  "start": 119,
+                  "end": 148,
+                  "text": "I don't know when it started.",
+                  "speaker": "patient"
+                }
+              ]
+            },
+            {
+              "field": "severity",
+              "state": "supported",
+              "value": "three out of ten",
+              "evidence": [
+                {
+                  "start": 154,
+                  "end": 170,
+                  "text": "three out of ten",
+                  "speaker": "patient"
+                }
+              ]
+            },
+            {
+              "field": "medication",
+              "state": "uncertain",
+              "value": null,
+              "evidence": [
+                {
+                  "start": 250,
+                  "end": 325,
+                  "text": "I remember getting the syrup out, but I'm not sure whether I swallowed any.",
+                  "speaker": "patient"
+                }
+              ]
+            },
+            {
+              "field": "allergy",
+              "state": "uncertain",
+              "value": null,
+              "evidence": [
+                {
+                  "start": 382,
+                  "end": 423,
+                  "text": "I don't know my medicine allergy history.",
+                  "speaker": "patient"
+                }
+              ]
+            }
+          ]
+        },
+        "diagnostics": null,
+        "field_results": [
+          {
+            "field": "chief_complaint",
+            "gold_state": "supported",
+            "gold_value": "dry cough",
+            "predicted_state": "supported",
+            "predicted_value": "dry cough",
+            "exact": true,
+            "normalized": true,
+            "grounded_exact": true,
+            "grounded_normalized": true,
+            "state_correct": true,
+            "evidence_aligned": true
+          },
+          {
+            "field": "duration",
+            "gold_state": "uncertain",
+            "gold_value": null,
+            "predicted_state": "uncertain",
+            "predicted_value": null,
+            "exact": true,
+            "normalized": true,
+            "grounded_exact": true,
+            "grounded_normalized": true,
+            "state_correct": true,
+            "evidence_aligned": null
+          },
+          {
+            "field": "severity",
+            "gold_state": "supported",
+            "gold_value": "three out of ten",
+            "predicted_state": "supported",
+            "predicted_value": "three out of ten",
+            "exact": true,
+            "normalized": true,
+            "grounded_exact": true,
+            "grounded_normalized": true,
+            "state_correct": true,
+            "evidence_aligned": true
+          },
+          {
+            "field": "medication",
+            "gold_state": "uncertain",
+            "gold_value": null,
+            "predicted_state": "uncertain",
+            "predicted_value": null,
+            "exact": true,
+            "normalized": true,
+            "grounded_exact": true,
+            "grounded_normalized": true,
+            "state_correct": true,
+            "evidence_aligned": null
+          },
+          {
+            "field": "allergy",
+            "gold_state": "uncertain",
+            "gold_value": null,
+            "predicted_state": "uncertain",
+            "predicted_value": null,
+            "exact": true,
+            "normalized": true,
+            "grounded_exact": true,
+            "grounded_normalized": true,
+            "state_correct": true,
+            "evidence_aligned": null
+          }
+        ]
+      },
+      {
+        "case_id": "retain-08",
+        "partition": "development",
+        "status": "ok",
+        "failure": null,
+        "output": {
+          "schema_version": "nano.scribe.v0",
+          "item_id": "retain-08",
+          "solver_id": "control/annotation-oracle",
+          "fields": [
+            {
+              "field": "chief_complaint",
+              "state": "supported",
+              "value": "stomach cramps",
+              "evidence": [
+                {
+                  "start": 49,
+                  "end": 63,
+                  "text": "Stomach cramps",
+                  "speaker": "patient"
+                }
+              ]
+            },
+            {
+              "field": "duration",
+              "state": "supported",
+              "value": "evening before last",
+              "evidence": [
+                {
+                  "start": 74,
+                  "end": 97,
+                  "text": "the evening before last",
+                  "speaker": "patient"
+                }
+              ]
+            },
+            {
+              "field": "severity",
+              "state": "uncertain",
+              "value": null,
+              "evidence": [
+                {
+                  "start": 141,
+                  "end": 197,
+                  "text": "Somewhere between mild and moderate; I can't choose one.",
+                  "speaker": "patient"
+                }
+              ]
+            },
+            {
+              "field": "medication",
+              "state": "uncertain",
+              "value": null,
+              "evidence": [
+                {
+                  "start": 258,
+                  "end": 267,
+                  "text": "ibuprofen",
+                  "speaker": "patient"
+                },
+                {
+                  "start": 272,
+                  "end": 282,
+                  "text": "an antacid",
+                  "speaker": "patient"
+                }
+              ]
+            },
+            {
+              "field": "allergy",
+              "state": "uncertain",
+              "value": null,
+              "evidence": [
+                {
+                  "start": 372,
+                  "end": 382,
+                  "text": "penicillin",
+                  "speaker": "patient"
+                },
+                {
+                  "start": 387,
+                  "end": 392,
+                  "text": "latex",
+                  "speaker": "patient"
+                }
+              ]
+            }
+          ]
+        },
+        "diagnostics": null,
+        "field_results": [
+          {
+            "field": "chief_complaint",
+            "gold_state": "supported",
+            "gold_value": "stomach cramps",
+            "predicted_state": "supported",
+            "predicted_value": "stomach cramps",
+            "exact": true,
+            "normalized": true,
+            "grounded_exact": true,
+            "grounded_normalized": true,
+            "state_correct": true,
+            "evidence_aligned": true
+          },
+          {
+            "field": "duration",
+            "gold_state": "supported",
+            "gold_value": "evening before last",
+            "predicted_state": "supported",
+            "predicted_value": "evening before last",
+            "exact": true,
+            "normalized": true,
+            "grounded_exact": true,
+            "grounded_normalized": true,
+            "state_correct": true,
+            "evidence_aligned": true
+          },
+          {
+            "field": "severity",
+            "gold_state": "uncertain",
+            "gold_value": null,
+            "predicted_state": "uncertain",
+            "predicted_value": null,
+            "exact": true,
+            "normalized": true,
+            "grounded_exact": true,
+            "grounded_normalized": true,
+            "state_correct": true,
+            "evidence_aligned": null
+          },
+          {
+            "field": "medication",
+            "gold_state": "uncertain",
+            "gold_value": null,
+            "predicted_state": "uncertain",
+            "predicted_value": null,
+            "exact": true,
+            "normalized": true,
+            "grounded_exact": true,
+            "grounded_normalized": true,
+            "state_correct": true,
+            "evidence_aligned": null
+          },
+          {
+            "field": "allergy",
+            "gold_state": "uncertain",
+            "gold_value": null,
+            "predicted_state": "uncertain",
+            "predicted_value": null,
+            "exact": true,
+            "normalized": true,
+            "grounded_exact": true,
+            "grounded_normalized": true,
+            "state_correct": true,
+            "evidence_aligned": null
+          }
+        ]
+      },
+      {
+        "case_id": "retain-16",
+        "partition": "development",
+        "status": "ok",
+        "failure": null,
+        "output": {
+          "schema_version": "nano.scribe.v0",
+          "item_id": "retain-16",
+          "solver_id": "control/annotation-oracle",
+          "fields": [
+            {
+              "field": "chief_complaint",
+              "state": "supported",
+              "value": "runny nose",
+              "evidence": [
+                {
+                  "start": 54,
+                  "end": 64,
+                  "text": "runny nose",
+                  "speaker": "patient"
+                }
+              ]
+            },
+            {
+              "field": "duration",
+              "state": "supported",
+              "value": "six days",
+              "evidence": [
+                {
+                  "start": 82,
+                  "end": 90,
+                  "text": "six days",
+                  "speaker": "patient"
+                }
+              ]
+            },
+            {
+              "field": "severity",
+              "state": "conflicting",
+              "value": null,
+              "evidence": [
+                {
+                  "start": 136,
+                  "end": 167,
+                  "text": "It has been mild all day today.",
+                  "speaker": "patient"
+                },
+                {
+                  "start": 439,
+                  "end": 472,
+                  "text": "It has been severe all day today.",
+                  "speaker": "patient"
+                }
+              ]
+            },
+            {
+              "field": "medication",
+              "state": "supported",
+              "value": "saline spray",
+              "evidence": [
+                {
+                  "start": 214,
+                  "end": 226,
+                  "text": "saline spray",
+                  "speaker": "patient"
+                }
+              ]
+            },
+            {
+              "field": "allergy",
+              "state": "supported",
+              "value": "penicillin",
+              "evidence": [
+                {
+                  "start": 328,
+                  "end": 338,
+                  "text": "Penicillin",
+                  "speaker": "patient"
+                }
+              ]
+            }
+          ]
+        },
+        "diagnostics": null,
+        "field_results": [
+          {
+            "field": "chief_complaint",
+            "gold_state": "supported",
+            "gold_value": "runny nose",
+            "predicted_state": "supported",
+            "predicted_value": "runny nose",
+            "exact": true,
+            "normalized": true,
+            "grounded_exact": true,
+            "grounded_normalized": true,
+            "state_correct": true,
+            "evidence_aligned": true
+          },
+          {
+            "field": "duration",
+            "gold_state": "supported",
+            "gold_value": "six days",
+            "predicted_state": "supported",
+            "predicted_value": "six days",
+            "exact": true,
+            "normalized": true,
+            "grounded_exact": true,
+            "grounded_normalized": true,
+            "state_correct": true,
+            "evidence_aligned": true
+          },
+          {
+            "field": "severity",
+            "gold_state": "conflicting",
+            "gold_value": null,
+            "predicted_state": "conflicting",
+            "predicted_value": null,
+            "exact": true,
+            "normalized": true,
+            "grounded_exact": true,
+            "grounded_normalized": true,
+            "state_correct": true,
+            "evidence_aligned": true
+          },
+          {
+            "field": "medication",
+            "gold_state": "supported",
+            "gold_value": "saline spray",
+            "predicted_state": "supported",
+            "predicted_value": "saline spray",
+            "exact": true,
+            "normalized": true,
+            "grounded_exact": true,
+            "grounded_normalized": true,
+            "state_correct": true,
+            "evidence_aligned": true
+          },
+          {
+            "field": "allergy",
+            "gold_state": "supported",
+            "gold_value": "penicillin",
+            "predicted_state": "supported",
+            "predicted_value": "penicillin",
+            "exact": true,
+            "normalized": true,
+            "grounded_exact": true,
+            "grounded_normalized": true,
+            "state_correct": true,
+            "evidence_aligned": true
+          }
+        ]
+      },
+      {
+        "case_id": "retain-18",
+        "partition": "development",
+        "status": "ok",
+        "failure": null,
+        "output": {
+          "schema_version": "nano.scribe.v0",
+          "item_id": "retain-18",
+          "solver_id": "control/annotation-oracle",
+          "fields": [
+            {
+              "field": "chief_complaint",
+              "state": "supported",
+              "value": "numbness in my right hand",
+              "evidence": [
+                {
+                  "start": 44,
+                  "end": 69,
+                  "text": "Numbness in my right hand",
+                  "speaker": "patient"
+                }
+              ]
+            },
+            {
+              "field": "duration",
+              "state": "missing",
+              "value": null,
+              "evidence": []
+            },
+            {
+              "field": "severity",
+              "state": "missing",
+              "value": null,
+              "evidence": []
+            },
+            {
+              "field": "medication",
+              "state": "missing",
+              "value": null,
+              "evidence": []
+            },
+            {
+              "field": "allergy",
+              "state": "missing",
+              "value": null,
+              "evidence": []
+            }
+          ]
+        },
+        "diagnostics": null,
+        "field_results": [
+          {
+            "field": "chief_complaint",
+            "gold_state": "supported",
+            "gold_value": "numbness in my right hand",
+            "predicted_state": "supported",
+            "predicted_value": "numbness in my right hand",
+            "exact": true,
+            "normalized": true,
+            "grounded_exact": true,
+            "grounded_normalized": true,
+            "state_correct": true,
+            "evidence_aligned": true
+          },
+          {
+            "field": "duration",
+            "gold_state": "missing",
+            "gold_value": null,
+            "predicted_state": "missing",
+            "predicted_value": null,
+            "exact": true,
+            "normalized": true,
+            "grounded_exact": true,
+            "grounded_normalized": true,
+            "state_correct": true,
+            "evidence_aligned": null
+          },
+          {
+            "field": "severity",
+            "gold_state": "missing",
+            "gold_value": null,
+            "predicted_state": "missing",
+            "predicted_value": null,
+            "exact": true,
+            "normalized": true,
+            "grounded_exact": true,
+            "grounded_normalized": true,
+            "state_correct": true,
+            "evidence_aligned": null
+          },
+          {
+            "field": "medication",
+            "gold_state": "missing",
+            "gold_value": null,
+            "predicted_state": "missing",
+            "predicted_value": null,
+            "exact": true,
+            "normalized": true,
+            "grounded_exact": true,
+            "grounded_normalized": true,
+            "state_correct": true,
+            "evidence_aligned": null
+          },
+          {
+            "field": "allergy",
+            "gold_state": "missing",
+            "gold_value": null,
+            "predicted_state": "missing",
+            "predicted_value": null,
+            "exact": true,
+            "normalized": true,
+            "grounded_exact": true,
+            "grounded_normalized": true,
+            "state_correct": true,
+            "evidence_aligned": null
+          }
+        ]
+      },
+      {
+        "case_id": "retain-19",
+        "partition": "development",
+        "status": "ok",
+        "failure": null,
+        "output": {
+          "schema_version": "nano.scribe.v0",
+          "item_id": "retain-19",
+          "solver_id": "control/annotation-oracle",
+          "fields": [
+            {
+              "field": "chief_complaint",
+              "state": "supported",
+              "value": "scratchy throat",
+              "evidence": [
+                {
+                  "start": 125,
+                  "end": 140,
+                  "text": "scratchy throat",
+                  "speaker": "patient"
+                }
+              ]
+            },
+            {
+              "field": "duration",
+              "state": "missing",
+              "value": null,
+              "evidence": []
+            },
+            {
+              "field": "severity",
+              "state": "missing",
+              "value": null,
+              "evidence": []
+            },
+            {
+              "field": "medication",
+              "state": "missing",
+              "value": null,
+              "evidence": []
+            },
+            {
+              "field": "allergy",
+              "state": "uncertain",
+              "value": null,
+              "evidence": [
+                {
+                  "start": 437,
+                  "end": 527,
+                  "text": "I can't tell you whether I'm allergic to penicillin; my family gave me different accounts.",
+                  "speaker": "patient"
+                }
+              ]
+            }
+          ]
+        },
+        "diagnostics": null,
+        "field_results": [
+          {
+            "field": "chief_complaint",
+            "gold_state": "supported",
+            "gold_value": "scratchy throat",
+            "predicted_state": "supported",
+            "predicted_value": "scratchy throat",
+            "exact": true,
+            "normalized": true,
+            "grounded_exact": true,
+            "grounded_normalized": true,
+            "state_correct": true,
+            "evidence_aligned": true
+          },
+          {
+            "field": "duration",
+            "gold_state": "missing",
+            "gold_value": null,
+            "predicted_state": "missing",
+            "predicted_value": null,
+            "exact": true,
+            "normalized": true,
+            "grounded_exact": true,
+            "grounded_normalized": true,
+            "state_correct": true,
+            "evidence_aligned": null
+          },
+          {
+            "field": "severity",
+            "gold_state": "missing",
+            "gold_value": null,
+            "predicted_state": "missing",
+            "predicted_value": null,
+            "exact": true,
+            "normalized": true,
+            "grounded_exact": true,
+            "grounded_normalized": true,
+            "state_correct": true,
+            "evidence_aligned": null
+          },
+          {
+            "field": "medication",
+            "gold_state": "missing",
+            "gold_value": null,
+            "predicted_state": "missing",
+            "predicted_value": null,
+            "exact": true,
+            "normalized": true,
+            "grounded_exact": true,
+            "grounded_normalized": true,
+            "state_correct": true,
+            "evidence_aligned": null
+          },
+          {
+            "field": "allergy",
+            "gold_state": "uncertain",
+            "gold_value": null,
+            "predicted_state": "uncertain",
+            "predicted_value": null,
+            "exact": true,
+            "normalized": true,
+            "grounded_exact": true,
+            "grounded_normalized": true,
+            "state_correct": true,
+            "evidence_aligned": null
+          }
+        ]
+      },
+      {
+        "case_id": "retain-20",
+        "partition": "development",
+        "status": "ok",
+        "failure": null,
+        "output": {
+          "schema_version": "nano.scribe.v0",
+          "item_id": "retain-20",
+          "solver_id": "control/annotation-oracle",
+          "fields": [
+            {
+              "field": "chief_complaint",
+              "state": "supported",
+              "value": "dizzy",
+              "evidence": [
+                {
+                  "start": 64,
+                  "end": 69,
+                  "text": "dizzy",
+                  "speaker": "patient"
+                }
+              ]
+            },
+            {
+              "field": "duration",
+              "state": "supported",
+              "value": "since this morning",
+              "evidence": [
+                {
+                  "start": 70,
+                  "end": 88,
+                  "text": "since this morning",
+                  "speaker": "patient"
+                }
+              ]
+            },
+            {
+              "field": "severity",
+              "state": "uncertain",
+              "value": null,
+              "evidence": [
+                {
+                  "start": 135,
+                  "end": 206,
+                  "text": "I find it hard to judge. I can't put it into mild, moderate, or severe.",
+                  "speaker": "patient"
+                }
+              ]
+            },
+            {
+              "field": "medication",
+              "state": "missing",
+              "value": null,
+              "evidence": []
+            },
+            {
+              "field": "allergy",
+              "state": "missing",
+              "value": null,
+              "evidence": []
+            }
+          ]
+        },
+        "diagnostics": null,
+        "field_results": [
+          {
+            "field": "chief_complaint",
+            "gold_state": "supported",
+            "gold_value": "dizzy",
+            "predicted_state": "supported",
+            "predicted_value": "dizzy",
+            "exact": true,
+            "normalized": true,
+            "grounded_exact": true,
+            "grounded_normalized": true,
+            "state_correct": true,
+            "evidence_aligned": true
+          },
+          {
+            "field": "duration",
+            "gold_state": "supported",
+            "gold_value": "since this morning",
+            "predicted_state": "supported",
+            "predicted_value": "since this morning",
+            "exact": true,
+            "normalized": true,
+            "grounded_exact": true,
+            "grounded_normalized": true,
+            "state_correct": true,
+            "evidence_aligned": true
+          },
+          {
+            "field": "severity",
+            "gold_state": "uncertain",
+            "gold_value": null,
+            "predicted_state": "uncertain",
+            "predicted_value": null,
+            "exact": true,
+            "normalized": true,
+            "grounded_exact": true,
+            "grounded_normalized": true,
+            "state_correct": true,
+            "evidence_aligned": null
+          },
+          {
+            "field": "medication",
+            "gold_state": "missing",
+            "gold_value": null,
+            "predicted_state": "missing",
+            "predicted_value": null,
+            "exact": true,
+            "normalized": true,
+            "grounded_exact": true,
+            "grounded_normalized": true,
+            "state_correct": true,
+            "evidence_aligned": null
+          },
+          {
+            "field": "allergy",
+            "gold_state": "missing",
+            "gold_value": null,
+            "predicted_state": "missing",
+            "predicted_value": null,
+            "exact": true,
+            "normalized": true,
+            "grounded_exact": true,
+            "grounded_normalized": true,
+            "state_correct": true,
+            "evidence_aligned": null
+          }
+        ]
+      },
+      {
+        "case_id": "retain-22",
+        "partition": "development",
+        "status": "ok",
+        "failure": null,
+        "output": {
+          "schema_version": "nano.scribe.v0",
+          "item_id": "retain-22",
+          "solver_id": "control/annotation-oracle",
+          "fields": [
+            {
+              "field": "chief_complaint",
+              "state": "supported",
+              "value": "left ear is ringing",
+              "evidence": [
+                {
+                  "start": 108,
+                  "end": 127,
+                  "text": "left ear is ringing",
+                  "speaker": "patient"
+                }
+              ]
+            },
+            {
+              "field": "duration",
+              "state": "missing",
+              "value": null,
+              "evidence": []
+            },
+            {
+              "field": "severity",
+              "state": "missing",
+              "value": null,
+              "evidence": []
+            },
+            {
+              "field": "medication",
+              "state": "missing",
+              "value": null,
+              "evidence": []
+            },
+            {
+              "field": "allergy",
+              "state": "supported",
+              "value": "sulfa antibiotics",
+              "evidence": [
+                {
+                  "start": 145,
+                  "end": 162,
+                  "text": "sulfa antibiotics",
+                  "speaker": "patient"
+                }
+              ]
+            }
+          ]
+        },
+        "diagnostics": null,
+        "field_results": [
+          {
+            "field": "chief_complaint",
+            "gold_state": "supported",
+            "gold_value": "left ear is ringing",
+            "predicted_state": "supported",
+            "predicted_value": "left ear is ringing",
+            "exact": true,
+            "normalized": true,
+            "grounded_exact": true,
+            "grounded_normalized": true,
+            "state_correct": true,
+            "evidence_aligned": true
+          },
+          {
+            "field": "duration",
+            "gold_state": "missing",
+            "gold_value": null,
+            "predicted_state": "missing",
+            "predicted_value": null,
+            "exact": true,
+            "normalized": true,
+            "grounded_exact": true,
+            "grounded_normalized": true,
+            "state_correct": true,
+            "evidence_aligned": null
+          },
+          {
+            "field": "severity",
+            "gold_state": "missing",
+            "gold_value": null,
+            "predicted_state": "missing",
+            "predicted_value": null,
+            "exact": true,
+            "normalized": true,
+            "grounded_exact": true,
+            "grounded_normalized": true,
+            "state_correct": true,
+            "evidence_aligned": null
+          },
+          {
+            "field": "medication",
+            "gold_state": "missing",
+            "gold_value": null,
+            "predicted_state": "missing",
+            "predicted_value": null,
+            "exact": true,
+            "normalized": true,
+            "grounded_exact": true,
+            "grounded_normalized": true,
+            "state_correct": true,
+            "evidence_aligned": null
+          },
+          {
+            "field": "allergy",
+            "gold_state": "supported",
+            "gold_value": "sulfa antibiotics",
+            "predicted_state": "supported",
+            "predicted_value": "sulfa antibiotics",
+            "exact": true,
+            "normalized": true,
+            "grounded_exact": true,
+            "grounded_normalized": true,
+            "state_correct": true,
+            "evidence_aligned": true
+          }
+        ]
+      }
+    ]
+  }
+}

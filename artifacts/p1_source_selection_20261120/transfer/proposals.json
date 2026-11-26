@@ -1,0 +1,42 @@
+{
+  "first-assertion": {
+    "ACI093": "CC:M|DUR:M|SEV:M|MED:M|ALG:M",
+    "ACI031": "CC:S[right knee hurts]|DUR:S[two weeks ago]|SEV:M|MED:S[lot of thc cream]|ALG:M",
+    "ACI074": "CC:M|DUR:M|SEV:M|MED:M|ALG:M",
+    "ACI027": "CC:M|DUR:S[about four days]|SEV:M|MED:M|ALG:M",
+    "ACI075": "CC:M|DUR:M|SEV:M|MED:M|ALG:M",
+    "ACI001": "CC:M|DUR:M|SEV:M|MED:M|ALG:M"
+  },
+  "reader": {
+    "ACI093": "CC:M|DUR:M|SEV:M|MED:M|ALG:M",
+    "ACI031": "CC:M|DUR:M|SEV:S[seven]|MED:M|ALG:M",
+    "ACI074": "CC:M|DUR:M|SEV:M|MED:M|ALG:M",
+    "ACI027": "CC:M|DUR:M|SEV:M|MED:M|ALG:M",
+    "ACI075": "CC:M|DUR:M|SEV:M|MED:M|ALG:M",
+    "ACI001": "CC:M|DUR:M|SEV:M|MED:M|ALG:M"
+  },
+  "reference": {
+    "ACI093": "CC:M|DUR:S[six or so weeks]|SEV:M|MED:S[baby aspirin every day]|ALG:M",
+    "ACI031": "CC:S[@128..140:hurt my knee]|DUR:S[two weeks ago]|SEV:S[seven]|MED:S[thc gummies]|ALG:M",
+    "ACI074": "CC:S[still quite itchy]|DUR:M|SEV:M|MED:M|ALG:M",
+    "ACI027": "CC:S[pain and you know across the lower part of my back and then it went down my left leg]|DUR:S[about four days]|SEV:M|MED:S[ibuprofen]|ALG:M",
+    "ACI075": "CC:S[a lot of trouble sleeping]|DUR:S[about the past two weeks]|SEV:M|MED:M|ALG:M",
+    "ACI001": "CC:S[pain and numbness]|DUR:S[probably for a few months]|SEV:M|MED:M|ALG:M"
+  },
+  "flash": {
+    "ACI093": "CC:S[ulcer on my foot]|DUR:S[six or so weeks]|SEV:M|MED:S[baby aspirin]|ALG:M",
+    "ACI031": "CC:S[hurt my knee]|DUR:S[two weeks]|SEV:C[seven;eleven]|MED:S[thc cream;thc gummies]|ALG:M",
+    "ACI074": "CC:S[itchy scalp pain]|DUR:S[six months or so]|SEV:M|MED:S[head and shoulders;castor oil]|ALG:M",
+    "ACI027": "CC:S[back pain]|DUR:S[about four days]|SEV:M|MED:S[ibuprofen]|ALG:M",
+    "ACI075": "CC:S[trouble sleeping]|DUR:S[past two weeks]|SEV:M|MED:C[lasix;no sir i i do n't think i am]|ALG:M",
+    "ACI001": "CC:S[pain and numbness]|DUR:S[a few months]|SEV:M|MED:M|ALG:M"
+  },
+  "pro": {
+    "ACI093": "",
+    "ACI031": "CC:S[hurt my knee]|DUR:S[two weeks ago]|SEV:S[a seven]|MED:U[well i wear a brace and i have used a lot of thc cream on it]|ALG:M",
+    "ACI074": "CC:S[itchy]|DUR:S[six months or so]|SEV:S[quite a problem]|MED:U[yeah i did that i did head and shoulders i even tried some castor oil and but none of them really seemed to be helping]|ALG:M",
+    "ACI027": "CC:S[pain and you know across the lower part of my back]|DUR:S[about four days]|SEV:M|MED:U[i've had ibuprofen it it helped some]|ALG:M",
+    "ACI075": "CC:S[having a lot of trouble sleeping]|DUR:S[about the past two weeks]|SEV:M|MED:A[no sir i i do n't think i am]|ALG:M",
+    "ACI001": "CC:S[pain and numbness]|DUR:S[a few months now]|SEV:M|MED:M|ALG:M"
+  }
+}

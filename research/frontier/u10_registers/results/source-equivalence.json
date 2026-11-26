@@ -1,0 +1,24 @@
+{
+  "source_sha256": "5f480eb97343571940967b771645ce74a852a4c5d94e9153267916c76721c744",
+  "public_sha256": "d88ec5cf1b7591960d468d8e50e93266796beb116c3d46ee3082897ae9a62885",
+  "arms": {
+    "m21": {
+      "same_initial_tensors": 57,
+      "same_mixed_and_base_output": true,
+      "same_gradients": true,
+      "unrelated_suffix_and_batch_row_max_abs_delta": 0.0
+    },
+    "m22": {
+      "same_initial_tensors": 62,
+      "same_mixed_and_base_output": true,
+      "same_gradients": true,
+      "unrelated_suffix_and_batch_row_max_abs_delta": 0.0
+    },
+    "m22_wide": {
+      "same_initial_tensors": 62,
+      "same_mixed_and_base_output": true,
+      "same_gradients": true,
+      "unrelated_suffix_and_batch_row_max_abs_delta": 0.0
+    }
+  }
+}

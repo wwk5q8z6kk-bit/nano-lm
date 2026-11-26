@@ -1,0 +1,194 @@
+[
+  {
+    "bytes": 3923,
+    "doc": "fed-0129",
+    "sha256": "f2ebae52d5bd18a2122121471d40195e1b6e5a7aae6268a1c991c8b395b99fe0",
+    "source": "fed",
+    "tokens": 820,
+    "url": "https://www.federalreserve.gov/monetarypolicy/fomcminutes20250129.htm"
+  },
+  {
+    "bytes": 3847,
+    "doc": "fed-0319",
+    "sha256": "d578f272f35e82bf898017072f5ceebbc4454705bd392b1be80ff081b699f3b6",
+    "source": "fed",
+    "tokens": 786,
+    "url": "https://www.federalreserve.gov/monetarypolicy/fomcminutes20250319.htm"
+  },
+  {
+    "bytes": 3392,
+    "doc": "fed-0507",
+    "sha256": "d71dd4f4d66ef4116c06a769293ea5710096ecfb140271e99c3b0dd5ad75e157",
+    "source": "fed",
+    "tokens": 688,
+    "url": "https://www.federalreserve.gov/monetarypolicy/fomcminutes20250507.htm"
+  },
+  {
+    "bytes": 3972,
+    "doc": "fed-0618",
+    "sha256": "15cddcde15fe3ffc58dcc72c1d2bf0cd4b8fb9f07dbf2535a9a162b916d73510",
+    "source": "fed",
+    "tokens": 782,
+    "url": "https://www.federalreserve.gov/monetarypolicy/fomcminutes20250618.htm"
+  },
+  {
+    "bytes": 3411,
+    "doc": "fed-0730",
+    "sha256": "11c08930470175b9a03ac2db7e68ac935f3077439cae21d5fbc15c87d8280e19",
+    "source": "fed",
+    "tokens": 678,
+    "url": "https://www.federalreserve.gov/monetarypolicy/fomcminutes20250730.htm"
+  },
+  {
+    "bytes": 3664,
+    "doc": "fed-0917",
+    "sha256": "e2a4b09c955de9901decab94bdcb73e7c234cff2c45cce84eb569483f5f7ca78",
+    "source": "fed",
+    "tokens": 751,
+    "url": "https://www.federalreserve.gov/monetarypolicy/fomcminutes20250917.htm"
+  },
+  {
+    "bytes": 3490,
+    "doc": "fed-1029",
+    "sha256": "a9bf55eb6580be0cff45ed1fdcd507e771da781b0322ef56a24306323278f12f",
+    "source": "fed",
+    "tokens": 685,
+    "url": "https://www.federalreserve.gov/monetarypolicy/fomcminutes20251029.htm"
+  },
+  {
+    "bytes": 3489,
+    "doc": "fed-1210",
+    "sha256": "6aa23323bb9dd02fe56ab9f6dc1de8851bf5094d7949720eb44eaf73e90c33be",
+    "source": "fed",
+    "tokens": 669,
+    "url": "https://www.federalreserve.gov/monetarypolicy/fomcminutes20251210.htm"
+  },
+  {
+    "bytes": 4038,
+    "doc": "law-1",
+    "sha256": "486d463242527039e8d57852d35b703e41d0b7fbb8637e539e897d3ec65c9843",
+    "source": "law",
+    "tokens": 1024,
+    "url": "https://www.govinfo.gov/content/pkg/PLAW-119publ1/html/PLAW-119publ1.htm"
+  },
+  {
+    "bytes": 428,
+    "doc": "law-2",
+    "sha256": "3a69db638b0c57b0535c6f56cbb955ad5f585bd327e756bd65afa2986e65768a",
+    "source": "law",
+    "tokens": 101,
+    "url": "https://www.govinfo.gov/content/pkg/PLAW-119publ2/html/PLAW-119publ2.htm"
+  },
+  {
+    "bytes": 341,
+    "doc": "law-3",
+    "sha256": "0a79f85c99116cbf639c4a6ef7f989642a27b433cf23654d43d82f9a78140c4f",
+    "source": "law",
+    "tokens": 79,
+    "url": "https://www.govinfo.gov/content/pkg/PLAW-119publ3/html/PLAW-119publ3.htm"
+  },
+  {
+    "bytes": 3430,
+    "doc": "law-4",
+    "sha256": "32710980dc415da712e47260740c7a5c9afe8021ca06881a91332500b4862db8",
+    "source": "law",
+    "tokens": 1024,
+    "url": "https://www.govinfo.gov/content/pkg/PLAW-119publ4/html/PLAW-119publ4.htm"
+  },
+  {
+    "bytes": 388,
+    "doc": "law-5",
+    "sha256": "b7aade9dcc23ace7e27b5216043827b557bf02d7d45903ea641c6e73931d7d25",
+    "source": "law",
+    "tokens": 92,
+    "url": "https://www.govinfo.gov/content/pkg/PLAW-119publ5/html/PLAW-119publ5.htm"
+  },
+  {
+    "bytes": 394,
+    "doc": "law-6",
+    "sha256": "76e6d7074dc7498f265f7ff5f39239bca136701ef89131a038f6e63667c88735",
+    "source": "law",
+    "tokens": 89,
+    "url": "https://www.govinfo.gov/content/pkg/PLAW-119publ6/html/PLAW-119publ6.htm"
+  },
+  {
+    "bytes": 383,
+    "doc": "law-7",
+    "sha256": "5e31e3b3f6cb66233a0cd9f5e719a988f12cd6ccade357c17fa71d01fbadc3a9",
+    "source": "law",
+    "tokens": 92,
+    "url": "https://www.govinfo.gov/content/pkg/PLAW-119publ7/html/PLAW-119publ7.htm"
+  },
+  {
+    "bytes": 466,
+    "doc": "law-8",
+    "sha256": "d06db5b754f876475a6606447a45c59ff366c3057b38e18578284bb3a2a56b24",
+    "source": "law",
+    "tokens": 98,
+    "url": "https://www.govinfo.gov/content/pkg/PLAW-119publ8/html/PLAW-119publ8.htm"
+  },
+  {
+    "bytes": 912,
+    "doc": "weather-al01",
+    "sha256": "d50c084fe77faa7b5e44098835397de780305e3246462895d7d1724b01b6050c",
+    "source": "weather",
+    "tokens": 217,
+    "url": "https://www.nhc.noaa.gov/archive/2025/al01/al012025.discus.003.shtml"
+  },
+  {
+    "bytes": 1657,
+    "doc": "weather-al02",
+    "sha256": "b4ddcb3dbedcfdd7260b3d54db9ca0d62f5870cb1a049fe63d22a11e1317198b",
+    "source": "weather",
+    "tokens": 323,
+    "url": "https://www.nhc.noaa.gov/archive/2025/al02/al022025.discus.003.shtml"
+  },
+  {
+    "bytes": 3798,
+    "doc": "weather-al03",
+    "sha256": "d508266e8245bb92735142b35cf8db0ed289544d00bcb820f57b2e66bbb16ce9",
+    "source": "weather",
+    "tokens": 821,
+    "url": "https://www.nhc.noaa.gov/archive/2025/al03/al032025.discus.003.shtml"
+  },
+  {
+    "bytes": 2270,
+    "doc": "weather-al04",
+    "sha256": "37a4e843bf97414937fe04966d909579b45592400329d636ca3215829ed315f4",
+    "source": "weather",
+    "tokens": 504,
+    "url": "https://www.nhc.noaa.gov/archive/2025/al04/al042025.discus.003.shtml"
+  },
+  {
+    "bytes": 2614,
+    "doc": "weather-al05",
+    "sha256": "9ef38016fa218239a395764fa2a3ea926d6da1eedb0faa530a7ff5d62a9269f0",
+    "source": "weather",
+    "tokens": 605,
+    "url": "https://www.nhc.noaa.gov/archive/2025/al05/al052025.discus.003.shtml"
+  },
+  {
+    "bytes": 1539,
+    "doc": "weather-al06",
+    "sha256": "8c0cd81a6837aa9c33ea8de1d758ce7f04f3bd20e0593466eb8c2e9424f801e6",
+    "source": "weather",
+    "tokens": 344,
+    "url": "https://www.nhc.noaa.gov/archive/2025/al06/al062025.discus.003.shtml"
+  },
+  {
+    "bytes": 2162,
+    "doc": "weather-al07",
+    "sha256": "956dfada9ff4b1ea28795022dba687d7b91f90e219d37274969310607216c652",
+    "source": "weather",
+    "tokens": 436,
+    "url": "https://www.nhc.noaa.gov/archive/2025/al07/al072025.discus.003.shtml"
+  },
+  {
+    "bytes": 1765,
+    "doc": "weather-al08",
+    "sha256": "a416859c0426a9d79480d6b096151fb3ef2328699450109fc460b88909137d59",
+    "source": "weather",
+    "tokens": 368,
+    "url": "https://www.nhc.noaa.gov/archive/2025/al08/al082025.discus.003.shtml"
+  }
+]

@@ -1,9 +1,15 @@
 [project]
 name = "nano-lm"
-version = "0.2.0"
-description = "NanoLM: Independent General-Purpose 2B-4B Foundation Language Model Research & Architecture"
+version = "0.1.0"
+description = "Measurement research: held-out value copying in small LMs + Fabric verification slice"
 readme = "README.md"
 requires-python = ">=3.10"
+# Runtime pins live in requirements.txt (torch stack is environment-specific).
+
+[tool.pytest.ini_options]
+testpaths = ["nanolm/tests", "fabric", "trajectory", "benchmarks/adapters/lm_eval/tests"]
+python_files = ["test_*.py"]
+addopts = "-q"
 
 [tool.setuptools.packages.find]
-include = ["nanolm*"]
+include = ["nanolm*", "lab*"]

@@ -1,0 +1,738 @@
+[
+  {
+    "case_id": "varied-01",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "heel soreness"
+        ]
+      },
+      "DUR": {
+        "state": "S",
+        "spans": [
+          "two days"
+        ]
+      },
+      "SEV": {
+        "state": "S",
+        "spans": [
+          "mild"
+        ]
+      },
+      "MED": {
+        "state": "S",
+        "spans": [
+          "celecoxib"
+        ]
+      },
+      "ALG": {
+        "state": "S",
+        "spans": [
+          "nickel"
+        ]
+      }
+    }
+  },
+  {
+    "case_id": "varied-02",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "dry cough"
+        ]
+      },
+      "DUR": {
+        "state": "S",
+        "spans": [
+          "Three weeks"
+        ]
+      },
+      "SEV": {
+        "state": "S",
+        "spans": [
+          "moderate"
+        ]
+      },
+      "MED": {
+        "state": "S",
+        "spans": [
+          "famotidine"
+        ]
+      },
+      "ALG": {
+        "state": "S",
+        "spans": [
+          "latex"
+        ]
+      }
+    }
+  },
+  {
+    "case_id": "varied-03",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "neck stiffness"
+        ]
+      },
+      "DUR": {
+        "state": "S",
+        "spans": [
+          "four hours"
+        ]
+      },
+      "SEV": {
+        "state": "S",
+        "spans": [
+          "severe"
+        ]
+      },
+      "MED": {
+        "state": "S",
+        "spans": [
+          "loratadine"
+        ]
+      },
+      "ALG": {
+        "state": "S",
+        "spans": [
+          "penicillin"
+        ]
+      }
+    }
+  },
+  {
+    "case_id": "varied-04",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "finger pain"
+        ]
+      },
+      "DUR": {
+        "state": "S",
+        "spans": [
+          "six months"
+        ]
+      },
+      "SEV": {
+        "state": "S",
+        "spans": [
+          "mild"
+        ]
+      },
+      "MED": {
+        "state": "S",
+        "spans": [
+          "naproxen"
+        ]
+      },
+      "ALG": {
+        "state": "S",
+        "spans": [
+          "cobalt"
+        ]
+      }
+    }
+  },
+  {
+    "case_id": "varied-05",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "heel soreness"
+        ]
+      },
+      "DUR": {
+        "state": "M",
+        "spans": []
+      },
+      "SEV": {
+        "state": "M",
+        "spans": []
+      },
+      "MED": {
+        "state": "C",
+        "spans": [
+          "celecoxib",
+          "No medication."
+        ]
+      },
+      "ALG": {
+        "state": "M",
+        "spans": []
+      }
+    }
+  },
+  {
+    "case_id": "varied-06",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "dry cough"
+        ]
+      },
+      "DUR": {
+        "state": "M",
+        "spans": []
+      },
+      "SEV": {
+        "state": "M",
+        "spans": []
+      },
+      "MED": {
+        "state": "C",
+        "spans": [
+          "famotidine",
+          "No meds!"
+        ]
+      },
+      "ALG": {
+        "state": "M",
+        "spans": []
+      }
+    }
+  },
+  {
+    "case_id": "varied-07",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "neck stiffness"
+        ]
+      },
+      "DUR": {
+        "state": "M",
+        "spans": []
+      },
+      "SEV": {
+        "state": "M",
+        "spans": []
+      },
+      "MED": {
+        "state": "C",
+        "spans": [
+          "loratadine",
+          "I deny taking medicine."
+        ]
+      },
+      "ALG": {
+        "state": "M",
+        "spans": []
+      }
+    }
+  },
+  {
+    "case_id": "varied-08",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "finger pain"
+        ]
+      },
+      "DUR": {
+        "state": "M",
+        "spans": []
+      },
+      "SEV": {
+        "state": "M",
+        "spans": []
+      },
+      "MED": {
+        "state": "C",
+        "spans": [
+          "naproxen",
+          "Nothing at all."
+        ]
+      },
+      "ALG": {
+        "state": "M",
+        "spans": []
+      }
+    }
+  },
+  {
+    "case_id": "varied-09",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "heel soreness"
+        ]
+      },
+      "DUR": {
+        "state": "M",
+        "spans": []
+      },
+      "SEV": {
+        "state": "M",
+        "spans": []
+      },
+      "MED": {
+        "state": "U",
+        "spans": [
+          "celecoxib",
+          "famotidine"
+        ]
+      },
+      "ALG": {
+        "state": "M",
+        "spans": []
+      }
+    }
+  },
+  {
+    "case_id": "varied-10",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "dry cough"
+        ]
+      },
+      "DUR": {
+        "state": "M",
+        "spans": []
+      },
+      "SEV": {
+        "state": "M",
+        "spans": []
+      },
+      "MED": {
+        "state": "U",
+        "spans": [
+          "famotidine",
+          "loratadine"
+        ]
+      },
+      "ALG": {
+        "state": "M",
+        "spans": []
+      }
+    }
+  },
+  {
+    "case_id": "varied-11",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "neck stiffness"
+        ]
+      },
+      "DUR": {
+        "state": "M",
+        "spans": []
+      },
+      "SEV": {
+        "state": "M",
+        "spans": []
+      },
+      "MED": {
+        "state": "U",
+        "spans": [
+          "loratadine",
+          "naproxen"
+        ]
+      },
+      "ALG": {
+        "state": "M",
+        "spans": []
+      }
+    }
+  },
+  {
+    "case_id": "varied-12",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "finger pain"
+        ]
+      },
+      "DUR": {
+        "state": "M",
+        "spans": []
+      },
+      "SEV": {
+        "state": "M",
+        "spans": []
+      },
+      "MED": {
+        "state": "U",
+        "spans": [
+          "naproxen",
+          "celecoxib"
+        ]
+      },
+      "ALG": {
+        "state": "M",
+        "spans": []
+      }
+    }
+  },
+  {
+    "case_id": "varied-13",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "heel soreness"
+        ]
+      },
+      "DUR": {
+        "state": "M",
+        "spans": []
+      },
+      "SEV": {
+        "state": "S",
+        "spans": [
+          "moderate"
+        ]
+      },
+      "MED": {
+        "state": "U",
+        "spans": [
+          "I cannot remember what I took."
+        ]
+      },
+      "ALG": {
+        "state": "M",
+        "spans": []
+      }
+    }
+  },
+  {
+    "case_id": "varied-14",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "dry cough"
+        ]
+      },
+      "DUR": {
+        "state": "M",
+        "spans": []
+      },
+      "SEV": {
+        "state": "S",
+        "spans": [
+          "moderate"
+        ]
+      },
+      "MED": {
+        "state": "U",
+        "spans": [
+          "I am not sure whether I took anything."
+        ]
+      },
+      "ALG": {
+        "state": "M",
+        "spans": []
+      }
+    }
+  },
+  {
+    "case_id": "varied-15",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "neck stiffness"
+        ]
+      },
+      "DUR": {
+        "state": "M",
+        "spans": []
+      },
+      "SEV": {
+        "state": "S",
+        "spans": [
+          "moderate"
+        ]
+      },
+      "MED": {
+        "state": "U",
+        "spans": [
+          "No regular medication."
+        ]
+      },
+      "ALG": {
+        "state": "M",
+        "spans": []
+      }
+    }
+  },
+  {
+    "case_id": "varied-16",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "finger pain"
+        ]
+      },
+      "DUR": {
+        "state": "M",
+        "spans": []
+      },
+      "SEV": {
+        "state": "S",
+        "spans": [
+          "moderate"
+        ]
+      },
+      "MED": {
+        "state": "U",
+        "spans": [
+          "No aspirin."
+        ]
+      },
+      "ALG": {
+        "state": "M",
+        "spans": []
+      }
+    }
+  },
+  {
+    "case_id": "varied-17",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "heel soreness"
+        ]
+      },
+      "DUR": {
+        "state": "M",
+        "spans": []
+      },
+      "SEV": {
+        "state": "M",
+        "spans": []
+      },
+      "MED": {
+        "state": "M",
+        "spans": []
+      },
+      "ALG": {
+        "state": "M",
+        "spans": []
+      }
+    }
+  },
+  {
+    "case_id": "varied-18",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "dry cough"
+        ]
+      },
+      "DUR": {
+        "state": "M",
+        "spans": []
+      },
+      "SEV": {
+        "state": "M",
+        "spans": []
+      },
+      "MED": {
+        "state": "M",
+        "spans": []
+      },
+      "ALG": {
+        "state": "M",
+        "spans": []
+      }
+    }
+  },
+  {
+    "case_id": "varied-19",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "neck stiffness"
+        ]
+      },
+      "DUR": {
+        "state": "M",
+        "spans": []
+      },
+      "SEV": {
+        "state": "M",
+        "spans": []
+      },
+      "MED": {
+        "state": "M",
+        "spans": []
+      },
+      "ALG": {
+        "state": "M",
+        "spans": []
+      }
+    }
+  },
+  {
+    "case_id": "varied-20",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "finger pain"
+        ]
+      },
+      "DUR": {
+        "state": "M",
+        "spans": []
+      },
+      "SEV": {
+        "state": "M",
+        "spans": []
+      },
+      "MED": {
+        "state": "M",
+        "spans": []
+      },
+      "ALG": {
+        "state": "M",
+        "spans": []
+      }
+    }
+  },
+  {
+    "case_id": "varied-21",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "heel soreness"
+        ]
+      },
+      "DUR": {
+        "state": "M",
+        "spans": []
+      },
+      "SEV": {
+        "state": "M",
+        "spans": []
+      },
+      "MED": {
+        "state": "U",
+        "spans": [
+          "I take celecoxib, but I stopped."
+        ]
+      },
+      "ALG": {
+        "state": "A",
+        "spans": [
+          "No allergies."
+        ]
+      }
+    }
+  },
+  {
+    "case_id": "varied-22",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "dry cough"
+        ]
+      },
+      "DUR": {
+        "state": "M",
+        "spans": []
+      },
+      "SEV": {
+        "state": "M",
+        "spans": []
+      },
+      "MED": {
+        "state": "U",
+        "spans": [
+          "No medication for my mother."
+        ]
+      },
+      "ALG": {
+        "state": "A",
+        "spans": [
+          "No allergies."
+        ]
+      }
+    }
+  },
+  {
+    "case_id": "varied-23",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "neck stiffness"
+        ]
+      },
+      "DUR": {
+        "state": "M",
+        "spans": []
+      },
+      "SEV": {
+        "state": "M",
+        "spans": []
+      },
+      "MED": {
+        "state": "U",
+        "spans": [
+          "Maybe naproxen."
+        ]
+      },
+      "ALG": {
+        "state": "A",
+        "spans": [
+          "No allergies."
+        ]
+      }
+    }
+  },
+  {
+    "case_id": "varied-24",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "finger pain"
+        ]
+      },
+      "DUR": {
+        "state": "M",
+        "spans": []
+      },
+      "SEV": {
+        "state": "M",
+        "spans": []
+      },
+      "MED": {
+        "state": "U",
+        "spans": [
+          "I am considering famotidine."
+        ]
+      },
+      "ALG": {
+        "state": "A",
+        "spans": [
+          "No allergies."
+        ]
+      }
+    }
+  }
+]

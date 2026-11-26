@@ -1,48 +1,14 @@
-# Capability Ladder
+# General-model capabilities
 
-## Macro-phases
+| Capability | Evidence |
+|---|---|
+| Language modeling | Held-out next-token loss or bits per scored byte across distinct text sources, with matched context and data accounting. |
+| Reasoning and instruction following | Accuracy on held-out tasks, explicit scoring, simple controls and per-task errors. |
+| Context and retrieval | Performance as context length or distractors change, with memory and throughput measurements. |
+| Adaptation | Transfer to fresh tasks after an identified adaptation procedure, with an unadapted baseline. |
 
-```text
-FOUNDATION I
-P1 — Master Scribing
-faithful capture
+Evaluate the native model first. Attribute contributions from prompting, retrieval, tools and verifiers separately when measuring a larger system. Each study should name which capability it measures.
 
-        ↓
+## Historical medical capability ladder
 
-FOUNDATION II
-P2 — Summarization
-P3 — Charting
-faithful compression + longitudinal state
-
-        ↓
-
-INTELLIGENCE EXPANSION
-P4–P9
-synthesis → questioning → reasoning → planning → action → adaptation
-```
-
-## Programs P1–P9
-
-| Program | Question | Near-term? |
-|---------|----------|------------|
-| **P1 Scribing** | What happened? | **Yes — current frontier** |
-| **P2 Summarization** | What matters? | Spec / interface only |
-| **P3 Charting** | What is the state? | Spec / interface only |
-| **P4 Synthesis** | What does combined evidence show? | Architectural requirement |
-| **P5 Questioning** | What is unknown? | Architectural requirement |
-| **P6 Reasoning** | What follows? | Architectural requirement |
-| **P7 Planning** | What should happen next? | Architectural requirement |
-| **P8 Tools/Action** | What should we do? | Architectural requirement |
-| **P9 Adaptation** | What did we learn? | Architectural requirement |
-
-Do not skip ordering because a frontier model can superficially perform a later stage.
-
-## Product naming (medical DomainPack)
-
-| Stage earned | Name |
-|--------------|------|
-| P1 | **NanoScribe** — verified encounter record + note |
-| P1–P3 | Longitudinal medical documentation intelligence |
-| P4–P9 | Broader medical intelligence capabilities (sequential) |
-
-Details: [domains/medical/SCRIBING.md](domains/medical/SCRIBING.md)
+The former P1–P9 ladder described a product sequence beginning with NanoScribe. The project's general-model research has no clinical prerequisite. The historical terminology and protocol remain available. [Earlier scribing program](https://github.com/wwk5q8z6kk-bit/nano-lm/blob/46c65f0044e81ac73251e18a5a7d69a7299a8079/docs/CAPABILITY_LADDER.md)

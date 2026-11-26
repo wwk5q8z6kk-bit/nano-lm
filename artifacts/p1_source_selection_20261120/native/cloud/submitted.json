@@ -1,0 +1,16 @@
+{
+  "job_id": "9019587804438462464",
+  "project_sha256": "34bfad4c5287798c0aa05eb2c5b5fdf67d219a161c07933f8fa8b287dab2a20a",
+  "created": "2026-11-20T14:45:11.406765Z",
+  "payload_sha256": "e73b48b03bb48efd573066abffacf743587b960536b323ba74fddff79deee39b",
+  "image": "us-docker.pkg.dev/vertex-ai/prediction/pytorch-cpu.2-4@sha256:dfee41bf10aed8d6f9463c5e7e617edda97de63dd1e7d36420860c1cd20ed233",
+  "scheduling": {
+    "timeout": "5400s",
+    "restartJobOnWorkerRestart": false,
+    "disableRetries": true
+  },
+  "bytes": 66776,
+  "machine": "n2d-standard-4",
+  "disk": "100 GB standard",
+  "replicas": 1
+}

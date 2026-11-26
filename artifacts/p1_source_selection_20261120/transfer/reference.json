@@ -1,0 +1,376 @@
+[
+  {
+    "id": "ACI093",
+    "field": "chief_complaint",
+    "status": "exclude",
+    "options": [],
+    "reason": "Presenting ulcer is named by the clinician. The patient confirms by reference."
+  },
+  {
+    "id": "ACI093",
+    "field": "duration",
+    "status": "supported",
+    "options": [
+      {
+        "turn": 5,
+        "start": 282,
+        "end": 297
+      }
+    ],
+    "reason": null
+  },
+  {
+    "id": "ACI093",
+    "field": "severity",
+    "status": "exclude",
+    "options": [],
+    "reason": "Merged doctor and patient turn makes the initial foot pain denial ambiguous."
+  },
+  {
+    "id": "ACI093",
+    "field": "medication",
+    "status": "supported",
+    "options": [
+      {
+        "turn": 37,
+        "start": 3554,
+        "end": 3576
+      },
+      {
+        "turn": 37,
+        "start": 3554,
+        "end": 3566
+      }
+    ],
+    "reason": null
+  },
+  {
+    "id": "ACI093",
+    "field": "allergy",
+    "status": "withhold",
+    "options": [],
+    "reason": null
+  },
+  {
+    "id": "ACI031",
+    "field": "chief_complaint",
+    "status": "supported",
+    "options": [
+      {
+        "turn": 1,
+        "start": 128,
+        "end": 140
+      },
+      {
+        "turn": 5,
+        "start": 532,
+        "end": 547
+      },
+      {
+        "turn": 21,
+        "start": 1434,
+        "end": 1453
+      }
+    ],
+    "reason": null
+  },
+  {
+    "id": "ACI031",
+    "field": "duration",
+    "status": "supported",
+    "options": [
+      {
+        "turn": 1,
+        "start": 159,
+        "end": 172
+      }
+    ],
+    "reason": null
+  },
+  {
+    "id": "ACI031",
+    "field": "severity",
+    "status": "supported",
+    "options": [
+      {
+        "turn": 23,
+        "start": 1639,
+        "end": 1644
+      }
+    ],
+    "reason": null
+  },
+  {
+    "id": "ACI031",
+    "field": "medication",
+    "status": "supported",
+    "options": [
+      {
+        "turn": 47,
+        "start": 2772,
+        "end": 2783
+      },
+      {
+        "turn": 45,
+        "start": 2703,
+        "end": 2710
+      }
+    ],
+    "reason": null
+  },
+  {
+    "id": "ACI031",
+    "field": "allergy",
+    "status": "withhold",
+    "options": [],
+    "reason": null
+  },
+  {
+    "id": "ACI074",
+    "field": "chief_complaint",
+    "status": "supported",
+    "options": [
+      {
+        "turn": 1,
+        "start": 225,
+        "end": 242
+      },
+      {
+        "turn": 1,
+        "start": 294,
+        "end": 302
+      },
+      {
+        "turn": 1,
+        "start": 343,
+        "end": 362
+      }
+    ],
+    "reason": null
+  },
+  {
+    "id": "ACI074",
+    "field": "duration",
+    "status": "exclude",
+    "options": [],
+    "reason": "Patient times worsening only. Duration of the original complaint is indefinite."
+  },
+  {
+    "id": "ACI074",
+    "field": "severity",
+    "status": "exclude",
+    "options": [],
+    "reason": "Qualitative degree of itch and embarrassment do not have a unique severity reference."
+  },
+  {
+    "id": "ACI074",
+    "field": "medication",
+    "status": "exclude",
+    "options": [],
+    "reason": "Past use of topical oil and shampoo is clear. Current use is unresolved and a steroid is planned."
+  },
+  {
+    "id": "ACI074",
+    "field": "allergy",
+    "status": "withhold",
+    "options": [],
+    "reason": null
+  },
+  {
+    "id": "ACI027",
+    "field": "chief_complaint",
+    "status": "supported",
+    "options": [
+      {
+        "turn": 3,
+        "start": 472,
+        "end": 556
+      },
+      {
+        "turn": 3,
+        "start": 472,
+        "end": 522
+      }
+    ],
+    "reason": null
+  },
+  {
+    "id": "ACI027",
+    "field": "duration",
+    "status": "supported",
+    "options": [
+      {
+        "turn": 3,
+        "start": 593,
+        "end": 608
+      },
+      {
+        "turn": 3,
+        "start": 599,
+        "end": 608
+      }
+    ],
+    "reason": null
+  },
+  {
+    "id": "ACI027",
+    "field": "severity",
+    "status": "withhold",
+    "options": [],
+    "reason": null
+  },
+  {
+    "id": "ACI027",
+    "field": "medication",
+    "status": "supported",
+    "options": [
+      {
+        "turn": 17,
+        "start": 1825,
+        "end": 1834
+      },
+      {
+        "turn": 33,
+        "start": 4605,
+        "end": 4612
+      }
+    ],
+    "reason": null
+  },
+  {
+    "id": "ACI027",
+    "field": "allergy",
+    "status": "withhold",
+    "options": [],
+    "reason": null
+  },
+  {
+    "id": "ACI075",
+    "field": "chief_complaint",
+    "status": "supported",
+    "options": [
+      {
+        "turn": 1,
+        "start": 221,
+        "end": 246
+      },
+      {
+        "turn": 1,
+        "start": 230,
+        "end": 246
+      },
+      {
+        "turn": 5,
+        "start": 704,
+        "end": 726
+      },
+      {
+        "turn": 5,
+        "start": 647,
+        "end": 696
+      }
+    ],
+    "reason": null
+  },
+  {
+    "id": "ACI075",
+    "field": "duration",
+    "status": "supported",
+    "options": [
+      {
+        "turn": 3,
+        "start": 329,
+        "end": 353
+      },
+      {
+        "turn": 3,
+        "start": 335,
+        "end": 353
+      },
+      {
+        "turn": 3,
+        "start": 344,
+        "end": 353
+      }
+    ],
+    "reason": null
+  },
+  {
+    "id": "ACI075",
+    "field": "severity",
+    "status": "withhold",
+    "options": [],
+    "reason": null
+  },
+  {
+    "id": "ACI075",
+    "field": "medication",
+    "status": "exclude",
+    "options": [],
+    "reason": "Lasix adherence is uncertain. Degree of adherence and possible other medication use are unresolved."
+  },
+  {
+    "id": "ACI075",
+    "field": "allergy",
+    "status": "withhold",
+    "options": [],
+    "reason": null
+  },
+  {
+    "id": "ACI001",
+    "field": "chief_complaint",
+    "status": "supported",
+    "options": [
+      {
+        "turn": 1,
+        "start": 232,
+        "end": 249
+      },
+      {
+        "turn": 1,
+        "start": 152,
+        "end": 249
+      }
+    ],
+    "reason": null
+  },
+  {
+    "id": "ACI001",
+    "field": "duration",
+    "status": "supported",
+    "options": [
+      {
+        "turn": 1,
+        "start": 197,
+        "end": 222
+      },
+      {
+        "turn": 1,
+        "start": 210,
+        "end": 222
+      }
+    ],
+    "reason": null
+  },
+  {
+    "id": "ACI001",
+    "field": "severity",
+    "status": "withhold",
+    "options": [],
+    "reason": null
+  },
+  {
+    "id": "ACI001",
+    "field": "medication",
+    "status": "withhold",
+    "options": [],
+    "reason": null
+  },
+  {
+    "id": "ACI001",
+    "field": "allergy",
+    "status": "withhold",
+    "options": [],
+    "reason": null
+  }
+]

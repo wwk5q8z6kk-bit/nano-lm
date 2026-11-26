@@ -1,0 +1,221 @@
+{
+  "rows": {
+    "fed-0129": {
+      "anchors": [
+        false,
+        false,
+        false
+      ],
+      "exact_match": false,
+      "unigram_bits": 8955.8603527826
+    },
+    "fed-0319": {
+      "anchors": [
+        false,
+        false,
+        false
+      ],
+      "exact_match": false,
+      "unigram_bits": 8649.544198373613
+    },
+    "fed-0507": {
+      "anchors": [
+        false,
+        false,
+        false
+      ],
+      "exact_match": false,
+      "unigram_bits": 7622.115329122403
+    },
+    "fed-0618": {
+      "anchors": [
+        false,
+        false,
+        false
+      ],
+      "exact_match": false,
+      "unigram_bits": 8797.847118144795
+    },
+    "fed-0730": {
+      "anchors": [
+        false,
+        false,
+        false
+      ],
+      "exact_match": false,
+      "unigram_bits": 7613.2597599052415
+    },
+    "fed-0917": {
+      "anchors": [
+        false,
+        false,
+        false
+      ],
+      "exact_match": false,
+      "unigram_bits": 8277.974350248845
+    },
+    "fed-1029": {
+      "anchors": [
+        false,
+        false,
+        false
+      ],
+      "exact_match": false,
+      "unigram_bits": 7660.3395537742235
+    },
+    "fed-1210": {
+      "anchors": [
+        false,
+        false,
+        false
+      ],
+      "exact_match": false,
+      "unigram_bits": 7566.085398528634
+    },
+    "law-1": {
+      "anchors": [
+        false,
+        false,
+        false
+      ],
+      "exact_match": false,
+      "unigram_bits": 11281.765258682972
+    },
+    "law-2": {
+      "anchors": [
+        false,
+        false,
+        false
+      ],
+      "exact_match": false,
+      "unigram_bits": 1161.1710849384312
+    },
+    "law-3": {
+      "anchors": [
+        false,
+        false,
+        false
+      ],
+      "exact_match": false,
+      "unigram_bits": 861.1459955723352
+    },
+    "law-4": {
+      "anchors": [
+        false,
+        false,
+        false
+      ],
+      "exact_match": false,
+      "unigram_bits": 12307.325122729948
+    },
+    "law-5": {
+      "anchors": [
+        false,
+        false,
+        false
+      ],
+      "exact_match": false,
+      "unigram_bits": 1059.8806928799186
+    },
+    "law-6": {
+      "anchors": [
+        false,
+        false,
+        false
+      ],
+      "exact_match": false,
+      "unigram_bits": 989.5100483279142
+    },
+    "law-7": {
+      "anchors": [
+        false,
+        false,
+        false
+      ],
+      "exact_match": false,
+      "unigram_bits": 993.3270003361328
+    },
+    "law-8": {
+      "anchors": [
+        false,
+        false,
+        false
+      ],
+      "exact_match": false,
+      "unigram_bits": 1122.1679578188048
+    },
+    "weather-al01": {
+      "anchors": [
+        false,
+        false,
+        false
+      ],
+      "exact_match": false,
+      "unigram_bits": 2455.335247297161
+    },
+    "weather-al02": {
+      "anchors": [
+        false,
+        false,
+        false
+      ],
+      "exact_match": false,
+      "unigram_bits": 3543.5926439723326
+    },
+    "weather-al03": {
+      "anchors": [
+        false,
+        false,
+        false
+      ],
+      "exact_match": false,
+      "unigram_bits": 9156.703815515417
+    },
+    "weather-al04": {
+      "anchors": [
+        false,
+        false,
+        false
+      ],
+      "exact_match": false,
+      "unigram_bits": 5589.726442988199
+    },
+    "weather-al05": {
+      "anchors": [
+        false,
+        false,
+        false
+      ],
+      "exact_match": false,
+      "unigram_bits": 6386.718711809481
+    },
+    "weather-al06": {
+      "anchors": [
+        false,
+        false,
+        false
+      ],
+      "exact_match": false,
+      "unigram_bits": 3710.3580924910866
+    },
+    "weather-al07": {
+      "anchors": [
+        false,
+        false,
+        false
+      ],
+      "exact_match": false,
+      "unigram_bits": 4837.521270246242
+    },
+    "weather-al08": {
+      "anchors": [
+        false,
+        false,
+        false
+      ],
+      "exact_match": false,
+      "unigram_bits": 4105.673904935811
+    }
+  },
+  "training_samples": 8000000
+}

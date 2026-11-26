@@ -1,0 +1,4718 @@
+[
+  {
+    "example_id": "pilot-00-canonical",
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "pilot-00-canonical",
+      "source_sha256": "449f638874a2ac25924d4c2d465c1c36fb197144f1a43dcb1b55f71a6848aaa4",
+      "status": "draft",
+      "disposition": "abstain",
+      "extraction": {
+        "schema_version": "nano.scribe.v0",
+        "item_id": "pilot-00-canonical",
+        "solver_id": "compact/qwen2.5-1.5b-state-span",
+        "fields": [
+          {
+            "field": "chief_complaint",
+            "state": "supported",
+            "value": "jaw pain",
+            "evidence": [
+              {
+                "start": 71,
+                "end": 79,
+                "text": "jaw pain",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "duration",
+            "state": "uncertain",
+            "value": null,
+            "evidence": [
+              {
+                "start": 131,
+                "end": 153,
+                "text": "For about 11 days now.",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "severity",
+            "state": "supported",
+            "value": "moderate",
+            "evidence": [
+              {
+                "start": 212,
+                "end": 220,
+                "text": "moderate",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "medication",
+            "state": "uncertain",
+            "value": null,
+            "evidence": []
+          },
+          {
+            "field": "allergy",
+            "state": "uncertain",
+            "value": null,
+            "evidence": [
+              {
+                "start": 350,
+                "end": 373,
+                "text": "I'm allergic to nickel.",
+                "speaker": "patient"
+              }
+            ]
+          }
+        ]
+      },
+      "encounter": {
+        "schema_version": "nano.encounter.v0",
+        "encounter_id": "pilot-00-canonical",
+        "sources": [
+          {
+            "source_id": "source",
+            "text": "Doctor: What brings you to the clinic today?\nPatient: I've been having jaw pain.\nDoctor: How long has this been going on?\nPatient: For about 11 days now.\nDoctor: How bad would you say it is?\nPatient: I'd call it moderate.\nDoctor: Have you taken anything for it?\nPatient: I've been taking naproxen.\nDoctor: Any allergies I should know about?\nPatient: I'm allergic to nickel.",
+            "turns": [
+              {
+                "turn_id": "source:t0",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 8,
+                "end": 44,
+                "text": "What brings you to the clinic today?"
+              },
+              {
+                "turn_id": "source:t1",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 54,
+                "end": 80,
+                "text": "I've been having jaw pain."
+              },
+              {
+                "turn_id": "source:t2",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 89,
+                "end": 121,
+                "text": "How long has this been going on?"
+              },
+              {
+                "turn_id": "source:t3",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 131,
+                "end": 153,
+                "text": "For about 11 days now."
+              },
+              {
+                "turn_id": "source:t4",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 162,
+                "end": 190,
+                "text": "How bad would you say it is?"
+              },
+              {
+                "turn_id": "source:t5",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 200,
+                "end": 221,
+                "text": "I'd call it moderate."
+              },
+              {
+                "turn_id": "source:t6",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 230,
+                "end": 261,
+                "text": "Have you taken anything for it?"
+              },
+              {
+                "turn_id": "source:t7",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 271,
+                "end": 297,
+                "text": "I've been taking naproxen."
+              },
+              {
+                "turn_id": "source:t8",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 306,
+                "end": 340,
+                "text": "Any allergies I should know about?"
+              },
+              {
+                "turn_id": "source:t9",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 350,
+                "end": 373,
+                "text": "I'm allergic to nickel."
+              }
+            ]
+          }
+        ],
+        "evidence": [
+          {
+            "evidence_id": "e:chief_complaint:0",
+            "source_id": "source",
+            "turn_id": "source:t1",
+            "speaker": "patient",
+            "start": 71,
+            "end": 79,
+            "text": "jaw pain"
+          },
+          {
+            "evidence_id": "e:duration:0",
+            "source_id": "source",
+            "turn_id": "source:t3",
+            "speaker": "patient",
+            "start": 131,
+            "end": 153,
+            "text": "For about 11 days now."
+          },
+          {
+            "evidence_id": "e:severity:0",
+            "source_id": "source",
+            "turn_id": "source:t5",
+            "speaker": "patient",
+            "start": 212,
+            "end": 220,
+            "text": "moderate"
+          },
+          {
+            "evidence_id": "e:allergy:0",
+            "source_id": "source",
+            "turn_id": "source:t9",
+            "speaker": "patient",
+            "start": 350,
+            "end": 373,
+            "text": "I'm allergic to nickel."
+          },
+          {
+            "evidence_id": "e:source:t7",
+            "source_id": "source",
+            "turn_id": "source:t7",
+            "speaker": "patient",
+            "start": 271,
+            "end": 297,
+            "text": "I've been taking naproxen."
+          }
+        ],
+        "atoms": [
+          {
+            "atom_id": "a:chief_complaint",
+            "atom_type": "symptom",
+            "raw_value": "jaw pain",
+            "normalized_value": null,
+            "assertion_state": "uncertain",
+            "speaker": "patient",
+            "experiencer": "unknown",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "uncertain",
+            "evidence_ids": [
+              "e:chief_complaint:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          },
+          {
+            "atom_id": "a:duration",
+            "atom_type": "symptom",
+            "raw_value": "For about 11 days now.",
+            "normalized_value": null,
+            "assertion_state": "uncertain",
+            "speaker": "patient",
+            "experiencer": "unknown",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "uncertain",
+            "evidence_ids": [
+              "e:duration:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          },
+          {
+            "atom_id": "a:severity",
+            "atom_type": "symptom",
+            "raw_value": "moderate",
+            "normalized_value": null,
+            "assertion_state": "uncertain",
+            "speaker": "patient",
+            "experiencer": "unknown",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "uncertain",
+            "evidence_ids": [
+              "e:severity:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          },
+          {
+            "atom_id": "a:allergy",
+            "atom_type": "allergy",
+            "raw_value": "I'm allergic to nickel.",
+            "normalized_value": null,
+            "assertion_state": "uncertain",
+            "speaker": "patient",
+            "experiencer": "unknown",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "uncertain",
+            "evidence_ids": [
+              "e:allergy:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          }
+        ],
+        "conflicts": [],
+        "unresolved": [
+          {
+            "unresolved_id": "u:chief_complaint",
+            "topic": "chief_complaint",
+            "reason": "unhandled_source_context; unverified_source_observation",
+            "review_required": true,
+            "evidence_ids": [
+              "e:chief_complaint:0"
+            ]
+          },
+          {
+            "unresolved_id": "u:duration",
+            "topic": "duration",
+            "reason": "uncertain",
+            "review_required": true,
+            "evidence_ids": [
+              "e:duration:0"
+            ]
+          },
+          {
+            "unresolved_id": "u:severity",
+            "topic": "severity",
+            "reason": "unhandled_source_context; unverified_source_observation",
+            "review_required": true,
+            "evidence_ids": [
+              "e:severity:0"
+            ]
+          },
+          {
+            "unresolved_id": "u:medication",
+            "topic": "medication",
+            "reason": "uncertain",
+            "review_required": true,
+            "evidence_ids": []
+          },
+          {
+            "unresolved_id": "u:allergy",
+            "topic": "allergy",
+            "reason": "uncertain",
+            "review_required": true,
+            "evidence_ids": [
+              "e:allergy:0"
+            ]
+          },
+          {
+            "unresolved_id": "u:source:t7",
+            "topic": "unhandled_source_turn",
+            "reason": "Content outside the checked five-field path; inspect for omissions or corrections.",
+            "review_required": true,
+            "evidence_ids": [
+              "e:source:t7"
+            ]
+          },
+          {
+            "unresolved_id": "u:scope",
+            "topic": "scope",
+            "reason": "Five patient-reported fields only; source checks are bounded and human review is required. No diagnosis, plan, or full encounter completeness is established.",
+            "review_required": true,
+            "evidence_ids": []
+          }
+        ]
+      },
+      "note": {
+        "claims": [
+          {
+            "field": "chief_complaint",
+            "state": "uncertain",
+            "value": null,
+            "evidence_ids": [
+              "e:chief_complaint:0"
+            ]
+          },
+          {
+            "field": "duration",
+            "state": "uncertain",
+            "value": null,
+            "evidence_ids": [
+              "e:duration:0"
+            ]
+          },
+          {
+            "field": "severity",
+            "state": "uncertain",
+            "value": null,
+            "evidence_ids": [
+              "e:severity:0"
+            ]
+          },
+          {
+            "field": "medication",
+            "state": "uncertain",
+            "value": null,
+            "evidence_ids": []
+          },
+          {
+            "field": "allergy",
+            "state": "uncertain",
+            "value": null,
+            "evidence_ids": [
+              "e:allergy:0"
+            ]
+          }
+        ],
+        "text": "Patient-reported encounter draft — human review required\nChief complaint: not asserted (uncertain); review required [e:chief_complaint:0]\nDuration: not asserted (uncertain); review required [e:duration:0]\nSeverity: not asserted (uncertain); review required [e:severity:0]\nMedication: not asserted (uncertain); review required\nAllergy: not asserted (uncertain); review required [e:allergy:0]",
+        "review_required": true
+      },
+      "verification": {
+        "passed": true,
+        "errors": [],
+        "scope": "bounded_source_and_representation"
+      },
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "solver": {
+        "solver_id": "compact/qwen2.5-1.5b-state-span",
+        "kind": "legacy_adapter",
+        "version": "989aa7980e4cf806f80c7fef2b1adb7bc71aa306",
+        "parameter_count": 1543714816,
+        "artifact_bytes": null
+      },
+      "failure": null
+    }
+  },
+  {
+    "example_id": "pilot-00-paraphrase",
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "pilot-00-paraphrase",
+      "source_sha256": "e9b4629a7810603e8132d201bca9a05c28349a21c2583c719d5150be29f41aec",
+      "status": "draft",
+      "disposition": "abstain",
+      "extraction": {
+        "schema_version": "nano.scribe.v0",
+        "item_id": "pilot-00-paraphrase",
+        "solver_id": "compact/qwen2.5-1.5b-state-span",
+        "fields": [
+          {
+            "field": "chief_complaint",
+            "state": "missing",
+            "value": null,
+            "evidence": []
+          },
+          {
+            "field": "duration",
+            "state": "uncertain",
+            "value": null,
+            "evidence": [
+              {
+                "start": 152,
+                "end": 174,
+                "text": "For about 11 days now.",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "severity",
+            "state": "uncertain",
+            "value": null,
+            "evidence": [
+              {
+                "start": 237,
+                "end": 245,
+                "text": "moderate",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "medication",
+            "state": "missing",
+            "value": null,
+            "evidence": []
+          },
+          {
+            "field": "allergy",
+            "state": "missing",
+            "value": null,
+            "evidence": []
+          }
+        ]
+      },
+      "encounter": {
+        "schema_version": "nano.encounter.v0",
+        "encounter_id": "pilot-00-paraphrase",
+        "sources": [
+          {
+            "source_id": "source",
+            "text": "Doctor: Describe the problem that brought you here.\nPatient: I've been having jaw pain.\nDoctor: For what length of time have you noticed this?\nPatient: For about 11 days now.\nDoctor: Describe how intense this feels.\nPatient: I'd call it moderate.\nDoctor: What medicine have you used for this problem?\nPatient: I've been taking naproxen.\nDoctor: Tell me about any substances you are allergic to.\nPatient: I'm allergic to nickel.",
+            "turns": [
+              {
+                "turn_id": "source:t0",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 8,
+                "end": 51,
+                "text": "Describe the problem that brought you here."
+              },
+              {
+                "turn_id": "source:t1",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 61,
+                "end": 87,
+                "text": "I've been having jaw pain."
+              },
+              {
+                "turn_id": "source:t2",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 96,
+                "end": 142,
+                "text": "For what length of time have you noticed this?"
+              },
+              {
+                "turn_id": "source:t3",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 152,
+                "end": 174,
+                "text": "For about 11 days now."
+              },
+              {
+                "turn_id": "source:t4",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 183,
+                "end": 215,
+                "text": "Describe how intense this feels."
+              },
+              {
+                "turn_id": "source:t5",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 225,
+                "end": 246,
+                "text": "I'd call it moderate."
+              },
+              {
+                "turn_id": "source:t6",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 255,
+                "end": 300,
+                "text": "What medicine have you used for this problem?"
+              },
+              {
+                "turn_id": "source:t7",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 310,
+                "end": 336,
+                "text": "I've been taking naproxen."
+              },
+              {
+                "turn_id": "source:t8",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 345,
+                "end": 394,
+                "text": "Tell me about any substances you are allergic to."
+              },
+              {
+                "turn_id": "source:t9",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 404,
+                "end": 427,
+                "text": "I'm allergic to nickel."
+              }
+            ]
+          }
+        ],
+        "evidence": [
+          {
+            "evidence_id": "e:duration:0",
+            "source_id": "source",
+            "turn_id": "source:t3",
+            "speaker": "patient",
+            "start": 152,
+            "end": 174,
+            "text": "For about 11 days now."
+          },
+          {
+            "evidence_id": "e:severity:0",
+            "source_id": "source",
+            "turn_id": "source:t5",
+            "speaker": "patient",
+            "start": 237,
+            "end": 245,
+            "text": "moderate"
+          },
+          {
+            "evidence_id": "e:source:t0",
+            "source_id": "source",
+            "turn_id": "source:t0",
+            "speaker": "clinician",
+            "start": 8,
+            "end": 51,
+            "text": "Describe the problem that brought you here."
+          },
+          {
+            "evidence_id": "e:source:t1",
+            "source_id": "source",
+            "turn_id": "source:t1",
+            "speaker": "patient",
+            "start": 61,
+            "end": 87,
+            "text": "I've been having jaw pain."
+          },
+          {
+            "evidence_id": "e:source:t2",
+            "source_id": "source",
+            "turn_id": "source:t2",
+            "speaker": "clinician",
+            "start": 96,
+            "end": 142,
+            "text": "For what length of time have you noticed this?"
+          },
+          {
+            "evidence_id": "e:source:t4",
+            "source_id": "source",
+            "turn_id": "source:t4",
+            "speaker": "clinician",
+            "start": 183,
+            "end": 215,
+            "text": "Describe how intense this feels."
+          },
+          {
+            "evidence_id": "e:source:t6",
+            "source_id": "source",
+            "turn_id": "source:t6",
+            "speaker": "clinician",
+            "start": 255,
+            "end": 300,
+            "text": "What medicine have you used for this problem?"
+          },
+          {
+            "evidence_id": "e:source:t7",
+            "source_id": "source",
+            "turn_id": "source:t7",
+            "speaker": "patient",
+            "start": 310,
+            "end": 336,
+            "text": "I've been taking naproxen."
+          },
+          {
+            "evidence_id": "e:source:t8",
+            "source_id": "source",
+            "turn_id": "source:t8",
+            "speaker": "clinician",
+            "start": 345,
+            "end": 394,
+            "text": "Tell me about any substances you are allergic to."
+          },
+          {
+            "evidence_id": "e:source:t9",
+            "source_id": "source",
+            "turn_id": "source:t9",
+            "speaker": "patient",
+            "start": 404,
+            "end": 427,
+            "text": "I'm allergic to nickel."
+          }
+        ],
+        "atoms": [
+          {
+            "atom_id": "a:duration",
+            "atom_type": "symptom",
+            "raw_value": "For about 11 days now.",
+            "normalized_value": null,
+            "assertion_state": "uncertain",
+            "speaker": "patient",
+            "experiencer": "unknown",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "uncertain",
+            "evidence_ids": [
+              "e:duration:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          },
+          {
+            "atom_id": "a:severity",
+            "atom_type": "symptom",
+            "raw_value": "moderate",
+            "normalized_value": null,
+            "assertion_state": "uncertain",
+            "speaker": "patient",
+            "experiencer": "unknown",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "uncertain",
+            "evidence_ids": [
+              "e:severity:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          }
+        ],
+        "conflicts": [],
+        "unresolved": [
+          {
+            "unresolved_id": "u:chief_complaint",
+            "topic": "chief_complaint",
+            "reason": "missing",
+            "review_required": true,
+            "evidence_ids": []
+          },
+          {
+            "unresolved_id": "u:duration",
+            "topic": "duration",
+            "reason": "uncertain",
+            "review_required": true,
+            "evidence_ids": [
+              "e:duration:0"
+            ]
+          },
+          {
+            "unresolved_id": "u:severity",
+            "topic": "severity",
+            "reason": "uncertain",
+            "review_required": true,
+            "evidence_ids": [
+              "e:severity:0"
+            ]
+          },
+          {
+            "unresolved_id": "u:medication",
+            "topic": "medication",
+            "reason": "missing",
+            "review_required": true,
+            "evidence_ids": []
+          },
+          {
+            "unresolved_id": "u:allergy",
+            "topic": "allergy",
+            "reason": "missing",
+            "review_required": true,
+            "evidence_ids": []
+          },
+          {
+            "unresolved_id": "u:source:t0",
+            "topic": "unhandled_source_turn",
+            "reason": "Content outside the checked five-field path; inspect for omissions or corrections.",
+            "review_required": true,
+            "evidence_ids": [
+              "e:source:t0"
+            ]
+          },
+          {
+            "unresolved_id": "u:source:t1",
+            "topic": "unhandled_source_turn",
+            "reason": "Content outside the checked five-field path; inspect for omissions or corrections.",
+            "review_required": true,
+            "evidence_ids": [
+              "e:source:t1"
+            ]
+          },
+          {
+            "unresolved_id": "u:source:t2",
+            "topic": "unhandled_source_turn",
+            "reason": "Content outside the checked five-field path; inspect for omissions or corrections.",
+            "review_required": true,
+            "evidence_ids": [
+              "e:source:t2"
+            ]
+          },
+          {
+            "unresolved_id": "u:source:t4",
+            "topic": "unhandled_source_turn",
+            "reason": "Content outside the checked five-field path; inspect for omissions or corrections.",
+            "review_required": true,
+            "evidence_ids": [
+              "e:source:t4"
+            ]
+          },
+          {
+            "unresolved_id": "u:source:t6",
+            "topic": "unhandled_source_turn",
+            "reason": "Content outside the checked five-field path; inspect for omissions or corrections.",
+            "review_required": true,
+            "evidence_ids": [
+              "e:source:t6"
+            ]
+          },
+          {
+            "unresolved_id": "u:source:t7",
+            "topic": "unhandled_source_turn",
+            "reason": "Content outside the checked five-field path; inspect for omissions or corrections.",
+            "review_required": true,
+            "evidence_ids": [
+              "e:source:t7"
+            ]
+          },
+          {
+            "unresolved_id": "u:source:t8",
+            "topic": "unhandled_source_turn",
+            "reason": "Content outside the checked five-field path; inspect for omissions or corrections.",
+            "review_required": true,
+            "evidence_ids": [
+              "e:source:t8"
+            ]
+          },
+          {
+            "unresolved_id": "u:source:t9",
+            "topic": "unhandled_source_turn",
+            "reason": "Content outside the checked five-field path; inspect for omissions or corrections.",
+            "review_required": true,
+            "evidence_ids": [
+              "e:source:t9"
+            ]
+          },
+          {
+            "unresolved_id": "u:scope",
+            "topic": "scope",
+            "reason": "Five patient-reported fields only; source checks are bounded and human review is required. No diagnosis, plan, or full encounter completeness is established.",
+            "review_required": true,
+            "evidence_ids": []
+          }
+        ]
+      },
+      "note": {
+        "claims": [
+          {
+            "field": "chief_complaint",
+            "state": "missing",
+            "value": null,
+            "evidence_ids": []
+          },
+          {
+            "field": "duration",
+            "state": "uncertain",
+            "value": null,
+            "evidence_ids": [
+              "e:duration:0"
+            ]
+          },
+          {
+            "field": "severity",
+            "state": "uncertain",
+            "value": null,
+            "evidence_ids": [
+              "e:severity:0"
+            ]
+          },
+          {
+            "field": "medication",
+            "state": "missing",
+            "value": null,
+            "evidence_ids": []
+          },
+          {
+            "field": "allergy",
+            "state": "missing",
+            "value": null,
+            "evidence_ids": []
+          }
+        ],
+        "text": "Patient-reported encounter draft — human review required\nChief complaint: not asserted (missing); review required\nDuration: not asserted (uncertain); review required [e:duration:0]\nSeverity: not asserted (uncertain); review required [e:severity:0]\nMedication: not asserted (missing); review required\nAllergy: not asserted (missing); review required",
+        "review_required": true
+      },
+      "verification": {
+        "passed": true,
+        "errors": [],
+        "scope": "bounded_source_and_representation"
+      },
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "solver": {
+        "solver_id": "compact/qwen2.5-1.5b-state-span",
+        "kind": "legacy_adapter",
+        "version": "989aa7980e4cf806f80c7fef2b1adb7bc71aa306",
+        "parameter_count": 1543714816,
+        "artifact_bytes": null
+      },
+      "failure": null
+    }
+  },
+  {
+    "example_id": "pilot-01-canonical",
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "pilot-01-canonical",
+      "source_sha256": "a501edaa6957c2f90592794579dbdc9c0406326e3b7368a19162277bc6e1a51a",
+      "status": "draft",
+      "disposition": "abstain",
+      "extraction": {
+        "schema_version": "nano.scribe.v0",
+        "item_id": "pilot-01-canonical",
+        "solver_id": "compact/qwen2.5-1.5b-state-span",
+        "fields": [
+          {
+            "field": "chief_complaint",
+            "state": "supported",
+            "value": "ankle soreness",
+            "evidence": [
+              {
+                "start": 71,
+                "end": 85,
+                "text": "ankle soreness",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "duration",
+            "state": "uncertain",
+            "value": null,
+            "evidence": [
+              {
+                "start": 137,
+                "end": 159,
+                "text": "For about 6 weeks now.",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "severity",
+            "state": "uncertain",
+            "value": null,
+            "evidence": []
+          },
+          {
+            "field": "medication",
+            "state": "uncertain",
+            "value": null,
+            "evidence": [
+              {
+                "start": 357,
+                "end": 379,
+                "text": "I'm allergic to latex.",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "allergy",
+            "state": "uncertain",
+            "value": null,
+            "evidence": []
+          }
+        ]
+      },
+      "encounter": {
+        "schema_version": "nano.encounter.v0",
+        "encounter_id": "pilot-01-canonical",
+        "sources": [
+          {
+            "source_id": "source",
+            "text": "Doctor: What brings you to the clinic today?\nPatient: I've been having ankle soreness.\nDoctor: How long has this been going on?\nPatient: For about 6 weeks now.\nDoctor: How bad would you say it is?\nPatient: I'd call it mild.\nDoctor: Have you taken anything for it?\nPatient: I've been taking acetaminophen.\nDoctor: Any allergies I should know about?\nPatient: I'm allergic to latex.",
+            "turns": [
+              {
+                "turn_id": "source:t0",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 8,
+                "end": 44,
+                "text": "What brings you to the clinic today?"
+              },
+              {
+                "turn_id": "source:t1",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 54,
+                "end": 86,
+                "text": "I've been having ankle soreness."
+              },
+              {
+                "turn_id": "source:t2",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 95,
+                "end": 127,
+                "text": "How long has this been going on?"
+              },
+              {
+                "turn_id": "source:t3",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 137,
+                "end": 159,
+                "text": "For about 6 weeks now."
+              },
+              {
+                "turn_id": "source:t4",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 168,
+                "end": 196,
+                "text": "How bad would you say it is?"
+              },
+              {
+                "turn_id": "source:t5",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 206,
+                "end": 223,
+                "text": "I'd call it mild."
+              },
+              {
+                "turn_id": "source:t6",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 232,
+                "end": 263,
+                "text": "Have you taken anything for it?"
+              },
+              {
+                "turn_id": "source:t7",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 273,
+                "end": 304,
+                "text": "I've been taking acetaminophen."
+              },
+              {
+                "turn_id": "source:t8",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 313,
+                "end": 347,
+                "text": "Any allergies I should know about?"
+              },
+              {
+                "turn_id": "source:t9",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 357,
+                "end": 379,
+                "text": "I'm allergic to latex."
+              }
+            ]
+          }
+        ],
+        "evidence": [
+          {
+            "evidence_id": "e:chief_complaint:0",
+            "source_id": "source",
+            "turn_id": "source:t1",
+            "speaker": "patient",
+            "start": 71,
+            "end": 85,
+            "text": "ankle soreness"
+          },
+          {
+            "evidence_id": "e:duration:0",
+            "source_id": "source",
+            "turn_id": "source:t3",
+            "speaker": "patient",
+            "start": 137,
+            "end": 159,
+            "text": "For about 6 weeks now."
+          },
+          {
+            "evidence_id": "e:medication:0",
+            "source_id": "source",
+            "turn_id": "source:t9",
+            "speaker": "patient",
+            "start": 357,
+            "end": 379,
+            "text": "I'm allergic to latex."
+          },
+          {
+            "evidence_id": "e:source:t5",
+            "source_id": "source",
+            "turn_id": "source:t5",
+            "speaker": "patient",
+            "start": 206,
+            "end": 223,
+            "text": "I'd call it mild."
+          },
+          {
+            "evidence_id": "e:source:t7",
+            "source_id": "source",
+            "turn_id": "source:t7",
+            "speaker": "patient",
+            "start": 273,
+            "end": 304,
+            "text": "I've been taking acetaminophen."
+          }
+        ],
+        "atoms": [
+          {
+            "atom_id": "a:chief_complaint",
+            "atom_type": "symptom",
+            "raw_value": "ankle soreness",
+            "normalized_value": null,
+            "assertion_state": "uncertain",
+            "speaker": "patient",
+            "experiencer": "unknown",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "uncertain",
+            "evidence_ids": [
+              "e:chief_complaint:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          },
+          {
+            "atom_id": "a:duration",
+            "atom_type": "symptom",
+            "raw_value": "For about 6 weeks now.",
+            "normalized_value": null,
+            "assertion_state": "uncertain",
+            "speaker": "patient",
+            "experiencer": "unknown",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "uncertain",
+            "evidence_ids": [
+              "e:duration:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          },
+          {
+            "atom_id": "a:medication",
+            "atom_type": "medication",
+            "raw_value": "I'm allergic to latex.",
+            "normalized_value": null,
+            "assertion_state": "uncertain",
+            "speaker": "patient",
+            "experiencer": "unknown",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "uncertain",
+            "evidence_ids": [
+              "e:medication:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          }
+        ],
+        "conflicts": [],
+        "unresolved": [
+          {
+            "unresolved_id": "u:chief_complaint",
+            "topic": "chief_complaint",
+            "reason": "unhandled_source_context; unverified_source_observation",
+            "review_required": true,
+            "evidence_ids": [
+              "e:chief_complaint:0"
+            ]
+          },
+          {
+            "unresolved_id": "u:duration",
+            "topic": "duration",
+            "reason": "uncertain",
+            "review_required": true,
+            "evidence_ids": [
+              "e:duration:0"
+            ]
+          },
+          {
+            "unresolved_id": "u:severity",
+            "topic": "severity",
+            "reason": "uncertain",
+            "review_required": true,
+            "evidence_ids": []
+          },
+          {
+            "unresolved_id": "u:medication",
+            "topic": "medication",
+            "reason": "uncertain",
+            "review_required": true,
+            "evidence_ids": [
+              "e:medication:0"
+            ]
+          },
+          {
+            "unresolved_id": "u:allergy",
+            "topic": "allergy",
+            "reason": "uncertain",
+            "review_required": true,
+            "evidence_ids": []
+          },
+          {
+            "unresolved_id": "u:source:t5",
+            "topic": "unhandled_source_turn",
+            "reason": "Content outside the checked five-field path; inspect for omissions or corrections.",
+            "review_required": true,
+            "evidence_ids": [
+              "e:source:t5"
+            ]
+          },
+          {
+            "unresolved_id": "u:source:t7",
+            "topic": "unhandled_source_turn",
+            "reason": "Content outside the checked five-field path; inspect for omissions or corrections.",
+            "review_required": true,
+            "evidence_ids": [
+              "e:source:t7"
+            ]
+          },
+          {
+            "unresolved_id": "u:scope",
+            "topic": "scope",
+            "reason": "Five patient-reported fields only; source checks are bounded and human review is required. No diagnosis, plan, or full encounter completeness is established.",
+            "review_required": true,
+            "evidence_ids": []
+          }
+        ]
+      },
+      "note": {
+        "claims": [
+          {
+            "field": "chief_complaint",
+            "state": "uncertain",
+            "value": null,
+            "evidence_ids": [
+              "e:chief_complaint:0"
+            ]
+          },
+          {
+            "field": "duration",
+            "state": "uncertain",
+            "value": null,
+            "evidence_ids": [
+              "e:duration:0"
+            ]
+          },
+          {
+            "field": "severity",
+            "state": "uncertain",
+            "value": null,
+            "evidence_ids": []
+          },
+          {
+            "field": "medication",
+            "state": "uncertain",
+            "value": null,
+            "evidence_ids": [
+              "e:medication:0"
+            ]
+          },
+          {
+            "field": "allergy",
+            "state": "uncertain",
+            "value": null,
+            "evidence_ids": []
+          }
+        ],
+        "text": "Patient-reported encounter draft — human review required\nChief complaint: not asserted (uncertain); review required [e:chief_complaint:0]\nDuration: not asserted (uncertain); review required [e:duration:0]\nSeverity: not asserted (uncertain); review required\nMedication: not asserted (uncertain); review required [e:medication:0]\nAllergy: not asserted (uncertain); review required",
+        "review_required": true
+      },
+      "verification": {
+        "passed": true,
+        "errors": [],
+        "scope": "bounded_source_and_representation"
+      },
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "solver": {
+        "solver_id": "compact/qwen2.5-1.5b-state-span",
+        "kind": "legacy_adapter",
+        "version": "989aa7980e4cf806f80c7fef2b1adb7bc71aa306",
+        "parameter_count": 1543714816,
+        "artifact_bytes": null
+      },
+      "failure": null
+    }
+  },
+  {
+    "example_id": "pilot-01-paraphrase",
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "pilot-01-paraphrase",
+      "source_sha256": "bc5f635de82c01fc4e1fd04f796f2d61f1733dcdc8a12547b28b81cda6e9d313",
+      "status": "draft",
+      "disposition": "abstain",
+      "extraction": {
+        "schema_version": "nano.scribe.v0",
+        "item_id": "pilot-01-paraphrase",
+        "solver_id": "compact/qwen2.5-1.5b-state-span",
+        "fields": [
+          {
+            "field": "chief_complaint",
+            "state": "uncertain",
+            "value": null,
+            "evidence": [
+              {
+                "start": 78,
+                "end": 92,
+                "text": "ankle soreness",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "duration",
+            "state": "uncertain",
+            "value": null,
+            "evidence": [
+              {
+                "start": 158,
+                "end": 180,
+                "text": "For about 6 weeks now.",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "severity",
+            "state": "missing",
+            "value": null,
+            "evidence": []
+          },
+          {
+            "field": "medication",
+            "state": "uncertain",
+            "value": null,
+            "evidence": [
+              {
+                "start": 312,
+                "end": 343,
+                "text": "I've been taking acetaminophen.",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "allergy",
+            "state": "missing",
+            "value": null,
+            "evidence": []
+          }
+        ]
+      },
+      "encounter": {
+        "schema_version": "nano.encounter.v0",
+        "encounter_id": "pilot-01-paraphrase",
+        "sources": [
+          {
+            "source_id": "source",
+            "text": "Doctor: Describe the problem that brought you here.\nPatient: I've been having ankle soreness.\nDoctor: For what length of time have you noticed this?\nPatient: For about 6 weeks now.\nDoctor: Describe how intense this feels.\nPatient: I'd call it mild.\nDoctor: What medicine have you used for this problem?\nPatient: I've been taking acetaminophen.\nDoctor: Tell me about any substances you are allergic to.\nPatient: I'm allergic to latex.",
+            "turns": [
+              {
+                "turn_id": "source:t0",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 8,
+                "end": 51,
+                "text": "Describe the problem that brought you here."
+              },
+              {
+                "turn_id": "source:t1",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 61,
+                "end": 93,
+                "text": "I've been having ankle soreness."
+              },
+              {
+                "turn_id": "source:t2",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 102,
+                "end": 148,
+                "text": "For what length of time have you noticed this?"
+              },
+              {
+                "turn_id": "source:t3",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 158,
+                "end": 180,
+                "text": "For about 6 weeks now."
+              },
+              {
+                "turn_id": "source:t4",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 189,
+                "end": 221,
+                "text": "Describe how intense this feels."
+              },
+              {
+                "turn_id": "source:t5",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 231,
+                "end": 248,
+                "text": "I'd call it mild."
+              },
+              {
+                "turn_id": "source:t6",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 257,
+                "end": 302,
+                "text": "What medicine have you used for this problem?"
+              },
+              {
+                "turn_id": "source:t7",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 312,
+                "end": 343,
+                "text": "I've been taking acetaminophen."
+              },
+              {
+                "turn_id": "source:t8",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 352,
+                "end": 401,
+                "text": "Tell me about any substances you are allergic to."
+              },
+              {
+                "turn_id": "source:t9",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 411,
+                "end": 433,
+                "text": "I'm allergic to latex."
+              }
+            ]
+          }
+        ],
+        "evidence": [
+          {
+            "evidence_id": "e:chief_complaint:0",
+            "source_id": "source",
+            "turn_id": "source:t1",
+            "speaker": "patient",
+            "start": 78,
+            "end": 92,
+            "text": "ankle soreness"
+          },
+          {
+            "evidence_id": "e:duration:0",
+            "source_id": "source",
+            "turn_id": "source:t3",
+            "speaker": "patient",
+            "start": 158,
+            "end": 180,
+            "text": "For about 6 weeks now."
+          },
+          {
+            "evidence_id": "e:medication:0",
+            "source_id": "source",
+            "turn_id": "source:t7",
+            "speaker": "patient",
+            "start": 312,
+            "end": 343,
+            "text": "I've been taking acetaminophen."
+          },
+          {
+            "evidence_id": "e:source:t0",
+            "source_id": "source",
+            "turn_id": "source:t0",
+            "speaker": "clinician",
+            "start": 8,
+            "end": 51,
+            "text": "Describe the problem that brought you here."
+          },
+          {
+            "evidence_id": "e:source:t2",
+            "source_id": "source",
+            "turn_id": "source:t2",
+            "speaker": "clinician",
+            "start": 102,
+            "end": 148,
+            "text": "For what length of time have you noticed this?"
+          },
+          {
+            "evidence_id": "e:source:t4",
+            "source_id": "source",
+            "turn_id": "source:t4",
+            "speaker": "clinician",
+            "start": 189,
+            "end": 221,
+            "text": "Describe how intense this feels."
+          },
+          {
+            "evidence_id": "e:source:t5",
+            "source_id": "source",
+            "turn_id": "source:t5",
+            "speaker": "patient",
+            "start": 231,
+            "end": 248,
+            "text": "I'd call it mild."
+          },
+          {
+            "evidence_id": "e:source:t6",
+            "source_id": "source",
+            "turn_id": "source:t6",
+            "speaker": "clinician",
+            "start": 257,
+            "end": 302,
+            "text": "What medicine have you used for this problem?"
+          },
+          {
+            "evidence_id": "e:source:t8",
+            "source_id": "source",
+            "turn_id": "source:t8",
+            "speaker": "clinician",
+            "start": 352,
+            "end": 401,
+            "text": "Tell me about any substances you are allergic to."
+          },
+          {
+            "evidence_id": "e:source:t9",
+            "source_id": "source",
+            "turn_id": "source:t9",
+            "speaker": "patient",
+            "start": 411,
+            "end": 433,
+            "text": "I'm allergic to latex."
+          }
+        ],
+        "atoms": [
+          {
+            "atom_id": "a:chief_complaint",
+            "atom_type": "symptom",
+            "raw_value": "ankle soreness",
+            "normalized_value": null,
+            "assertion_state": "uncertain",
+            "speaker": "patient",
+            "experiencer": "unknown",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "uncertain",
+            "evidence_ids": [
+              "e:chief_complaint:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          },
+          {
+            "atom_id": "a:duration",
+            "atom_type": "symptom",
+            "raw_value": "For about 6 weeks now.",
+            "normalized_value": null,
+            "assertion_state": "uncertain",
+            "speaker": "patient",
+            "experiencer": "unknown",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "uncertain",
+            "evidence_ids": [
+              "e:duration:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          },
+          {
+            "atom_id": "a:medication",
+            "atom_type": "medication",
+            "raw_value": "I've been taking acetaminophen.",
+            "normalized_value": null,
+            "assertion_state": "uncertain",
+            "speaker": "patient",
+            "experiencer": "unknown",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "uncertain",
+            "evidence_ids": [
+              "e:medication:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          }
+        ],
+        "conflicts": [],
+        "unresolved": [
+          {
+            "unresolved_id": "u:chief_complaint",
+            "topic": "chief_complaint",
+            "reason": "uncertain",
+            "review_required": true,
+            "evidence_ids": [
+              "e:chief_complaint:0"
+            ]
+          },
+          {
+            "unresolved_id": "u:duration",
+            "topic": "duration",
+            "reason": "uncertain",
+            "review_required": true,
+            "evidence_ids": [
+              "e:duration:0"
+            ]
+          },
+          {
+            "unresolved_id": "u:severity",
+            "topic": "severity",
+            "reason": "missing",
+            "review_required": true,
+            "evidence_ids": []
+          },
+          {
+            "unresolved_id": "u:medication",
+            "topic": "medication",
+            "reason": "uncertain",
+            "review_required": true,
+            "evidence_ids": [
+              "e:medication:0"
+            ]
+          },
+          {
+            "unresolved_id": "u:allergy",
+            "topic": "allergy",
+            "reason": "missing",
+            "review_required": true,
+            "evidence_ids": []
+          },
+          {
+            "unresolved_id": "u:source:t0",
+            "topic": "unhandled_source_turn",
+            "reason": "Content outside the checked five-field path; inspect for omissions or corrections.",
+            "review_required": true,
+            "evidence_ids": [
+              "e:source:t0"
+            ]
+          },
+          {
+            "unresolved_id": "u:source:t2",
+            "topic": "unhandled_source_turn",
+            "reason": "Content outside the checked five-field path; inspect for omissions or corrections.",
+            "review_required": true,
+            "evidence_ids": [
+              "e:source:t2"
+            ]
+          },
+          {
+            "unresolved_id": "u:source:t4",
+            "topic": "unhandled_source_turn",
+            "reason": "Content outside the checked five-field path; inspect for omissions or corrections.",
+            "review_required": true,
+            "evidence_ids": [
+              "e:source:t4"
+            ]
+          },
+          {
+            "unresolved_id": "u:source:t5",
+            "topic": "unhandled_source_turn",
+            "reason": "Content outside the checked five-field path; inspect for omissions or corrections.",
+            "review_required": true,
+            "evidence_ids": [
+              "e:source:t5"
+            ]
+          },
+          {
+            "unresolved_id": "u:source:t6",
+            "topic": "unhandled_source_turn",
+            "reason": "Content outside the checked five-field path; inspect for omissions or corrections.",
+            "review_required": true,
+            "evidence_ids": [
+              "e:source:t6"
+            ]
+          },
+          {
+            "unresolved_id": "u:source:t8",
+            "topic": "unhandled_source_turn",
+            "reason": "Content outside the checked five-field path; inspect for omissions or corrections.",
+            "review_required": true,
+            "evidence_ids": [
+              "e:source:t8"
+            ]
+          },
+          {
+            "unresolved_id": "u:source:t9",
+            "topic": "unhandled_source_turn",
+            "reason": "Content outside the checked five-field path; inspect for omissions or corrections.",
+            "review_required": true,
+            "evidence_ids": [
+              "e:source:t9"
+            ]
+          },
+          {
+            "unresolved_id": "u:scope",
+            "topic": "scope",
+            "reason": "Five patient-reported fields only; source checks are bounded and human review is required. No diagnosis, plan, or full encounter completeness is established.",
+            "review_required": true,
+            "evidence_ids": []
+          }
+        ]
+      },
+      "note": {
+        "claims": [
+          {
+            "field": "chief_complaint",
+            "state": "uncertain",
+            "value": null,
+            "evidence_ids": [
+              "e:chief_complaint:0"
+            ]
+          },
+          {
+            "field": "duration",
+            "state": "uncertain",
+            "value": null,
+            "evidence_ids": [
+              "e:duration:0"
+            ]
+          },
+          {
+            "field": "severity",
+            "state": "missing",
+            "value": null,
+            "evidence_ids": []
+          },
+          {
+            "field": "medication",
+            "state": "uncertain",
+            "value": null,
+            "evidence_ids": [
+              "e:medication:0"
+            ]
+          },
+          {
+            "field": "allergy",
+            "state": "missing",
+            "value": null,
+            "evidence_ids": []
+          }
+        ],
+        "text": "Patient-reported encounter draft — human review required\nChief complaint: not asserted (uncertain); review required [e:chief_complaint:0]\nDuration: not asserted (uncertain); review required [e:duration:0]\nSeverity: not asserted (missing); review required\nMedication: not asserted (uncertain); review required [e:medication:0]\nAllergy: not asserted (missing); review required",
+        "review_required": true
+      },
+      "verification": {
+        "passed": true,
+        "errors": [],
+        "scope": "bounded_source_and_representation"
+      },
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "solver": {
+        "solver_id": "compact/qwen2.5-1.5b-state-span",
+        "kind": "legacy_adapter",
+        "version": "989aa7980e4cf806f80c7fef2b1adb7bc71aa306",
+        "parameter_count": 1543714816,
+        "artifact_bytes": null
+      },
+      "failure": null
+    }
+  },
+  {
+    "example_id": "pilot-02-canonical",
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "pilot-02-canonical",
+      "source_sha256": "dbcc9cb65640365fa04382d17abe2aedfd549ab09f3c34f32715f020c10fac72",
+      "status": "draft",
+      "disposition": "abstain",
+      "extraction": {
+        "schema_version": "nano.scribe.v0",
+        "item_id": "pilot-02-canonical",
+        "solver_id": "compact/qwen2.5-1.5b-state-span",
+        "fields": [
+          {
+            "field": "chief_complaint",
+            "state": "supported",
+            "value": "dry cough",
+            "evidence": [
+              {
+                "start": 71,
+                "end": 80,
+                "text": "dry cough",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "duration",
+            "state": "supported",
+            "value": "9 days",
+            "evidence": [
+              {
+                "start": 142,
+                "end": 148,
+                "text": "9 days",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "severity",
+            "state": "supported",
+            "value": "severe",
+            "evidence": [
+              {
+                "start": 212,
+                "end": 218,
+                "text": "severe",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "medication",
+            "state": "uncertain",
+            "value": null,
+            "evidence": []
+          },
+          {
+            "field": "allergy",
+            "state": "absent",
+            "value": null,
+            "evidence": [
+              {
+                "start": 338,
+                "end": 351,
+                "text": "No allergies.",
+                "speaker": "patient"
+              }
+            ]
+          }
+        ]
+      },
+      "encounter": {
+        "schema_version": "nano.encounter.v0",
+        "encounter_id": "pilot-02-canonical",
+        "sources": [
+          {
+            "source_id": "source",
+            "text": "Doctor: What brings you to the clinic today?\nPatient: I've been having dry cough.\nDoctor: How long has this been going on?\nPatient: For about 9 days now.\nDoctor: How bad would you say it is?\nPatient: I'd call it severe.\nDoctor: Have you taken anything for it?\nPatient: No, nothing yet.\nDoctor: Any allergies I should know about?\nPatient: No allergies.",
+            "turns": [
+              {
+                "turn_id": "source:t0",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 8,
+                "end": 44,
+                "text": "What brings you to the clinic today?"
+              },
+              {
+                "turn_id": "source:t1",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 54,
+                "end": 81,
+                "text": "I've been having dry cough."
+              },
+              {
+                "turn_id": "source:t2",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 90,
+                "end": 122,
+                "text": "How long has this been going on?"
+              },
+              {
+                "turn_id": "source:t3",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 132,
+                "end": 153,
+                "text": "For about 9 days now."
+              },
+              {
+                "turn_id": "source:t4",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 162,
+                "end": 190,
+                "text": "How bad would you say it is?"
+              },
+              {
+                "turn_id": "source:t5",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 200,
+                "end": 219,
+                "text": "I'd call it severe."
+              },
+              {
+                "turn_id": "source:t6",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 228,
+                "end": 259,
+                "text": "Have you taken anything for it?"
+              },
+              {
+                "turn_id": "source:t7",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 269,
+                "end": 285,
+                "text": "No, nothing yet."
+              },
+              {
+                "turn_id": "source:t8",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 294,
+                "end": 328,
+                "text": "Any allergies I should know about?"
+              },
+              {
+                "turn_id": "source:t9",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 338,
+                "end": 351,
+                "text": "No allergies."
+              }
+            ]
+          }
+        ],
+        "evidence": [
+          {
+            "evidence_id": "e:chief_complaint:0",
+            "source_id": "source",
+            "turn_id": "source:t1",
+            "speaker": "patient",
+            "start": 71,
+            "end": 80,
+            "text": "dry cough"
+          },
+          {
+            "evidence_id": "e:duration:0",
+            "source_id": "source",
+            "turn_id": "source:t3",
+            "speaker": "patient",
+            "start": 142,
+            "end": 148,
+            "text": "9 days"
+          },
+          {
+            "evidence_id": "e:severity:0",
+            "source_id": "source",
+            "turn_id": "source:t5",
+            "speaker": "patient",
+            "start": 212,
+            "end": 218,
+            "text": "severe"
+          },
+          {
+            "evidence_id": "e:allergy:0",
+            "source_id": "source",
+            "turn_id": "source:t9",
+            "speaker": "patient",
+            "start": 338,
+            "end": 351,
+            "text": "No allergies."
+          },
+          {
+            "evidence_id": "e:source:t7",
+            "source_id": "source",
+            "turn_id": "source:t7",
+            "speaker": "patient",
+            "start": 269,
+            "end": 285,
+            "text": "No, nothing yet."
+          }
+        ],
+        "atoms": [
+          {
+            "atom_id": "a:chief_complaint",
+            "atom_type": "symptom",
+            "raw_value": "dry cough",
+            "normalized_value": null,
+            "assertion_state": "uncertain",
+            "speaker": "patient",
+            "experiencer": "unknown",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "uncertain",
+            "evidence_ids": [
+              "e:chief_complaint:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          },
+          {
+            "atom_id": "a:duration",
+            "atom_type": "symptom",
+            "raw_value": "9 days",
+            "normalized_value": null,
+            "assertion_state": "uncertain",
+            "speaker": "patient",
+            "experiencer": "unknown",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "uncertain",
+            "evidence_ids": [
+              "e:duration:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          },
+          {
+            "atom_id": "a:severity",
+            "atom_type": "symptom",
+            "raw_value": "severe",
+            "normalized_value": null,
+            "assertion_state": "uncertain",
+            "speaker": "patient",
+            "experiencer": "unknown",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "uncertain",
+            "evidence_ids": [
+              "e:severity:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          },
+          {
+            "atom_id": "a:allergy",
+            "atom_type": "allergy",
+            "raw_value": "No allergies.",
+            "normalized_value": null,
+            "assertion_state": "uncertain",
+            "speaker": "patient",
+            "experiencer": "unknown",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "uncertain",
+            "evidence_ids": [
+              "e:allergy:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          }
+        ],
+        "conflicts": [],
+        "unresolved": [
+          {
+            "unresolved_id": "u:chief_complaint",
+            "topic": "chief_complaint",
+            "reason": "unhandled_source_context",
+            "review_required": true,
+            "evidence_ids": [
+              "e:chief_complaint:0"
+            ]
+          },
+          {
+            "unresolved_id": "u:duration",
+            "topic": "duration",
+            "reason": "unhandled_source_context",
+            "review_required": true,
+            "evidence_ids": [
+              "e:duration:0"
+            ]
+          },
+          {
+            "unresolved_id": "u:severity",
+            "topic": "severity",
+            "reason": "unhandled_source_context",
+            "review_required": true,
+            "evidence_ids": [
+              "e:severity:0"
+            ]
+          },
+          {
+            "unresolved_id": "u:medication",
+            "topic": "medication",
+            "reason": "uncertain",
+            "review_required": true,
+            "evidence_ids": []
+          },
+          {
+            "unresolved_id": "u:allergy",
+            "topic": "allergy",
+            "reason": "unhandled_source_context",
+            "review_required": true,
+            "evidence_ids": [
+              "e:allergy:0"
+            ]
+          },
+          {
+            "unresolved_id": "u:source:t7",
+            "topic": "unhandled_source_turn",
+            "reason": "Content outside the checked five-field path; inspect for omissions or corrections.",
+            "review_required": true,
+            "evidence_ids": [
+              "e:source:t7"
+            ]
+          },
+          {
+            "unresolved_id": "u:scope",
+            "topic": "scope",
+            "reason": "Five patient-reported fields only; source checks are bounded and human review is required. No diagnosis, plan, or full encounter completeness is established.",
+            "review_required": true,
+            "evidence_ids": []
+          }
+        ]
+      },
+      "note": {
+        "claims": [
+          {
+            "field": "chief_complaint",
+            "state": "uncertain",
+            "value": null,
+            "evidence_ids": [
+              "e:chief_complaint:0"
+            ]
+          },
+          {
+            "field": "duration",
+            "state": "uncertain",
+            "value": null,
+            "evidence_ids": [
+              "e:duration:0"
+            ]
+          },
+          {
+            "field": "severity",
+            "state": "uncertain",
+            "value": null,
+            "evidence_ids": [
+              "e:severity:0"
+            ]
+          },
+          {
+            "field": "medication",
+            "state": "uncertain",
+            "value": null,
+            "evidence_ids": []
+          },
+          {
+            "field": "allergy",
+            "state": "uncertain",
+            "value": null,
+            "evidence_ids": [
+              "e:allergy:0"
+            ]
+          }
+        ],
+        "text": "Patient-reported encounter draft — human review required\nChief complaint: not asserted (uncertain); review required [e:chief_complaint:0]\nDuration: not asserted (uncertain); review required [e:duration:0]\nSeverity: not asserted (uncertain); review required [e:severity:0]\nMedication: not asserted (uncertain); review required\nAllergy: not asserted (uncertain); review required [e:allergy:0]",
+        "review_required": true
+      },
+      "verification": {
+        "passed": true,
+        "errors": [],
+        "scope": "bounded_source_and_representation"
+      },
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "solver": {
+        "solver_id": "compact/qwen2.5-1.5b-state-span",
+        "kind": "legacy_adapter",
+        "version": "989aa7980e4cf806f80c7fef2b1adb7bc71aa306",
+        "parameter_count": 1543714816,
+        "artifact_bytes": null
+      },
+      "failure": null
+    }
+  },
+  {
+    "example_id": "pilot-02-paraphrase",
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "pilot-02-paraphrase",
+      "source_sha256": "0c3ce9b4e003ef9ea972630861ec3fe9ed20f3cf1765bcaaf958f6e20acc4fbb",
+      "status": "draft",
+      "disposition": "abstain",
+      "extraction": {
+        "schema_version": "nano.scribe.v0",
+        "item_id": "pilot-02-paraphrase",
+        "solver_id": "compact/qwen2.5-1.5b-state-span",
+        "fields": [
+          {
+            "field": "chief_complaint",
+            "state": "uncertain",
+            "value": null,
+            "evidence": [
+              {
+                "start": 78,
+                "end": 87,
+                "text": "dry cough",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "duration",
+            "state": "uncertain",
+            "value": null,
+            "evidence": [
+              {
+                "start": 153,
+                "end": 174,
+                "text": "For about 9 days now.",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "severity",
+            "state": "uncertain",
+            "value": null,
+            "evidence": [
+              {
+                "start": 237,
+                "end": 243,
+                "text": "severe",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "medication",
+            "state": "missing",
+            "value": null,
+            "evidence": []
+          },
+          {
+            "field": "allergy",
+            "state": "uncertain",
+            "value": null,
+            "evidence": [
+              {
+                "start": 392,
+                "end": 405,
+                "text": "No allergies.",
+                "speaker": "patient"
+              }
+            ]
+          }
+        ]
+      },
+      "encounter": {
+        "schema_version": "nano.encounter.v0",
+        "encounter_id": "pilot-02-paraphrase",
+        "sources": [
+          {
+            "source_id": "source",
+            "text": "Doctor: Describe the problem that brought you here.\nPatient: I've been having dry cough.\nDoctor: For what length of time have you noticed this?\nPatient: For about 9 days now.\nDoctor: Describe how intense this feels.\nPatient: I'd call it severe.\nDoctor: What medicine have you used for this problem?\nPatient: No, nothing yet.\nDoctor: Tell me about any substances you are allergic to.\nPatient: No allergies.",
+            "turns": [
+              {
+                "turn_id": "source:t0",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 8,
+                "end": 51,
+                "text": "Describe the problem that brought you here."
+              },
+              {
+                "turn_id": "source:t1",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 61,
+                "end": 88,
+                "text": "I've been having dry cough."
+              },
+              {
+                "turn_id": "source:t2",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 97,
+                "end": 143,
+                "text": "For what length of time have you noticed this?"
+              },
+              {
+                "turn_id": "source:t3",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 153,
+                "end": 174,
+                "text": "For about 9 days now."
+              },
+              {
+                "turn_id": "source:t4",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 183,
+                "end": 215,
+                "text": "Describe how intense this feels."
+              },
+              {
+                "turn_id": "source:t5",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 225,
+                "end": 244,
+                "text": "I'd call it severe."
+              },
+              {
+                "turn_id": "source:t6",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 253,
+                "end": 298,
+                "text": "What medicine have you used for this problem?"
+              },
+              {
+                "turn_id": "source:t7",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 308,
+                "end": 324,
+                "text": "No, nothing yet."
+              },
+              {
+                "turn_id": "source:t8",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 333,
+                "end": 382,
+                "text": "Tell me about any substances you are allergic to."
+              },
+              {
+                "turn_id": "source:t9",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 392,
+                "end": 405,
+                "text": "No allergies."
+              }
+            ]
+          }
+        ],
+        "evidence": [
+          {
+            "evidence_id": "e:chief_complaint:0",
+            "source_id": "source",
+            "turn_id": "source:t1",
+            "speaker": "patient",
+            "start": 78,
+            "end": 87,
+            "text": "dry cough"
+          },
+          {
+            "evidence_id": "e:duration:0",
+            "source_id": "source",
+            "turn_id": "source:t3",
+            "speaker": "patient",
+            "start": 153,
+            "end": 174,
+            "text": "For about 9 days now."
+          },
+          {
+            "evidence_id": "e:severity:0",
+            "source_id": "source",
+            "turn_id": "source:t5",
+            "speaker": "patient",
+            "start": 237,
+            "end": 243,
+            "text": "severe"
+          },
+          {
+            "evidence_id": "e:allergy:0",
+            "source_id": "source",
+            "turn_id": "source:t9",
+            "speaker": "patient",
+            "start": 392,
+            "end": 405,
+            "text": "No allergies."
+          },
+          {
+            "evidence_id": "e:source:t0",
+            "source_id": "source",
+            "turn_id": "source:t0",
+            "speaker": "clinician",
+            "start": 8,
+            "end": 51,
+            "text": "Describe the problem that brought you here."
+          },
+          {
+            "evidence_id": "e:source:t2",
+            "source_id": "source",
+            "turn_id": "source:t2",
+            "speaker": "clinician",
+            "start": 97,
+            "end": 143,
+            "text": "For what length of time have you noticed this?"
+          },
+          {
+            "evidence_id": "e:source:t4",
+            "source_id": "source",
+            "turn_id": "source:t4",
+            "speaker": "clinician",
+            "start": 183,
+            "end": 215,
+            "text": "Describe how intense this feels."
+          },
+          {
+            "evidence_id": "e:source:t6",
+            "source_id": "source",
+            "turn_id": "source:t6",
+            "speaker": "clinician",
+            "start": 253,
+            "end": 298,
+            "text": "What medicine have you used for this problem?"
+          },
+          {
+            "evidence_id": "e:source:t7",
+            "source_id": "source",
+            "turn_id": "source:t7",
+            "speaker": "patient",
+            "start": 308,
+            "end": 324,
+            "text": "No, nothing yet."
+          },
+          {
+            "evidence_id": "e:source:t8",
+            "source_id": "source",
+            "turn_id": "source:t8",
+            "speaker": "clinician",
+            "start": 333,
+            "end": 382,
+            "text": "Tell me about any substances you are allergic to."
+          }
+        ],
+        "atoms": [
+          {
+            "atom_id": "a:chief_complaint",
+            "atom_type": "symptom",
+            "raw_value": "dry cough",
+            "normalized_value": null,
+            "assertion_state": "uncertain",
+            "speaker": "patient",
+            "experiencer": "unknown",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "uncertain",
+            "evidence_ids": [
+              "e:chief_complaint:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          },
+          {
+            "atom_id": "a:duration",
+            "atom_type": "symptom",
+            "raw_value": "For about 9 days now.",
+            "normalized_value": null,
+            "assertion_state": "uncertain",
+            "speaker": "patient",
+            "experiencer": "unknown",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "uncertain",
+            "evidence_ids": [
+              "e:duration:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          },
+          {
+            "atom_id": "a:severity",
+            "atom_type": "symptom",
+            "raw_value": "severe",
+            "normalized_value": null,
+            "assertion_state": "uncertain",
+            "speaker": "patient",
+            "experiencer": "unknown",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "uncertain",
+            "evidence_ids": [
+              "e:severity:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          },
+          {
+            "atom_id": "a:allergy",
+            "atom_type": "allergy",
+            "raw_value": "No allergies.",
+            "normalized_value": null,
+            "assertion_state": "uncertain",
+            "speaker": "patient",
+            "experiencer": "unknown",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "uncertain",
+            "evidence_ids": [
+              "e:allergy:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          }
+        ],
+        "conflicts": [],
+        "unresolved": [
+          {
+            "unresolved_id": "u:chief_complaint",
+            "topic": "chief_complaint",
+            "reason": "uncertain",
+            "review_required": true,
+            "evidence_ids": [
+              "e:chief_complaint:0"
+            ]
+          },
+          {
+            "unresolved_id": "u:duration",
+            "topic": "duration",
+            "reason": "uncertain",
+            "review_required": true,
+            "evidence_ids": [
+              "e:duration:0"
+            ]
+          },
+          {
+            "unresolved_id": "u:severity",
+            "topic": "severity",
+            "reason": "uncertain",
+            "review_required": true,
+            "evidence_ids": [
+              "e:severity:0"
+            ]
+          },
+          {
+            "unresolved_id": "u:medication",
+            "topic": "medication",
+            "reason": "missing",
+            "review_required": true,
+            "evidence_ids": []
+          },
+          {
+            "unresolved_id": "u:allergy",
+            "topic": "allergy",
+            "reason": "uncertain",
+            "review_required": true,
+            "evidence_ids": [
+              "e:allergy:0"
+            ]
+          },
+          {
+            "unresolved_id": "u:source:t0",
+            "topic": "unhandled_source_turn",
+            "reason": "Content outside the checked five-field path; inspect for omissions or corrections.",
+            "review_required": true,
+            "evidence_ids": [
+              "e:source:t0"
+            ]
+          },
+          {
+            "unresolved_id": "u:source:t2",
+            "topic": "unhandled_source_turn",
+            "reason": "Content outside the checked five-field path; inspect for omissions or corrections.",
+            "review_required": true,
+            "evidence_ids": [
+              "e:source:t2"
+            ]
+          },
+          {
+            "unresolved_id": "u:source:t4",
+            "topic": "unhandled_source_turn",
+            "reason": "Content outside the checked five-field path; inspect for omissions or corrections.",
+            "review_required": true,
+            "evidence_ids": [
+              "e:source:t4"
+            ]
+          },
+          {
+            "unresolved_id": "u:source:t6",
+            "topic": "unhandled_source_turn",
+            "reason": "Content outside the checked five-field path; inspect for omissions or corrections.",
+            "review_required": true,
+            "evidence_ids": [
+              "e:source:t6"
+            ]
+          },
+          {
+            "unresolved_id": "u:source:t7",
+            "topic": "unhandled_source_turn",
+            "reason": "Content outside the checked five-field path; inspect for omissions or corrections.",
+            "review_required": true,
+            "evidence_ids": [
+              "e:source:t7"
+            ]
+          },
+          {
+            "unresolved_id": "u:source:t8",
+            "topic": "unhandled_source_turn",
+            "reason": "Content outside the checked five-field path; inspect for omissions or corrections.",
+            "review_required": true,
+            "evidence_ids": [
+              "e:source:t8"
+            ]
+          },
+          {
+            "unresolved_id": "u:scope",
+            "topic": "scope",
+            "reason": "Five patient-reported fields only; source checks are bounded and human review is required. No diagnosis, plan, or full encounter completeness is established.",
+            "review_required": true,
+            "evidence_ids": []
+          }
+        ]
+      },
+      "note": {
+        "claims": [
+          {
+            "field": "chief_complaint",
+            "state": "uncertain",
+            "value": null,
+            "evidence_ids": [
+              "e:chief_complaint:0"
+            ]
+          },
+          {
+            "field": "duration",
+            "state": "uncertain",
+            "value": null,
+            "evidence_ids": [
+              "e:duration:0"
+            ]
+          },
+          {
+            "field": "severity",
+            "state": "uncertain",
+            "value": null,
+            "evidence_ids": [
+              "e:severity:0"
+            ]
+          },
+          {
+            "field": "medication",
+            "state": "missing",
+            "value": null,
+            "evidence_ids": []
+          },
+          {
+            "field": "allergy",
+            "state": "uncertain",
+            "value": null,
+            "evidence_ids": [
+              "e:allergy:0"
+            ]
+          }
+        ],
+        "text": "Patient-reported encounter draft — human review required\nChief complaint: not asserted (uncertain); review required [e:chief_complaint:0]\nDuration: not asserted (uncertain); review required [e:duration:0]\nSeverity: not asserted (uncertain); review required [e:severity:0]\nMedication: not asserted (missing); review required\nAllergy: not asserted (uncertain); review required [e:allergy:0]",
+        "review_required": true
+      },
+      "verification": {
+        "passed": true,
+        "errors": [],
+        "scope": "bounded_source_and_representation"
+      },
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "solver": {
+        "solver_id": "compact/qwen2.5-1.5b-state-span",
+        "kind": "legacy_adapter",
+        "version": "989aa7980e4cf806f80c7fef2b1adb7bc71aa306",
+        "parameter_count": 1543714816,
+        "artifact_bytes": null
+      },
+      "failure": null
+    }
+  },
+  {
+    "example_id": "pilot-03-canonical",
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "pilot-03-canonical",
+      "source_sha256": "ea8bb581301db9bcc38d8ba4f14e0ebee88cc30ff687010eea181f86b88bad9a",
+      "status": "draft",
+      "disposition": "abstain",
+      "extraction": {
+        "schema_version": "nano.scribe.v0",
+        "item_id": "pilot-03-canonical",
+        "solver_id": "compact/qwen2.5-1.5b-state-span",
+        "fields": [
+          {
+            "field": "chief_complaint",
+            "state": "uncertain",
+            "value": null,
+            "evidence": [
+              {
+                "start": 54,
+                "end": 82,
+                "text": "I've been having wrist ache.",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "duration",
+            "state": "uncertain",
+            "value": null,
+            "evidence": [
+              {
+                "start": 203,
+                "end": 231,
+                "text": "I'm allergic to amoxicillin.",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "severity",
+            "state": "supported",
+            "value": "moderate",
+            "evidence": [
+              {
+                "start": 141,
+                "end": 149,
+                "text": "moderate",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "medication",
+            "state": "uncertain",
+            "value": null,
+            "evidence": [
+              {
+                "start": 129,
+                "end": 150,
+                "text": "I'd call it moderate.",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "allergy",
+            "state": "uncertain",
+            "value": null,
+            "evidence": []
+          }
+        ]
+      },
+      "encounter": {
+        "schema_version": "nano.encounter.v0",
+        "encounter_id": "pilot-03-canonical",
+        "sources": [
+          {
+            "source_id": "source",
+            "text": "Doctor: What brings you to the clinic today?\nPatient: I've been having wrist ache.\nDoctor: How bad would you say it is?\nPatient: I'd call it moderate.\nDoctor: Any allergies I should know about?\nPatient: I'm allergic to amoxicillin.",
+            "turns": [
+              {
+                "turn_id": "source:t0",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 8,
+                "end": 44,
+                "text": "What brings you to the clinic today?"
+              },
+              {
+                "turn_id": "source:t1",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 54,
+                "end": 82,
+                "text": "I've been having wrist ache."
+              },
+              {
+                "turn_id": "source:t2",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 91,
+                "end": 119,
+                "text": "How bad would you say it is?"
+              },
+              {
+                "turn_id": "source:t3",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 129,
+                "end": 150,
+                "text": "I'd call it moderate."
+              },
+              {
+                "turn_id": "source:t4",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 159,
+                "end": 193,
+                "text": "Any allergies I should know about?"
+              },
+              {
+                "turn_id": "source:t5",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 203,
+                "end": 231,
+                "text": "I'm allergic to amoxicillin."
+              }
+            ]
+          }
+        ],
+        "evidence": [
+          {
+            "evidence_id": "e:chief_complaint:0",
+            "source_id": "source",
+            "turn_id": "source:t1",
+            "speaker": "patient",
+            "start": 54,
+            "end": 82,
+            "text": "I've been having wrist ache."
+          },
+          {
+            "evidence_id": "e:duration:0",
+            "source_id": "source",
+            "turn_id": "source:t5",
+            "speaker": "patient",
+            "start": 203,
+            "end": 231,
+            "text": "I'm allergic to amoxicillin."
+          },
+          {
+            "evidence_id": "e:severity:0",
+            "source_id": "source",
+            "turn_id": "source:t3",
+            "speaker": "patient",
+            "start": 141,
+            "end": 149,
+            "text": "moderate"
+          },
+          {
+            "evidence_id": "e:medication:0",
+            "source_id": "source",
+            "turn_id": "source:t3",
+            "speaker": "patient",
+            "start": 129,
+            "end": 150,
+            "text": "I'd call it moderate."
+          }
+        ],
+        "atoms": [
+          {
+            "atom_id": "a:chief_complaint",
+            "atom_type": "symptom",
+            "raw_value": "I've been having wrist ache.",
+            "normalized_value": null,
+            "assertion_state": "uncertain",
+            "speaker": "patient",
+            "experiencer": "unknown",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "uncertain",
+            "evidence_ids": [
+              "e:chief_complaint:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          },
+          {
+            "atom_id": "a:duration",
+            "atom_type": "symptom",
+            "raw_value": "I'm allergic to amoxicillin.",
+            "normalized_value": null,
+            "assertion_state": "uncertain",
+            "speaker": "patient",
+            "experiencer": "unknown",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "uncertain",
+            "evidence_ids": [
+              "e:duration:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          },
+          {
+            "atom_id": "a:severity",
+            "atom_type": "symptom",
+            "raw_value": "moderate",
+            "normalized_value": null,
+            "assertion_state": "uncertain",
+            "speaker": "patient",
+            "experiencer": "unknown",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "uncertain",
+            "evidence_ids": [
+              "e:severity:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          },
+          {
+            "atom_id": "a:medication",
+            "atom_type": "medication",
+            "raw_value": "I'd call it moderate.",
+            "normalized_value": null,
+            "assertion_state": "uncertain",
+            "speaker": "patient",
+            "experiencer": "unknown",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "uncertain",
+            "evidence_ids": [
+              "e:medication:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          }
+        ],
+        "conflicts": [],
+        "unresolved": [
+          {
+            "unresolved_id": "u:chief_complaint",
+            "topic": "chief_complaint",
+            "reason": "uncertain",
+            "review_required": true,
+            "evidence_ids": [
+              "e:chief_complaint:0"
+            ]
+          },
+          {
+            "unresolved_id": "u:duration",
+            "topic": "duration",
+            "reason": "uncertain",
+            "review_required": true,
+            "evidence_ids": [
+              "e:duration:0"
+            ]
+          },
+          {
+            "unresolved_id": "u:severity",
+            "topic": "severity",
+            "reason": "unverified_source_observation",
+            "review_required": true,
+            "evidence_ids": [
+              "e:severity:0"
+            ]
+          },
+          {
+            "unresolved_id": "u:medication",
+            "topic": "medication",
+            "reason": "uncertain",
+            "review_required": true,
+            "evidence_ids": [
+              "e:medication:0"
+            ]
+          },
+          {
+            "unresolved_id": "u:allergy",
+            "topic": "allergy",
+            "reason": "uncertain",
+            "review_required": true,
+            "evidence_ids": []
+          },
+          {
+            "unresolved_id": "u:scope",
+            "topic": "scope",
+            "reason": "Five patient-reported fields only; source checks are bounded and human review is required. No diagnosis, plan, or full encounter completeness is established.",
+            "review_required": true,
+            "evidence_ids": []
+          }
+        ]
+      },
+      "note": {
+        "claims": [
+          {
+            "field": "chief_complaint",
+            "state": "uncertain",
+            "value": null,
+            "evidence_ids": [
+              "e:chief_complaint:0"
+            ]
+          },
+          {
+            "field": "duration",
+            "state": "uncertain",
+            "value": null,
+            "evidence_ids": [
+              "e:duration:0"
+            ]
+          },
+          {
+            "field": "severity",
+            "state": "uncertain",
+            "value": null,
+            "evidence_ids": [
+              "e:severity:0"
+            ]
+          },
+          {
+            "field": "medication",
+            "state": "uncertain",
+            "value": null,
+            "evidence_ids": [
+              "e:medication:0"
+            ]
+          },
+          {
+            "field": "allergy",
+            "state": "uncertain",
+            "value": null,
+            "evidence_ids": []
+          }
+        ],
+        "text": "Patient-reported encounter draft — human review required\nChief complaint: not asserted (uncertain); review required [e:chief_complaint:0]\nDuration: not asserted (uncertain); review required [e:duration:0]\nSeverity: not asserted (uncertain); review required [e:severity:0]\nMedication: not asserted (uncertain); review required [e:medication:0]\nAllergy: not asserted (uncertain); review required",
+        "review_required": true
+      },
+      "verification": {
+        "passed": true,
+        "errors": [],
+        "scope": "bounded_source_and_representation"
+      },
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "solver": {
+        "solver_id": "compact/qwen2.5-1.5b-state-span",
+        "kind": "legacy_adapter",
+        "version": "989aa7980e4cf806f80c7fef2b1adb7bc71aa306",
+        "parameter_count": 1543714816,
+        "artifact_bytes": null
+      },
+      "failure": null
+    }
+  },
+  {
+    "example_id": "pilot-03-paraphrase",
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "pilot-03-paraphrase",
+      "source_sha256": "bf3cc9f6048151152b356611140192a77f8f0cd576f35b24992d149bb86bea19",
+      "status": "draft",
+      "disposition": "abstain",
+      "extraction": {
+        "schema_version": "nano.scribe.v0",
+        "item_id": "pilot-03-paraphrase",
+        "solver_id": "compact/qwen2.5-1.5b-state-span",
+        "fields": [
+          {
+            "field": "chief_complaint",
+            "state": "uncertain",
+            "value": null,
+            "evidence": [
+              {
+                "start": 61,
+                "end": 89,
+                "text": "I've been having wrist ache.",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "duration",
+            "state": "uncertain",
+            "value": null,
+            "evidence": [
+              {
+                "start": 229,
+                "end": 257,
+                "text": "I'm allergic to amoxicillin.",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "severity",
+            "state": "uncertain",
+            "value": null,
+            "evidence": [
+              {
+                "start": 152,
+                "end": 160,
+                "text": "moderate",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "medication",
+            "state": "uncertain",
+            "value": null,
+            "evidence": [
+              {
+                "start": 140,
+                "end": 161,
+                "text": "I'd call it moderate.",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "allergy",
+            "state": "missing",
+            "value": null,
+            "evidence": []
+          }
+        ]
+      },
+      "encounter": {
+        "schema_version": "nano.encounter.v0",
+        "encounter_id": "pilot-03-paraphrase",
+        "sources": [
+          {
+            "source_id": "source",
+            "text": "Doctor: Describe the problem that brought you here.\nPatient: I've been having wrist ache.\nDoctor: Describe how intense this feels.\nPatient: I'd call it moderate.\nDoctor: Tell me about any substances you are allergic to.\nPatient: I'm allergic to amoxicillin.",
+            "turns": [
+              {
+                "turn_id": "source:t0",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 8,
+                "end": 51,
+                "text": "Describe the problem that brought you here."
+              },
+              {
+                "turn_id": "source:t1",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 61,
+                "end": 89,
+                "text": "I've been having wrist ache."
+              },
+              {
+                "turn_id": "source:t2",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 98,
+                "end": 130,
+                "text": "Describe how intense this feels."
+              },
+              {
+                "turn_id": "source:t3",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 140,
+                "end": 161,
+                "text": "I'd call it moderate."
+              },
+              {
+                "turn_id": "source:t4",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 170,
+                "end": 219,
+                "text": "Tell me about any substances you are allergic to."
+              },
+              {
+                "turn_id": "source:t5",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 229,
+                "end": 257,
+                "text": "I'm allergic to amoxicillin."
+              }
+            ]
+          }
+        ],
+        "evidence": [
+          {
+            "evidence_id": "e:chief_complaint:0",
+            "source_id": "source",
+            "turn_id": "source:t1",
+            "speaker": "patient",
+            "start": 61,
+            "end": 89,
+            "text": "I've been having wrist ache."
+          },
+          {
+            "evidence_id": "e:duration:0",
+            "source_id": "source",
+            "turn_id": "source:t5",
+            "speaker": "patient",
+            "start": 229,
+            "end": 257,
+            "text": "I'm allergic to amoxicillin."
+          },
+          {
+            "evidence_id": "e:severity:0",
+            "source_id": "source",
+            "turn_id": "source:t3",
+            "speaker": "patient",
+            "start": 152,
+            "end": 160,
+            "text": "moderate"
+          },
+          {
+            "evidence_id": "e:medication:0",
+            "source_id": "source",
+            "turn_id": "source:t3",
+            "speaker": "patient",
+            "start": 140,
+            "end": 161,
+            "text": "I'd call it moderate."
+          },
+          {
+            "evidence_id": "e:source:t0",
+            "source_id": "source",
+            "turn_id": "source:t0",
+            "speaker": "clinician",
+            "start": 8,
+            "end": 51,
+            "text": "Describe the problem that brought you here."
+          },
+          {
+            "evidence_id": "e:source:t2",
+            "source_id": "source",
+            "turn_id": "source:t2",
+            "speaker": "clinician",
+            "start": 98,
+            "end": 130,
+            "text": "Describe how intense this feels."
+          },
+          {
+            "evidence_id": "e:source:t4",
+            "source_id": "source",
+            "turn_id": "source:t4",
+            "speaker": "clinician",
+            "start": 170,
+            "end": 219,
+            "text": "Tell me about any substances you are allergic to."
+          }
+        ],
+        "atoms": [
+          {
+            "atom_id": "a:chief_complaint",
+            "atom_type": "symptom",
+            "raw_value": "I've been having wrist ache.",
+            "normalized_value": null,
+            "assertion_state": "uncertain",
+            "speaker": "patient",
+            "experiencer": "unknown",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "uncertain",
+            "evidence_ids": [
+              "e:chief_complaint:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          },
+          {
+            "atom_id": "a:duration",
+            "atom_type": "symptom",
+            "raw_value": "I'm allergic to amoxicillin.",
+            "normalized_value": null,
+            "assertion_state": "uncertain",
+            "speaker": "patient",
+            "experiencer": "unknown",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "uncertain",
+            "evidence_ids": [
+              "e:duration:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          },
+          {
+            "atom_id": "a:severity",
+            "atom_type": "symptom",
+            "raw_value": "moderate",
+            "normalized_value": null,
+            "assertion_state": "uncertain",
+            "speaker": "patient",
+            "experiencer": "unknown",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "uncertain",
+            "evidence_ids": [
+              "e:severity:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          },
+          {
+            "atom_id": "a:medication",
+            "atom_type": "medication",
+            "raw_value": "I'd call it moderate.",
+            "normalized_value": null,
+            "assertion_state": "uncertain",
+            "speaker": "patient",
+            "experiencer": "unknown",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "uncertain",
+            "evidence_ids": [
+              "e:medication:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          }
+        ],
+        "conflicts": [],
+        "unresolved": [
+          {
+            "unresolved_id": "u:chief_complaint",
+            "topic": "chief_complaint",
+            "reason": "uncertain",
+            "review_required": true,
+            "evidence_ids": [
+              "e:chief_complaint:0"
+            ]
+          },
+          {
+            "unresolved_id": "u:duration",
+            "topic": "duration",
+            "reason": "uncertain",
+            "review_required": true,
+            "evidence_ids": [
+              "e:duration:0"
+            ]
+          },
+          {
+            "unresolved_id": "u:severity",
+            "topic": "severity",
+            "reason": "uncertain",
+            "review_required": true,
+            "evidence_ids": [
+              "e:severity:0"
+            ]
+          },
+          {
+            "unresolved_id": "u:medication",
+            "topic": "medication",
+            "reason": "uncertain",
+            "review_required": true,
+            "evidence_ids": [
+              "e:medication:0"
+            ]
+          },
+          {
+            "unresolved_id": "u:allergy",
+            "topic": "allergy",
+            "reason": "missing",
+            "review_required": true,
+            "evidence_ids": []
+          },
+          {
+            "unresolved_id": "u:source:t0",
+            "topic": "unhandled_source_turn",
+            "reason": "Content outside the checked five-field path; inspect for omissions or corrections.",
+            "review_required": true,
+            "evidence_ids": [
+              "e:source:t0"
+            ]
+          },
+          {
+            "unresolved_id": "u:source:t2",
+            "topic": "unhandled_source_turn",
+            "reason": "Content outside the checked five-field path; inspect for omissions or corrections.",
+            "review_required": true,
+            "evidence_ids": [
+              "e:source:t2"
+            ]
+          },
+          {
+            "unresolved_id": "u:source:t4",
+            "topic": "unhandled_source_turn",
+            "reason": "Content outside the checked five-field path; inspect for omissions or corrections.",
+            "review_required": true,
+            "evidence_ids": [
+              "e:source:t4"
+            ]
+          },
+          {
+            "unresolved_id": "u:scope",
+            "topic": "scope",
+            "reason": "Five patient-reported fields only; source checks are bounded and human review is required. No diagnosis, plan, or full encounter completeness is established.",
+            "review_required": true,
+            "evidence_ids": []
+          }
+        ]
+      },
+      "note": {
+        "claims": [
+          {
+            "field": "chief_complaint",
+            "state": "uncertain",
+            "value": null,
+            "evidence_ids": [
+              "e:chief_complaint:0"
+            ]
+          },
+          {
+            "field": "duration",
+            "state": "uncertain",
+            "value": null,
+            "evidence_ids": [
+              "e:duration:0"
+            ]
+          },
+          {
+            "field": "severity",
+            "state": "uncertain",
+            "value": null,
+            "evidence_ids": [
+              "e:severity:0"
+            ]
+          },
+          {
+            "field": "medication",
+            "state": "uncertain",
+            "value": null,
+            "evidence_ids": [
+              "e:medication:0"
+            ]
+          },
+          {
+            "field": "allergy",
+            "state": "missing",
+            "value": null,
+            "evidence_ids": []
+          }
+        ],
+        "text": "Patient-reported encounter draft — human review required\nChief complaint: not asserted (uncertain); review required [e:chief_complaint:0]\nDuration: not asserted (uncertain); review required [e:duration:0]\nSeverity: not asserted (uncertain); review required [e:severity:0]\nMedication: not asserted (uncertain); review required [e:medication:0]\nAllergy: not asserted (missing); review required",
+        "review_required": true
+      },
+      "verification": {
+        "passed": true,
+        "errors": [],
+        "scope": "bounded_source_and_representation"
+      },
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "solver": {
+        "solver_id": "compact/qwen2.5-1.5b-state-span",
+        "kind": "legacy_adapter",
+        "version": "989aa7980e4cf806f80c7fef2b1adb7bc71aa306",
+        "parameter_count": 1543714816,
+        "artifact_bytes": null
+      },
+      "failure": null
+    }
+  },
+  {
+    "example_id": "pilot-04-canonical",
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "pilot-04-canonical",
+      "source_sha256": "21ef56097ac2bd1462d21e5450f337e648e8fe264076e94b6cddd371c8180403",
+      "status": "draft",
+      "disposition": "abstain",
+      "extraction": {
+        "schema_version": "nano.scribe.v0",
+        "item_id": "pilot-04-canonical",
+        "solver_id": "compact/qwen2.5-1.5b-state-span",
+        "fields": [
+          {
+            "field": "chief_complaint",
+            "state": "supported",
+            "value": "ear pressure",
+            "evidence": [
+              {
+                "start": 71,
+                "end": 83,
+                "text": "ear pressure",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "duration",
+            "state": "uncertain",
+            "value": null,
+            "evidence": [
+              {
+                "start": 135,
+                "end": 157,
+                "text": "For about 3 weeks now.",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "severity",
+            "state": "uncertain",
+            "value": null,
+            "evidence": [
+              {
+                "start": 207,
+                "end": 234,
+                "text": "I've been taking ibuprofen.",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "medication",
+            "state": "uncertain",
+            "value": null,
+            "evidence": [
+              {
+                "start": 54,
+                "end": 84,
+                "text": "I've been having ear pressure.",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "allergy",
+            "state": "uncertain",
+            "value": null,
+            "evidence": []
+          }
+        ]
+      },
+      "encounter": {
+        "schema_version": "nano.encounter.v0",
+        "encounter_id": "pilot-04-canonical",
+        "sources": [
+          {
+            "source_id": "source",
+            "text": "Doctor: What brings you to the clinic today?\nPatient: I've been having ear pressure.\nDoctor: How long has this been going on?\nPatient: For about 3 weeks now.\nDoctor: Have you taken anything for it?\nPatient: I've been taking ibuprofen.",
+            "turns": [
+              {
+                "turn_id": "source:t0",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 8,
+                "end": 44,
+                "text": "What brings you to the clinic today?"
+              },
+              {
+                "turn_id": "source:t1",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 54,
+                "end": 84,
+                "text": "I've been having ear pressure."
+              },
+              {
+                "turn_id": "source:t2",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 93,
+                "end": 125,
+                "text": "How long has this been going on?"
+              },
+              {
+                "turn_id": "source:t3",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 135,
+                "end": 157,
+                "text": "For about 3 weeks now."
+              },
+              {
+                "turn_id": "source:t4",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 166,
+                "end": 197,
+                "text": "Have you taken anything for it?"
+              },
+              {
+                "turn_id": "source:t5",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 207,
+                "end": 234,
+                "text": "I've been taking ibuprofen."
+              }
+            ]
+          }
+        ],
+        "evidence": [
+          {
+            "evidence_id": "e:chief_complaint:0",
+            "source_id": "source",
+            "turn_id": "source:t1",
+            "speaker": "patient",
+            "start": 71,
+            "end": 83,
+            "text": "ear pressure"
+          },
+          {
+            "evidence_id": "e:duration:0",
+            "source_id": "source",
+            "turn_id": "source:t3",
+            "speaker": "patient",
+            "start": 135,
+            "end": 157,
+            "text": "For about 3 weeks now."
+          },
+          {
+            "evidence_id": "e:severity:0",
+            "source_id": "source",
+            "turn_id": "source:t5",
+            "speaker": "patient",
+            "start": 207,
+            "end": 234,
+            "text": "I've been taking ibuprofen."
+          },
+          {
+            "evidence_id": "e:medication:0",
+            "source_id": "source",
+            "turn_id": "source:t1",
+            "speaker": "patient",
+            "start": 54,
+            "end": 84,
+            "text": "I've been having ear pressure."
+          }
+        ],
+        "atoms": [
+          {
+            "atom_id": "a:chief_complaint",
+            "atom_type": "symptom",
+            "raw_value": "ear pressure",
+            "normalized_value": null,
+            "assertion_state": "uncertain",
+            "speaker": "patient",
+            "experiencer": "unknown",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "uncertain",
+            "evidence_ids": [
+              "e:chief_complaint:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          },
+          {
+            "atom_id": "a:duration",
+            "atom_type": "symptom",
+            "raw_value": "For about 3 weeks now.",
+            "normalized_value": null,
+            "assertion_state": "uncertain",
+            "speaker": "patient",
+            "experiencer": "unknown",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "uncertain",
+            "evidence_ids": [
+              "e:duration:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          },
+          {
+            "atom_id": "a:severity",
+            "atom_type": "symptom",
+            "raw_value": "I've been taking ibuprofen.",
+            "normalized_value": null,
+            "assertion_state": "uncertain",
+            "speaker": "patient",
+            "experiencer": "unknown",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "uncertain",
+            "evidence_ids": [
+              "e:severity:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          },
+          {
+            "atom_id": "a:medication",
+            "atom_type": "medication",
+            "raw_value": "I've been having ear pressure.",
+            "normalized_value": null,
+            "assertion_state": "uncertain",
+            "speaker": "patient",
+            "experiencer": "unknown",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "uncertain",
+            "evidence_ids": [
+              "e:medication:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          }
+        ],
+        "conflicts": [],
+        "unresolved": [
+          {
+            "unresolved_id": "u:chief_complaint",
+            "topic": "chief_complaint",
+            "reason": "unverified_source_observation",
+            "review_required": true,
+            "evidence_ids": [
+              "e:chief_complaint:0"
+            ]
+          },
+          {
+            "unresolved_id": "u:duration",
+            "topic": "duration",
+            "reason": "uncertain",
+            "review_required": true,
+            "evidence_ids": [
+              "e:duration:0"
+            ]
+          },
+          {
+            "unresolved_id": "u:severity",
+            "topic": "severity",
+            "reason": "uncertain",
+            "review_required": true,
+            "evidence_ids": [
+              "e:severity:0"
+            ]
+          },
+          {
+            "unresolved_id": "u:medication",
+            "topic": "medication",
+            "reason": "uncertain",
+            "review_required": true,
+            "evidence_ids": [
+              "e:medication:0"
+            ]
+          },
+          {
+            "unresolved_id": "u:allergy",
+            "topic": "allergy",
+            "reason": "uncertain",
+            "review_required": true,
+            "evidence_ids": []
+          },
+          {
+            "unresolved_id": "u:scope",
+            "topic": "scope",
+            "reason": "Five patient-reported fields only; source checks are bounded and human review is required. No diagnosis, plan, or full encounter completeness is established.",
+            "review_required": true,
+            "evidence_ids": []
+          }
+        ]
+      },
+      "note": {
+        "claims": [
+          {
+            "field": "chief_complaint",
+            "state": "uncertain",
+            "value": null,
+            "evidence_ids": [
+              "e:chief_complaint:0"
+            ]
+          },
+          {
+            "field": "duration",
+            "state": "uncertain",
+            "value": null,
+            "evidence_ids": [
+              "e:duration:0"
+            ]
+          },
+          {
+            "field": "severity",
+            "state": "uncertain",
+            "value": null,
+            "evidence_ids": [
+              "e:severity:0"
+            ]
+          },
+          {
+            "field": "medication",
+            "state": "uncertain",
+            "value": null,
+            "evidence_ids": [
+              "e:medication:0"
+            ]
+          },
+          {
+            "field": "allergy",
+            "state": "uncertain",
+            "value": null,
+            "evidence_ids": []
+          }
+        ],
+        "text": "Patient-reported encounter draft — human review required\nChief complaint: not asserted (uncertain); review required [e:chief_complaint:0]\nDuration: not asserted (uncertain); review required [e:duration:0]\nSeverity: not asserted (uncertain); review required [e:severity:0]\nMedication: not asserted (uncertain); review required [e:medication:0]\nAllergy: not asserted (uncertain); review required",
+        "review_required": true
+      },
+      "verification": {
+        "passed": true,
+        "errors": [],
+        "scope": "bounded_source_and_representation"
+      },
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "solver": {
+        "solver_id": "compact/qwen2.5-1.5b-state-span",
+        "kind": "legacy_adapter",
+        "version": "989aa7980e4cf806f80c7fef2b1adb7bc71aa306",
+        "parameter_count": 1543714816,
+        "artifact_bytes": null
+      },
+      "failure": null
+    }
+  },
+  {
+    "example_id": "pilot-04-paraphrase",
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "pilot-04-paraphrase",
+      "source_sha256": "2082438de9d919a8e6b7934ffe04176d14f74b86ab24d2bb4d0ecc601b4a230a",
+      "status": "draft",
+      "disposition": "abstain",
+      "extraction": {
+        "schema_version": "nano.scribe.v0",
+        "item_id": "pilot-04-paraphrase",
+        "solver_id": "compact/qwen2.5-1.5b-state-span",
+        "fields": [
+          {
+            "field": "chief_complaint",
+            "state": "uncertain",
+            "value": null,
+            "evidence": [
+              {
+                "start": 78,
+                "end": 81,
+                "text": "ear",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "duration",
+            "state": "uncertain",
+            "value": null,
+            "evidence": [
+              {
+                "start": 156,
+                "end": 178,
+                "text": "For about 3 weeks now.",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "severity",
+            "state": "uncertain",
+            "value": null,
+            "evidence": [
+              {
+                "start": 61,
+                "end": 91,
+                "text": "I've been having ear pressure.",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "medication",
+            "state": "uncertain",
+            "value": null,
+            "evidence": [
+              {
+                "start": 242,
+                "end": 269,
+                "text": "I've been taking ibuprofen.",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "allergy",
+            "state": "uncertain",
+            "value": null,
+            "evidence": []
+          }
+        ]
+      },
+      "encounter": {
+        "schema_version": "nano.encounter.v0",
+        "encounter_id": "pilot-04-paraphrase",
+        "sources": [
+          {
+            "source_id": "source",
+            "text": "Doctor: Describe the problem that brought you here.\nPatient: I've been having ear pressure.\nDoctor: For what length of time have you noticed this?\nPatient: For about 3 weeks now.\nDoctor: What medicine have you used for this problem?\nPatient: I've been taking ibuprofen.",
+            "turns": [
+              {
+                "turn_id": "source:t0",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 8,
+                "end": 51,
+                "text": "Describe the problem that brought you here."
+              },
+              {
+                "turn_id": "source:t1",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 61,
+                "end": 91,
+                "text": "I've been having ear pressure."
+              },
+              {
+                "turn_id": "source:t2",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 100,
+                "end": 146,
+                "text": "For what length of time have you noticed this?"
+              },
+              {
+                "turn_id": "source:t3",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 156,
+                "end": 178,
+                "text": "For about 3 weeks now."
+              },
+              {
+                "turn_id": "source:t4",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 187,
+                "end": 232,
+                "text": "What medicine have you used for this problem?"
+              },
+              {
+                "turn_id": "source:t5",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 242,
+                "end": 269,
+                "text": "I've been taking ibuprofen."
+              }
+            ]
+          }
+        ],
+        "evidence": [
+          {
+            "evidence_id": "e:chief_complaint:0",
+            "source_id": "source",
+            "turn_id": "source:t1",
+            "speaker": "patient",
+            "start": 78,
+            "end": 81,
+            "text": "ear"
+          },
+          {
+            "evidence_id": "e:duration:0",
+            "source_id": "source",
+            "turn_id": "source:t3",
+            "speaker": "patient",
+            "start": 156,
+            "end": 178,
+            "text": "For about 3 weeks now."
+          },
+          {
+            "evidence_id": "e:severity:0",
+            "source_id": "source",
+            "turn_id": "source:t1",
+            "speaker": "patient",
+            "start": 61,
+            "end": 91,
+            "text": "I've been having ear pressure."
+          },
+          {
+            "evidence_id": "e:medication:0",
+            "source_id": "source",
+            "turn_id": "source:t5",
+            "speaker": "patient",
+            "start": 242,
+            "end": 269,
+            "text": "I've been taking ibuprofen."
+          },
+          {
+            "evidence_id": "e:source:t0",
+            "source_id": "source",
+            "turn_id": "source:t0",
+            "speaker": "clinician",
+            "start": 8,
+            "end": 51,
+            "text": "Describe the problem that brought you here."
+          },
+          {
+            "evidence_id": "e:source:t2",
+            "source_id": "source",
+            "turn_id": "source:t2",
+            "speaker": "clinician",
+            "start": 100,
+            "end": 146,
+            "text": "For what length of time have you noticed this?"
+          },
+          {
+            "evidence_id": "e:source:t4",
+            "source_id": "source",
+            "turn_id": "source:t4",
+            "speaker": "clinician",
+            "start": 187,
+            "end": 232,
+            "text": "What medicine have you used for this problem?"
+          }
+        ],
+        "atoms": [
+          {
+            "atom_id": "a:chief_complaint",
+            "atom_type": "symptom",
+            "raw_value": "ear",
+            "normalized_value": null,
+            "assertion_state": "uncertain",
+            "speaker": "patient",
+            "experiencer": "unknown",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "uncertain",
+            "evidence_ids": [
+              "e:chief_complaint:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          },
+          {
+            "atom_id": "a:duration",
+            "atom_type": "symptom",
+            "raw_value": "For about 3 weeks now.",
+            "normalized_value": null,
+            "assertion_state": "uncertain",
+            "speaker": "patient",
+            "experiencer": "unknown",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "uncertain",
+            "evidence_ids": [
+              "e:duration:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          },
+          {
+            "atom_id": "a:severity",
+            "atom_type": "symptom",
+            "raw_value": "I've been having ear pressure.",
+            "normalized_value": null,
+            "assertion_state": "uncertain",
+            "speaker": "patient",
+            "experiencer": "unknown",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "uncertain",
+            "evidence_ids": [
+              "e:severity:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          },
+          {
+            "atom_id": "a:medication",
+            "atom_type": "medication",
+            "raw_value": "I've been taking ibuprofen.",
+            "normalized_value": null,
+            "assertion_state": "uncertain",
+            "speaker": "patient",
+            "experiencer": "unknown",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "uncertain",
+            "evidence_ids": [
+              "e:medication:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          }
+        ],
+        "conflicts": [],
+        "unresolved": [
+          {
+            "unresolved_id": "u:chief_complaint",
+            "topic": "chief_complaint",
+            "reason": "uncertain",
+            "review_required": true,
+            "evidence_ids": [
+              "e:chief_complaint:0"
+            ]
+          },
+          {
+            "unresolved_id": "u:duration",
+            "topic": "duration",
+            "reason": "uncertain",
+            "review_required": true,
+            "evidence_ids": [
+              "e:duration:0"
+            ]
+          },
+          {
+            "unresolved_id": "u:severity",
+            "topic": "severity",
+            "reason": "uncertain",
+            "review_required": true,
+            "evidence_ids": [
+              "e:severity:0"
+            ]
+          },
+          {
+            "unresolved_id": "u:medication",
+            "topic": "medication",
+            "reason": "uncertain",
+            "review_required": true,
+            "evidence_ids": [
+              "e:medication:0"
+            ]
+          },
+          {
+            "unresolved_id": "u:allergy",
+            "topic": "allergy",
+            "reason": "uncertain",
+            "review_required": true,
+            "evidence_ids": []
+          },
+          {
+            "unresolved_id": "u:source:t0",
+            "topic": "unhandled_source_turn",
+            "reason": "Content outside the checked five-field path; inspect for omissions or corrections.",
+            "review_required": true,
+            "evidence_ids": [
+              "e:source:t0"
+            ]
+          },
+          {
+            "unresolved_id": "u:source:t2",
+            "topic": "unhandled_source_turn",
+            "reason": "Content outside the checked five-field path; inspect for omissions or corrections.",
+            "review_required": true,
+            "evidence_ids": [
+              "e:source:t2"
+            ]
+          },
+          {
+            "unresolved_id": "u:source:t4",
+            "topic": "unhandled_source_turn",
+            "reason": "Content outside the checked five-field path; inspect for omissions or corrections.",
+            "review_required": true,
+            "evidence_ids": [
+              "e:source:t4"
+            ]
+          },
+          {
+            "unresolved_id": "u:scope",
+            "topic": "scope",
+            "reason": "Five patient-reported fields only; source checks are bounded and human review is required. No diagnosis, plan, or full encounter completeness is established.",
+            "review_required": true,
+            "evidence_ids": []
+          }
+        ]
+      },
+      "note": {
+        "claims": [
+          {
+            "field": "chief_complaint",
+            "state": "uncertain",
+            "value": null,
+            "evidence_ids": [
+              "e:chief_complaint:0"
+            ]
+          },
+          {
+            "field": "duration",
+            "state": "uncertain",
+            "value": null,
+            "evidence_ids": [
+              "e:duration:0"
+            ]
+          },
+          {
+            "field": "severity",
+            "state": "uncertain",
+            "value": null,
+            "evidence_ids": [
+              "e:severity:0"
+            ]
+          },
+          {
+            "field": "medication",
+            "state": "uncertain",
+            "value": null,
+            "evidence_ids": [
+              "e:medication:0"
+            ]
+          },
+          {
+            "field": "allergy",
+            "state": "uncertain",
+            "value": null,
+            "evidence_ids": []
+          }
+        ],
+        "text": "Patient-reported encounter draft — human review required\nChief complaint: not asserted (uncertain); review required [e:chief_complaint:0]\nDuration: not asserted (uncertain); review required [e:duration:0]\nSeverity: not asserted (uncertain); review required [e:severity:0]\nMedication: not asserted (uncertain); review required [e:medication:0]\nAllergy: not asserted (uncertain); review required",
+        "review_required": true
+      },
+      "verification": {
+        "passed": true,
+        "errors": [],
+        "scope": "bounded_source_and_representation"
+      },
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "solver": {
+        "solver_id": "compact/qwen2.5-1.5b-state-span",
+        "kind": "legacy_adapter",
+        "version": "989aa7980e4cf806f80c7fef2b1adb7bc71aa306",
+        "parameter_count": 1543714816,
+        "artifact_bytes": null
+      },
+      "failure": null
+    }
+  },
+  {
+    "example_id": "pilot-05-canonical",
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "pilot-05-canonical",
+      "source_sha256": "c028a577d3e81e535c1a61edec6a7804a8200b2b093ef3dc20456072c6323840",
+      "status": "draft",
+      "disposition": "abstain",
+      "extraction": {
+        "schema_version": "nano.scribe.v0",
+        "item_id": "pilot-05-canonical",
+        "solver_id": "compact/qwen2.5-1.5b-state-span",
+        "fields": [
+          {
+            "field": "chief_complaint",
+            "state": "uncertain",
+            "value": null,
+            "evidence": []
+          },
+          {
+            "field": "duration",
+            "state": "uncertain",
+            "value": null,
+            "evidence": [
+              {
+                "start": 132,
+                "end": 171,
+                "text": "I cannot remember how long it has been.",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "severity",
+            "state": "uncertain",
+            "value": null,
+            "evidence": [
+              {
+                "start": 363,
+                "end": 388,
+                "text": "I'm allergic to adhesive.",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "medication",
+            "state": "absent",
+            "value": null,
+            "evidence": [
+              {
+                "start": 285,
+                "end": 310,
+                "text": "I haven't taken anything.",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "allergy",
+            "state": "uncertain",
+            "value": null,
+            "evidence": []
+          }
+        ]
+      },
+      "encounter": {
+        "schema_version": "nano.encounter.v0",
+        "encounter_id": "pilot-05-canonical",
+        "sources": [
+          {
+            "source_id": "source",
+            "text": "Doctor: What brings you to the clinic today?\nPatient: I've been having heel pain.\nDoctor: How long has this been going on?\nPatient: I cannot remember how long it has been.\nDoctor: How bad would you say it is?\nPatient: I'd call it mild.\nDoctor: Have you taken anything for it?\nPatient: I haven't taken anything.\nDoctor: Any allergies I should know about?\nPatient: I'm allergic to adhesive.",
+            "turns": [
+              {
+                "turn_id": "source:t0",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 8,
+                "end": 44,
+                "text": "What brings you to the clinic today?"
+              },
+              {
+                "turn_id": "source:t1",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 54,
+                "end": 81,
+                "text": "I've been having heel pain."
+              },
+              {
+                "turn_id": "source:t2",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 90,
+                "end": 122,
+                "text": "How long has this been going on?"
+              },
+              {
+                "turn_id": "source:t3",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 132,
+                "end": 171,
+                "text": "I cannot remember how long it has been."
+              },
+              {
+                "turn_id": "source:t4",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 180,
+                "end": 208,
+                "text": "How bad would you say it is?"
+              },
+              {
+                "turn_id": "source:t5",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 218,
+                "end": 235,
+                "text": "I'd call it mild."
+              },
+              {
+                "turn_id": "source:t6",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 244,
+                "end": 275,
+                "text": "Have you taken anything for it?"
+              },
+              {
+                "turn_id": "source:t7",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 285,
+                "end": 310,
+                "text": "I haven't taken anything."
+              },
+              {
+                "turn_id": "source:t8",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 319,
+                "end": 353,
+                "text": "Any allergies I should know about?"
+              },
+              {
+                "turn_id": "source:t9",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 363,
+                "end": 388,
+                "text": "I'm allergic to adhesive."
+              }
+            ]
+          }
+        ],
+        "evidence": [
+          {
+            "evidence_id": "e:duration:0",
+            "source_id": "source",
+            "turn_id": "source:t3",
+            "speaker": "patient",
+            "start": 132,
+            "end": 171,
+            "text": "I cannot remember how long it has been."
+          },
+          {
+            "evidence_id": "e:severity:0",
+            "source_id": "source",
+            "turn_id": "source:t9",
+            "speaker": "patient",
+            "start": 363,
+            "end": 388,
+            "text": "I'm allergic to adhesive."
+          },
+          {
+            "evidence_id": "e:medication:0",
+            "source_id": "source",
+            "turn_id": "source:t7",
+            "speaker": "patient",
+            "start": 285,
+            "end": 310,
+            "text": "I haven't taken anything."
+          },
+          {
+            "evidence_id": "e:source:t1",
+            "source_id": "source",
+            "turn_id": "source:t1",
+            "speaker": "patient",
+            "start": 54,
+            "end": 81,
+            "text": "I've been having heel pain."
+          },
+          {
+            "evidence_id": "e:source:t5",
+            "source_id": "source",
+            "turn_id": "source:t5",
+            "speaker": "patient",
+            "start": 218,
+            "end": 235,
+            "text": "I'd call it mild."
+          }
+        ],
+        "atoms": [
+          {
+            "atom_id": "a:duration",
+            "atom_type": "symptom",
+            "raw_value": "I cannot remember how long it has been.",
+            "normalized_value": null,
+            "assertion_state": "uncertain",
+            "speaker": "patient",
+            "experiencer": "unknown",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "uncertain",
+            "evidence_ids": [
+              "e:duration:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          },
+          {
+            "atom_id": "a:severity",
+            "atom_type": "symptom",
+            "raw_value": "I'm allergic to adhesive.",
+            "normalized_value": null,
+            "assertion_state": "uncertain",
+            "speaker": "patient",
+            "experiencer": "unknown",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "uncertain",
+            "evidence_ids": [
+              "e:severity:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          },
+          {
+            "atom_id": "a:medication",
+            "atom_type": "medication",
+            "raw_value": "I haven't taken anything.",
+            "normalized_value": null,
+            "assertion_state": "uncertain",
+            "speaker": "patient",
+            "experiencer": "unknown",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "uncertain",
+            "evidence_ids": [
+              "e:medication:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          }
+        ],
+        "conflicts": [],
+        "unresolved": [
+          {
+            "unresolved_id": "u:chief_complaint",
+            "topic": "chief_complaint",
+            "reason": "uncertain",
+            "review_required": true,
+            "evidence_ids": []
+          },
+          {
+            "unresolved_id": "u:duration",
+            "topic": "duration",
+            "reason": "uncertain",
+            "review_required": true,
+            "evidence_ids": [
+              "e:duration:0"
+            ]
+          },
+          {
+            "unresolved_id": "u:severity",
+            "topic": "severity",
+            "reason": "uncertain",
+            "review_required": true,
+            "evidence_ids": [
+              "e:severity:0"
+            ]
+          },
+          {
+            "unresolved_id": "u:medication",
+            "topic": "medication",
+            "reason": "unhandled_source_context; unverified_source_observation",
+            "review_required": true,
+            "evidence_ids": [
+              "e:medication:0"
+            ]
+          },
+          {
+            "unresolved_id": "u:allergy",
+            "topic": "allergy",
+            "reason": "uncertain",
+            "review_required": true,
+            "evidence_ids": []
+          },
+          {
+            "unresolved_id": "u:source:t1",
+            "topic": "unhandled_source_turn",
+            "reason": "Content outside the checked five-field path; inspect for omissions or corrections.",
+            "review_required": true,
+            "evidence_ids": [
+              "e:source:t1"
+            ]
+          },
+          {
+            "unresolved_id": "u:source:t5",
+            "topic": "unhandled_source_turn",
+            "reason": "Content outside the checked five-field path; inspect for omissions or corrections.",
+            "review_required": true,
+            "evidence_ids": [
+              "e:source:t5"
+            ]
+          },
+          {
+            "unresolved_id": "u:scope",
+            "topic": "scope",
+            "reason": "Five patient-reported fields only; source checks are bounded and human review is required. No diagnosis, plan, or full encounter completeness is established.",
+            "review_required": true,
+            "evidence_ids": []
+          }
+        ]
+      },
+      "note": {
+        "claims": [
+          {
+            "field": "chief_complaint",
+            "state": "uncertain",
+            "value": null,
+            "evidence_ids": []
+          },
+          {
+            "field": "duration",
+            "state": "uncertain",
+            "value": null,
+            "evidence_ids": [
+              "e:duration:0"
+            ]
+          },
+          {
+            "field": "severity",
+            "state": "uncertain",
+            "value": null,
+            "evidence_ids": [
+              "e:severity:0"
+            ]
+          },
+          {
+            "field": "medication",
+            "state": "uncertain",
+            "value": null,
+            "evidence_ids": [
+              "e:medication:0"
+            ]
+          },
+          {
+            "field": "allergy",
+            "state": "uncertain",
+            "value": null,
+            "evidence_ids": []
+          }
+        ],
+        "text": "Patient-reported encounter draft — human review required\nChief complaint: not asserted (uncertain); review required\nDuration: not asserted (uncertain); review required [e:duration:0]\nSeverity: not asserted (uncertain); review required [e:severity:0]\nMedication: not asserted (uncertain); review required [e:medication:0]\nAllergy: not asserted (uncertain); review required",
+        "review_required": true
+      },
+      "verification": {
+        "passed": true,
+        "errors": [],
+        "scope": "bounded_source_and_representation"
+      },
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "solver": {
+        "solver_id": "compact/qwen2.5-1.5b-state-span",
+        "kind": "legacy_adapter",
+        "version": "989aa7980e4cf806f80c7fef2b1adb7bc71aa306",
+        "parameter_count": 1543714816,
+        "artifact_bytes": null
+      },
+      "failure": null
+    }
+  }
+]
