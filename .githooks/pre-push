@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# Block direct master pushes, freeze-tag moves, and pushes from badly stale bases.
+set -u
+while read -r lref lsha rref rsha; do
+  case "$rref" in
+    refs/heads/master|refs/heads/main)
+      echo "pre-push: direct push to ${rref#refs/heads/} blocked; open a PR." >&2; exit 1;;
+    refs/tags/*freeze*|refs/tags/paper-alpha*)
+      echo "pre-push: freeze tags are immutable for agents." >&2; exit 1;;
+  esac
+  [ "$lsha" = 0000000000000000000000000000000000000000 ] && continue
+  git fetch -q origin master 2>/dev/null
+  behind=$(git rev-list --count "$lsha..origin/master" 2>/dev/null || echo 0)
+  if [ "$behind" -gt "${AGENT_MAX_BEHIND:-100}" ] && [ "${AGENT_ALLOW_STALE:-0}" != 1 ]; then
+    echo "pre-push: branch is $behind commits behind origin/master. Run: git rebase origin/master (or merge). Override: AGENT_ALLOW_STALE=1" >&2; exit 1
+  fi
+done
+exit 0

@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# Guardrails for autonomous agents. Bypass only with documented env flags.
+set -u
+files=$(git diff --cached --name-only)
+# 1. Evidence-protected paths (AGENTS.md hard gate)
+prot='^(POST_ALPHA_EVIDENCE_FREEZE\.|SHA256SUMS$|FREEZE_VERIFICATION_REPORT|evidence/|ledger/)'
+if echo "$files" | grep -Eq "$prot" && [ "${AGENT_ALLOW_EVIDENCE:-0}" != 1 ]; then
+  echo "pre-commit: evidence-protected path staged. Set AGENT_ALLOW_EVIDENCE=1 only inside an authorized experiment." >&2
+  echo "$files" | grep -E "$prot" >&2; exit 1
+fi
+# 2. Paths claimed by another live lease
+if [ -f scripts/agent_lease.py ]; then
+  # shellcheck disable=SC2086
+  python3 scripts/agent_lease.py check $files >/dev/null 2>/tmp/lease.$$ || { cat /tmp/lease.$$ >&2; rm -f /tmp/lease.$$
+    echo "pre-commit: file(s) claimed by another agent. Coordinate or wait (python3 scripts/agent_lease.py status)." >&2; exit 1; }
+  rm -f /tmp/lease.$$
+fi
+# 3. Secrets / debug junk
+if git diff --cached -U0 -- . ':!.githooks' | grep -Eq '^\+.*(RUNPOD_API_KEY|sk-[A-Za-z0-9]{20,}|AKIA[0-9A-Z]{16}|BEGIN (RSA|OPENSSH) PRIVATE KEY)'; then
+  echo "pre-commit: possible secret in diff." >&2; exit 1
+fi
+exit 0
