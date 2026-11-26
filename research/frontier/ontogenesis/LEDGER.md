@@ -271,3 +271,17 @@ Full write-ups with registered predictions are in `INVESTIGATION.md`.
 | SmolLM2 scoring: laptop | none |
 
 All machines and Cloud Scheduler jobs are deleted (checked 2026-11-23, 14:25 UTC).
+
+## Proposed evidence update — 2026-11-26 (Cycle 2, review-only)
+
+Exact source pins, paths, criteria, alternative explanations and no-training next gates: [Cycle 2 gate audit](reviews/2026-11-26-cycle2-gate-audit.md). Preserve all previous entries and original reported verdicts. Canonical master, ontogenesis and draft #195 unchanged. Earlier #213/#216 implementation annotations remain in their own draft proposals.
+
+| New evidence | Proposed interpretation / status | Source |
+|---|---|---|
+| ValueRes confirmation, 40.38M, 799,539,200 tokens/arm, three seeds: gain .0059 BPB equal tokens and .00556 equal time vs dense; generic residual skip gain .0044 | Reported G1 REJECT_VALUE_RES_PROMOTION_AT_42M; larger confirmation does not clear .008. G2 positional/late ablation criterion met on checked rows, but intervention dependence is not unique causal explanation of gain. 14M observation and historical D1/D2 retained | #214 `cef9812c`, `research/frontier/valueres_42m_and_r0/results/runs_42m/summary_42m.json`; nine raw arm/seed reports inspected |
+| Hopper R0: 56,133 tok/s; 0/100 nonfinite steps; FP32 relative errors .00115–.00199 | **HOLD**: reported F1 ADVANCE_STAGE_C_ON_HOPPER conflicts with registered FP32 <.0001, because benchmark instead tests output <.01 and grad <.02 without dtype distinction. Retain reported hardware measurements and verdict; do not advance Stage C | #214 same pin, `PROTOCOL.md`, `r0_bench_hopper.py` line 540, `results/r0_hopper/r0_hopper_result.json` |
+| Stage B: inherited projections improve .03604 nats vs random-mixer control, below .10; T closes 88.57% and C1 84.82% of chosen gap | Reported B1 FAIL/B2 PASS, preserve F2 hybrid distillation without required projection inheritance for this setup. Not universal, parent still superior; no Stage C authorization | #215 `53e76f14`, `research/frontier/stage_b_and_untied_head/results/summary_stage_b.json` |
+| Untied head loses .003 BPB equal tokens and .00356 equal time; wider tied 57M wins .02467 tokens but loses .02907 time | Reject untied promotion here. U_G2 does not establish independence; matched paired interaction not tested. All three rounded tied baseline curves identical to #214 despite different checkpoint hashes; independence unresolved, not evidence of misconduct | #215 same pin, `results/summary_untied_head.json`, direct comparison of three baseline pairs |
+| Dual backend GDN parity protocol | REGISTERED / NOT_RUN in published tree; P1–P4 not demonstrated | #217 `e1b2e6e2`, `research/frontier/dual_backend_gdn_parity/PROTOCOL.md` |
+
+Next cheapest decisive action: strict frozen-receipt F1 replay and deterministic FP32 diagnosis; independently replay all registered scorers, verify full exposure/source/checkpoint custody and baseline lineage; then CPU parity checks. No paid compute, training, raw result edit or merge. Selected raw receipts checked; full training/scorer replication and cloud/local worktree access unavailable. V6 native reasoning instrument NOT_RUN and tokenizer/contamination NOT_CHECKED unchanged.
