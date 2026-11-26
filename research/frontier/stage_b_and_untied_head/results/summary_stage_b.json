@@ -1,0 +1,221 @@
+{
+  "student_tokens_verified": 250347520,
+  "heldout_mix_nats": {
+    "P_parent": 2.32551,
+    "A_all30_stage1": 3.28855,
+    "midpoint_50pct_target": 2.80703,
+    "T_mean": 2.43563,
+    "T_per_seed": [
+      2.43632,
+      2.4358,
+      2.43478
+    ],
+    "C1_mean": 2.47168,
+    "C1_per_seed": [
+      2.47059,
+      2.47266,
+      2.47178
+    ],
+    "C2_no_align": 2.51465,
+    "R_all_random": 3.19368
+  },
+  "criteria": {
+    "B1_T_beats_C1_by_0_10_nats": {
+      "pass": false,
+      "stats": {
+        "n": 3,
+        "mean": 0.03604,
+        "sd": 0.00154,
+        "se": 0.00089,
+        "t": 40.608,
+        "sig_95_df2": true,
+        "all_positive": true,
+        "per_seed": [
+          0.03427,
+          0.03686,
+          0.037
+        ]
+      }
+    },
+    "B2_T_closes_50pct_gap": {
+      "pass": true,
+      "T_gap_fraction_closed": 0.8857,
+      "C1_gap_fraction_closed": 0.8482
+    },
+    "B3_downstream_7tasks": {
+      "hellaswag": {
+        "metric": "acc_norm",
+        "parent": 0.4322,
+        "T_mean": 0.4016,
+        "C1_mean": 0.3892,
+        "C2": 0.3758,
+        "R": 0.2675,
+        "T_minus_C1": {
+          "n": 3,
+          "mean": 0.0124,
+          "sd": 0.00221,
+          "se": 0.00127,
+          "t": 9.732,
+          "sig_95_df2": true,
+          "all_positive": true,
+          "per_seed": [
+            0.0101,
+            0.0145,
+            0.0126
+          ]
+        },
+        "T_chance_adj_retention": 0.8319,
+        "C1_chance_adj_retention": 0.7638
+      },
+      "arc_easy": {
+        "metric": "acc_norm",
+        "parent": 0.5968,
+        "T_mean": 0.561,
+        "C1_mean": 0.5529,
+        "C2": 0.5412,
+        "R": 0.3784,
+        "T_minus_C1": {
+          "n": 3,
+          "mean": 0.0081,
+          "sd": 0.00282,
+          "se": 0.00163,
+          "t": 4.982,
+          "sig_95_df2": true,
+          "all_positive": true,
+          "per_seed": [
+            0.005,
+            0.0105,
+            0.0088
+          ]
+        },
+        "T_chance_adj_retention": 0.8968,
+        "C1_chance_adj_retention": 0.8734
+      },
+      "arc_challenge": {
+        "metric": "acc_norm",
+        "parent": 0.2952,
+        "T_mean": 0.283,
+        "C1_mean": 0.2693,
+        "C2": 0.2747,
+        "R": 0.2295,
+        "T_minus_C1": {
+          "n": 3,
+          "mean": 0.01363,
+          "sd": 0.00255,
+          "se": 0.00147,
+          "t": 9.26,
+          "sig_95_df2": true,
+          "all_positive": true,
+          "per_seed": [
+            0.0111,
+            0.0136,
+            0.0162
+          ]
+        },
+        "T_chance_adj_retention": 0.7294,
+        "C1_chance_adj_retention": 0.4277
+      },
+      "piqa": {
+        "metric": "acc_norm",
+        "parent": 0.6877,
+        "T_mean": 0.6645,
+        "C1_mean": 0.6592,
+        "C2": 0.6502,
+        "R": 0.5838,
+        "T_minus_C1": {
+          "n": 3,
+          "mean": 0.00523,
+          "sd": 0.00311,
+          "se": 0.00179,
+          "t": 2.917,
+          "sig_95_df2": false,
+          "all_positive": true,
+          "per_seed": [
+            0.0027,
+            0.0087,
+            0.0043
+          ]
+        },
+        "T_chance_adj_retention": 0.8762,
+        "C1_chance_adj_retention": 0.8483
+      },
+      "winogrande": {
+        "metric": "acc",
+        "parent": 0.5312,
+        "T_mean": 0.5188,
+        "C1_mean": 0.5301,
+        "C2": 0.5225,
+        "R": 0.5114,
+        "T_minus_C1": {
+          "n": 3,
+          "mean": -0.0113,
+          "sd": 0.01543,
+          "se": 0.00891,
+          "t": -1.268,
+          "sig_95_df2": false,
+          "all_positive": false,
+          "per_seed": [
+            -0.0284,
+            -0.0071,
+            0.0016
+          ]
+        },
+        "T_chance_adj_retention": 0.6036,
+        "C1_chance_adj_retention": 0.9658
+      },
+      "openbookqa": {
+        "metric": "acc_norm",
+        "parent": 0.33,
+        "T_mean": 0.3253,
+        "C1_mean": 0.3153,
+        "C2": 0.318,
+        "R": 0.252,
+        "T_minus_C1": {
+          "n": 3,
+          "mean": 0.01,
+          "sd": 0.00693,
+          "se": 0.004,
+          "t": 2.5,
+          "sig_95_df2": false,
+          "all_positive": true,
+          "per_seed": [
+            0.006,
+            0.006,
+            0.018
+          ]
+        },
+        "T_chance_adj_retention": 0.9417,
+        "C1_chance_adj_retention": 0.8167
+      },
+      "lambada": {
+        "metric": "acc",
+        "parent": 0.4258,
+        "T_mean": 0.3668,
+        "C1_mean": 0.3553,
+        "C2": 0.3282,
+        "R": 0.1306,
+        "T_minus_C1": {
+          "n": 3,
+          "mean": 0.0115,
+          "sd": 0.00898,
+          "se": 0.00519,
+          "t": 2.217,
+          "sig_95_df2": false,
+          "all_positive": true,
+          "per_seed": [
+            0.0021,
+            0.02,
+            0.0124
+          ]
+        },
+        "T_chance_adj_retention": 0.8614,
+        "C1_chance_adj_retention": 0.8344
+      }
+    }
+  },
+  "verdicts": {
+    "B1": "FAIL",
+    "B2": "PASS",
+    "F2_gate": "HYBRID_DISTILLATION_SUCCEEDS_WEIGHT_INHERITANCE_NOT_NEEDED"
+  }
+}

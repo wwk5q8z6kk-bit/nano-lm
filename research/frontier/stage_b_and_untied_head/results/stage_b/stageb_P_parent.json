@@ -1,0 +1,98 @@
+{
+  "schema": "nanolm_stage_b_smollm2_135m_v1",
+  "completed": true,
+  "job_name": "P_parent",
+  "arm": "P",
+  "seed": 0,
+  "params": 134515008,
+  "final_heldout_nats": {
+    "web": 2.73454,
+    "textbook": 1.82955,
+    "math": 1.93844,
+    "code": 1.16878,
+    "mix": 2.32551
+  },
+  "downstream_7tasks": {
+    "hellaswag": {
+      "acc": 0.3545,
+      "n": 10042,
+      "chance": 0.25,
+      "acc_norm": 0.4322
+    },
+    "arc_easy": {
+      "acc": 0.6439,
+      "n": 2376,
+      "chance": 0.25,
+      "acc_norm": 0.5968
+    },
+    "arc_challenge": {
+      "acc": 0.2833,
+      "n": 1172,
+      "chance": 0.25,
+      "acc_norm": 0.2952
+    },
+    "piqa": {
+      "acc": 0.6817,
+      "n": 1838,
+      "chance": 0.5,
+      "acc_norm": 0.6877
+    },
+    "winogrande": {
+      "acc": 0.5312,
+      "n": 1267,
+      "chance": 0.5
+    },
+    "openbookqa": {
+      "acc": 0.216,
+      "n": 500,
+      "chance": 0.25,
+      "acc_norm": 0.33
+    },
+    "lambada": {
+      "acc": 0.4258,
+      "ppl": 19.27,
+      "n": 5153
+    }
+  },
+  "provenance": {
+    "code_sha256": "db73d7d764fb9772f3ba0ad0d1b754e328d16a48aeeee47b315aa600c4c0a513",
+    "teacher_model": "HuggingFaceTB/SmolLM2-135M",
+    "teacher_revision": "93efa2f097d58c2a74874c7e644dbc9b0cee75a2",
+    "build_seconds": 166.4,
+    "train_tokens": 270008320,
+    "train_head64mb_sha256": "1333f2504a379b8528f6eb1d381784c5dda777f7aa4cb8ca40937ed8767b57e4",
+    "val_sha256": {
+      "web": "a4a5f266630dd0a0aec1132ab646e5015ce665526a5e47ad71781a2e71fc066a",
+      "textbook": "1bbd00c153888fa9c31075b73d591d4ea929c451cc7b37bcff998be6c1df25c0",
+      "math": "9be70b712c108f9479af1135db8cd7c7acc77bdf29b3f5991b123840c42d92a9",
+      "code": "bcc9dde71ed13b6daa678e8afa916e9576321a0a14ec1fb2903a75bbaf8158c6"
+    },
+    "tasks_sha256": "9a281bb487ceb72207874d7bd47f1a8fe4a91c8058a928a867472fdc18658aac",
+    "sources_pinned": {
+      "web": [
+        "HuggingFaceFW/fineweb-edu",
+        "sample/10BT/",
+        "text",
+        "87f09149ef4734204d70ed1d046ddc9ca3f2b8f9"
+      ],
+      "textbook": [
+        "HuggingFaceTB/smollm-corpus",
+        "cosmopedia-v2/",
+        "text",
+        "3ba9d605774198c5868892d7a8deda78031a781f"
+      ],
+      "math": [
+        "HuggingFaceTB/finemath",
+        "finemath-4plus/",
+        "text",
+        "e92b25a616738fe95dc186b64dfb19f9c8525594"
+      ],
+      "code": [
+        "codeparrot/github-code-clean",
+        "data/",
+        "code",
+        "c48d40f9e70f0196f8236901ee35807f7d6c44c0"
+      ]
+    }
+  }
+}
