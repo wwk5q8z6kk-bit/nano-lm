@@ -1,0 +1,58 @@
+{
+  "after_training_length_filter": {
+    "agpl-3.0": 15,
+    "cc0-1.0": 48,
+    "epl-1.0": 103,
+    "gpl-2.0": 1750,
+    "gpl-3.0": 1809,
+    "isc": 46,
+    "mit": 5250,
+    "mpl-2.0": 143
+  },
+  "first_row_group_rows": 10000,
+  "first_six_eligible_per_license": {
+    "agpl-3.0": {
+      "checked": 6,
+      "entire_source_and_eos_present": 4
+    },
+    "cc0-1.0": {
+      "checked": 6,
+      "entire_source_and_eos_present": 5
+    },
+    "epl-1.0": {
+      "checked": 6,
+      "entire_source_and_eos_present": 3
+    },
+    "gpl-2.0": {
+      "checked": 6,
+      "entire_source_and_eos_present": 6
+    },
+    "gpl-3.0": {
+      "checked": 6,
+      "entire_source_and_eos_present": 6
+    },
+    "isc": {
+      "checked": 6,
+      "entire_source_and_eos_present": 5
+    },
+    "mit": {
+      "checked": 6,
+      "entire_source_and_eos_present": 6
+    },
+    "mpl-2.0": {
+      "checked": 6,
+      "entire_source_and_eos_present": 6
+    }
+  },
+  "shard": "train-00000-of-00880.parquet",
+  "source_license_counts": {
+    "agpl-3.0": 15,
+    "cc0-1.0": 54,
+    "epl-1.0": 105,
+    "gpl-2.0": 1879,
+    "gpl-3.0": 1939,
+    "isc": 52,
+    "mit": 5805,
+    "mpl-2.0": 151
+  }
+}

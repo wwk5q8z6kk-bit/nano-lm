@@ -1,0 +1,162 @@
+{
+  "decision": "investigate on another distribution",
+  "total_train_predictions": 24576000,
+  "validation": {
+    "documents": 335,
+    "repositories": 329,
+    "input_tokens_including_final_delimiters": 516368,
+    "decoded_utf8_bytes_excluding_final_delimiters": 1670271,
+    "targets": 516033,
+    "chunks": 4196
+  },
+  "cells": [
+    {
+      "seed": 0,
+      "arm": "m21",
+      "pooled_bits_per_token": 5.0087946,
+      "repository_macro_bits_per_token": 5.141151,
+      "train_tokens_per_second": 7746.7,
+      "first_100_train_tokens_per_second": 9439.1,
+      "training_seconds": 528.74,
+      "evaluation_seconds": 31.47
+    },
+    {
+      "seed": 0,
+      "arm": "gqa",
+      "pooled_bits_per_token": 6.0684093,
+      "repository_macro_bits_per_token": 6.0096931,
+      "train_tokens_per_second": 45049.8,
+      "first_100_train_tokens_per_second": 45277.7,
+      "training_seconds": 90.92,
+      "evaluation_seconds": 6.0
+    },
+    {
+      "seed": 1,
+      "arm": "m21",
+      "pooled_bits_per_token": 5.0276581,
+      "repository_macro_bits_per_token": 5.1595697,
+      "train_tokens_per_second": 7636.6,
+      "first_100_train_tokens_per_second": 7615.9,
+      "training_seconds": 536.36,
+      "evaluation_seconds": 30.22
+    },
+    {
+      "seed": 1,
+      "arm": "gqa",
+      "pooled_bits_per_token": 5.7764833,
+      "repository_macro_bits_per_token": 5.7844308,
+      "train_tokens_per_second": 42432.8,
+      "first_100_train_tokens_per_second": 46972.5,
+      "training_seconds": 96.53,
+      "evaluation_seconds": 5.93
+    },
+    {
+      "seed": 2,
+      "arm": "m21",
+      "pooled_bits_per_token": 5.02341,
+      "repository_macro_bits_per_token": 5.1413429,
+      "train_tokens_per_second": 6743.9,
+      "first_100_train_tokens_per_second": 7867.7,
+      "training_seconds": 607.36,
+      "evaluation_seconds": 29.93
+    },
+    {
+      "seed": 2,
+      "arm": "gqa",
+      "pooled_bits_per_token": 5.7645434,
+      "repository_macro_bits_per_token": 5.766253,
+      "train_tokens_per_second": 35028.2,
+      "first_100_train_tokens_per_second": 40169.5,
+      "training_seconds": 116.93,
+      "evaluation_seconds": 5.74
+    }
+  ],
+  "dense_minus_m21_pooled_bpt_by_seed": [
+    1.0596147,
+    0.7488253,
+    0.7411333
+  ],
+  "mean_dense_minus_m21_pooled_bpt": 0.8498578,
+  "mean_dense_minus_m21_repo_macro_bpt": 0.7061044,
+  "repository_bootstrap_95pct": [
+    0.656534,
+    0.757284
+  ],
+  "paired_repository_effect_sd": 0.4775003,
+  "strata_bpt": {
+    "all": {
+      "pooled": {
+        "targets": 516033,
+        "m21": 5.0199542,
+        "gqa": 5.869812,
+        "m21_base": 6.5751715
+      }
+    },
+    "row_license": {
+      "apache-2.0": {
+        "targets": 172237,
+        "m21": 4.8371319,
+        "gqa": 5.7116036,
+        "m21_base": 6.3731477
+      },
+      "bsd-2-clause": {
+        "targets": 11750,
+        "m21": 5.0808645,
+        "gqa": 5.4486813,
+        "m21_base": 5.7651357
+      },
+      "bsd-3-clause": {
+        "targets": 53095,
+        "m21": 4.920794,
+        "gqa": 5.8397947,
+        "m21_base": 6.5707583
+      },
+      "mit": {
+        "targets": 278663,
+        "m21": 5.1504165,
+        "gqa": 5.9926068,
+        "m21_base": 6.7369523
+      },
+      "isc": {
+        "targets": 288,
+        "m21": 3.9191496,
+        "gqa": 4.387223,
+        "m21_base": 4.7206851
+      }
+    },
+    "document_tokens": {
+      "le512": {
+        "targets": 38976,
+        "m21": 5.1464624,
+        "gqa": 5.762252,
+        "m21_base": 6.3312747
+      },
+      "gt2048": {
+        "targets": 353183,
+        "m21": 5.0174581,
+        "gqa": 5.8886548,
+        "m21_base": 6.6161345
+      },
+      "513to2048": {
+        "targets": 123874,
+        "m21": 4.9872661,
+        "gqa": 5.8499312,
+        "m21_base": 6.5351203
+      }
+    },
+    "pointer_target": {
+      "available": {
+        "targets": 232931,
+        "m21": 1.7903611,
+        "gqa": 4.0058251,
+        "m21_base": 5.5520213
+      },
+      "absent": {
+        "targets": 283102,
+        "m21": 7.6772027,
+        "gqa": 7.4034654,
+        "m21_base": 7.4170003
+      }
+    }
+  }
+}

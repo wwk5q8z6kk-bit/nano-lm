@@ -1,0 +1,16 @@
+{
+  "schema": "nanolm.trackb_phase3_b6_2b.v1",
+  "base_model": "Qwen/Qwen3-1.7B",
+  "total_params": 1720574976,
+  "active_params": 1720574976,
+  "method": "Stratified_32B_120B_L2Anchored_100pct_FFT_Top64KD_plus_G8_GRPO",
+  "kd_seconds": 64.56,
+  "anchored_fft_seconds": 109.63,
+  "grpo_steps": 60,
+  "group_size": 8,
+  "active_variance_groups": 13,
+  "mean_reward_first_quarter": 0.2333,
+  "mean_reward_last_quarter": 0.35,
+  "grpo_wall_s": 557.6,
+  "grpo_trainable_params": 17432576
+}

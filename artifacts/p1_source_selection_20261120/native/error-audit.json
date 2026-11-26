@@ -1,0 +1,271 @@
+{
+  "source_error_classes": {
+    "full-1481": {
+      "omitted_present": 87,
+      "no_complete_matching_source_value": 111
+    },
+    "full-3527": {
+      "no_complete_matching_source_value": 187,
+      "omitted_present": 41
+    },
+    "full-6029": {
+      "omitted_present": 100,
+      "no_complete_matching_source_value": 92
+    },
+    "answer-1481": {
+      "no_complete_matching_source_value": 166,
+      "omitted_present": 6
+    },
+    "answer-3527": {
+      "no_complete_matching_source_value": 178,
+      "omitted_present": 14,
+      "empty_string": 2
+    },
+    "answer-6029": {
+      "no_complete_matching_source_value": 172,
+      "omitted_present": 6,
+      "copied_earlier_value_from_same_slot": 1
+    },
+    "aligned-1481": {
+      "no_complete_matching_source_value": 62,
+      "omitted_present": 22,
+      "other_exact_source_text": 20,
+      "copied_earlier_value_from_same_slot": 7,
+      "empty_string": 1
+    },
+    "aligned-3527": {
+      "omitted_present": 12,
+      "no_complete_matching_source_value": 84,
+      "copied_earlier_value_from_same_slot": 18,
+      "other_exact_source_text": 3
+    },
+    "aligned-6029": {
+      "no_complete_matching_source_value": 139,
+      "copied_earlier_value_from_same_slot": 13,
+      "omitted_present": 6,
+      "other_exact_source_text": 4,
+      "copied_value_from_other_slot": 1,
+      "empty_string": 1
+    }
+  },
+  "first_example_per_error": {
+    "full-1481": {
+      "omitted_present": {
+        "encounter_index": 0,
+        "slot": "MEDICATION",
+        "gold": "DOVARIN",
+        "predicted": "ABSTAIN"
+      },
+      "no_complete_matching_source_value": {
+        "encounter_index": 0,
+        "slot": "VITAL_BP",
+        "gold": "ABSTAIN",
+        "predicted": "121/79"
+      }
+    },
+    "full-3527": {
+      "no_complete_matching_source_value": {
+        "encounter_index": 0,
+        "slot": "MEDICATION",
+        "gold": "DOVARIN",
+        "predicted": "DANTOVEL"
+      },
+      "omitted_present": {
+        "encounter_index": 0,
+        "slot": "ALLERGY",
+        "gold": "TEMIRAN",
+        "predicted": "ABSTAIN"
+      }
+    },
+    "full-6029": {
+      "omitted_present": {
+        "encounter_index": 0,
+        "slot": "MEDICATION",
+        "gold": "DOVARIN",
+        "predicted": "ABSTAIN"
+      },
+      "no_complete_matching_source_value": {
+        "encounter_index": 1,
+        "slot": "VITAL_BP",
+        "gold": "141/90",
+        "predicted": "121/79"
+      }
+    },
+    "answer-1481": {
+      "no_complete_matching_source_value": {
+        "encounter_index": 0,
+        "slot": "MEDICATION",
+        "gold": "DOVARIN",
+        "predicted": "DANTODDDABSTAIN"
+      },
+      "omitted_present": {
+        "encounter_index": 4,
+        "slot": "ALLERGY",
+        "gold": "TEMIRAN",
+        "predicted": "ABSTAIN"
+      }
+    },
+    "answer-3527": {
+      "no_complete_matching_source_value": {
+        "encounter_index": 0,
+        "slot": "MEDICATION",
+        "gold": "DOVARIN",
+        "predicted": "DANTOVEL"
+      },
+      "omitted_present": {
+        "encounter_index": 0,
+        "slot": "ALLERGY",
+        "gold": "TEMIRAN",
+        "predicted": "ABSTAIN"
+      },
+      "empty_string": {
+        "encounter_index": 30,
+        "slot": "DOSE",
+        "gold": "ABSTAIN",
+        "predicted": ""
+      }
+    },
+    "answer-6029": {
+      "no_complete_matching_source_value": {
+        "encounter_index": 0,
+        "slot": "MEDICATION",
+        "gold": "DOVARIN",
+        "predicted": "DORIL"
+      },
+      "omitted_present": {
+        "encounter_index": 0,
+        "slot": "ALLERGY",
+        "gold": "TEMIRAN",
+        "predicted": "ABSTAIN"
+      },
+      "copied_earlier_value_from_same_slot": {
+        "encounter_index": 29,
+        "slot": "DOSE",
+        "gold": "137MG",
+        "predicted": "19MG"
+      }
+    },
+    "aligned-1481": {
+      "no_complete_matching_source_value": {
+        "encounter_index": 0,
+        "slot": "DOSE",
+        "gold": "ABSTAIN",
+        "predicted": "EEEEEEEEEEEEEEEE"
+      },
+      "omitted_present": {
+        "encounter_index": 0,
+        "slot": "ALLERGY",
+        "gold": "TEMIRAN",
+        "predicted": "ABSTAIN"
+      },
+      "other_exact_source_text": {
+        "encounter_index": 1,
+        "slot": "VITAL_BP",
+        "gold": "141/90",
+        "predicted": "141/90 ."
+      },
+      "copied_earlier_value_from_same_slot": {
+        "encounter_index": 15,
+        "slot": "VITAL_BP",
+        "gold": "ABSTAIN",
+        "predicted": "135/88"
+      },
+      "empty_string": {
+        "encounter_index": 36,
+        "slot": "DOSE",
+        "gold": "ABSTAIN",
+        "predicted": ""
+      }
+    },
+    "aligned-3527": {
+      "omitted_present": {
+        "encounter_index": 0,
+        "slot": "ALLERGY",
+        "gold": "TEMIRAN",
+        "predicted": "ABSTAIN"
+      },
+      "no_complete_matching_source_value": {
+        "encounter_index": 2,
+        "slot": "MEDICATION",
+        "gold": "MILAVON",
+        "predicted": "MIAAAAAAAAAAAAAA"
+      },
+      "copied_earlier_value_from_same_slot": {
+        "encounter_index": 5,
+        "slot": "MEDICATION",
+        "gold": "ABSTAIN",
+        "predicted": "MILAVON"
+      },
+      "other_exact_source_text": {
+        "encounter_index": 30,
+        "slot": "DOSE",
+        "gold": "ABSTAIN",
+        "predicted": ". nursing checked"
+      }
+    },
+    "aligned-6029": {
+      "no_complete_matching_source_value": {
+        "encounter_index": 0,
+        "slot": "ALLERGY",
+        "gold": "TEMIRAN",
+        "predicted": "TEMIRIN"
+      },
+      "copied_earlier_value_from_same_slot": {
+        "encounter_index": 2,
+        "slot": "VITAL_BP",
+        "gold": "141/90",
+        "predicted": "135/88"
+      },
+      "omitted_present": {
+        "encounter_index": 6,
+        "slot": "DOSE",
+        "gold": "137MG",
+        "predicted": "ABSTAIN"
+      },
+      "other_exact_source_text": {
+        "encounter_index": 24,
+        "slot": "ALLERGY",
+        "gold": "TEMIRAN",
+        "predicted": "TEMIRAN agent"
+      },
+      "copied_value_from_other_slot": {
+        "encounter_index": 28,
+        "slot": "ALLERGY",
+        "gold": "ABSTAIN",
+        "predicted": "CERTALIN"
+      },
+      "empty_string": {
+        "encounter_index": 54,
+        "slot": "DOSE",
+        "gold": "ABSTAIN",
+        "predicted": ""
+      }
+    }
+  },
+  "paired_present_exact_rate_differences": {
+    "full_to_answer": {
+      "point_difference": 0.10382513661202186,
+      "empirical_95pct": [
+        0.07347670250896057,
+        0.13701431492842536
+      ]
+    },
+    "full_to_aligned": {
+      "point_difference": 0.5409836065573771,
+      "empirical_95pct": [
+        0.4935543278084715,
+        0.5884573024740621
+      ]
+    },
+    "answer_to_aligned": {
+      "point_difference": 0.4371584699453552,
+      "empirical_95pct": [
+        0.39130244088482075,
+        0.4828194947524844
+      ]
+    }
+  },
+  "uncertainty_unit": "Resample 96 test encounters with replacement, preserving predictions for all fields, models, and arms together; intervals condition on these three seeds and this synthetic data recipe.",
+  "resamples": 10000,
+  "resampling_seed": 58279
+}

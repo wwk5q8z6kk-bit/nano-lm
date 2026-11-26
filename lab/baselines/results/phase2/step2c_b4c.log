@@ -1,0 +1,8 @@
+[fft] Encoded 420/420 trajectories from /workspace/phase2_data/infodense.jsonl
+Loading cached teacher Top-64 logits from /workspace/phase2_data/infodense_kd.pt...
+[transformers] `torch_dtype` is deprecated! Use `dtype` instead!
+Loading weights:   0%|          | 0/311 [00:00<?, ?it/s]Loading weights: 100%|██████████| 311/311 [00:00<00:00, 8994.20it/s]
+[FFT] Trainable=1,720,574,976 / 1,720,574,976 (100.00%), lr=8e-06
+EPOCH {"epoch": 1, "mean_ce": 0.4758, "mean_kd_kl": 0.294, "elapsed_s": 93.6}
+Writing model shards:   0%|          | 0/1 [00:00<?, ?it/s]Writing model shards: 100%|██████████| 1/1 [00:03<00:00,  3.03s/it]Writing model shards: 100%|██████████| 1/1 [00:03<00:00,  3.04s/it]
+SAVED_PHASE2_MODEL /workspace/models/nanolm_b4c_infodense_fft_2b

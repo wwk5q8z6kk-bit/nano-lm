@@ -1,0 +1,21 @@
+{
+  "observed_utc": "2026-10-24T00:46:27.510458+00:00",
+  "scope": "Final reporting gates after current state and validation report updates. These supplement the full-suite record.",
+  "commands": [
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 scripts/check_active_now.py",
+      "exit_code": 0,
+      "stdout": "ACTIVE_NOW_OK\n"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 scripts/check_docs_integrity.py",
+      "exit_code": 0,
+      "stdout": "DOCS_INTEGRITY_OK\n"
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0,
+      "stdout": ""
+    }
+  ]
+}

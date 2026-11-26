@@ -1,0 +1,17 @@
+{
+  "purpose": "Pre-inference development annotation integrity; not a scientific freeze tag",
+  "created_utc": "2026-10-23T23:35:14.854334+00:00",
+  "files": {
+    "sources.json": "fdfc670f3ffb74aa86911a8520c5c8da336a0b1e3dbcdf3297bbd9110d848c13",
+    "authoring.md": "a74d986b5d876534309699c1edf6457bcde3f763ce75138ab1930ad7ff1ab5d1",
+    "annotation_rubric.md": "01d1781a620e8a1d42018715569b4eb5571b4bca04741982bcc98c7a0bc27657",
+    "protocol.md": "820d4530cdba2694becdd2feeb02b0ef9b19c397722755ec7df2bc7fb45745a8",
+    "annotations_a.json": "c6e5cbee2febbc9b9affdded28399d860bb10425f628ab474729cccefcfc96f0",
+    "annotations_b.json": "b9251e1e53268cc0d0e2d55ef8a9422f2c066b4e0548fa179e6df861f9313ef9",
+    "annotation_process_a.md": "7dadc8eafb9c7334a50c3e40ad64e8cbf3930568aa3d8c2881a323f73e0c20e3",
+    "annotation_process_b.md": "f0818620688c637b9680370632af38f6a21908b4924994c924ccbe8769a8ee06",
+    "adjudication.json": "618c2fbc731b5a5cef03e191d2ad52963629533727c2b6a2c55abea598942c88",
+    "adjudication.md": "63131499e5a119b05628facf465142cb961befc3432ce70d17ac3666e202747f",
+    "gold.json": "6a2ab33a5bfbba36f5b2905d989695e6b817ae1e3acf0320d1340ecb67b287f4"
+  }
+}

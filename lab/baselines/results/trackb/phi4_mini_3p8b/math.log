@@ -1,0 +1,30 @@
+Processed prompts: 100%|█████████▉| 1812/1819 [03:21<00:02,  2.40it/s, est. speed input: 8817.62 toks/s, output: 1387.82 toks/s][A
+Processed prompts: 100%|█████████▉| 1814/1819 [03:22<00:02,  2.25it/s, est. speed input: 8779.66 toks/s, output: 1401.04 toks/s][A
+Processed prompts: 100%|█████████▉| 1815/1819 [03:22<00:01,  2.40it/s, est. speed input: 8770.60 toks/s, output: 1409.18 toks/s][A
+Processed prompts: 100%|█████████▉| 1816/1819 [03:22<00:01,  2.73it/s, est. speed input: 8766.83 toks/s, output: 1418.15 toks/s][A
+Processed prompts: 100%|█████████▉| 1817/1819 [03:23<00:00,  2.84it/s, est. speed input: 8757.02 toks/s, output: 1426.12 toks/s][A
+Processed prompts: 100%|█████████▉| 1818/1819 [03:23<00:00,  2.22it/s, est. speed input: 8727.46 toks/s, output: 1430.83 toks/s][A
+Processed prompts: 100%|██████████| 1819/1819 [03:23<00:00,  2.76it/s, est. speed input: 8726.28 toks/s, output: 1440.15 toks/s][A
+Processed prompts: 100%|██████████| 1819/1819 [03:23<00:00,  2.76it/s, est. speed input: 8726.28 toks/s, output: 1440.15 toks/s][AProcessed prompts: 100%|██████████| 1819/1819 [03:23<00:00,  8.92it/s, est. speed input: 8726.28 toks/s, output: 1440.15 toks/s]
+Running generate_until requests:   0%|          | 1/1819 [03:24<103:14:11, 204.43s/it]Running generate_until requests: 100%|██████████| 1819/1819 [03:24<00:00,  8.90it/s]  
+fatal: not a git repository (or any of the parent directories): .git
+2026-11-17:08:07:25 INFO     [loggers.evaluation_tracker:247] Saving results aggregated
+vllm ({'pretrained': 'microsoft/Phi-4-mini-instruct', 'revision': 'cfbefacb99257ffa30c83adab238a50856ac3083', 'dtype': 'bfloat16', 'gpu_memory_utilization': 0.85, 'max_model_len': 8192, 'enable_thinking': False}), gen_kwargs: ({'max_gen_toks': 2048, 'temperature': 0}), limit: None, num_fewshot: None, batch_size: auto
+|     Tasks     |Version|     Filter     |n-shot|  Metric   |   |Value |   |Stderr|
+|---------------|------:|----------------|-----:|-----------|---|-----:|---|-----:|
+|gsm8k_cot_llama|    4.0|flexible-extract|     8|exact_match|↑  |0.8271|±  |0.0104|
+|               |       |strict-match    |     8|exact_match|↑  |0.8226|±  |0.0105|
+|minerva_math500|    3.1|none            |     4|exact_match|↑  |0.2400|±  |0.0191|
+|               |       |none            |     4|math_verify|↑  |0.3400|±  |0.0212|
+
+(MainProcess pid=63290) INFO 11-17 08:07:25 [utils.py:628] [shutdown] Process manager: send sigterm to process EngineCore
+(EngineCore pid=63543) INFO 11-17 08:07:25 [core.py:1698] [shutdown] EngineCore: trigger received signal=SIGTERM
+(EngineCore pid=63543) INFO 11-17 08:07:25 [core.py:1889] [shutdown] EngineCore: start mode=abort timeout=0s
+(EngineCore pid=63543) INFO 11-17 08:07:25 [core.py:1920] [shutdown] EngineCore: request processing complete; starting resource teardown
+(EngineCore pid=63543) INFO 11-17 08:07:25 [core.py:1746] [shutdown] EngineCore: exiting busy loop
+(MainProcess pid=63290) WARNING 11-17 08:07:26 [core_client.py:869] [shutdown] MPClient: engine core exited unexpectedly; starting cleanup
+(MainProcess pid=63290) INFO 11-17 08:07:26 [core_client.py:822] [shutdown] MPClient: start timeout=default
+(MainProcess pid=63290) INFO 11-17 08:07:26 [core_client.py:824] [shutdown] MPClient: stopping engine manager
+(MainProcess pid=63290) INFO 11-17 08:07:26 [core_client.py:826] [shutdown] MPClient: engine manager stopped
+(MainProcess pid=63290) INFO 11-17 08:07:26 [core_client.py:827] [shutdown] MPClient: cleaning up background resources
+(MainProcess pid=63290) INFO 11-17 08:07:26 [core_client.py:829] [shutdown] MPClient: complete

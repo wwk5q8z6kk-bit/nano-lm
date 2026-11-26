@@ -1,0 +1,2809 @@
+{
+  "paired_seeds": [
+    1481,
+    3527,
+    6029
+  ],
+  "source_files": {
+    "full-1481.json": "456fd0dbe4a62d6e9b683da6e0f36e4cd8e337b6e6f97335e04748e0afb51e58",
+    "full-1481.pt": "790a29c041d3e888d2d02c16160ac403d833e490807c9c1d84e2853ec3e32e1d",
+    "answer-1481.json": "e4054b0e6c978e40f36daf570ecd5064caa4b1ed20edbde1f144ec57102e6c45",
+    "answer-1481.pt": "7914a0210b0e3f01a830e6473b99c66e326fdcdea252f698b3ee7b5faf0029a0",
+    "aligned-1481.json": "ca12be3553997b74388218e6daa2625259c9580b593e7c58379a84793f91ebd3",
+    "aligned-1481.pt": "220e09c1b62e6e0109fe3b7d775c5c1b32430cbdc8d47bd70395ddc09a6a38ea",
+    "full-3527.json": "395bf230c4f42d7e25fc471fd2995015b0b11159bcb17880584adda1c688e03a",
+    "full-3527.pt": "7fef40cabb6e41e62791287cd096e95cb606719e488b70ea4f1049dac90a946d",
+    "answer-3527.json": "b6218f9356dc09d56b89479c1de38db86f96d75481972b45ef89fa9e42acd59d",
+    "answer-3527.pt": "fff25a7cc79f10d79f141e541c946e12a9bc24a5d7e50bf793a003e118e579b5",
+    "aligned-3527.json": "7d9c0265bbfddb35f007a2fb4cbdceed4ccfc52dcd983c1fd6d37c1ba4ffb69f",
+    "aligned-3527.pt": "4ec07f22709986693af69b097b2b44b0e6e95b38094167351cc9e17537f9f19f",
+    "full-6029.json": "3e7603c83861f91a54693f4329aff534e9daeeb59395fc542e9f035fa6d7e9b0",
+    "full-6029.pt": "99b22651c852f3ef616b27e97108f3e682b9ba6360c308f530dcf9983c93ef22",
+    "answer-6029.json": "3308c000fb530b5b33337aa518dbda839a706688cbf767c0d129b75c20cc355e",
+    "answer-6029.pt": "5312d553d4e932a4c995ceba35e60d41ebb258444995f83040d6684e70809f2f",
+    "aligned-6029.json": "ac77c98bbee932c7cd89aae6432cc3588ff24cf03597de14b166c608371d02a3",
+    "aligned-6029.pt": "1fd2bb004b2ecf5bac0c080f7a9802406a4951e52ea53f1f8c0b3c9f0e91893f"
+  },
+  "runs": {
+    "full-1481": {
+      "train_seconds": 189.31258055200001,
+      "total_seconds": 272.601940764,
+      "initial_state_sha256": "0282d70d96465e0f59e3d08316c952067a9c02431fedaaa4748cc1475048917e",
+      "trained_state_sha256": "906aeda123c20ea9d748bc4ca992e9203dcec62f04f0f0d288ca343b698106db",
+      "sample_schedule_sha256": "47be803dced939f76866df3babe42f8e2854c8e25d545c1ecabbecf22bb79487",
+      "parameters": 65524,
+      "sampled_full_tokens": 597624,
+      "sampled_answer_tokens": 44194,
+      "sampled_copy_tokens": 16622,
+      "torch": "2.4.0+cpu",
+      "numpy": "1.24.3",
+      "python": "3.9.25",
+      "architecture": "x86_64",
+      "dev": {
+        "counts": {
+          "absent_exact": 91,
+          "fields": 192,
+          "exact": 91,
+          "absent": 96,
+          "present_abstain": 50,
+          "present": 96,
+          "competing_present": 43,
+          "competing_present_exact": 0,
+          "retracted": 24,
+          "retracted_false_fill": 3,
+          "absent_fill": 5,
+          "wrong_not_whole_source_text": 51,
+          "present_wrong": 46
+        },
+        "by_slot_or_final_event": {
+          "MEDICATION": {
+            "absent_exact": 27,
+            "fields": 48,
+            "exact": 27,
+            "absent": 27,
+            "retracted": 11,
+            "retracted_false_fill": 0,
+            "present_abstain": 19,
+            "present": 21,
+            "competing_present": 11,
+            "competing_present_exact": 0,
+            "present_wrong": 2,
+            "wrong_not_whole_source_text": 2
+          },
+          "NEVER": {
+            "absent_exact": 70,
+            "fields": 72,
+            "exact": 70,
+            "absent": 72,
+            "absent_fill": 2,
+            "wrong_not_whole_source_text": 2
+          },
+          "DOSE": {
+            "present_abstain": 13,
+            "fields": 48,
+            "exact": 23,
+            "present": 22,
+            "competing_present": 11,
+            "competing_present_exact": 0,
+            "absent_exact": 23,
+            "absent": 26,
+            "retracted": 7,
+            "retracted_false_fill": 2,
+            "present_wrong": 9,
+            "wrong_not_whole_source_text": 12,
+            "absent_fill": 3
+          },
+          "SUPERSEDES": {
+            "present_abstain": 16,
+            "fields": 43,
+            "exact": 0,
+            "present": 43,
+            "competing_present": 43,
+            "competing_present_exact": 0,
+            "present_wrong": 27,
+            "wrong_not_whole_source_text": 27
+          },
+          "ALLERGY": {
+            "absent_exact": 22,
+            "fields": 48,
+            "exact": 22,
+            "absent": 22,
+            "retracted": 4,
+            "retracted_false_fill": 0,
+            "present_abstain": 18,
+            "present": 26,
+            "present_wrong": 8,
+            "competing_present": 8,
+            "competing_present_exact": 0,
+            "wrong_not_whole_source_text": 8
+          },
+          "RETRACTS": {
+            "absent_exact": 21,
+            "fields": 24,
+            "exact": 21,
+            "absent": 24,
+            "retracted": 24,
+            "retracted_false_fill": 3,
+            "absent_fill": 3,
+            "wrong_not_whole_source_text": 3
+          },
+          "VITAL_BP": {
+            "absent_fill": 2,
+            "fields": 48,
+            "exact": 19,
+            "absent": 21,
+            "wrong_not_whole_source_text": 29,
+            "absent_exact": 19,
+            "present_wrong": 27,
+            "present": 27,
+            "competing_present": 13,
+            "competing_present_exact": 0,
+            "retracted": 2,
+            "retracted_false_fill": 1
+          },
+          "ASSERTS": {
+            "present_abstain": 34,
+            "fields": 53,
+            "exact": 0,
+            "present": 53,
+            "present_wrong": 19,
+            "wrong_not_whole_source_text": 19
+          }
+        }
+      },
+      "test": {
+        "counts": {
+          "present_abstain": 87,
+          "fields": 384,
+          "exact": 186,
+          "present": 183,
+          "competing_present": 92,
+          "competing_present_exact": 0,
+          "absent_exact": 186,
+          "absent": 201,
+          "retracted": 52,
+          "retracted_false_fill": 7,
+          "absent_fill": 15,
+          "wrong_not_whole_source_text": 111,
+          "present_wrong": 96
+        },
+        "by_slot_or_final_event": {
+          "MEDICATION": {
+            "present_abstain": 36,
+            "fields": 96,
+            "exact": 58,
+            "present": 38,
+            "competing_present": 19,
+            "competing_present_exact": 0,
+            "absent_exact": 58,
+            "absent": 58,
+            "retracted": 13,
+            "retracted_false_fill": 0,
+            "present_wrong": 2,
+            "wrong_not_whole_source_text": 2
+          },
+          "SUPERSEDES": {
+            "present_abstain": 28,
+            "fields": 92,
+            "exact": 0,
+            "present": 92,
+            "competing_present": 92,
+            "competing_present_exact": 0,
+            "present_wrong": 64,
+            "wrong_not_whole_source_text": 64
+          },
+          "DOSE": {
+            "absent_exact": 43,
+            "fields": 96,
+            "exact": 43,
+            "absent": 45,
+            "retracted": 11,
+            "retracted_false_fill": 1,
+            "present_abstain": 30,
+            "present": 51,
+            "competing_present": 22,
+            "competing_present_exact": 0,
+            "present_wrong": 21,
+            "wrong_not_whole_source_text": 23,
+            "absent_fill": 2
+          },
+          "RETRACTS": {
+            "absent_exact": 45,
+            "fields": 52,
+            "exact": 45,
+            "absent": 52,
+            "retracted": 52,
+            "retracted_false_fill": 7,
+            "absent_fill": 7,
+            "wrong_not_whole_source_text": 7
+          },
+          "ALLERGY": {
+            "present_abstain": 21,
+            "fields": 96,
+            "exact": 51,
+            "present": 44,
+            "present_wrong": 23,
+            "competing_present": 24,
+            "competing_present_exact": 0,
+            "wrong_not_whole_source_text": 24,
+            "absent_exact": 51,
+            "absent": 52,
+            "retracted": 14,
+            "retracted_false_fill": 0,
+            "absent_fill": 1
+          },
+          "ASSERTS": {
+            "present_abstain": 59,
+            "fields": 91,
+            "exact": 0,
+            "present": 91,
+            "present_wrong": 32,
+            "wrong_not_whole_source_text": 32
+          },
+          "VITAL_BP": {
+            "absent_fill": 12,
+            "fields": 96,
+            "exact": 34,
+            "absent": 46,
+            "wrong_not_whole_source_text": 62,
+            "present_wrong": 50,
+            "present": 50,
+            "competing_present": 27,
+            "competing_present_exact": 0,
+            "absent_exact": 34,
+            "retracted": 14,
+            "retracted_false_fill": 6
+          },
+          "NEVER": {
+            "absent_fill": 8,
+            "fields": 149,
+            "exact": 141,
+            "absent": 149,
+            "wrong_not_whole_source_text": 8,
+            "absent_exact": 141
+          }
+        }
+      }
+    },
+    "answer-1481": {
+      "train_seconds": 185.11539260400002,
+      "total_seconds": 299.810780183,
+      "initial_state_sha256": "0282d70d96465e0f59e3d08316c952067a9c02431fedaaa4748cc1475048917e",
+      "trained_state_sha256": "fd38cad1a77efe0ce3b67077a82caafc63d649e7f59c39e606798688d2e98134",
+      "sample_schedule_sha256": "47be803dced939f76866df3babe42f8e2854c8e25d545c1ecabbecf22bb79487",
+      "parameters": 65524,
+      "sampled_full_tokens": 597624,
+      "sampled_answer_tokens": 44194,
+      "sampled_copy_tokens": 16622,
+      "torch": "2.4.0+cpu",
+      "numpy": "1.24.3",
+      "python": "3.9.25",
+      "architecture": "x86_64",
+      "dev": {
+        "counts": {
+          "absent_exact": 92,
+          "fields": 192,
+          "exact": 106,
+          "absent": 96,
+          "present_exact": 14,
+          "present": 96,
+          "competing_present": 43,
+          "competing_present_exact": 12,
+          "retracted": 24,
+          "retracted_false_fill": 0,
+          "present_abstain": 8,
+          "present_wrong": 74,
+          "wrong_not_whole_source_text": 78,
+          "absent_fill": 4
+        },
+        "by_slot_or_final_event": {
+          "MEDICATION": {
+            "absent_exact": 27,
+            "fields": 48,
+            "exact": 27,
+            "absent": 27,
+            "retracted": 11,
+            "retracted_false_fill": 0,
+            "present_wrong": 21,
+            "present": 21,
+            "competing_present": 11,
+            "competing_present_exact": 0,
+            "wrong_not_whole_source_text": 21
+          },
+          "NEVER": {
+            "absent_exact": 68,
+            "fields": 72,
+            "exact": 68,
+            "absent": 72,
+            "absent_fill": 4,
+            "wrong_not_whole_source_text": 4
+          },
+          "DOSE": {
+            "present_exact": 5,
+            "fields": 48,
+            "exact": 28,
+            "present": 22,
+            "competing_present": 11,
+            "competing_present_exact": 5,
+            "absent_exact": 23,
+            "absent": 26,
+            "retracted": 7,
+            "retracted_false_fill": 0,
+            "present_wrong": 17,
+            "wrong_not_whole_source_text": 20,
+            "absent_fill": 3
+          },
+          "SUPERSEDES": {
+            "present_exact": 12,
+            "fields": 43,
+            "exact": 12,
+            "present": 43,
+            "competing_present": 43,
+            "competing_present_exact": 12,
+            "present_wrong": 31,
+            "wrong_not_whole_source_text": 31
+          },
+          "ALLERGY": {
+            "absent_exact": 22,
+            "fields": 48,
+            "exact": 22,
+            "absent": 22,
+            "retracted": 4,
+            "retracted_false_fill": 0,
+            "present_abstain": 8,
+            "present": 26,
+            "present_wrong": 18,
+            "wrong_not_whole_source_text": 18,
+            "competing_present": 8,
+            "competing_present_exact": 0
+          },
+          "RETRACTS": {
+            "absent_exact": 24,
+            "fields": 24,
+            "exact": 24,
+            "absent": 24,
+            "retracted": 24,
+            "retracted_false_fill": 0
+          },
+          "VITAL_BP": {
+            "absent_exact": 20,
+            "fields": 48,
+            "exact": 29,
+            "absent": 21,
+            "present_exact": 9,
+            "present": 27,
+            "competing_present": 13,
+            "competing_present_exact": 7,
+            "present_wrong": 18,
+            "wrong_not_whole_source_text": 19,
+            "retracted": 2,
+            "retracted_false_fill": 0,
+            "absent_fill": 1
+          },
+          "ASSERTS": {
+            "present_abstain": 8,
+            "fields": 53,
+            "exact": 2,
+            "present": 53,
+            "present_exact": 2,
+            "present_wrong": 43,
+            "wrong_not_whole_source_text": 43
+          }
+        }
+      },
+      "test": {
+        "counts": {
+          "present_wrong": 144,
+          "fields": 384,
+          "exact": 212,
+          "present": 183,
+          "competing_present": 92,
+          "competing_present_exact": 16,
+          "wrong_not_whole_source_text": 166,
+          "absent_exact": 179,
+          "absent": 201,
+          "retracted": 52,
+          "retracted_false_fill": 4,
+          "absent_fill": 22,
+          "present_abstain": 6,
+          "present_exact": 33
+        },
+        "by_slot_or_final_event": {
+          "MEDICATION": {
+            "present_wrong": 38,
+            "fields": 96,
+            "exact": 57,
+            "present": 38,
+            "competing_present": 19,
+            "competing_present_exact": 0,
+            "wrong_not_whole_source_text": 39,
+            "absent_exact": 57,
+            "absent": 58,
+            "retracted": 13,
+            "retracted_false_fill": 1,
+            "absent_fill": 1
+          },
+          "SUPERSEDES": {
+            "present_wrong": 75,
+            "fields": 92,
+            "exact": 16,
+            "present": 92,
+            "competing_present": 92,
+            "competing_present_exact": 16,
+            "wrong_not_whole_source_text": 75,
+            "present_exact": 16,
+            "present_abstain": 1
+          },
+          "DOSE": {
+            "absent_exact": 29,
+            "fields": 96,
+            "exact": 49,
+            "absent": 45,
+            "retracted": 11,
+            "retracted_false_fill": 1,
+            "absent_fill": 16,
+            "wrong_not_whole_source_text": 47,
+            "present_wrong": 31,
+            "present": 51,
+            "competing_present": 22,
+            "competing_present_exact": 8,
+            "present_exact": 20
+          },
+          "RETRACTS": {
+            "absent_exact": 48,
+            "fields": 52,
+            "exact": 48,
+            "absent": 52,
+            "retracted": 52,
+            "retracted_false_fill": 4,
+            "absent_fill": 4,
+            "wrong_not_whole_source_text": 4
+          },
+          "ALLERGY": {
+            "present_wrong": 38,
+            "fields": 96,
+            "exact": 51,
+            "present": 44,
+            "wrong_not_whole_source_text": 39,
+            "competing_present": 24,
+            "competing_present_exact": 0,
+            "present_abstain": 6,
+            "absent_exact": 51,
+            "absent": 52,
+            "retracted": 14,
+            "retracted_false_fill": 1,
+            "absent_fill": 1
+          },
+          "ASSERTS": {
+            "present_wrong": 69,
+            "fields": 91,
+            "exact": 17,
+            "present": 91,
+            "wrong_not_whole_source_text": 69,
+            "present_abstain": 5,
+            "present_exact": 17
+          },
+          "VITAL_BP": {
+            "absent_exact": 42,
+            "fields": 96,
+            "exact": 55,
+            "absent": 46,
+            "present_wrong": 37,
+            "present": 50,
+            "competing_present": 27,
+            "competing_present_exact": 8,
+            "wrong_not_whole_source_text": 41,
+            "absent_fill": 4,
+            "retracted": 14,
+            "retracted_false_fill": 1,
+            "present_exact": 13
+          },
+          "NEVER": {
+            "absent_exact": 131,
+            "fields": 149,
+            "exact": 131,
+            "absent": 149,
+            "absent_fill": 18,
+            "wrong_not_whole_source_text": 18
+          }
+        }
+      }
+    },
+    "aligned-1481": {
+      "train_seconds": 174.30746836100002,
+      "total_seconds": 257.27421222500004,
+      "initial_state_sha256": "0282d70d96465e0f59e3d08316c952067a9c02431fedaaa4748cc1475048917e",
+      "trained_state_sha256": "9c7d832c72cc2b7a0dd64410e4956d1e286c62febf40dca43035a4a218a2b06f",
+      "sample_schedule_sha256": "47be803dced939f76866df3babe42f8e2854c8e25d545c1ecabbecf22bb79487",
+      "parameters": 65524,
+      "sampled_full_tokens": 597624,
+      "sampled_answer_tokens": 44194,
+      "sampled_copy_tokens": 16622,
+      "torch": "2.4.0+cpu",
+      "numpy": "1.24.3",
+      "python": "3.9.25",
+      "architecture": "x86_64",
+      "dev": {
+        "counts": {
+          "absent_exact": 86,
+          "fields": 192,
+          "exact": 130,
+          "absent": 96,
+          "present_exact": 44,
+          "present": 96,
+          "competing_present": 43,
+          "competing_present_exact": 26,
+          "retracted": 24,
+          "retracted_false_fill": 5,
+          "present_abstain": 15,
+          "absent_fill": 10,
+          "wrong_not_whole_source_text": 41,
+          "present_wrong": 37,
+          "wrong_previously_reported_for_slot": 4
+        },
+        "by_slot_or_final_event": {
+          "MEDICATION": {
+            "absent_exact": 26,
+            "fields": 48,
+            "exact": 35,
+            "absent": 27,
+            "retracted": 11,
+            "retracted_false_fill": 1,
+            "present_exact": 9,
+            "present": 21,
+            "competing_present": 11,
+            "competing_present_exact": 5,
+            "present_wrong": 12,
+            "wrong_not_whole_source_text": 11,
+            "absent_fill": 1,
+            "wrong_previously_reported_for_slot": 1
+          },
+          "NEVER": {
+            "absent_exact": 67,
+            "fields": 72,
+            "exact": 67,
+            "absent": 72,
+            "absent_fill": 5,
+            "wrong_not_whole_source_text": 5
+          },
+          "DOSE": {
+            "present_exact": 20,
+            "fields": 48,
+            "exact": 38,
+            "present": 22,
+            "competing_present": 11,
+            "competing_present_exact": 11,
+            "absent_fill": 8,
+            "absent": 26,
+            "wrong_not_whole_source_text": 7,
+            "retracted": 7,
+            "retracted_false_fill": 4,
+            "absent_exact": 18,
+            "wrong_previously_reported_for_slot": 3,
+            "present_wrong": 2
+          },
+          "SUPERSEDES": {
+            "present_exact": 26,
+            "fields": 43,
+            "exact": 26,
+            "present": 43,
+            "competing_present": 43,
+            "competing_present_exact": 26,
+            "present_wrong": 17,
+            "wrong_not_whole_source_text": 15
+          },
+          "ALLERGY": {
+            "absent_exact": 22,
+            "fields": 48,
+            "exact": 25,
+            "absent": 22,
+            "retracted": 4,
+            "retracted_false_fill": 0,
+            "present_abstain": 15,
+            "present": 26,
+            "present_wrong": 8,
+            "competing_present": 8,
+            "competing_present_exact": 2,
+            "wrong_not_whole_source_text": 8,
+            "present_exact": 3
+          },
+          "RETRACTS": {
+            "absent_exact": 19,
+            "fields": 24,
+            "exact": 19,
+            "absent": 24,
+            "retracted": 24,
+            "retracted_false_fill": 5,
+            "absent_fill": 5,
+            "wrong_not_whole_source_text": 1,
+            "wrong_previously_reported_for_slot": 4
+          },
+          "VITAL_BP": {
+            "absent_exact": 20,
+            "fields": 48,
+            "exact": 32,
+            "absent": 21,
+            "present_exact": 12,
+            "present": 27,
+            "competing_present": 13,
+            "competing_present_exact": 8,
+            "present_wrong": 15,
+            "wrong_not_whole_source_text": 15,
+            "retracted": 2,
+            "retracted_false_fill": 0,
+            "absent_fill": 1
+          },
+          "ASSERTS": {
+            "present_abstain": 15,
+            "fields": 53,
+            "exact": 18,
+            "present": 53,
+            "present_exact": 18,
+            "present_wrong": 20,
+            "wrong_not_whole_source_text": 20
+          }
+        }
+      },
+      "test": {
+        "counts": {
+          "present_exact": 110,
+          "fields": 384,
+          "exact": 272,
+          "present": 183,
+          "competing_present": 92,
+          "competing_present_exact": 64,
+          "absent_fill": 39,
+          "absent": 201,
+          "wrong_not_whole_source_text": 63,
+          "retracted": 52,
+          "retracted_false_fill": 11,
+          "present_abstain": 22,
+          "absent_exact": 162,
+          "present_wrong": 51,
+          "wrong_previously_reported_for_slot": 7
+        },
+        "by_slot_or_final_event": {
+          "MEDICATION": {
+            "present_exact": 16,
+            "fields": 96,
+            "exact": 67,
+            "present": 38,
+            "competing_present": 19,
+            "competing_present_exact": 11,
+            "present_wrong": 16,
+            "wrong_not_whole_source_text": 15,
+            "absent_exact": 51,
+            "absent": 58,
+            "retracted": 13,
+            "retracted_false_fill": 3,
+            "absent_fill": 7,
+            "wrong_previously_reported_for_slot": 3,
+            "present_abstain": 6
+          },
+          "SUPERSEDES": {
+            "present_exact": 64,
+            "fields": 92,
+            "exact": 64,
+            "present": 92,
+            "competing_present": 92,
+            "competing_present_exact": 64,
+            "present_wrong": 27,
+            "wrong_not_whole_source_text": 14,
+            "present_abstain": 1
+          },
+          "DOSE": {
+            "absent_fill": 23,
+            "fields": 96,
+            "exact": 72,
+            "absent": 45,
+            "wrong_not_whole_source_text": 23,
+            "retracted": 11,
+            "retracted_false_fill": 3,
+            "absent_exact": 22,
+            "present_exact": 50,
+            "present": 51,
+            "competing_present": 22,
+            "competing_present_exact": 22,
+            "present_wrong": 1,
+            "wrong_previously_reported_for_slot": 1
+          },
+          "RETRACTS": {
+            "absent_fill": 11,
+            "fields": 52,
+            "exact": 41,
+            "absent": 52,
+            "wrong_not_whole_source_text": 2,
+            "retracted": 52,
+            "retracted_false_fill": 11,
+            "absent_exact": 41,
+            "wrong_previously_reported_for_slot": 7
+          },
+          "ALLERGY": {
+            "present_abstain": 15,
+            "fields": 96,
+            "exact": 73,
+            "present": 44,
+            "present_wrong": 6,
+            "competing_present": 24,
+            "competing_present_exact": 18,
+            "wrong_not_whole_source_text": 5,
+            "absent_exact": 50,
+            "absent": 52,
+            "retracted": 14,
+            "retracted_false_fill": 1,
+            "present_exact": 23,
+            "absent_fill": 2,
+            "wrong_previously_reported_for_slot": 1
+          },
+          "ASSERTS": {
+            "present_abstain": 21,
+            "fields": 91,
+            "exact": 46,
+            "present": 91,
+            "present_wrong": 24,
+            "wrong_not_whole_source_text": 20,
+            "present_exact": 46
+          },
+          "VITAL_BP": {
+            "absent_exact": 39,
+            "fields": 96,
+            "exact": 60,
+            "absent": 46,
+            "present_wrong": 28,
+            "present": 50,
+            "competing_present": 27,
+            "competing_present_exact": 13,
+            "present_exact": 21,
+            "retracted": 14,
+            "retracted_false_fill": 4,
+            "absent_fill": 7,
+            "wrong_not_whole_source_text": 20,
+            "wrong_previously_reported_for_slot": 2,
+            "present_abstain": 1
+          },
+          "NEVER": {
+            "absent_exact": 121,
+            "fields": 149,
+            "exact": 121,
+            "absent": 149,
+            "absent_fill": 28,
+            "wrong_not_whole_source_text": 27
+          }
+        }
+      }
+    },
+    "full-3527": {
+      "train_seconds": 186.15073807299999,
+      "total_seconds": 253.906433496,
+      "initial_state_sha256": "4820af879ded7883cdcd45f0d85006c4c7a8cd73d1eb9f6294f8deb6e440b19a",
+      "trained_state_sha256": "be9d100d38dafe6f1ad78464b181714a66b2202b0290b356d9367036122c8355",
+      "sample_schedule_sha256": "3fc5f0fe223a71c57ba145976cb241141e61903a66754434afe37947c332f565",
+      "parameters": 65524,
+      "sampled_full_tokens": 596555,
+      "sampled_answer_tokens": 44099,
+      "sampled_copy_tokens": 17304,
+      "torch": "2.4.0+cpu",
+      "numpy": "1.24.3",
+      "python": "3.9.25",
+      "architecture": "x86_64",
+      "dev": {
+        "counts": {
+          "absent_exact": 74,
+          "fields": 192,
+          "exact": 74,
+          "absent": 96,
+          "present_wrong": 73,
+          "present": 96,
+          "competing_present": 43,
+          "competing_present_exact": 0,
+          "wrong_not_whole_source_text": 95,
+          "retracted": 24,
+          "retracted_false_fill": 10,
+          "absent_fill": 22,
+          "present_abstain": 23
+        },
+        "by_slot_or_final_event": {
+          "MEDICATION": {
+            "absent_exact": 22,
+            "fields": 48,
+            "exact": 22,
+            "absent": 27,
+            "retracted": 11,
+            "retracted_false_fill": 5,
+            "present_wrong": 16,
+            "present": 21,
+            "competing_present": 11,
+            "competing_present_exact": 0,
+            "wrong_not_whole_source_text": 21,
+            "absent_fill": 5,
+            "present_abstain": 5
+          },
+          "NEVER": {
+            "absent_exact": 60,
+            "fields": 72,
+            "exact": 60,
+            "absent": 72,
+            "absent_fill": 12,
+            "wrong_not_whole_source_text": 12
+          },
+          "DOSE": {
+            "present_wrong": 21,
+            "fields": 48,
+            "exact": 9,
+            "present": 22,
+            "competing_present": 11,
+            "competing_present_exact": 0,
+            "wrong_not_whole_source_text": 38,
+            "absent_fill": 17,
+            "absent": 26,
+            "retracted": 7,
+            "retracted_false_fill": 5,
+            "absent_exact": 9,
+            "present_abstain": 1
+          },
+          "SUPERSEDES": {
+            "present_wrong": 43,
+            "fields": 43,
+            "exact": 0,
+            "present": 43,
+            "competing_present": 43,
+            "competing_present_exact": 0,
+            "wrong_not_whole_source_text": 43
+          },
+          "ALLERGY": {
+            "absent_exact": 22,
+            "fields": 48,
+            "exact": 22,
+            "absent": 22,
+            "retracted": 4,
+            "retracted_false_fill": 0,
+            "present_wrong": 15,
+            "present": 26,
+            "wrong_not_whole_source_text": 15,
+            "present_abstain": 11,
+            "competing_present": 8,
+            "competing_present_exact": 0
+          },
+          "RETRACTS": {
+            "absent_exact": 14,
+            "fields": 24,
+            "exact": 14,
+            "absent": 24,
+            "retracted": 24,
+            "retracted_false_fill": 10,
+            "absent_fill": 10,
+            "wrong_not_whole_source_text": 10
+          },
+          "VITAL_BP": {
+            "absent_exact": 21,
+            "fields": 48,
+            "exact": 21,
+            "absent": 21,
+            "present_wrong": 21,
+            "present": 27,
+            "competing_present": 13,
+            "competing_present_exact": 0,
+            "wrong_not_whole_source_text": 21,
+            "retracted": 2,
+            "retracted_false_fill": 0,
+            "present_abstain": 6
+          },
+          "ASSERTS": {
+            "present_wrong": 30,
+            "fields": 53,
+            "exact": 0,
+            "present": 53,
+            "wrong_not_whole_source_text": 30,
+            "present_abstain": 23
+          }
+        }
+      },
+      "test": {
+        "counts": {
+          "present_wrong": 142,
+          "fields": 384,
+          "exact": 156,
+          "present": 183,
+          "competing_present": 92,
+          "competing_present_exact": 0,
+          "wrong_not_whole_source_text": 187,
+          "absent_exact": 156,
+          "absent": 201,
+          "retracted": 52,
+          "retracted_false_fill": 22,
+          "present_abstain": 41,
+          "absent_fill": 45
+        },
+        "by_slot_or_final_event": {
+          "MEDICATION": {
+            "present_wrong": 26,
+            "fields": 96,
+            "exact": 51,
+            "present": 38,
+            "competing_present": 19,
+            "competing_present_exact": 0,
+            "wrong_not_whole_source_text": 33,
+            "present_abstain": 12,
+            "absent_exact": 51,
+            "absent": 58,
+            "retracted": 13,
+            "retracted_false_fill": 7,
+            "absent_fill": 7
+          },
+          "SUPERSEDES": {
+            "present_wrong": 92,
+            "fields": 92,
+            "exact": 0,
+            "present": 92,
+            "competing_present": 92,
+            "competing_present_exact": 0,
+            "wrong_not_whole_source_text": 92
+          },
+          "DOSE": {
+            "absent_exact": 19,
+            "fields": 96,
+            "exact": 19,
+            "absent": 45,
+            "retracted": 11,
+            "retracted_false_fill": 3,
+            "absent_fill": 26,
+            "wrong_not_whole_source_text": 73,
+            "present_wrong": 47,
+            "present": 51,
+            "competing_present": 22,
+            "competing_present_exact": 0,
+            "present_abstain": 4
+          },
+          "RETRACTS": {
+            "absent_exact": 30,
+            "fields": 52,
+            "exact": 30,
+            "absent": 52,
+            "retracted": 52,
+            "retracted_false_fill": 22,
+            "absent_fill": 22,
+            "wrong_not_whole_source_text": 22
+          },
+          "ALLERGY": {
+            "present_abstain": 14,
+            "fields": 96,
+            "exact": 48,
+            "present": 44,
+            "present_wrong": 30,
+            "wrong_not_whole_source_text": 34,
+            "competing_present": 24,
+            "competing_present_exact": 0,
+            "absent_exact": 48,
+            "absent": 52,
+            "retracted": 14,
+            "retracted_false_fill": 4,
+            "absent_fill": 4
+          },
+          "ASSERTS": {
+            "present_abstain": 41,
+            "fields": 91,
+            "exact": 0,
+            "present": 91,
+            "present_wrong": 50,
+            "wrong_not_whole_source_text": 50
+          },
+          "VITAL_BP": {
+            "absent_exact": 38,
+            "fields": 96,
+            "exact": 38,
+            "absent": 46,
+            "present_wrong": 39,
+            "present": 50,
+            "competing_present": 27,
+            "competing_present_exact": 0,
+            "wrong_not_whole_source_text": 47,
+            "retracted": 14,
+            "retracted_false_fill": 8,
+            "absent_fill": 8,
+            "present_abstain": 11
+          },
+          "NEVER": {
+            "absent_exact": 126,
+            "fields": 149,
+            "exact": 126,
+            "absent": 149,
+            "absent_fill": 23,
+            "wrong_not_whole_source_text": 23
+          }
+        }
+      }
+    },
+    "answer-3527": {
+      "train_seconds": 172.04194321200004,
+      "total_seconds": 261.60534154400005,
+      "initial_state_sha256": "4820af879ded7883cdcd45f0d85006c4c7a8cd73d1eb9f6294f8deb6e440b19a",
+      "trained_state_sha256": "9dc7f8f5a8887a29acb3df42152d755232f55289394cbff1c71051679c33b1f9",
+      "sample_schedule_sha256": "3fc5f0fe223a71c57ba145976cb241141e61903a66754434afe37947c332f565",
+      "parameters": 65524,
+      "sampled_full_tokens": 596555,
+      "sampled_answer_tokens": 44099,
+      "sampled_copy_tokens": 17304,
+      "torch": "2.4.0+cpu",
+      "numpy": "1.24.3",
+      "python": "3.9.25",
+      "architecture": "x86_64",
+      "dev": {
+        "counts": {
+          "absent_exact": 93,
+          "fields": 192,
+          "exact": 105,
+          "absent": 96,
+          "present_wrong": 80,
+          "present": 96,
+          "competing_present": 43,
+          "competing_present_exact": 6,
+          "wrong_previously_reported_for_slot": 3,
+          "retracted": 24,
+          "retracted_false_fill": 0,
+          "wrong_not_whole_source_text": 80,
+          "present_exact": 12,
+          "absent_fill": 3,
+          "present_abstain": 4
+        },
+        "by_slot_or_final_event": {
+          "MEDICATION": {
+            "absent_exact": 27,
+            "fields": 48,
+            "exact": 27,
+            "absent": 27,
+            "retracted": 11,
+            "retracted_false_fill": 0,
+            "present_wrong": 21,
+            "present": 21,
+            "competing_present": 11,
+            "competing_present_exact": 0,
+            "wrong_not_whole_source_text": 21
+          },
+          "NEVER": {
+            "absent_exact": 69,
+            "fields": 72,
+            "exact": 69,
+            "absent": 72,
+            "absent_fill": 3,
+            "wrong_not_whole_source_text": 3
+          },
+          "DOSE": {
+            "present_wrong": 10,
+            "fields": 48,
+            "exact": 35,
+            "present": 22,
+            "competing_present": 11,
+            "competing_present_exact": 6,
+            "wrong_previously_reported_for_slot": 3,
+            "absent_exact": 23,
+            "absent": 26,
+            "retracted": 7,
+            "retracted_false_fill": 0,
+            "wrong_not_whole_source_text": 10,
+            "present_exact": 12,
+            "absent_fill": 3
+          },
+          "SUPERSEDES": {
+            "present_wrong": 37,
+            "fields": 43,
+            "exact": 6,
+            "present": 43,
+            "competing_present": 43,
+            "competing_present_exact": 6,
+            "wrong_previously_reported_for_slot": 3,
+            "wrong_not_whole_source_text": 34,
+            "present_exact": 6
+          },
+          "ALLERGY": {
+            "absent_exact": 22,
+            "fields": 48,
+            "exact": 22,
+            "absent": 22,
+            "retracted": 4,
+            "retracted_false_fill": 0,
+            "present_wrong": 23,
+            "present": 26,
+            "wrong_not_whole_source_text": 23,
+            "competing_present": 8,
+            "competing_present_exact": 0,
+            "present_abstain": 3
+          },
+          "RETRACTS": {
+            "absent_exact": 24,
+            "fields": 24,
+            "exact": 24,
+            "absent": 24,
+            "retracted": 24,
+            "retracted_false_fill": 0
+          },
+          "VITAL_BP": {
+            "absent_exact": 21,
+            "fields": 48,
+            "exact": 21,
+            "absent": 21,
+            "present_wrong": 26,
+            "present": 27,
+            "competing_present": 13,
+            "competing_present_exact": 0,
+            "wrong_not_whole_source_text": 26,
+            "retracted": 2,
+            "retracted_false_fill": 0,
+            "present_abstain": 1
+          },
+          "ASSERTS": {
+            "present_wrong": 43,
+            "fields": 53,
+            "exact": 6,
+            "present": 53,
+            "wrong_not_whole_source_text": 43,
+            "present_exact": 6,
+            "present_abstain": 4
+          }
+        }
+      },
+      "test": {
+        "counts": {
+          "present_wrong": 161,
+          "fields": 384,
+          "exact": 190,
+          "present": 183,
+          "competing_present": 92,
+          "competing_present_exact": 4,
+          "wrong_not_whole_source_text": 180,
+          "absent_exact": 182,
+          "absent": 201,
+          "retracted": 52,
+          "retracted_false_fill": 0,
+          "present_abstain": 14,
+          "absent_fill": 19,
+          "present_exact": 8
+        },
+        "by_slot_or_final_event": {
+          "MEDICATION": {
+            "present_wrong": 32,
+            "fields": 96,
+            "exact": 58,
+            "present": 38,
+            "competing_present": 19,
+            "competing_present_exact": 0,
+            "wrong_not_whole_source_text": 32,
+            "present_abstain": 6,
+            "absent_exact": 58,
+            "absent": 58,
+            "retracted": 13,
+            "retracted_false_fill": 0
+          },
+          "SUPERSEDES": {
+            "present_wrong": 87,
+            "fields": 92,
+            "exact": 4,
+            "present": 92,
+            "competing_present": 92,
+            "competing_present_exact": 4,
+            "wrong_not_whole_source_text": 87,
+            "present_abstain": 1,
+            "present_exact": 4
+          },
+          "DOSE": {
+            "absent_exact": 27,
+            "fields": 96,
+            "exact": 35,
+            "absent": 45,
+            "retracted": 11,
+            "retracted_false_fill": 0,
+            "absent_fill": 18,
+            "wrong_not_whole_source_text": 59,
+            "present_wrong": 41,
+            "present": 51,
+            "competing_present": 22,
+            "competing_present_exact": 4,
+            "present_exact": 8,
+            "present_abstain": 2
+          },
+          "RETRACTS": {
+            "absent_exact": 52,
+            "fields": 52,
+            "exact": 52,
+            "absent": 52,
+            "retracted": 52,
+            "retracted_false_fill": 0
+          },
+          "ALLERGY": {
+            "present_abstain": 5,
+            "fields": 96,
+            "exact": 52,
+            "present": 44,
+            "present_wrong": 39,
+            "wrong_not_whole_source_text": 39,
+            "competing_present": 24,
+            "competing_present_exact": 0,
+            "absent_exact": 52,
+            "absent": 52,
+            "retracted": 14,
+            "retracted_false_fill": 0
+          },
+          "ASSERTS": {
+            "present_abstain": 13,
+            "fields": 91,
+            "exact": 4,
+            "present": 91,
+            "present_wrong": 74,
+            "wrong_not_whole_source_text": 74,
+            "present_exact": 4
+          },
+          "VITAL_BP": {
+            "absent_exact": 45,
+            "fields": 96,
+            "exact": 45,
+            "absent": 46,
+            "present_wrong": 49,
+            "present": 50,
+            "competing_present": 27,
+            "competing_present_exact": 0,
+            "wrong_not_whole_source_text": 50,
+            "retracted": 14,
+            "retracted_false_fill": 0,
+            "absent_fill": 1,
+            "present_abstain": 1
+          },
+          "NEVER": {
+            "absent_exact": 130,
+            "fields": 149,
+            "exact": 130,
+            "absent": 149,
+            "absent_fill": 19,
+            "wrong_not_whole_source_text": 19
+          }
+        }
+      }
+    },
+    "aligned-3527": {
+      "train_seconds": 179.21131941200008,
+      "total_seconds": 289.285704108,
+      "initial_state_sha256": "4820af879ded7883cdcd45f0d85006c4c7a8cd73d1eb9f6294f8deb6e440b19a",
+      "trained_state_sha256": "df150e775047393a0df820333f7d719a61cabd7cce7bf7c7ebbe23d0a23497df",
+      "sample_schedule_sha256": "3fc5f0fe223a71c57ba145976cb241141e61903a66754434afe37947c332f565",
+      "parameters": 65524,
+      "sampled_full_tokens": 596555,
+      "sampled_answer_tokens": 44099,
+      "sampled_copy_tokens": 17304,
+      "torch": "2.4.0+cpu",
+      "numpy": "1.24.3",
+      "python": "3.9.25",
+      "architecture": "x86_64",
+      "dev": {
+        "counts": {
+          "absent_exact": 71,
+          "fields": 192,
+          "exact": 120,
+          "absent": 96,
+          "present_exact": 49,
+          "present": 96,
+          "competing_present": 43,
+          "competing_present_exact": 25,
+          "retracted": 24,
+          "retracted_false_fill": 18,
+          "absent_fill": 25,
+          "wrong_previously_reported_for_slot": 12,
+          "present_abstain": 13,
+          "present_wrong": 34,
+          "wrong_not_whole_source_text": 46
+        },
+        "by_slot_or_final_event": {
+          "MEDICATION": {
+            "absent_exact": 16,
+            "fields": 48,
+            "exact": 28,
+            "absent": 27,
+            "absent_fill": 11,
+            "wrong_previously_reported_for_slot": 6,
+            "retracted": 11,
+            "retracted_false_fill": 11,
+            "present_wrong": 9,
+            "present": 21,
+            "competing_present": 11,
+            "competing_present_exact": 4,
+            "wrong_not_whole_source_text": 14,
+            "present_exact": 12
+          },
+          "NEVER": {
+            "absent_exact": 65,
+            "fields": 72,
+            "exact": 65,
+            "absent": 72,
+            "absent_fill": 7,
+            "wrong_not_whole_source_text": 7
+          },
+          "DOSE": {
+            "present_exact": 21,
+            "fields": 48,
+            "exact": 34,
+            "present": 22,
+            "competing_present": 11,
+            "competing_present_exact": 11,
+            "absent_fill": 13,
+            "absent": 26,
+            "wrong_previously_reported_for_slot": 6,
+            "retracted": 7,
+            "retracted_false_fill": 7,
+            "absent_exact": 13,
+            "wrong_not_whole_source_text": 7,
+            "present_wrong": 1
+          },
+          "SUPERSEDES": {
+            "present_exact": 25,
+            "fields": 43,
+            "exact": 25,
+            "present": 43,
+            "competing_present": 43,
+            "competing_present_exact": 25,
+            "present_wrong": 18,
+            "wrong_not_whole_source_text": 18
+          },
+          "ALLERGY": {
+            "absent_exact": 21,
+            "fields": 48,
+            "exact": 28,
+            "absent": 22,
+            "retracted": 4,
+            "retracted_false_fill": 0,
+            "present_exact": 7,
+            "present": 26,
+            "present_abstain": 10,
+            "present_wrong": 9,
+            "wrong_not_whole_source_text": 10,
+            "competing_present": 8,
+            "competing_present_exact": 2,
+            "absent_fill": 1
+          },
+          "RETRACTS": {
+            "absent_exact": 6,
+            "fields": 24,
+            "exact": 6,
+            "absent": 24,
+            "retracted": 24,
+            "retracted_false_fill": 18,
+            "absent_fill": 18,
+            "wrong_previously_reported_for_slot": 12,
+            "wrong_not_whole_source_text": 5
+          },
+          "VITAL_BP": {
+            "absent_exact": 21,
+            "fields": 48,
+            "exact": 30,
+            "absent": 21,
+            "present_exact": 9,
+            "present": 27,
+            "competing_present": 13,
+            "competing_present_exact": 8,
+            "present_wrong": 15,
+            "wrong_not_whole_source_text": 15,
+            "retracted": 2,
+            "retracted_false_fill": 0,
+            "present_abstain": 3
+          },
+          "ASSERTS": {
+            "present_exact": 24,
+            "fields": 53,
+            "exact": 24,
+            "present": 53,
+            "present_abstain": 13,
+            "present_wrong": 16,
+            "wrong_not_whole_source_text": 16
+          }
+        }
+      },
+      "test": {
+        "counts": {
+          "present_exact": 110,
+          "fields": 384,
+          "exact": 267,
+          "present": 183,
+          "competing_present": 92,
+          "competing_present_exact": 64,
+          "absent_exact": 157,
+          "absent": 201,
+          "retracted": 52,
+          "retracted_false_fill": 22,
+          "present_abstain": 12,
+          "present_wrong": 61,
+          "wrong_not_whole_source_text": 84,
+          "absent_fill": 44,
+          "wrong_previously_reported_for_slot": 18
+        },
+        "by_slot_or_final_event": {
+          "MEDICATION": {
+            "present_exact": 22,
+            "fields": 96,
+            "exact": 65,
+            "present": 38,
+            "competing_present": 19,
+            "competing_present_exact": 14,
+            "present_wrong": 16,
+            "wrong_not_whole_source_text": 20,
+            "absent_exact": 43,
+            "absent": 58,
+            "absent_fill": 15,
+            "wrong_previously_reported_for_slot": 11,
+            "retracted": 13,
+            "retracted_false_fill": 13
+          },
+          "SUPERSEDES": {
+            "present_exact": 64,
+            "fields": 92,
+            "exact": 64,
+            "present": 92,
+            "competing_present": 92,
+            "competing_present_exact": 64,
+            "present_wrong": 28,
+            "wrong_not_whole_source_text": 26
+          },
+          "DOSE": {
+            "absent_exact": 25,
+            "fields": 96,
+            "exact": 72,
+            "absent": 45,
+            "retracted": 11,
+            "retracted_false_fill": 8,
+            "absent_fill": 20,
+            "wrong_not_whole_source_text": 17,
+            "present_exact": 47,
+            "present": 51,
+            "competing_present": 22,
+            "competing_present_exact": 22,
+            "wrong_previously_reported_for_slot": 6,
+            "present_wrong": 4
+          },
+          "RETRACTS": {
+            "absent_exact": 30,
+            "fields": 52,
+            "exact": 30,
+            "absent": 52,
+            "retracted": 52,
+            "retracted_false_fill": 22,
+            "absent_fill": 22,
+            "wrong_previously_reported_for_slot": 18,
+            "wrong_not_whole_source_text": 4
+          },
+          "ALLERGY": {
+            "present_abstain": 8,
+            "fields": 96,
+            "exact": 66,
+            "present": 44,
+            "present_exact": 14,
+            "present_wrong": 22,
+            "competing_present": 24,
+            "competing_present_exact": 11,
+            "wrong_not_whole_source_text": 22,
+            "absent_exact": 52,
+            "absent": 52,
+            "retracted": 14,
+            "retracted_false_fill": 0
+          },
+          "ASSERTS": {
+            "present_abstain": 12,
+            "fields": 91,
+            "exact": 46,
+            "present": 91,
+            "present_exact": 46,
+            "present_wrong": 33,
+            "wrong_not_whole_source_text": 33
+          },
+          "VITAL_BP": {
+            "absent_exact": 37,
+            "fields": 96,
+            "exact": 64,
+            "absent": 46,
+            "present_exact": 27,
+            "present": 50,
+            "competing_present": 27,
+            "competing_present_exact": 17,
+            "absent_fill": 9,
+            "wrong_not_whole_source_text": 25,
+            "present_abstain": 4,
+            "retracted": 14,
+            "retracted_false_fill": 1,
+            "wrong_previously_reported_for_slot": 1,
+            "present_wrong": 19
+          },
+          "NEVER": {
+            "absent_exact": 127,
+            "fields": 149,
+            "exact": 127,
+            "absent": 149,
+            "absent_fill": 22,
+            "wrong_not_whole_source_text": 21
+          }
+        }
+      }
+    },
+    "full-6029": {
+      "train_seconds": 197.06494381,
+      "total_seconds": 272.359651525,
+      "initial_state_sha256": "c4efa3970ecee0dc2046880d8070407c9163f4c4bfabcdbdc6ee584c07d89694",
+      "trained_state_sha256": "03190b8292789187b89c2d75732154a364a90891363af2b9dcae72e6861f4acf",
+      "sample_schedule_sha256": "8df8659660e9e3a459e03a4474b2344e5b34c0da0fd7865ee0b461979fe069c8",
+      "parameters": 65524,
+      "sampled_full_tokens": 597246,
+      "sampled_answer_tokens": 44171,
+      "sampled_copy_tokens": 17145,
+      "torch": "2.4.0+cpu",
+      "numpy": "1.24.3",
+      "python": "3.9.25",
+      "architecture": "x86_64",
+      "dev": {
+        "counts": {
+          "absent_exact": 96,
+          "fields": 192,
+          "exact": 96,
+          "absent": 96,
+          "present_abstain": 68,
+          "present": 96,
+          "competing_present": 43,
+          "competing_present_exact": 0,
+          "retracted": 24,
+          "retracted_false_fill": 0,
+          "present_wrong": 28,
+          "wrong_not_whole_source_text": 28
+        },
+        "by_slot_or_final_event": {
+          "MEDICATION": {
+            "absent_exact": 27,
+            "fields": 48,
+            "exact": 27,
+            "absent": 27,
+            "retracted": 11,
+            "retracted_false_fill": 0,
+            "present_abstain": 19,
+            "present": 21,
+            "competing_present": 11,
+            "competing_present_exact": 0,
+            "present_wrong": 2,
+            "wrong_not_whole_source_text": 2
+          },
+          "NEVER": {
+            "absent_exact": 72,
+            "fields": 72,
+            "exact": 72,
+            "absent": 72
+          },
+          "DOSE": {
+            "present_abstain": 14,
+            "fields": 48,
+            "exact": 26,
+            "present": 22,
+            "competing_present": 11,
+            "competing_present_exact": 0,
+            "present_wrong": 8,
+            "wrong_not_whole_source_text": 8,
+            "absent_exact": 26,
+            "absent": 26,
+            "retracted": 7,
+            "retracted_false_fill": 0
+          },
+          "SUPERSEDES": {
+            "present_abstain": 20,
+            "fields": 43,
+            "exact": 0,
+            "present": 43,
+            "competing_present": 43,
+            "competing_present_exact": 0,
+            "present_wrong": 23,
+            "wrong_not_whole_source_text": 23
+          },
+          "ALLERGY": {
+            "absent_exact": 22,
+            "fields": 48,
+            "exact": 22,
+            "absent": 22,
+            "retracted": 4,
+            "retracted_false_fill": 0,
+            "present_abstain": 19,
+            "present": 26,
+            "competing_present": 8,
+            "competing_present_exact": 0,
+            "present_wrong": 7,
+            "wrong_not_whole_source_text": 7
+          },
+          "RETRACTS": {
+            "absent_exact": 24,
+            "fields": 24,
+            "exact": 24,
+            "absent": 24,
+            "retracted": 24,
+            "retracted_false_fill": 0
+          },
+          "VITAL_BP": {
+            "absent_exact": 21,
+            "fields": 48,
+            "exact": 21,
+            "absent": 21,
+            "present_abstain": 16,
+            "present": 27,
+            "competing_present": 13,
+            "competing_present_exact": 0,
+            "present_wrong": 11,
+            "wrong_not_whole_source_text": 11,
+            "retracted": 2,
+            "retracted_false_fill": 0
+          },
+          "ASSERTS": {
+            "present_abstain": 48,
+            "fields": 53,
+            "exact": 0,
+            "present": 53,
+            "present_wrong": 5,
+            "wrong_not_whole_source_text": 5
+          }
+        }
+      },
+      "test": {
+        "counts": {
+          "present_abstain": 100,
+          "fields": 384,
+          "exact": 192,
+          "present": 183,
+          "competing_present": 92,
+          "competing_present_exact": 0,
+          "absent_exact": 192,
+          "absent": 201,
+          "retracted": 52,
+          "retracted_false_fill": 2,
+          "present_wrong": 83,
+          "wrong_not_whole_source_text": 92,
+          "absent_fill": 9
+        },
+        "by_slot_or_final_event": {
+          "MEDICATION": {
+            "present_abstain": 37,
+            "fields": 96,
+            "exact": 58,
+            "present": 38,
+            "competing_present": 19,
+            "competing_present_exact": 0,
+            "absent_exact": 58,
+            "absent": 58,
+            "retracted": 13,
+            "retracted_false_fill": 0,
+            "present_wrong": 1,
+            "wrong_not_whole_source_text": 1
+          },
+          "SUPERSEDES": {
+            "present_abstain": 31,
+            "fields": 92,
+            "exact": 0,
+            "present": 92,
+            "competing_present": 92,
+            "competing_present_exact": 0,
+            "present_wrong": 61,
+            "wrong_not_whole_source_text": 61
+          },
+          "DOSE": {
+            "absent_exact": 36,
+            "fields": 96,
+            "exact": 36,
+            "absent": 45,
+            "retracted": 11,
+            "retracted_false_fill": 2,
+            "absent_fill": 9,
+            "wrong_not_whole_source_text": 50,
+            "present_wrong": 41,
+            "present": 51,
+            "competing_present": 22,
+            "competing_present_exact": 0,
+            "present_abstain": 10
+          },
+          "RETRACTS": {
+            "absent_exact": 50,
+            "fields": 52,
+            "exact": 50,
+            "absent": 52,
+            "retracted": 52,
+            "retracted_false_fill": 2,
+            "absent_fill": 2,
+            "wrong_not_whole_source_text": 2
+          },
+          "ALLERGY": {
+            "present_abstain": 22,
+            "fields": 96,
+            "exact": 52,
+            "present": 44,
+            "present_wrong": 22,
+            "competing_present": 24,
+            "competing_present_exact": 0,
+            "wrong_not_whole_source_text": 22,
+            "absent_exact": 52,
+            "absent": 52,
+            "retracted": 14,
+            "retracted_false_fill": 0
+          },
+          "ASSERTS": {
+            "present_abstain": 69,
+            "fields": 91,
+            "exact": 0,
+            "present": 91,
+            "present_wrong": 22,
+            "wrong_not_whole_source_text": 22
+          },
+          "VITAL_BP": {
+            "absent_exact": 46,
+            "fields": 96,
+            "exact": 46,
+            "absent": 46,
+            "present_wrong": 19,
+            "present": 50,
+            "competing_present": 27,
+            "competing_present_exact": 0,
+            "wrong_not_whole_source_text": 19,
+            "present_abstain": 31,
+            "retracted": 14,
+            "retracted_false_fill": 0
+          },
+          "NEVER": {
+            "absent_exact": 142,
+            "fields": 149,
+            "exact": 142,
+            "absent": 149,
+            "absent_fill": 7,
+            "wrong_not_whole_source_text": 7
+          }
+        }
+      }
+    },
+    "answer-6029": {
+      "train_seconds": 167.76543150599997,
+      "total_seconds": 276.065005459,
+      "initial_state_sha256": "c4efa3970ecee0dc2046880d8070407c9163f4c4bfabcdbdc6ee584c07d89694",
+      "trained_state_sha256": "6357e93d7fe7f3194cfc0f7328d0de07ff9d21e33c9e7edc9ed57db38e0e8466",
+      "sample_schedule_sha256": "8df8659660e9e3a459e03a4474b2344e5b34c0da0fd7865ee0b461979fe069c8",
+      "parameters": 65524,
+      "sampled_full_tokens": 597246,
+      "sampled_answer_tokens": 44171,
+      "sampled_copy_tokens": 17145,
+      "torch": "2.4.0+cpu",
+      "numpy": "1.24.3",
+      "python": "3.9.25",
+      "architecture": "x86_64",
+      "dev": {
+        "counts": {
+          "absent_exact": 92,
+          "fields": 192,
+          "exact": 117,
+          "absent": 96,
+          "present_exact": 25,
+          "present": 96,
+          "competing_present": 43,
+          "competing_present_exact": 15,
+          "retracted": 24,
+          "retracted_false_fill": 1,
+          "present_wrong": 69,
+          "wrong_not_whole_source_text": 72,
+          "present_abstain": 2,
+          "absent_fill": 4,
+          "wrong_previously_reported_for_slot": 1
+        },
+        "by_slot_or_final_event": {
+          "MEDICATION": {
+            "absent_exact": 25,
+            "fields": 48,
+            "exact": 25,
+            "absent": 27,
+            "retracted": 11,
+            "retracted_false_fill": 1,
+            "present_wrong": 21,
+            "present": 21,
+            "competing_present": 11,
+            "competing_present_exact": 0,
+            "wrong_not_whole_source_text": 23,
+            "absent_fill": 2
+          },
+          "NEVER": {
+            "absent_exact": 69,
+            "fields": 72,
+            "exact": 69,
+            "absent": 72,
+            "absent_fill": 3,
+            "wrong_not_whole_source_text": 3
+          },
+          "DOSE": {
+            "present_exact": 18,
+            "fields": 48,
+            "exact": 42,
+            "present": 22,
+            "competing_present": 11,
+            "competing_present_exact": 10,
+            "absent_exact": 24,
+            "absent": 26,
+            "retracted": 7,
+            "retracted_false_fill": 0,
+            "present_abstain": 1,
+            "absent_fill": 2,
+            "wrong_not_whole_source_text": 4,
+            "present_wrong": 3,
+            "wrong_previously_reported_for_slot": 1
+          },
+          "SUPERSEDES": {
+            "present_exact": 15,
+            "fields": 43,
+            "exact": 15,
+            "present": 43,
+            "competing_present": 43,
+            "competing_present_exact": 15,
+            "present_wrong": 28,
+            "wrong_not_whole_source_text": 27,
+            "wrong_previously_reported_for_slot": 1
+          },
+          "ALLERGY": {
+            "absent_exact": 22,
+            "fields": 48,
+            "exact": 22,
+            "absent": 22,
+            "retracted": 4,
+            "retracted_false_fill": 0,
+            "present_wrong": 26,
+            "present": 26,
+            "wrong_not_whole_source_text": 26,
+            "competing_present": 8,
+            "competing_present_exact": 0
+          },
+          "RETRACTS": {
+            "absent_exact": 23,
+            "fields": 24,
+            "exact": 23,
+            "absent": 24,
+            "retracted": 24,
+            "retracted_false_fill": 1,
+            "absent_fill": 1,
+            "wrong_not_whole_source_text": 1
+          },
+          "VITAL_BP": {
+            "absent_exact": 21,
+            "fields": 48,
+            "exact": 28,
+            "absent": 21,
+            "present_wrong": 19,
+            "present": 27,
+            "competing_present": 13,
+            "competing_present_exact": 5,
+            "wrong_not_whole_source_text": 19,
+            "retracted": 2,
+            "retracted_false_fill": 0,
+            "present_exact": 7,
+            "present_abstain": 1
+          },
+          "ASSERTS": {
+            "present_wrong": 41,
+            "fields": 53,
+            "exact": 10,
+            "present": 53,
+            "wrong_not_whole_source_text": 41,
+            "present_abstain": 2,
+            "present_exact": 10
+          }
+        }
+      },
+      "test": {
+        "counts": {
+          "present_wrong": 161,
+          "fields": 384,
+          "exact": 205,
+          "present": 183,
+          "competing_present": 92,
+          "competing_present_exact": 4,
+          "wrong_not_whole_source_text": 172,
+          "absent_exact": 189,
+          "absent": 201,
+          "retracted": 52,
+          "retracted_false_fill": 2,
+          "present_abstain": 6,
+          "present_exact": 16,
+          "absent_fill": 12,
+          "wrong_previously_reported_for_slot": 1
+        },
+        "by_slot_or_final_event": {
+          "MEDICATION": {
+            "present_wrong": 38,
+            "fields": 96,
+            "exact": 57,
+            "present": 38,
+            "competing_present": 19,
+            "competing_present_exact": 0,
+            "wrong_not_whole_source_text": 39,
+            "absent_exact": 57,
+            "absent": 58,
+            "retracted": 13,
+            "retracted_false_fill": 1,
+            "absent_fill": 1
+          },
+          "SUPERSEDES": {
+            "present_wrong": 87,
+            "fields": 92,
+            "exact": 4,
+            "present": 92,
+            "competing_present": 92,
+            "competing_present_exact": 4,
+            "wrong_not_whole_source_text": 86,
+            "wrong_previously_reported_for_slot": 1,
+            "present_exact": 4,
+            "present_abstain": 1
+          },
+          "DOSE": {
+            "absent_exact": 39,
+            "fields": 96,
+            "exact": 55,
+            "absent": 45,
+            "retracted": 11,
+            "retracted_false_fill": 0,
+            "present_wrong": 32,
+            "present": 51,
+            "competing_present": 22,
+            "competing_present_exact": 4,
+            "wrong_not_whole_source_text": 37,
+            "present_exact": 16,
+            "absent_fill": 6,
+            "wrong_previously_reported_for_slot": 1,
+            "present_abstain": 3
+          },
+          "RETRACTS": {
+            "absent_exact": 50,
+            "fields": 52,
+            "exact": 50,
+            "absent": 52,
+            "retracted": 52,
+            "retracted_false_fill": 2,
+            "absent_fill": 2,
+            "wrong_not_whole_source_text": 2
+          },
+          "ALLERGY": {
+            "present_abstain": 1,
+            "fields": 96,
+            "exact": 52,
+            "present": 44,
+            "present_wrong": 43,
+            "wrong_not_whole_source_text": 43,
+            "competing_present": 24,
+            "competing_present_exact": 0,
+            "absent_exact": 52,
+            "absent": 52,
+            "retracted": 14,
+            "retracted_false_fill": 0
+          },
+          "ASSERTS": {
+            "present_abstain": 5,
+            "fields": 91,
+            "exact": 12,
+            "present": 91,
+            "present_wrong": 74,
+            "wrong_not_whole_source_text": 74,
+            "present_exact": 12
+          },
+          "VITAL_BP": {
+            "absent_exact": 41,
+            "fields": 96,
+            "exact": 41,
+            "absent": 46,
+            "present_wrong": 48,
+            "present": 50,
+            "competing_present": 27,
+            "competing_present_exact": 0,
+            "wrong_not_whole_source_text": 53,
+            "retracted": 14,
+            "retracted_false_fill": 1,
+            "absent_fill": 5,
+            "present_abstain": 2
+          },
+          "NEVER": {
+            "absent_exact": 139,
+            "fields": 149,
+            "exact": 139,
+            "absent": 149,
+            "absent_fill": 10,
+            "wrong_not_whole_source_text": 10
+          }
+        }
+      }
+    },
+    "aligned-6029": {
+      "train_seconds": 166.50307838700007,
+      "total_seconds": 271.97843732600006,
+      "initial_state_sha256": "c4efa3970ecee0dc2046880d8070407c9163f4c4bfabcdbdc6ee584c07d89694",
+      "trained_state_sha256": "5772666424eacc5ec5b10ae5d685a9ddb4a93f3e5ff360b1e18d09e978b3a3f1",
+      "sample_schedule_sha256": "8df8659660e9e3a459e03a4474b2344e5b34c0da0fd7865ee0b461979fe069c8",
+      "parameters": 65524,
+      "sampled_full_tokens": 597246,
+      "sampled_answer_tokens": 44171,
+      "sampled_copy_tokens": 17145,
+      "torch": "2.4.0+cpu",
+      "numpy": "1.24.3",
+      "python": "3.9.25",
+      "architecture": "x86_64",
+      "dev": {
+        "counts": {
+          "absent_exact": 57,
+          "fields": 192,
+          "exact": 90,
+          "absent": 96,
+          "present_abstain": 2,
+          "present": 96,
+          "competing_present": 43,
+          "competing_present_exact": 19,
+          "retracted": 24,
+          "retracted_false_fill": 18,
+          "absent_fill": 39,
+          "wrong_previously_reported_for_slot": 9,
+          "present_exact": 33,
+          "present_wrong": 61,
+          "wrong_not_whole_source_text": 90
+        },
+        "by_slot_or_final_event": {
+          "MEDICATION": {
+            "absent_exact": 14,
+            "fields": 48,
+            "exact": 19,
+            "absent": 27,
+            "absent_fill": 13,
+            "wrong_previously_reported_for_slot": 5,
+            "retracted": 11,
+            "retracted_false_fill": 11,
+            "present_exact": 5,
+            "present": 21,
+            "competing_present": 11,
+            "competing_present_exact": 5,
+            "wrong_not_whole_source_text": 24,
+            "present_wrong": 16
+          },
+          "NEVER": {
+            "absent_exact": 51,
+            "fields": 72,
+            "exact": 51,
+            "absent": 72,
+            "absent_fill": 21,
+            "wrong_not_whole_source_text": 21
+          },
+          "DOSE": {
+            "present_abstain": 2,
+            "fields": 48,
+            "exact": 31,
+            "present": 22,
+            "competing_present": 11,
+            "competing_present_exact": 9,
+            "present_exact": 20,
+            "absent_exact": 11,
+            "absent": 26,
+            "retracted": 7,
+            "retracted_false_fill": 3,
+            "absent_fill": 15,
+            "wrong_not_whole_source_text": 12,
+            "wrong_previously_reported_for_slot": 3
+          },
+          "SUPERSEDES": {
+            "present_abstain": 2,
+            "fields": 43,
+            "exact": 19,
+            "present": 43,
+            "competing_present": 43,
+            "competing_present_exact": 19,
+            "present_exact": 19,
+            "present_wrong": 22,
+            "wrong_not_whole_source_text": 22
+          },
+          "ALLERGY": {
+            "absent_exact": 19,
+            "fields": 48,
+            "exact": 23,
+            "absent": 22,
+            "retracted": 4,
+            "retracted_false_fill": 2,
+            "present_wrong": 22,
+            "present": 26,
+            "wrong_not_whole_source_text": 24,
+            "competing_present": 8,
+            "competing_present_exact": 2,
+            "present_exact": 4,
+            "absent_fill": 3
+          },
+          "RETRACTS": {
+            "absent_exact": 6,
+            "fields": 24,
+            "exact": 6,
+            "absent": 24,
+            "retracted": 24,
+            "retracted_false_fill": 18,
+            "absent_fill": 18,
+            "wrong_previously_reported_for_slot": 9,
+            "wrong_not_whole_source_text": 9
+          },
+          "VITAL_BP": {
+            "absent_exact": 13,
+            "fields": 48,
+            "exact": 17,
+            "absent": 21,
+            "absent_fill": 8,
+            "wrong_not_whole_source_text": 30,
+            "present_wrong": 23,
+            "present": 27,
+            "competing_present": 13,
+            "competing_present_exact": 3,
+            "wrong_previously_reported_for_slot": 1,
+            "retracted": 2,
+            "retracted_false_fill": 2,
+            "present_exact": 4
+          },
+          "ASSERTS": {
+            "present_wrong": 39,
+            "fields": 53,
+            "exact": 14,
+            "present": 53,
+            "wrong_not_whole_source_text": 38,
+            "present_exact": 14
+          }
+        }
+      },
+      "test": {
+        "counts": {
+          "present_exact": 77,
+          "fields": 384,
+          "exact": 220,
+          "present": 183,
+          "competing_present": 92,
+          "competing_present_exact": 40,
+          "absent_exact": 143,
+          "absent": 201,
+          "retracted": 52,
+          "retracted_false_fill": 39,
+          "present_wrong": 100,
+          "wrong_not_whole_source_text": 140,
+          "wrong_previously_reported_for_slot": 13,
+          "absent_fill": 58,
+          "present_abstain": 6
+        },
+        "by_slot_or_final_event": {
+          "MEDICATION": {
+            "present_exact": 17,
+            "fields": 96,
+            "exact": 61,
+            "present": 38,
+            "competing_present": 19,
+            "competing_present_exact": 9,
+            "present_wrong": 21,
+            "wrong_not_whole_source_text": 30,
+            "absent_exact": 44,
+            "absent": 58,
+            "absent_fill": 14,
+            "retracted": 13,
+            "retracted_false_fill": 12,
+            "wrong_previously_reported_for_slot": 5
+          },
+          "SUPERSEDES": {
+            "present_exact": 40,
+            "fields": 92,
+            "exact": 40,
+            "present": 92,
+            "competing_present": 92,
+            "competing_present_exact": 40,
+            "present_wrong": 51,
+            "wrong_not_whole_source_text": 50,
+            "wrong_previously_reported_for_slot": 1,
+            "present_abstain": 1
+          },
+          "DOSE": {
+            "absent_exact": 30,
+            "fields": 96,
+            "exact": 72,
+            "absent": 45,
+            "retracted": 11,
+            "retracted_false_fill": 2,
+            "absent_fill": 15,
+            "wrong_not_whole_source_text": 16,
+            "present_exact": 42,
+            "present": 51,
+            "competing_present": 22,
+            "competing_present_exact": 21,
+            "present_abstain": 6,
+            "present_wrong": 3,
+            "wrong_previously_reported_for_slot": 2
+          },
+          "RETRACTS": {
+            "absent_exact": 13,
+            "fields": 52,
+            "exact": 13,
+            "absent": 52,
+            "retracted": 52,
+            "retracted_false_fill": 39,
+            "absent_fill": 39,
+            "wrong_not_whole_source_text": 26,
+            "wrong_previously_reported_for_slot": 12
+          },
+          "ALLERGY": {
+            "present_wrong": 35,
+            "fields": 96,
+            "exact": 50,
+            "present": 44,
+            "wrong_not_whole_source_text": 39,
+            "present_exact": 9,
+            "competing_present": 24,
+            "competing_present_exact": 4,
+            "absent_exact": 41,
+            "absent": 52,
+            "retracted": 14,
+            "retracted_false_fill": 11,
+            "absent_fill": 11,
+            "wrong_previously_reported_for_slot": 2
+          },
+          "ASSERTS": {
+            "present_wrong": 49,
+            "fields": 91,
+            "exact": 37,
+            "present": 91,
+            "wrong_not_whole_source_text": 45,
+            "present_exact": 37,
+            "present_abstain": 5
+          },
+          "VITAL_BP": {
+            "absent_exact": 28,
+            "fields": 96,
+            "exact": 37,
+            "absent": 46,
+            "present_wrong": 41,
+            "present": 50,
+            "competing_present": 27,
+            "competing_present_exact": 6,
+            "wrong_not_whole_source_text": 55,
+            "wrong_previously_reported_for_slot": 4,
+            "present_exact": 9,
+            "absent_fill": 18,
+            "retracted": 14,
+            "retracted_false_fill": 14
+          },
+          "NEVER": {
+            "absent_exact": 130,
+            "fields": 149,
+            "exact": 130,
+            "absent": 149,
+            "absent_fill": 19,
+            "wrong_not_whole_source_text": 19
+          }
+        }
+      }
+    }
+  },
+  "summary": {
+    "full": {
+      "dev": {
+        "absent": [
+          96,
+          96,
+          96
+        ],
+        "absent_exact": [
+          91,
+          74,
+          96
+        ],
+        "absent_fill": [
+          5,
+          22,
+          0
+        ],
+        "competing_present": [
+          43,
+          43,
+          43
+        ],
+        "competing_present_exact": [
+          0,
+          0,
+          0
+        ],
+        "exact": [
+          91,
+          74,
+          96
+        ],
+        "fields": [
+          192,
+          192,
+          192
+        ],
+        "present": [
+          96,
+          96,
+          96
+        ],
+        "present_abstain": [
+          50,
+          23,
+          68
+        ],
+        "present_exact": [
+          0,
+          0,
+          0
+        ],
+        "present_wrong": [
+          46,
+          73,
+          28
+        ],
+        "retracted": [
+          24,
+          24,
+          24
+        ],
+        "retracted_false_fill": [
+          3,
+          10,
+          0
+        ],
+        "wrong_not_whole_source_text": [
+          51,
+          95,
+          28
+        ],
+        "mean_present_exact_rate": 0.0
+      },
+      "test": {
+        "absent": [
+          201,
+          201,
+          201
+        ],
+        "absent_exact": [
+          186,
+          156,
+          192
+        ],
+        "absent_fill": [
+          15,
+          45,
+          9
+        ],
+        "competing_present": [
+          92,
+          92,
+          92
+        ],
+        "competing_present_exact": [
+          0,
+          0,
+          0
+        ],
+        "exact": [
+          186,
+          156,
+          192
+        ],
+        "fields": [
+          384,
+          384,
+          384
+        ],
+        "present": [
+          183,
+          183,
+          183
+        ],
+        "present_abstain": [
+          87,
+          41,
+          100
+        ],
+        "present_exact": [
+          0,
+          0,
+          0
+        ],
+        "present_wrong": [
+          96,
+          142,
+          83
+        ],
+        "retracted": [
+          52,
+          52,
+          52
+        ],
+        "retracted_false_fill": [
+          7,
+          22,
+          2
+        ],
+        "wrong_not_whole_source_text": [
+          111,
+          187,
+          92
+        ],
+        "mean_present_exact_rate": 0.0
+      }
+    },
+    "answer": {
+      "dev": {
+        "absent": [
+          96,
+          96,
+          96
+        ],
+        "absent_exact": [
+          92,
+          93,
+          92
+        ],
+        "absent_fill": [
+          4,
+          3,
+          4
+        ],
+        "competing_present": [
+          43,
+          43,
+          43
+        ],
+        "competing_present_exact": [
+          12,
+          6,
+          15
+        ],
+        "exact": [
+          106,
+          105,
+          117
+        ],
+        "fields": [
+          192,
+          192,
+          192
+        ],
+        "present": [
+          96,
+          96,
+          96
+        ],
+        "present_abstain": [
+          8,
+          4,
+          2
+        ],
+        "present_exact": [
+          14,
+          12,
+          25
+        ],
+        "present_wrong": [
+          74,
+          80,
+          69
+        ],
+        "retracted": [
+          24,
+          24,
+          24
+        ],
+        "retracted_false_fill": [
+          0,
+          0,
+          1
+        ],
+        "wrong_not_whole_source_text": [
+          78,
+          80,
+          72
+        ],
+        "wrong_previously_reported_for_slot": [
+          0,
+          3,
+          1
+        ],
+        "mean_present_exact_rate": 0.17708333333333334
+      },
+      "test": {
+        "absent": [
+          201,
+          201,
+          201
+        ],
+        "absent_exact": [
+          179,
+          182,
+          189
+        ],
+        "absent_fill": [
+          22,
+          19,
+          12
+        ],
+        "competing_present": [
+          92,
+          92,
+          92
+        ],
+        "competing_present_exact": [
+          16,
+          4,
+          4
+        ],
+        "exact": [
+          212,
+          190,
+          205
+        ],
+        "fields": [
+          384,
+          384,
+          384
+        ],
+        "present": [
+          183,
+          183,
+          183
+        ],
+        "present_abstain": [
+          6,
+          14,
+          6
+        ],
+        "present_exact": [
+          33,
+          8,
+          16
+        ],
+        "present_wrong": [
+          144,
+          161,
+          161
+        ],
+        "retracted": [
+          52,
+          52,
+          52
+        ],
+        "retracted_false_fill": [
+          4,
+          0,
+          2
+        ],
+        "wrong_not_whole_source_text": [
+          166,
+          180,
+          172
+        ],
+        "wrong_previously_reported_for_slot": [
+          0,
+          0,
+          1
+        ],
+        "mean_present_exact_rate": 0.10382513661202186
+      }
+    },
+    "aligned": {
+      "dev": {
+        "absent": [
+          96,
+          96,
+          96
+        ],
+        "absent_exact": [
+          86,
+          71,
+          57
+        ],
+        "absent_fill": [
+          10,
+          25,
+          39
+        ],
+        "competing_present": [
+          43,
+          43,
+          43
+        ],
+        "competing_present_exact": [
+          26,
+          25,
+          19
+        ],
+        "exact": [
+          130,
+          120,
+          90
+        ],
+        "fields": [
+          192,
+          192,
+          192
+        ],
+        "present": [
+          96,
+          96,
+          96
+        ],
+        "present_abstain": [
+          15,
+          13,
+          2
+        ],
+        "present_exact": [
+          44,
+          49,
+          33
+        ],
+        "present_wrong": [
+          37,
+          34,
+          61
+        ],
+        "retracted": [
+          24,
+          24,
+          24
+        ],
+        "retracted_false_fill": [
+          5,
+          18,
+          18
+        ],
+        "wrong_not_whole_source_text": [
+          41,
+          46,
+          90
+        ],
+        "wrong_previously_reported_for_slot": [
+          4,
+          12,
+          9
+        ],
+        "mean_present_exact_rate": 0.4375
+      },
+      "test": {
+        "absent": [
+          201,
+          201,
+          201
+        ],
+        "absent_exact": [
+          162,
+          157,
+          143
+        ],
+        "absent_fill": [
+          39,
+          44,
+          58
+        ],
+        "competing_present": [
+          92,
+          92,
+          92
+        ],
+        "competing_present_exact": [
+          64,
+          64,
+          40
+        ],
+        "exact": [
+          272,
+          267,
+          220
+        ],
+        "fields": [
+          384,
+          384,
+          384
+        ],
+        "present": [
+          183,
+          183,
+          183
+        ],
+        "present_abstain": [
+          22,
+          12,
+          6
+        ],
+        "present_exact": [
+          110,
+          110,
+          77
+        ],
+        "present_wrong": [
+          51,
+          61,
+          100
+        ],
+        "retracted": [
+          52,
+          52,
+          52
+        ],
+        "retracted_false_fill": [
+          11,
+          22,
+          39
+        ],
+        "wrong_not_whole_source_text": [
+          63,
+          84,
+          140
+        ],
+        "wrong_previously_reported_for_slot": [
+          7,
+          18,
+          13
+        ],
+        "mean_present_exact_rate": 0.5409836065573771
+      }
+    }
+  },
+  "paired_test_changes": {
+    "full_to_answer": {
+      "1481": {
+        "present_unchanged_exactness": 150,
+        "absent_unchanged_exactness": 166,
+        "absent_gain": 14,
+        "absent_loss": 21,
+        "present_gain": 33
+      },
+      "3527": {
+        "present_unchanged_exactness": 175,
+        "absent_unchanged_exactness": 167,
+        "absent_gain": 30,
+        "present_gain": 8,
+        "absent_loss": 4
+      },
+      "6029": {
+        "present_unchanged_exactness": 167,
+        "absent_unchanged_exactness": 180,
+        "absent_gain": 9,
+        "present_gain": 16,
+        "absent_loss": 12
+      }
+    },
+    "full_to_aligned": {
+      "1481": {
+        "present_gain": 110,
+        "absent_loss": 33,
+        "present_unchanged_exactness": 73,
+        "absent_gain": 9,
+        "absent_unchanged_exactness": 159
+      },
+      "3527": {
+        "present_gain": 110,
+        "absent_unchanged_exactness": 152,
+        "present_unchanged_exactness": 73,
+        "absent_gain": 25,
+        "absent_loss": 24
+      },
+      "6029": {
+        "present_gain": 77,
+        "absent_unchanged_exactness": 146,
+        "present_unchanged_exactness": 106,
+        "absent_loss": 52,
+        "absent_gain": 3
+      }
+    },
+    "answer_to_aligned": {
+      "1481": {
+        "present_gain": 78,
+        "absent_loss": 24,
+        "present_unchanged_exactness": 104,
+        "absent_unchanged_exactness": 170,
+        "absent_gain": 7,
+        "present_loss": 1
+      },
+      "3527": {
+        "present_gain": 102,
+        "absent_unchanged_exactness": 160,
+        "present_unchanged_exactness": 81,
+        "absent_gain": 8,
+        "absent_loss": 33
+      },
+      "6029": {
+        "present_gain": 63,
+        "absent_unchanged_exactness": 143,
+        "present_unchanged_exactness": 118,
+        "absent_loss": 52,
+        "present_loss": 2,
+        "absent_gain": 6
+      }
+    }
+  }
+}

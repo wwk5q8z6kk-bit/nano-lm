@@ -1,0 +1,25 @@
+Processed prompts:  99%|█████████▉| 1797/1819 [00:20<00:02,  8.09it/s, est. speed input: 97751.79 toks/s, output: 16282.22 toks/s][A
+Processed prompts: 100%|█████████▉| 1818/1819 [00:20<00:00, 29.12it/s, est. speed input: 98142.64 toks/s, output: 18283.10 toks/s][A
+Processed prompts: 100%|██████████| 1819/1819 [00:20<00:00, 29.12it/s, est. speed input: 97995.06 toks/s, output: 18347.75 toks/s][AProcessed prompts: 100%|██████████| 1819/1819 [00:20<00:00, 87.91it/s, est. speed input: 97995.06 toks/s, output: 18347.75 toks/s]
+Running generate_until requests:   0%|          | 1/1819 [00:21<10:38:37, 21.08s/it]Running generate_until requests: 100%|██████████| 1819/1819 [00:21<00:00, 86.22it/s]
+fatal: not a git repository (or any of the parent directories): .git
+2026-11-18:06:41:22 INFO     [loggers.evaluation_tracker:247] Saving results aggregated
+vllm ({'pretrained': '/workspace/models/nanolm_b6_3b_fixed', 'dtype': 'bfloat16', 'gpu_memory_utilization': 0.85, 'max_model_len': 8192}), gen_kwargs: ({'max_gen_toks': 2048, 'temperature': 0}), limit: None, num_fewshot: None, batch_size: auto
+|     Tasks     |Version|     Filter     |n-shot|  Metric   |   |Value |   |Stderr|
+|---------------|------:|----------------|-----:|-----------|---|-----:|---|-----:|
+|gsm8k_cot_llama|    4.0|flexible-extract|     8|exact_match|↑  |0.8112|±  |0.0108|
+|               |       |strict-match    |     8|exact_match|↑  |0.8074|±  |0.0109|
+|minerva_math500|    3.1|none            |     4|exact_match|↑  |0.4460|±  |0.0223|
+|               |       |none            |     4|math_verify|↑  |0.7080|±  |0.0204|
+
+(MainProcess pid=5188) INFO 11-18 06:41:22 [utils.py:628] [shutdown] Process manager: send sigterm to process EngineCore
+(EngineCore pid=5431) INFO 11-18 06:41:22 [core.py:1698] [shutdown] EngineCore: trigger received signal=SIGTERM
+(EngineCore pid=5431) INFO 11-18 06:41:22 [core.py:1889] [shutdown] EngineCore: start mode=abort timeout=0s
+(EngineCore pid=5431) INFO 11-18 06:41:22 [core.py:1920] [shutdown] EngineCore: request processing complete; starting resource teardown
+(EngineCore pid=5431) INFO 11-18 06:41:22 [core.py:1746] [shutdown] EngineCore: exiting busy loop
+(MainProcess pid=5188) WARNING 11-18 06:41:23 [core_client.py:869] [shutdown] MPClient: engine core exited unexpectedly; starting cleanup
+(MainProcess pid=5188) INFO 11-18 06:41:23 [core_client.py:822] [shutdown] MPClient: start timeout=default
+(MainProcess pid=5188) INFO 11-18 06:41:23 [core_client.py:824] [shutdown] MPClient: stopping engine manager
+(MainProcess pid=5188) INFO 11-18 06:41:23 [core_client.py:826] [shutdown] MPClient: engine manager stopped
+(MainProcess pid=5188) INFO 11-18 06:41:23 [core_client.py:827] [shutdown] MPClient: cleaning up background resources
+(MainProcess pid=5188) INFO 11-18 06:41:23 [core_client.py:829] [shutdown] MPClient: complete

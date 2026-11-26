@@ -1,0 +1,25 @@
+Processed prompts:   1%|          | 1/164 [00:00<02:36,  1.04it/s, est. speed input: 240.98 toks/s, output: 7.27 toks/s][A
+Processed prompts:   3%|▎         | 5/164 [00:01<00:26,  6.06it/s, est. speed input: 1136.21 toks/s, output: 63.85 toks/s][A
+Processed prompts:   9%|▊         | 14/164 [00:01<00:08, 18.35it/s, est. speed input: 3189.39 toks/s, output: 265.22 toks/s][A
+Processed prompts:  16%|█▌        | 26/164 [00:01<00:03, 36.08it/s, est. speed input: 5519.14 toks/s, output: 642.34 toks/s][A
+Processed prompts:  33%|███▎      | 54/164 [00:01<00:01, 84.84it/s, est. speed input: 11407.88 toks/s, output: 1661.44 toks/s][A
+Processed prompts:  43%|████▎     | 71/164 [00:01<00:00, 103.20it/s, est. speed input: 14386.41 toks/s, output: 2319.51 toks/s][A
+Processed prompts:  60%|█████▉    | 98/164 [00:01<00:00, 143.11it/s, est. speed input: 19696.00 toks/s, output: 3633.56 toks/s][A
+Processed prompts:  73%|███████▎  | 120/164 [00:01<00:00, 159.39it/s, est. speed input: 23225.13 toks/s, output: 4788.31 toks/s][A
+Processed prompts:  85%|████████▌ | 140/164 [00:01<00:00, 156.62it/s, est. speed input: 25934.79 toks/s, output: 5863.00 toks/s][A
+Processed prompts:  97%|█████████▋| 159/164 [00:02<00:00, 93.47it/s, est. speed input: 25162.21 toks/s, output: 6414.81 toks/s] [A
+Processed prompts: 100%|██████████| 164/164 [00:04<00:00, 93.47it/s, est. speed input: 11917.85 toks/s, output: 3641.45 toks/s][AProcessed prompts: 100%|██████████| 164/164 [00:04<00:00, 33.21it/s, est. speed input: 11917.85 toks/s, output: 3641.45 toks/s]
+Running generate_until requests:   1%|          | 1/164 [00:04<13:28,  4.96s/it]Running generate_until requests: 100%|██████████| 164/164 [00:04<00:00, 33.05it/s]
+fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+(MainProcess pid=4559) INFO 11-18 12:28:14 [utils.py:628] [shutdown] Process manager: send sigterm to process EngineCore
+(EngineCore pid=4828) INFO 11-18 12:28:14 [core.py:1698] [shutdown] EngineCore: trigger received signal=SIGTERM
+(EngineCore pid=4828) INFO 11-18 12:28:14 [core.py:1889] [shutdown] EngineCore: start mode=abort timeout=0s
+(EngineCore pid=4828) INFO 11-18 12:28:14 [core.py:1920] [shutdown] EngineCore: request processing complete; starting resource teardown
+(EngineCore pid=4828) INFO 11-18 12:28:14 [core.py:1746] [shutdown] EngineCore: exiting busy loop
+2026-11-18:12:28:16 INFO     [loggers.evaluation_tracker:247] Saving results aggregated
+vllm ({'pretrained': '/workspace/models/nanolm_b7_3b_fixed', 'dtype': 'bfloat16', 'gpu_memory_utilization': 0.85, 'max_model_len': 8192}), gen_kwargs: ({'max_gen_toks': 1024, 'temperature': 0}), limit: None, num_fewshot: None, batch_size: auto
+|      Tasks       |Version|  Filter   |n-shot|Metric|   |Value|   |Stderr|
+|------------------|------:|-----------|-----:|------|---|----:|---|-----:|
+|humaneval_instruct|      4|create_test|     0|pass@1|↑  |0.689|±  |0.0363|
+

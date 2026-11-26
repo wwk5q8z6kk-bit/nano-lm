@@ -1,0 +1,30 @@
+Processed prompts:  92%|█████████▏| 498/541 [00:42<00:03, 11.53it/s, est. speed input: 702.01 toks/s, output: 3916.15 toks/s][A
+Processed prompts:  93%|█████████▎| 502/541 [00:42<00:02, 13.42it/s, est. speed input: 703.57 toks/s, output: 4020.37 toks/s][A
+Processed prompts:  93%|█████████▎| 505/541 [00:43<00:02, 13.86it/s, est. speed input: 703.57 toks/s, output: 4091.71 toks/s][A
+Processed prompts:  94%|█████████▍| 508/541 [00:43<00:02, 15.22it/s, est. speed input: 704.36 toks/s, output: 4167.69 toks/s][A
+Processed prompts:  94%|█████████▍| 511/541 [00:43<00:02, 13.52it/s, est. speed input: 702.59 toks/s, output: 4228.03 toks/s][A
+Processed prompts:  95%|█████████▍| 513/541 [00:43<00:02, 13.96it/s, est. speed input: 702.53 toks/s, output: 4274.71 toks/s][A
+Processed prompts:  96%|█████████▌| 517/541 [00:43<00:01, 18.10it/s, est. speed input: 704.58 toks/s, output: 4381.71 toks/s][A
+Processed prompts:  96%|█████████▌| 520/541 [00:43<00:01, 16.18it/s, est. speed input: 703.43 toks/s, output: 4445.62 toks/s][A
+Processed prompts:  97%|█████████▋| 524/541 [00:44<00:00, 19.46it/s, est. speed input: 704.83 toks/s, output: 4549.08 toks/s][A
+Processed prompts:  98%|█████████▊| 529/541 [00:44<00:00, 24.98it/s, est. speed input: 707.24 toks/s, output: 4682.91 toks/s][A
+Processed prompts:  99%|█████████▊| 533/541 [00:44<00:00, 19.12it/s, est. speed input: 705.21 toks/s, output: 4764.23 toks/s][A
+Processed prompts:  99%|█████████▉| 537/541 [00:44<00:00, 22.05it/s, est. speed input: 706.20 toks/s, output: 4866.55 toks/s][A
+Processed prompts: 100%|██████████| 541/541 [00:44<00:00, 22.05it/s, est. speed input: 708.13 toks/s, output: 4977.00 toks/s][AProcessed prompts: 100%|██████████| 541/541 [00:44<00:00, 12.13it/s, est. speed input: 708.13 toks/s, output: 4977.00 toks/s]
+Running generate_until requests:   0%|          | 1/541 [00:44<6:42:29, 44.72s/it]Running generate_until requests: 100%|██████████| 541/541 [00:44<00:00, 12.10it/s]
+2026-11-17:09:05:18 ERROR    [tasks.ifeval.instructions:189] Unable to detect language for text ****** due to No features in text.
+fatal: not a git repository (or any of the parent directories): .git
+(MainProcess pid=99482) INFO 11-17 09:05:20 [utils.py:628] [shutdown] Process manager: send sigterm to process EngineCore
+(EngineCore pid=99723) INFO 11-17 09:05:20 [core.py:1698] [shutdown] EngineCore: trigger received signal=SIGTERM
+(EngineCore pid=99723) INFO 11-17 09:05:20 [core.py:1889] [shutdown] EngineCore: start mode=abort timeout=0s
+(EngineCore pid=99723) INFO 11-17 09:05:20 [core.py:1920] [shutdown] EngineCore: request processing complete; starting resource teardown
+(EngineCore pid=99723) INFO 11-17 09:05:20 [core.py:1746] [shutdown] EngineCore: exiting busy loop
+2026-11-17:09:05:22 INFO     [loggers.evaluation_tracker:247] Saving results aggregated
+vllm ({'pretrained': '/workspace/models/nanolm_b1_sft_2b', 'dtype': 'bfloat16', 'gpu_memory_utilization': 0.85, 'max_model_len': 8192, 'enable_thinking': False}), gen_kwargs: ({'max_gen_toks': 1280, 'temperature': 0}), limit: None, num_fewshot: None, batch_size: auto
+|Tasks |Version|Filter|n-shot|        Metric         |   |Value |   |Stderr|
+|------|------:|------|-----:|-----------------------|---|-----:|---|------|
+|ifeval|      4|none  |     0|inst_level_loose_acc   |↑  |0.7398|±  |   N/A|
+|      |       |none  |     0|inst_level_strict_acc  |↑  |0.7110|±  |   N/A|
+|      |       |none  |     0|prompt_level_loose_acc |↑  |0.6396|±  |0.0207|
+|      |       |none  |     0|prompt_level_strict_acc|↑  |0.6044|±  |0.0210|
+

@@ -1,0 +1,348 @@
+FFFFFF..FFFFFFFFFFFF                                                     [100%]
+=================================== FAILURES ===================================
+_ test_unrelated_or_field_local_unknown_context_preserves_valid_complaint[Doctor: Was the parking lot crowded?\nPatient: There was plenty of room.\n] _
+
+extra = 'Doctor: Was the parking lot crowded?\nPatient: There was plenty of room.\n'
+
+    @pytest.mark.parametrize("extra", [
+        "Doctor: Was the parking lot crowded?\nPatient: There was plenty of room.\n",
+        "Doctor: Which medicine did you try?\nPatient: I misplaced the packet and cannot identify the tablet.\n",
+        "Doctor: Which medicines is your cousin taking?\nPatient: Just fexofenadine.\n",
+        "Doctor: Which medicines were you taking last year?\nPatient: Just loratadine.\n",
+        "Doctor:\nPatient: The map was hard to read.\n",
+    ])
+    def test_unrelated_or_field_local_unknown_context_preserves_valid_complaint(extra):
+        result = checked(BASE + extra)
+>       assert result["disposition"] == "review"
+E       AssertionError: assert 'abstain' == 'review'
+E         
+E         - review
+E         + abstain
+
+nanoscribe/test_scope_repair.py:33: AssertionError
+_ test_unrelated_or_field_local_unknown_context_preserves_valid_complaint[Doctor: Which medicine did you try?\nPatient: I misplaced the packet and cannot identify the tablet.\n] _
+
+extra = 'Doctor: Which medicine did you try?\nPatient: I misplaced the packet and cannot identify the tablet.\n'
+
+    @pytest.mark.parametrize("extra", [
+        "Doctor: Was the parking lot crowded?\nPatient: There was plenty of room.\n",
+        "Doctor: Which medicine did you try?\nPatient: I misplaced the packet and cannot identify the tablet.\n",
+        "Doctor: Which medicines is your cousin taking?\nPatient: Just fexofenadine.\n",
+        "Doctor: Which medicines were you taking last year?\nPatient: Just loratadine.\n",
+        "Doctor:\nPatient: The map was hard to read.\n",
+    ])
+    def test_unrelated_or_field_local_unknown_context_preserves_valid_complaint(extra):
+        result = checked(BASE + extra)
+>       assert result["disposition"] == "review"
+E       AssertionError: assert 'abstain' == 'review'
+E         
+E         - review
+E         + abstain
+
+nanoscribe/test_scope_repair.py:33: AssertionError
+_ test_unrelated_or_field_local_unknown_context_preserves_valid_complaint[Doctor: Which medicines is your cousin taking?\nPatient: Just fexofenadine.\n] _
+
+extra = 'Doctor: Which medicines is your cousin taking?\nPatient: Just fexofenadine.\n'
+
+    @pytest.mark.parametrize("extra", [
+        "Doctor: Was the parking lot crowded?\nPatient: There was plenty of room.\n",
+        "Doctor: Which medicine did you try?\nPatient: I misplaced the packet and cannot identify the tablet.\n",
+        "Doctor: Which medicines is your cousin taking?\nPatient: Just fexofenadine.\n",
+        "Doctor: Which medicines were you taking last year?\nPatient: Just loratadine.\n",
+        "Doctor:\nPatient: The map was hard to read.\n",
+    ])
+    def test_unrelated_or_field_local_unknown_context_preserves_valid_complaint(extra):
+        result = checked(BASE + extra)
+>       assert result["disposition"] == "review"
+E       AssertionError: assert 'abstain' == 'review'
+E         
+E         - review
+E         + abstain
+
+nanoscribe/test_scope_repair.py:33: AssertionError
+_ test_unrelated_or_field_local_unknown_context_preserves_valid_complaint[Doctor: Which medicines were you taking last year?\nPatient: Just loratadine.\n] _
+
+extra = 'Doctor: Which medicines were you taking last year?\nPatient: Just loratadine.\n'
+
+    @pytest.mark.parametrize("extra", [
+        "Doctor: Was the parking lot crowded?\nPatient: There was plenty of room.\n",
+        "Doctor: Which medicine did you try?\nPatient: I misplaced the packet and cannot identify the tablet.\n",
+        "Doctor: Which medicines is your cousin taking?\nPatient: Just fexofenadine.\n",
+        "Doctor: Which medicines were you taking last year?\nPatient: Just loratadine.\n",
+        "Doctor:\nPatient: The map was hard to read.\n",
+    ])
+    def test_unrelated_or_field_local_unknown_context_preserves_valid_complaint(extra):
+        result = checked(BASE + extra)
+>       assert result["disposition"] == "review"
+E       AssertionError: assert 'abstain' == 'review'
+E         
+E         - review
+E         + abstain
+
+nanoscribe/test_scope_repair.py:33: AssertionError
+_ test_unrelated_or_field_local_unknown_context_preserves_valid_complaint[Doctor:\nPatient: The map was hard to read.\n] _
+
+extra = 'Doctor:\nPatient: The map was hard to read.\n'
+
+    @pytest.mark.parametrize("extra", [
+        "Doctor: Was the parking lot crowded?\nPatient: There was plenty of room.\n",
+        "Doctor: Which medicine did you try?\nPatient: I misplaced the packet and cannot identify the tablet.\n",
+        "Doctor: Which medicines is your cousin taking?\nPatient: Just fexofenadine.\n",
+        "Doctor: Which medicines were you taking last year?\nPatient: Just loratadine.\n",
+        "Doctor:\nPatient: The map was hard to read.\n",
+    ])
+    def test_unrelated_or_field_local_unknown_context_preserves_valid_complaint(extra):
+        result = checked(BASE + extra)
+>       assert result["disposition"] == "review"
+E       AssertionError: assert 'abstain' == 'review'
+E         
+E         - review
+E         + abstain
+
+nanoscribe/test_scope_repair.py:33: AssertionError
+___________ test_uncertain_reply_cannot_hide_cross_field_correction ____________
+
+    def test_uncertain_reply_cannot_hide_cross_field_correction():
+        source = BASE + "Doctor: Which medicine did you try?\nPatient: Just cetirizine.\nDoctor: How bad would you say it is?\nPatient: I cannot rate it, and I did not take any medicine.\n"
+        result = checked(source, RAW.replace("MED:M", "MED:S[cetirizine]"))
+>       assert result["disposition"] == "review"
+E       AssertionError: assert 'abstain' == 'review'
+E         
+E         - review
+E         + abstain
+
+nanoscribe/test_scope_repair.py:41: AssertionError
+____ test_unattributed_named_correction_cannot_hide_behind_unknown_question ____
+
+    def test_unattributed_named_correction_cannot_hide_behind_unknown_question():
+        source = BASE + "Doctor: Which medicine did you try?\nPatient: Just cetirizine.\nDoctor: Anything to add before we finish?\nPatient: Cetirizine was not something I took.\n"
+        result = checked(source, RAW.replace("MED:M", "MED:S[cetirizine]"))
+>       assert result["note"]["claims"][0]["state"] == "supported"
+E       AssertionError: assert 'uncertain' == 'supported'
+E         
+E         - supported
+E         + uncertain
+
+nanoscribe/test_scope_repair.py:60: AssertionError
+__ test_family_medication_question_does_not_erase_current_patient_medication ___
+
+    def test_family_medication_question_does_not_erase_current_patient_medication():
+        source = BASE + "Doctor: Which medicine did you try?\nPatient: Just cetirizine.\nDoctor: Which medicines is your cousin taking?\nPatient: Just loratadine.\n"
+        result = checked(source, RAW.replace("MED:M", "MED:S[cetirizine]"))
+>       assert result["note"]["claims"][3]["state"] == "supported"
+E       AssertionError: assert 'uncertain' == 'supported'
+E         
+E         - supported
+E         + uncertain
+
+nanoscribe/test_scope_repair.py:67: AssertionError
+_ test_complete_simple_replies_use_exact_source_spans[What symptoms brought you here?-I have elbow stiffness.-CC:S[elbow stiffness]] _
+
+question = 'What symptoms brought you here?', reply = 'I have elbow stiffness.'
+slot = 'CC:S[elbow stiffness]'
+
+    @pytest.mark.parametrize("question,reply,slot", [
+        ("What symptoms brought you here?", "I have elbow stiffness.", "CC:S[elbow stiffness]"),
+        ("What is the duration of your symptoms?", "Nine days.", "DUR:S[Nine days]"),
+        ("How bad would you say it is?", "It feels moderate.", "SEV:S[moderate]"),
+        ("Which medicine did you try?", "I took cetirizine.", "MED:S[cetirizine]"),
+        ("Which substances are you allergic to?", "Nickel.", "ALG:S[Nickel]"),
+    ])
+    def test_complete_simple_replies_use_exact_source_spans(question, reply, slot):
+        label = slot.split(":")[0]
+        raw = "|".join(slot if k == label else k + ":M" for k in ("CC", "DUR", "SEV", "MED", "ALG"))
+        result = checked(f"Doctor: {question}\r\nPatient: {reply}\r\n", raw)
+>       assert result["disposition"] == "review"
+E       AssertionError: assert 'abstain' == 'review'
+E         
+E         - review
+E         + abstain
+
+nanoscribe/test_scope_repair.py:82: AssertionError
+_ test_complete_simple_replies_use_exact_source_spans[What is the duration of your symptoms?-Nine days.-DUR:S[Nine days]] _
+
+question = 'What is the duration of your symptoms?', reply = 'Nine days.'
+slot = 'DUR:S[Nine days]'
+
+    @pytest.mark.parametrize("question,reply,slot", [
+        ("What symptoms brought you here?", "I have elbow stiffness.", "CC:S[elbow stiffness]"),
+        ("What is the duration of your symptoms?", "Nine days.", "DUR:S[Nine days]"),
+        ("How bad would you say it is?", "It feels moderate.", "SEV:S[moderate]"),
+        ("Which medicine did you try?", "I took cetirizine.", "MED:S[cetirizine]"),
+        ("Which substances are you allergic to?", "Nickel.", "ALG:S[Nickel]"),
+    ])
+    def test_complete_simple_replies_use_exact_source_spans(question, reply, slot):
+        label = slot.split(":")[0]
+        raw = "|".join(slot if k == label else k + ":M" for k in ("CC", "DUR", "SEV", "MED", "ALG"))
+        result = checked(f"Doctor: {question}\r\nPatient: {reply}\r\n", raw)
+>       assert result["disposition"] == "review"
+E       AssertionError: assert 'abstain' == 'review'
+E         
+E         - review
+E         + abstain
+
+nanoscribe/test_scope_repair.py:82: AssertionError
+_ test_complete_simple_replies_use_exact_source_spans[How bad would you say it is?-It feels moderate.-SEV:S[moderate]] _
+
+question = 'How bad would you say it is?', reply = 'It feels moderate.'
+slot = 'SEV:S[moderate]'
+
+    @pytest.mark.parametrize("question,reply,slot", [
+        ("What symptoms brought you here?", "I have elbow stiffness.", "CC:S[elbow stiffness]"),
+        ("What is the duration of your symptoms?", "Nine days.", "DUR:S[Nine days]"),
+        ("How bad would you say it is?", "It feels moderate.", "SEV:S[moderate]"),
+        ("Which medicine did you try?", "I took cetirizine.", "MED:S[cetirizine]"),
+        ("Which substances are you allergic to?", "Nickel.", "ALG:S[Nickel]"),
+    ])
+    def test_complete_simple_replies_use_exact_source_spans(question, reply, slot):
+        label = slot.split(":")[0]
+        raw = "|".join(slot if k == label else k + ":M" for k in ("CC", "DUR", "SEV", "MED", "ALG"))
+        result = checked(f"Doctor: {question}\r\nPatient: {reply}\r\n", raw)
+>       assert result["disposition"] == "review"
+E       AssertionError: assert 'abstain' == 'review'
+E         
+E         - review
+E         + abstain
+
+nanoscribe/test_scope_repair.py:82: AssertionError
+_ test_complete_simple_replies_use_exact_source_spans[Which medicine did you try?-I took cetirizine.-MED:S[cetirizine]] _
+
+question = 'Which medicine did you try?', reply = 'I took cetirizine.'
+slot = 'MED:S[cetirizine]'
+
+    @pytest.mark.parametrize("question,reply,slot", [
+        ("What symptoms brought you here?", "I have elbow stiffness.", "CC:S[elbow stiffness]"),
+        ("What is the duration of your symptoms?", "Nine days.", "DUR:S[Nine days]"),
+        ("How bad would you say it is?", "It feels moderate.", "SEV:S[moderate]"),
+        ("Which medicine did you try?", "I took cetirizine.", "MED:S[cetirizine]"),
+        ("Which substances are you allergic to?", "Nickel.", "ALG:S[Nickel]"),
+    ])
+    def test_complete_simple_replies_use_exact_source_spans(question, reply, slot):
+        label = slot.split(":")[0]
+        raw = "|".join(slot if k == label else k + ":M" for k in ("CC", "DUR", "SEV", "MED", "ALG"))
+        result = checked(f"Doctor: {question}\r\nPatient: {reply}\r\n", raw)
+>       assert result["disposition"] == "review"
+E       AssertionError: assert 'abstain' == 'review'
+E         
+E         - review
+E         + abstain
+
+nanoscribe/test_scope_repair.py:82: AssertionError
+_ test_complete_simple_replies_use_exact_source_spans[Which substances are you allergic to?-Nickel.-ALG:S[Nickel]] _
+
+question = 'Which substances are you allergic to?', reply = 'Nickel.'
+slot = 'ALG:S[Nickel]'
+
+    @pytest.mark.parametrize("question,reply,slot", [
+        ("What symptoms brought you here?", "I have elbow stiffness.", "CC:S[elbow stiffness]"),
+        ("What is the duration of your symptoms?", "Nine days.", "DUR:S[Nine days]"),
+        ("How bad would you say it is?", "It feels moderate.", "SEV:S[moderate]"),
+        ("Which medicine did you try?", "I took cetirizine.", "MED:S[cetirizine]"),
+        ("Which substances are you allergic to?", "Nickel.", "ALG:S[Nickel]"),
+    ])
+    def test_complete_simple_replies_use_exact_source_spans(question, reply, slot):
+        label = slot.split(":")[0]
+        raw = "|".join(slot if k == label else k + ":M" for k in ("CC", "DUR", "SEV", "MED", "ALG"))
+        result = checked(f"Doctor: {question}\r\nPatient: {reply}\r\n", raw)
+>       assert result["disposition"] == "review"
+E       AssertionError: assert 'abstain' == 'review'
+E         
+E         - review
+E         + abstain
+
+nanoscribe/test_scope_repair.py:82: AssertionError
+_ test_simple_reply_support_never_extracts_from_qualified_or_compound_use[I took no cetirizine.] _
+
+reply = 'I took no cetirizine.'
+
+    @pytest.mark.parametrize("reply", ["I took no cetirizine.", "I took cetirizine and loratadine.", "I took my cousin's cetirizine.", "I might take cetirizine.", "I took something."])
+    def test_simple_reply_support_never_extracts_from_qualified_or_compound_use(reply):
+        source = BASE + "Doctor: Which medicine did you try?\nPatient: " + reply
+        result = checked(source, RAW.replace("MED:M", "MED:S[cetirizine]") if "cetirizine" in reply else RAW)
+>       assert result["disposition"] == "review"
+E       AssertionError: assert 'abstain' == 'review'
+E         
+E         - review
+E         + abstain
+
+nanoscribe/test_scope_repair.py:90: AssertionError
+_ test_simple_reply_support_never_extracts_from_qualified_or_compound_use[I took cetirizine and loratadine.] _
+
+reply = 'I took cetirizine and loratadine.'
+
+    @pytest.mark.parametrize("reply", ["I took no cetirizine.", "I took cetirizine and loratadine.", "I took my cousin's cetirizine.", "I might take cetirizine.", "I took something."])
+    def test_simple_reply_support_never_extracts_from_qualified_or_compound_use(reply):
+        source = BASE + "Doctor: Which medicine did you try?\nPatient: " + reply
+        result = checked(source, RAW.replace("MED:M", "MED:S[cetirizine]") if "cetirizine" in reply else RAW)
+>       assert result["disposition"] == "review"
+E       AssertionError: assert 'abstain' == 'review'
+E         
+E         - review
+E         + abstain
+
+nanoscribe/test_scope_repair.py:90: AssertionError
+_ test_simple_reply_support_never_extracts_from_qualified_or_compound_use[I took my cousin's cetirizine.] _
+
+reply = "I took my cousin's cetirizine."
+
+    @pytest.mark.parametrize("reply", ["I took no cetirizine.", "I took cetirizine and loratadine.", "I took my cousin's cetirizine.", "I might take cetirizine.", "I took something."])
+    def test_simple_reply_support_never_extracts_from_qualified_or_compound_use(reply):
+        source = BASE + "Doctor: Which medicine did you try?\nPatient: " + reply
+        result = checked(source, RAW.replace("MED:M", "MED:S[cetirizine]") if "cetirizine" in reply else RAW)
+>       assert result["disposition"] == "review"
+E       AssertionError: assert 'abstain' == 'review'
+E         
+E         - review
+E         + abstain
+
+nanoscribe/test_scope_repair.py:90: AssertionError
+_ test_simple_reply_support_never_extracts_from_qualified_or_compound_use[I might take cetirizine.] _
+
+reply = 'I might take cetirizine.'
+
+    @pytest.mark.parametrize("reply", ["I took no cetirizine.", "I took cetirizine and loratadine.", "I took my cousin's cetirizine.", "I might take cetirizine.", "I took something."])
+    def test_simple_reply_support_never_extracts_from_qualified_or_compound_use(reply):
+        source = BASE + "Doctor: Which medicine did you try?\nPatient: " + reply
+        result = checked(source, RAW.replace("MED:M", "MED:S[cetirizine]") if "cetirizine" in reply else RAW)
+>       assert result["disposition"] == "review"
+E       AssertionError: assert 'abstain' == 'review'
+E         
+E         - review
+E         + abstain
+
+nanoscribe/test_scope_repair.py:90: AssertionError
+_ test_simple_reply_support_never_extracts_from_qualified_or_compound_use[I took something.] _
+
+reply = 'I took something.'
+
+    @pytest.mark.parametrize("reply", ["I took no cetirizine.", "I took cetirizine and loratadine.", "I took my cousin's cetirizine.", "I might take cetirizine.", "I took something."])
+    def test_simple_reply_support_never_extracts_from_qualified_or_compound_use(reply):
+        source = BASE + "Doctor: Which medicine did you try?\nPatient: " + reply
+        result = checked(source, RAW.replace("MED:M", "MED:S[cetirizine]") if "cetirizine" in reply else RAW)
+>       assert result["disposition"] == "review"
+E       AssertionError: assert 'abstain' == 'review'
+E         
+E         - review
+E         + abstain
+
+nanoscribe/test_scope_repair.py:90: AssertionError
+=========================== short test summary info ============================
+FAILED nanoscribe/test_scope_repair.py::test_unrelated_or_field_local_unknown_context_preserves_valid_complaint[Doctor: Was the parking lot crowded?\nPatient: There was plenty of room.\n]
+FAILED nanoscribe/test_scope_repair.py::test_unrelated_or_field_local_unknown_context_preserves_valid_complaint[Doctor: Which medicine did you try?\nPatient: I misplaced the packet and cannot identify the tablet.\n]
+FAILED nanoscribe/test_scope_repair.py::test_unrelated_or_field_local_unknown_context_preserves_valid_complaint[Doctor: Which medicines is your cousin taking?\nPatient: Just fexofenadine.\n]
+FAILED nanoscribe/test_scope_repair.py::test_unrelated_or_field_local_unknown_context_preserves_valid_complaint[Doctor: Which medicines were you taking last year?\nPatient: Just loratadine.\n]
+FAILED nanoscribe/test_scope_repair.py::test_unrelated_or_field_local_unknown_context_preserves_valid_complaint[Doctor:\nPatient: The map was hard to read.\n]
+FAILED nanoscribe/test_scope_repair.py::test_uncertain_reply_cannot_hide_cross_field_correction
+FAILED nanoscribe/test_scope_repair.py::test_unattributed_named_correction_cannot_hide_behind_unknown_question
+FAILED nanoscribe/test_scope_repair.py::test_family_medication_question_does_not_erase_current_patient_medication
+FAILED nanoscribe/test_scope_repair.py::test_complete_simple_replies_use_exact_source_spans[What symptoms brought you here?-I have elbow stiffness.-CC:S[elbow stiffness]]
+FAILED nanoscribe/test_scope_repair.py::test_complete_simple_replies_use_exact_source_spans[What is the duration of your symptoms?-Nine days.-DUR:S[Nine days]]
+FAILED nanoscribe/test_scope_repair.py::test_complete_simple_replies_use_exact_source_spans[How bad would you say it is?-It feels moderate.-SEV:S[moderate]]
+FAILED nanoscribe/test_scope_repair.py::test_complete_simple_replies_use_exact_source_spans[Which medicine did you try?-I took cetirizine.-MED:S[cetirizine]]
+FAILED nanoscribe/test_scope_repair.py::test_complete_simple_replies_use_exact_source_spans[Which substances are you allergic to?-Nickel.-ALG:S[Nickel]]
+FAILED nanoscribe/test_scope_repair.py::test_simple_reply_support_never_extracts_from_qualified_or_compound_use[I took no cetirizine.]
+FAILED nanoscribe/test_scope_repair.py::test_simple_reply_support_never_extracts_from_qualified_or_compound_use[I took cetirizine and loratadine.]
+FAILED nanoscribe/test_scope_repair.py::test_simple_reply_support_never_extracts_from_qualified_or_compound_use[I took my cousin's cetirizine.]
+FAILED nanoscribe/test_scope_repair.py::test_simple_reply_support_never_extracts_from_qualified_or_compound_use[I might take cetirizine.]
+FAILED nanoscribe/test_scope_repair.py::test_simple_reply_support_never_extracts_from_qualified_or_compound_use[I took something.]
+18 failed, 2 passed in 0.18s

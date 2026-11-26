@@ -1,0 +1,1731 @@
+{
+  "schema": "nanolm.empirical_baseline.v1",
+  "e_tok_01": {
+    "experiment_id": "E-TOK-01",
+    "decontamination": {
+      "total_candidates": 2349,
+      "kept_documents": 2200,
+      "removed_exact_dups": 149,
+      "removed_eval_contaminated": 0,
+      "ngram_size": 13,
+      "corpus_sha256": "ab8396e2f8d324f0c2adae6d80a003c95061ac709055392e4e31940bfffdeaf3"
+    },
+    "tokenizers": [
+      {
+        "name": "legacy-nano-4k",
+        "vocab_size": 4098,
+        "sha256": "bae49648bfcc4904c50e2f006ee184bd26e74454ee170663e30a8e71640ce3c9",
+        "special_token_count": 32,
+        "individual_digit_splitting": true,
+        "overall_bytes_per_token": 2.9353,
+        "domains": {
+          "prose": {
+            "domain": "prose",
+            "utf8_bytes": 322228,
+            "tokens": 96913,
+            "bytes_per_token": 3.3249,
+            "tokens_per_1k_bytes": 300.76
+          },
+          "code": {
+            "domain": "code",
+            "utf8_bytes": 31506,
+            "tokens": 15348,
+            "bytes_per_token": 2.0528,
+            "tokens_per_1k_bytes": 487.15
+          },
+          "math_logic": {
+            "domain": "math_logic",
+            "utf8_bytes": 27329,
+            "tokens": 12075,
+            "bytes_per_token": 2.2633,
+            "tokens_per_1k_bytes": 441.84
+          },
+          "summarization": {
+            "domain": "summarization",
+            "utf8_bytes": 14186,
+            "tokens": 5048,
+            "bytes_per_token": 2.8102,
+            "tokens_per_1k_bytes": 355.84
+          },
+          "long_context": {
+            "domain": "long_context",
+            "utf8_bytes": 28033,
+            "tokens": 11762,
+            "bytes_per_token": 2.3834,
+            "tokens_per_1k_bytes": 419.58
+          },
+          "structured_visual": {
+            "domain": "structured_visual",
+            "utf8_bytes": 21987,
+            "tokens": 10547,
+            "bytes_per_token": 2.0847,
+            "tokens_per_1k_bytes": 479.69
+          }
+        },
+        "tied_embedding_share_of_2b_pct": 0.41
+      },
+      {
+        "name": "nanolm-bpe-16k",
+        "vocab_size": 16384,
+        "sha256": "01be94fa1dfe0bcbde67f958e6c823af40d3e2d9cecf323da5b881d1aa3fba8e",
+        "special_token_count": 32,
+        "individual_digit_splitting": true,
+        "overall_bytes_per_token": 4.0875,
+        "domains": {
+          "prose": {
+            "domain": "prose",
+            "utf8_bytes": 322228,
+            "tokens": 78271,
+            "bytes_per_token": 4.1168,
+            "tokens_per_1k_bytes": 242.91
+          },
+          "code": {
+            "domain": "code",
+            "utf8_bytes": 31506,
+            "tokens": 8499,
+            "bytes_per_token": 3.707,
+            "tokens_per_1k_bytes": 269.76
+          },
+          "math_logic": {
+            "domain": "math_logic",
+            "utf8_bytes": 27329,
+            "tokens": 7729,
+            "bytes_per_token": 3.5359,
+            "tokens_per_1k_bytes": 282.81
+          },
+          "summarization": {
+            "domain": "summarization",
+            "utf8_bytes": 14186,
+            "tokens": 3300,
+            "bytes_per_token": 4.2988,
+            "tokens_per_1k_bytes": 232.62
+          },
+          "long_context": {
+            "domain": "long_context",
+            "utf8_bytes": 28033,
+            "tokens": 5611,
+            "bytes_per_token": 4.9961,
+            "tokens_per_1k_bytes": 200.16
+          },
+          "structured_visual": {
+            "domain": "structured_visual",
+            "utf8_bytes": 21987,
+            "tokens": 5524,
+            "bytes_per_token": 3.9803,
+            "tokens_per_1k_bytes": 251.24
+          }
+        },
+        "tied_embedding_share_of_2b_pct": 1.64
+      },
+      {
+        "name": "nanolm-bpe-32k",
+        "vocab_size": 32768,
+        "sha256": "85ed66a69adeb0150ebb8cd3651955a829ceecc64b6a48d5772724291b9942db",
+        "special_token_count": 32,
+        "individual_digit_splitting": true,
+        "overall_bytes_per_token": 4.2721,
+        "domains": {
+          "prose": {
+            "domain": "prose",
+            "utf8_bytes": 322228,
+            "tokens": 73564,
+            "bytes_per_token": 4.3802,
+            "tokens_per_1k_bytes": 228.3
+          },
+          "code": {
+            "domain": "code",
+            "utf8_bytes": 31506,
+            "tokens": 8499,
+            "bytes_per_token": 3.707,
+            "tokens_per_1k_bytes": 269.76
+          },
+          "math_logic": {
+            "domain": "math_logic",
+            "utf8_bytes": 27329,
+            "tokens": 7729,
+            "bytes_per_token": 3.5359,
+            "tokens_per_1k_bytes": 282.81
+          },
+          "summarization": {
+            "domain": "summarization",
+            "utf8_bytes": 14186,
+            "tokens": 3300,
+            "bytes_per_token": 4.2988,
+            "tokens_per_1k_bytes": 232.62
+          },
+          "long_context": {
+            "domain": "long_context",
+            "utf8_bytes": 28033,
+            "tokens": 5610,
+            "bytes_per_token": 4.997,
+            "tokens_per_1k_bytes": 200.12
+          },
+          "structured_visual": {
+            "domain": "structured_visual",
+            "utf8_bytes": 21987,
+            "tokens": 5524,
+            "bytes_per_token": 3.9803,
+            "tokens_per_1k_bytes": 251.24
+          }
+        },
+        "tied_embedding_share_of_2b_pct": 3.29
+      },
+      {
+        "name": "qwen2.5-152k-ref",
+        "vocab_size": 151665,
+        "sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539",
+        "special_token_count": 32,
+        "individual_digit_splitting": true,
+        "overall_bytes_per_token": 4.4208,
+        "domains": {
+          "prose": {
+            "domain": "prose",
+            "utf8_bytes": 322228,
+            "tokens": 68906,
+            "bytes_per_token": 4.6763,
+            "tokens_per_1k_bytes": 213.84
+          },
+          "code": {
+            "domain": "code",
+            "utf8_bytes": 31506,
+            "tokens": 8218,
+            "bytes_per_token": 3.8338,
+            "tokens_per_1k_bytes": 260.84
+          },
+          "math_logic": {
+            "domain": "math_logic",
+            "utf8_bytes": 27329,
+            "tokens": 8256,
+            "bytes_per_token": 3.3102,
+            "tokens_per_1k_bytes": 302.1
+          },
+          "summarization": {
+            "domain": "summarization",
+            "utf8_bytes": 14186,
+            "tokens": 3326,
+            "bytes_per_token": 4.2652,
+            "tokens_per_1k_bytes": 234.46
+          },
+          "long_context": {
+            "domain": "long_context",
+            "utf8_bytes": 28033,
+            "tokens": 6189,
+            "bytes_per_token": 4.5295,
+            "tokens_per_1k_bytes": 220.78
+          },
+          "structured_visual": {
+            "domain": "structured_visual",
+            "utf8_bytes": 21987,
+            "tokens": 5826,
+            "bytes_per_token": 3.7739,
+            "tokens_per_1k_bytes": 264.97
+          }
+        },
+        "tied_embedding_share_of_2b_pct": 15.22
+      }
+    ]
+  },
+  "e_infra_2b4b": {
+    "experiment_id": "E-INFRA-2B4B",
+    "hardware": "Apple M3 Max (64 GB unified memory, MPS bf16)",
+    "live_2b_4b_benchmarks": [
+      {
+        "model_name": "nanolm-2b-dense",
+        "device": "mps",
+        "dtype": "torch.bfloat16",
+        "deployed_parameters": 2040687616,
+        "active_parameters_per_token": 2040687616,
+        "init_seconds": 23.848,
+        "prompt_len": 256,
+        "prefill_tok_per_s": 1131.2,
+        "decode_tokens": 16,
+        "decode_tok_per_s": 37.35,
+        "measured_kv_cache_mb": 19.125,
+        "accounting": {
+          "total_deployed_parameters": 2040687616,
+          "active_parameters_per_token": 2040687616,
+          "training_only_parameters": 61352192,
+          "embedding_parameters": 134217728,
+          "unembedding_parameters": 0,
+          "attention_parameters": 377487360,
+          "ffn_total_parameters": 1528823808,
+          "ffn_active_parameters": 1528823808,
+          "router_parameters": 0,
+          "norm_parameters": 158720,
+          "mtp_parameters": 61352192,
+          "effective_depth": 36,
+          "kv_cache_bytes_per_token_bf16": 73728.0,
+          "kv_cache_gb_at_4k_bf16": 0.2812,
+          "kv_cache_gb_at_32k_bf16": 2.25,
+          "weight_memory_gb_bf16": 3.8011,
+          "weight_memory_gb_int4": 1.0453,
+          "forward_flops_per_token_4k": 5289334784,
+          "routing_flops_per_token": 0,
+          "within_hard_4b_limit": true,
+          "within_production_2b_4b_band": true
+        }
+      },
+      {
+        "model_name": "nanolm-2b-hybrid-swa",
+        "device": "mps",
+        "dtype": "torch.bfloat16",
+        "deployed_parameters": 2040687616,
+        "active_parameters_per_token": 2040687616,
+        "init_seconds": 23.669,
+        "prompt_len": 256,
+        "prefill_tok_per_s": 1502.1,
+        "decode_tokens": 16,
+        "decode_tok_per_s": 47.1,
+        "measured_kv_cache_mb": 19.125,
+        "accounting": {
+          "total_deployed_parameters": 2040687616,
+          "active_parameters_per_token": 2040687616,
+          "training_only_parameters": 61352192,
+          "embedding_parameters": 134217728,
+          "unembedding_parameters": 0,
+          "attention_parameters": 377487360,
+          "ffn_total_parameters": 1528823808,
+          "ffn_active_parameters": 1528823808,
+          "router_parameters": 0,
+          "norm_parameters": 158720,
+          "mtp_parameters": 61352192,
+          "effective_depth": 36,
+          "kv_cache_bytes_per_token_bf16": 20160.0,
+          "kv_cache_gb_at_4k_bf16": 0.123,
+          "kv_cache_gb_at_32k_bf16": 0.6152,
+          "weight_memory_gb_bf16": 3.8011,
+          "weight_memory_gb_int4": 1.0453,
+          "forward_flops_per_token_4k": 4609857536,
+          "routing_flops_per_token": 0,
+          "within_hard_4b_limit": true,
+          "within_production_2b_4b_band": true
+        }
+      },
+      {
+        "model_name": "nanolm-2b-mla",
+        "device": "mps",
+        "dtype": "torch.bfloat16",
+        "deployed_parameters": 2120949760,
+        "active_parameters_per_token": 2120949760,
+        "init_seconds": 24.802,
+        "prompt_len": 256,
+        "prefill_tok_per_s": 759.7,
+        "decode_tokens": 16,
+        "decode_tok_per_s": 11.09,
+        "measured_kv_cache_mb": 10.758,
+        "accounting": {
+          "total_deployed_parameters": 2120949760,
+          "active_parameters_per_token": 2120949760,
+          "training_only_parameters": 63581696,
+          "embedding_parameters": 134217728,
+          "unembedding_parameters": 0,
+          "attention_parameters": 457703424,
+          "ffn_total_parameters": 1528823808,
+          "ffn_active_parameters": 1528823808,
+          "router_parameters": 0,
+          "norm_parameters": 204800,
+          "mtp_parameters": 63581696,
+          "effective_depth": 36,
+          "kv_cache_bytes_per_token_bf16": 41472.0,
+          "kv_cache_gb_at_4k_bf16": 0.1582,
+          "kv_cache_gb_at_32k_bf16": 1.2656,
+          "weight_memory_gb_bf16": 3.9506,
+          "weight_memory_gb_int4": 1.0864,
+          "forward_flops_per_token_4k": 6053838848,
+          "routing_flops_per_token": 0,
+          "within_hard_4b_limit": true,
+          "within_production_2b_4b_band": true
+        }
+      },
+      {
+        "model_name": "nanolm-2b-loop",
+        "device": "mps",
+        "dtype": "torch.bfloat16",
+        "deployed_parameters": 2040687616,
+        "active_parameters_per_token": 2676176896,
+        "init_seconds": 23.112,
+        "prompt_len": 256,
+        "prefill_tok_per_s": 1256.5,
+        "decode_tokens": 16,
+        "decode_tok_per_s": 33.69,
+        "measured_kv_cache_mb": 25.5,
+        "accounting": {
+          "total_deployed_parameters": 2040687616,
+          "active_parameters_per_token": 2676176896,
+          "training_only_parameters": 0,
+          "embedding_parameters": 134217728,
+          "unembedding_parameters": 0,
+          "attention_parameters": 377487360,
+          "ffn_total_parameters": 1528823808,
+          "ffn_active_parameters": 2038431744,
+          "router_parameters": 0,
+          "norm_parameters": 158720,
+          "mtp_parameters": 0,
+          "effective_depth": 48,
+          "kv_cache_bytes_per_token_bf16": 26880.0,
+          "kv_cache_gb_at_4k_bf16": 0.1641,
+          "kv_cache_gb_at_32k_bf16": 0.8203,
+          "weight_memory_gb_bf16": 3.8011,
+          "weight_memory_gb_int4": 1.0453,
+          "forward_flops_per_token_4k": 6056996864,
+          "routing_flops_per_token": 0,
+          "within_hard_4b_limit": true,
+          "within_production_2b_4b_band": true
+        }
+      },
+      {
+        "model_name": "nanolm-3.3b-dense",
+        "device": "mps",
+        "dtype": "torch.bfloat16",
+        "deployed_parameters": 3313717760,
+        "active_parameters_per_token": 3313717760,
+        "init_seconds": 38.072,
+        "prompt_len": 256,
+        "prefill_tok_per_s": 1021.2,
+        "decode_tokens": 16,
+        "decode_tok_per_s": 20.12,
+        "measured_kv_cache_mb": 21.25,
+        "accounting": {
+          "total_deployed_parameters": 3313717760,
+          "active_parameters_per_token": 3313717760,
+          "training_only_parameters": 91763456,
+          "embedding_parameters": 167772160,
+          "unembedding_parameters": 0,
+          "attention_parameters": 629145600,
+          "ffn_total_parameters": 2516582400,
+          "ffn_active_parameters": 2516582400,
+          "router_parameters": 0,
+          "norm_parameters": 217600,
+          "mtp_parameters": 91763456,
+          "effective_depth": 40,
+          "kv_cache_bytes_per_token_bf16": 24320.0,
+          "kv_cache_gb_at_4k_bf16": 0.1953,
+          "kv_cache_gb_at_32k_bf16": 0.7422,
+          "weight_memory_gb_bf16": 6.1723,
+          "weight_memory_gb_int4": 1.6974,
+          "forward_flops_per_token_4k": 7676011520,
+          "routing_flops_per_token": 0,
+          "within_hard_4b_limit": true,
+          "within_production_2b_4b_band": true
+        }
+      },
+      {
+        "model_name": "nanolm-3.8b-moe",
+        "device": "mps",
+        "dtype": "torch.bfloat16",
+        "deployed_parameters": 3895229952,
+        "active_parameters_per_token": 988577280,
+        "init_seconds": 44.858,
+        "prompt_len": 256,
+        "prefill_tok_per_s": 83.3,
+        "decode_tokens": 16,
+        "decode_tok_per_s": 2.74,
+        "measured_kv_cache_mb": 11.688,
+        "accounting": {
+          "total_deployed_parameters": 3895229952,
+          "active_parameters_per_token": 988577280,
+          "training_only_parameters": 61352192,
+          "embedding_parameters": 134217728,
+          "unembedding_parameters": 0,
+          "attention_parameters": 230686720,
+          "ffn_total_parameters": 3529506816,
+          "ffn_active_parameters": 622854144,
+          "router_parameters": 720896,
+          "norm_parameters": 97792,
+          "mtp_parameters": 61352192,
+          "effective_depth": 22,
+          "kv_cache_bytes_per_token_bf16": 11328.0,
+          "kv_cache_gb_at_4k_bf16": 0.0723,
+          "kv_cache_gb_at_32k_bf16": 0.3457,
+          "weight_memory_gb_bf16": 7.2554,
+          "weight_memory_gb_int4": 1.9952,
+          "forward_flops_per_token_4k": 2287533056,
+          "routing_flops_per_token": 1441792,
+          "within_hard_4b_limit": true,
+          "within_production_2b_4b_band": true
+        }
+      }
+    ],
+    "training_100B_token_estimates": [
+      {
+        "model_name": "nanolm-2b-dense",
+        "target_tokens_billions": 100.0,
+        "total_training_flops": 1.2244125696e+21,
+        "min_zepto_vram_gb_bf16_adamw": 44.82,
+        "min_vram_gb_with_grad_ckpt": 34.14,
+        "estimated_8xh100_hours": 102.35,
+        "estimated_8xh100_cost_usd": 2038.82,
+        "estimated_4xb200_hours": 83.98,
+        "estimated_4xb200_cost_usd": 1813.94
+      },
+      {
+        "model_name": "nanolm-2b-hybrid-swa",
+        "target_tokens_billions": 100.0,
+        "total_training_flops": 1.2244125696e+21,
+        "min_zepto_vram_gb_bf16_adamw": 44.82,
+        "min_vram_gb_with_grad_ckpt": 34.14,
+        "estimated_8xh100_hours": 102.35,
+        "estimated_8xh100_cost_usd": 2038.82,
+        "estimated_4xb200_hours": 83.98,
+        "estimated_4xb200_cost_usd": 1813.94
+      },
+      {
+        "model_name": "nanolm-2b-mla",
+        "target_tokens_billions": 100.0,
+        "total_training_flops": 1.272569856e+21,
+        "min_zepto_vram_gb_bf16_adamw": 46.05,
+        "min_vram_gb_with_grad_ckpt": 35.36,
+        "estimated_8xh100_hours": 106.38,
+        "estimated_8xh100_cost_usd": 2119.01,
+        "estimated_4xb200_hours": 87.28,
+        "estimated_4xb200_cost_usd": 1885.29
+      },
+      {
+        "model_name": "nanolm-2b-loop",
+        "target_tokens_billions": 100.0,
+        "total_training_flops": 1.6057061376e+21,
+        "min_zepto_vram_gb_bf16_adamw": 48.41,
+        "min_vram_gb_with_grad_ckpt": 34.16,
+        "estimated_8xh100_hours": 134.22,
+        "estimated_8xh100_cost_usd": 2673.73,
+        "estimated_4xb200_hours": 110.13,
+        "estimated_4xb200_cost_usd": 2378.82
+      },
+      {
+        "model_name": "nanolm-3.3b-dense",
+        "target_tokens_billions": 100.0,
+        "total_training_flops": 1.988230656e+21,
+        "min_zepto_vram_gb_bf16_adamw": 69.5,
+        "min_vram_gb_with_grad_ckpt": 54.65,
+        "estimated_8xh100_hours": 166.2,
+        "estimated_8xh100_cost_usd": 3310.69,
+        "estimated_4xb200_hours": 136.37,
+        "estimated_4xb200_cost_usd": 2945.53
+      },
+      {
+        "model_name": "nanolm-3.8b-moe",
+        "target_tokens_billions": 100.0,
+        "total_training_flops": 5.93146368e+20,
+        "min_zepto_vram_gb_bf16_adamw": 67.21,
+        "min_vram_gb_with_grad_ckpt": 60.68,
+        "estimated_8xh100_hours": 49.58,
+        "estimated_8xh100_cost_usd": 987.67,
+        "estimated_4xb200_hours": 40.68,
+        "estimated_4xb200_cost_usd": 878.74
+      }
+    ]
+  },
+  "e_arch_01": {
+    "experiment_id": "E-ARCH-01",
+    "device": "mps",
+    "decontamination": {
+      "total_candidates": 2749,
+      "kept_documents": 2502,
+      "removed_exact_dups": 247,
+      "removed_eval_contaminated": 0,
+      "ngram_size": 13,
+      "corpus_sha256": "94d078fd771652d2cf12da2509b19987aeb60f96b7797e963f1dd88de096d3b9"
+    },
+    "best_arm_id": "A3_mla_latent_kv_wsd",
+    "best_composite_bpb": 1.166,
+    "arms": [
+      {
+        "arm_id": "A0_legacy_no_qknorm_cosine",
+        "model_name": "nanolm-25m-no-qknorm",
+        "schedule": "cosine",
+        "deployed_parameters": 25175424,
+        "active_parameters_per_token": 25175424,
+        "training_only_parameters": 0,
+        "kv_cache_gb_at_32k_bf16": 0.1875,
+        "tokens_trained": 983040,
+        "wall_seconds": 69.209,
+        "tokens_per_second": 14203.9,
+        "val_fineweb_prose_loss": 6.3532,
+        "val_fineweb_prose_bpb": 2.2264,
+        "val_multidomain_loss": 0.4947,
+        "val_multidomain_bpb": 0.1778,
+        "composite_bpb": 1.2021,
+        "moe_stats": {},
+        "checkpoint": "artifacts/nanolm_v1/runs/A0_legacy_no_qknorm_cosine/latest.pt"
+      },
+      {
+        "arm_id": "A1_dense_qknorm_wsd",
+        "model_name": "nanolm-25m-dense-wsd",
+        "schedule": "wsd",
+        "deployed_parameters": 25176960,
+        "active_parameters_per_token": 25176960,
+        "training_only_parameters": 0,
+        "kv_cache_gb_at_32k_bf16": 0.1875,
+        "tokens_trained": 983040,
+        "wall_seconds": 101.868,
+        "tokens_per_second": 9650.1,
+        "val_fineweb_prose_loss": 6.2694,
+        "val_fineweb_prose_bpb": 2.1971,
+        "val_multidomain_loss": 0.4325,
+        "val_multidomain_bpb": 0.1555,
+        "composite_bpb": 1.1763,
+        "moe_stats": {},
+        "checkpoint": "artifacts/nanolm_v1/runs/A1_dense_qknorm_wsd/latest.pt"
+      },
+      {
+        "arm_id": "A2_hybrid_swa_mtp_wsd",
+        "model_name": "nanolm-25m-hybrid-swa",
+        "schedule": "wsd",
+        "deployed_parameters": 25176960,
+        "active_parameters_per_token": 25176960,
+        "training_only_parameters": 1869824,
+        "kv_cache_gb_at_32k_bf16": 0.048,
+        "tokens_trained": 983040,
+        "wall_seconds": 133.296,
+        "tokens_per_second": 7374.9,
+        "val_fineweb_prose_loss": 6.2396,
+        "val_fineweb_prose_bpb": 2.1866,
+        "val_multidomain_loss": 0.4627,
+        "val_multidomain_bpb": 0.1664,
+        "composite_bpb": 1.1765,
+        "moe_stats": {},
+        "checkpoint": "artifacts/nanolm_v1/runs/A2_hybrid_swa_mtp_wsd/latest.pt"
+      },
+      {
+        "arm_id": "A3_mla_latent_kv_wsd",
+        "model_name": "nanolm-25m-mla",
+        "schedule": "wsd",
+        "deployed_parameters": 25990272,
+        "active_parameters_per_token": 25990272,
+        "training_only_parameters": 0,
+        "kv_cache_gb_at_32k_bf16": 0.1172,
+        "tokens_trained": 983040,
+        "wall_seconds": 105.66,
+        "tokens_per_second": 9303.8,
+        "val_fineweb_prose_loss": 6.2058,
+        "val_fineweb_prose_bpb": 2.1748,
+        "val_multidomain_loss": 0.4375,
+        "val_multidomain_bpb": 0.1573,
+        "composite_bpb": 1.166,
+        "moe_stats": {},
+        "checkpoint": "artifacts/nanolm_v1/runs/A3_mla_latent_kv_wsd/latest.pt"
+      },
+      {
+        "arm_id": "A4_moe_finegrained_wsd",
+        "model_name": "nanolm-45m-moe",
+        "schedule": "wsd",
+        "deployed_parameters": 50871168,
+        "active_parameters_per_token": 24329088,
+        "training_only_parameters": 0,
+        "kv_cache_gb_at_32k_bf16": 0.048,
+        "tokens_trained": 983040,
+        "wall_seconds": 1807.57,
+        "tokens_per_second": 543.8,
+        "val_fineweb_prose_loss": 6.2914,
+        "val_fineweb_prose_bpb": 2.2048,
+        "val_multidomain_loss": 0.4741,
+        "val_multidomain_bpb": 0.1705,
+        "composite_bpb": 1.1876,
+        "moe_stats": {
+          "moe_load_cv": 0.3357,
+          "moe_max_expert_frac": 0.3458
+        },
+        "checkpoint": "artifacts/nanolm_v1/runs/A4_moe_finegrained_wsd/latest.pt"
+      },
+      {
+        "arm_id": "A5_depth_loop_wsd",
+        "model_name": "nanolm-25m-loop",
+        "schedule": "wsd",
+        "deployed_parameters": 25176960,
+        "active_parameters_per_token": 31472000,
+        "training_only_parameters": 0,
+        "kv_cache_gb_at_32k_bf16": 0.064,
+        "tokens_trained": 983040,
+        "wall_seconds": 201.502,
+        "tokens_per_second": 4878.6,
+        "val_fineweb_prose_loss": 6.477,
+        "val_fineweb_prose_bpb": 2.2698,
+        "val_multidomain_loss": 0.6112,
+        "val_multidomain_bpb": 0.2197,
+        "composite_bpb": 1.2448,
+        "moe_stats": {},
+        "checkpoint": "artifacts/nanolm_v1/runs/A5_depth_loop_wsd/latest.pt"
+      }
+    ]
+  },
+  "e_cap_01": {
+    "A3_mla_latent_kv_wsd": {
+      "experiment_id": "E-CAP-01",
+      "selected_architecture": "A3_mla_latent_kv_wsd",
+      "sft_checkpoint": "artifacts/nanolm_v1/runs/A3_mla_latent_kv_wsd_sft/latest.pt",
+      "stage1_pretrain_eval": {
+        "model_id": "A3_mla_latent_kv_wsd_stage1_pretrain",
+        "overall_pass_rate": 0.0,
+        "suites": {
+          "coding": {
+            "suite": "coding",
+            "total": 4,
+            "passed": 0,
+            "pass_rate": 0.0,
+            "details": {
+              "items": [
+                {
+                  "id": "code_01_dedup_preserve",
+                  "passed": false,
+                  "reason": "no_function_definition"
+                },
+                {
+                  "id": "code_02_coalesce_ranges",
+                  "passed": false,
+                  "reason": "no_function_definition"
+                },
+                {
+                  "id": "code_03_balanced_delims",
+                  "passed": false,
+                  "reason": "no_function_definition"
+                },
+                {
+                  "id": "code_04_top_k_freq",
+                  "passed": false,
+                  "reason": "no_function_definition"
+                }
+              ]
+            }
+          },
+          "math_logic": {
+            "suite": "math_logic",
+            "total": 4,
+            "passed": 0,
+            "pass_rate": 0.0,
+            "details": {
+              "items": [
+                {
+                  "id": "math_01_cluster_budget",
+                  "passed": false
+                },
+                {
+                  "id": "math_02_rate_synthesis",
+                  "passed": false
+                },
+                {
+                  "id": "logic_03_transitive_order",
+                  "passed": false
+                },
+                {
+                  "id": "logic_04_constraint_elimination",
+                  "passed": false
+                }
+              ]
+            }
+          },
+          "summarization": {
+            "suite": "summarization",
+            "total": 2,
+            "passed": 0,
+            "pass_rate": 0.0,
+            "details": {
+              "items": [
+                {
+                  "id": "sum_01_exception_retention",
+                  "passed": false,
+                  "fact_recall": 0.0,
+                  "qualification_preserved": false,
+                  "hallucinated": false,
+                  "concise": true
+                },
+                {
+                  "id": "sum_02_conditional_threshold",
+                  "passed": false,
+                  "fact_recall": 0.0,
+                  "qualification_preserved": false,
+                  "hallucinated": false,
+                  "concise": true
+                }
+              ]
+            }
+          },
+          "structured_json": {
+            "suite": "structured_json",
+            "total": 2,
+            "passed": 0,
+            "pass_rate": 0.0,
+            "details": {
+              "syntax_valid_rate": 0.0,
+              "items": [
+                {
+                  "id": "json_01_service_manifest",
+                  "valid_json": false,
+                  "passed": false,
+                  "reason": "invalid_json"
+                },
+                {
+                  "id": "json_02_budget_ledger",
+                  "valid_json": false,
+                  "passed": false,
+                  "reason": "invalid_json"
+                }
+              ]
+            }
+          },
+          "charts_diagrams": {
+            "suite": "charts_diagrams",
+            "total": 2,
+            "passed": 0,
+            "pass_rate": 0.0,
+            "details": {
+              "items": [
+                {
+                  "id": "diag_01_mermaid_router",
+                  "syntax_valid": false,
+                  "passed": false,
+                  "reason": "missing_flowchart_header"
+                },
+                {
+                  "id": "chart_02_timeseries_spec",
+                  "syntax_valid": false,
+                  "passed": false,
+                  "reason": "invalid_json"
+                }
+              ]
+            }
+          },
+          "long_context": {
+            "suite": "long_context",
+            "total": 2,
+            "passed": 0,
+            "pass_rate": 0.0,
+            "details": {
+              "items": [
+                {
+                  "id": "long_01_distant_needle_sum",
+                  "passed": false
+                },
+                {
+                  "id": "long_02_contradiction_detection",
+                  "passed": false
+                }
+              ]
+            }
+          }
+        }
+      },
+      "stage2_sft_eval": {
+        "model_id": "A3_mla_latent_kv_wsd_stage2_sft",
+        "overall_pass_rate": 0.0,
+        "suites": {
+          "coding": {
+            "suite": "coding",
+            "total": 4,
+            "passed": 0,
+            "pass_rate": 0.0,
+            "details": {
+              "items": [
+                {
+                  "id": "code_01_dedup_preserve",
+                  "passed": false,
+                  "reason": "no_function_definition"
+                },
+                {
+                  "id": "code_02_coalesce_ranges",
+                  "passed": false,
+                  "reason": "SyntaxError: invalid syntax"
+                },
+                {
+                  "id": "code_03_balanced_delims",
+                  "passed": false,
+                  "reason": "SyntaxError: unterminated string literal (detected at line 2)"
+                },
+                {
+                  "id": "code_04_top_k_freq",
+                  "passed": false,
+                  "reason": "SyntaxError: unmatched ')'"
+                }
+              ]
+            }
+          },
+          "math_logic": {
+            "suite": "math_logic",
+            "total": 4,
+            "passed": 0,
+            "pass_rate": 0.0,
+            "details": {
+              "items": [
+                {
+                  "id": "math_01_cluster_budget",
+                  "passed": false
+                },
+                {
+                  "id": "math_02_rate_synthesis",
+                  "passed": false
+                },
+                {
+                  "id": "logic_03_transitive_order",
+                  "passed": false
+                },
+                {
+                  "id": "logic_04_constraint_elimination",
+                  "passed": false
+                }
+              ]
+            }
+          },
+          "summarization": {
+            "suite": "summarization",
+            "total": 2,
+            "passed": 0,
+            "pass_rate": 0.0,
+            "details": {
+              "items": [
+                {
+                  "id": "sum_01_exception_retention",
+                  "passed": false,
+                  "fact_recall": 0.0,
+                  "qualification_preserved": false,
+                  "hallucinated": false,
+                  "concise": true
+                },
+                {
+                  "id": "sum_02_conditional_threshold",
+                  "passed": false,
+                  "fact_recall": 0.5,
+                  "qualification_preserved": false,
+                  "hallucinated": false,
+                  "concise": true
+                }
+              ]
+            }
+          },
+          "structured_json": {
+            "suite": "structured_json",
+            "total": 2,
+            "passed": 0,
+            "pass_rate": 0.0,
+            "details": {
+              "syntax_valid_rate": 0.5,
+              "items": [
+                {
+                  "id": "json_01_service_manifest",
+                  "valid_json": true,
+                  "passed": false,
+                  "reason": "semantic_check_failed"
+                },
+                {
+                  "id": "json_02_budget_ledger",
+                  "valid_json": false,
+                  "passed": false,
+                  "reason": "invalid_json"
+                }
+              ]
+            }
+          },
+          "charts_diagrams": {
+            "suite": "charts_diagrams",
+            "total": 2,
+            "passed": 0,
+            "pass_rate": 0.0,
+            "details": {
+              "items": [
+                {
+                  "id": "diag_01_mermaid_router",
+                  "syntax_valid": false,
+                  "passed": false,
+                  "reason": "no_valid_edges"
+                },
+                {
+                  "id": "chart_02_timeseries_spec",
+                  "syntax_valid": false,
+                  "passed": false,
+                  "reason": "invalid_json"
+                }
+              ]
+            }
+          },
+          "long_context": {
+            "suite": "long_context",
+            "total": 2,
+            "passed": 0,
+            "pass_rate": 0.0,
+            "details": {
+              "items": [
+                {
+                  "id": "long_01_distant_needle_sum",
+                  "passed": false
+                },
+                {
+                  "id": "long_02_contradiction_detection",
+                  "passed": false
+                }
+              ]
+            }
+          }
+        }
+      },
+      "external_reference_qwen25_1p5b": {
+        "model_id": "ref_qwen2.5_1.5b_instruct",
+        "overall_pass_rate": 0.3125,
+        "suites": {
+          "coding": {
+            "suite": "coding",
+            "total": 4,
+            "passed": 1,
+            "pass_rate": 0.25,
+            "details": {
+              "items": [
+                {
+                  "id": "code_01_dedup_preserve",
+                  "passed": true,
+                  "reason": "passed"
+                },
+                {
+                  "id": "code_02_coalesce_ranges",
+                  "passed": false,
+                  "reason": "SyntaxError: unterminated string literal (detected at line 3)"
+                },
+                {
+                  "id": "code_03_balanced_delims",
+                  "passed": false,
+                  "reason": "SyntaxError: unterminated string literal (detected at line 2)"
+                },
+                {
+                  "id": "code_04_top_k_freq",
+                  "passed": false,
+                  "reason": "SyntaxError: unterminated string literal (detected at line 7)"
+                }
+              ]
+            }
+          },
+          "math_logic": {
+            "suite": "math_logic",
+            "total": 4,
+            "passed": 2,
+            "pass_rate": 0.5,
+            "details": {
+              "items": [
+                {
+                  "id": "math_01_cluster_budget",
+                  "passed": true
+                },
+                {
+                  "id": "math_02_rate_synthesis",
+                  "passed": true
+                },
+                {
+                  "id": "logic_03_transitive_order",
+                  "passed": false
+                },
+                {
+                  "id": "logic_04_constraint_elimination",
+                  "passed": false
+                }
+              ]
+            }
+          },
+          "summarization": {
+            "suite": "summarization",
+            "total": 2,
+            "passed": 0,
+            "pass_rate": 0.0,
+            "details": {
+              "items": [
+                {
+                  "id": "sum_01_exception_retention",
+                  "passed": false,
+                  "fact_recall": 0.3333,
+                  "qualification_preserved": false,
+                  "hallucinated": false,
+                  "concise": true
+                },
+                {
+                  "id": "sum_02_conditional_threshold",
+                  "passed": false,
+                  "fact_recall": 0.5,
+                  "qualification_preserved": false,
+                  "hallucinated": false,
+                  "concise": true
+                }
+              ]
+            }
+          },
+          "structured_json": {
+            "suite": "structured_json",
+            "total": 2,
+            "passed": 1,
+            "pass_rate": 0.5,
+            "details": {
+              "syntax_valid_rate": 1.0,
+              "items": [
+                {
+                  "id": "json_01_service_manifest",
+                  "valid_json": true,
+                  "passed": true,
+                  "reason": "passed"
+                },
+                {
+                  "id": "json_02_budget_ledger",
+                  "valid_json": true,
+                  "passed": false,
+                  "reason": "semantic_check_failed"
+                }
+              ]
+            }
+          },
+          "charts_diagrams": {
+            "suite": "charts_diagrams",
+            "total": 2,
+            "passed": 0,
+            "pass_rate": 0.0,
+            "details": {
+              "items": [
+                {
+                  "id": "diag_01_mermaid_router",
+                  "syntax_valid": true,
+                  "passed": false,
+                  "reason": "missing_edge:api_ingress->core_engine"
+                },
+                {
+                  "id": "chart_02_timeseries_spec",
+                  "syntax_valid": false,
+                  "passed": false,
+                  "reason": "invalid_json"
+                }
+              ]
+            }
+          },
+          "long_context": {
+            "suite": "long_context",
+            "total": 2,
+            "passed": 1,
+            "pass_rate": 0.5,
+            "details": {
+              "items": [
+                {
+                  "id": "long_01_distant_needle_sum",
+                  "passed": true
+                },
+                {
+                  "id": "long_02_contradiction_detection",
+                  "passed": false
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "A2_hybrid_swa_mtp_wsd": {
+      "experiment_id": "E-CAP-01",
+      "selected_architecture": "A2_hybrid_swa_mtp_wsd",
+      "sft_checkpoint": "artifacts/nanolm_v1/runs/A2_hybrid_swa_mtp_wsd_sft/latest.pt",
+      "stage1_pretrain_eval": {
+        "model_id": "A2_hybrid_swa_mtp_wsd_stage1_pretrain",
+        "overall_pass_rate": 0.0,
+        "suites": {
+          "coding": {
+            "suite": "coding",
+            "total": 4,
+            "passed": 0,
+            "pass_rate": 0.0,
+            "details": {
+              "items": [
+                {
+                  "id": "code_01_dedup_preserve",
+                  "passed": false,
+                  "reason": "no_function_definition"
+                },
+                {
+                  "id": "code_02_coalesce_ranges",
+                  "passed": false,
+                  "reason": "no_function_definition"
+                },
+                {
+                  "id": "code_03_balanced_delims",
+                  "passed": false,
+                  "reason": "no_function_definition"
+                },
+                {
+                  "id": "code_04_top_k_freq",
+                  "passed": false,
+                  "reason": "no_function_definition"
+                }
+              ]
+            }
+          },
+          "math_logic": {
+            "suite": "math_logic",
+            "total": 4,
+            "passed": 0,
+            "pass_rate": 0.0,
+            "details": {
+              "items": [
+                {
+                  "id": "math_01_cluster_budget",
+                  "passed": false
+                },
+                {
+                  "id": "math_02_rate_synthesis",
+                  "passed": false
+                },
+                {
+                  "id": "logic_03_transitive_order",
+                  "passed": false
+                },
+                {
+                  "id": "logic_04_constraint_elimination",
+                  "passed": false
+                }
+              ]
+            }
+          },
+          "summarization": {
+            "suite": "summarization",
+            "total": 2,
+            "passed": 0,
+            "pass_rate": 0.0,
+            "details": {
+              "items": [
+                {
+                  "id": "sum_01_exception_retention",
+                  "passed": false,
+                  "fact_recall": 0.0,
+                  "qualification_preserved": false,
+                  "hallucinated": false,
+                  "concise": false
+                },
+                {
+                  "id": "sum_02_conditional_threshold",
+                  "passed": false,
+                  "fact_recall": 0.0,
+                  "qualification_preserved": false,
+                  "hallucinated": false,
+                  "concise": true
+                }
+              ]
+            }
+          },
+          "structured_json": {
+            "suite": "structured_json",
+            "total": 2,
+            "passed": 0,
+            "pass_rate": 0.0,
+            "details": {
+              "syntax_valid_rate": 0.0,
+              "items": [
+                {
+                  "id": "json_01_service_manifest",
+                  "valid_json": false,
+                  "passed": false,
+                  "reason": "invalid_json"
+                },
+                {
+                  "id": "json_02_budget_ledger",
+                  "valid_json": false,
+                  "passed": false,
+                  "reason": "invalid_json"
+                }
+              ]
+            }
+          },
+          "charts_diagrams": {
+            "suite": "charts_diagrams",
+            "total": 2,
+            "passed": 0,
+            "pass_rate": 0.0,
+            "details": {
+              "items": [
+                {
+                  "id": "diag_01_mermaid_router",
+                  "syntax_valid": false,
+                  "passed": false,
+                  "reason": "missing_flowchart_header"
+                },
+                {
+                  "id": "chart_02_timeseries_spec",
+                  "syntax_valid": false,
+                  "passed": false,
+                  "reason": "invalid_json"
+                }
+              ]
+            }
+          },
+          "long_context": {
+            "suite": "long_context",
+            "total": 2,
+            "passed": 0,
+            "pass_rate": 0.0,
+            "details": {
+              "items": [
+                {
+                  "id": "long_01_distant_needle_sum",
+                  "passed": false
+                },
+                {
+                  "id": "long_02_contradiction_detection",
+                  "passed": false
+                }
+              ]
+            }
+          }
+        }
+      },
+      "stage2_sft_eval": {
+        "model_id": "A2_hybrid_swa_mtp_wsd_stage2_sft",
+        "overall_pass_rate": 0.0,
+        "suites": {
+          "coding": {
+            "suite": "coding",
+            "total": 4,
+            "passed": 0,
+            "pass_rate": 0.0,
+            "details": {
+              "items": [
+                {
+                  "id": "code_01_dedup_preserve",
+                  "passed": false,
+                  "reason": "SyntaxError: invalid syntax"
+                },
+                {
+                  "id": "code_02_coalesce_ranges",
+                  "passed": false,
+                  "reason": "SyntaxError: closing parenthesis ']' does not match opening parenthesis '('"
+                },
+                {
+                  "id": "code_03_balanced_delims",
+                  "passed": false,
+                  "reason": "no_function_definition"
+                },
+                {
+                  "id": "code_04_top_k_freq",
+                  "passed": false,
+                  "reason": "no_function_definition"
+                }
+              ]
+            }
+          },
+          "math_logic": {
+            "suite": "math_logic",
+            "total": 4,
+            "passed": 0,
+            "pass_rate": 0.0,
+            "details": {
+              "items": [
+                {
+                  "id": "math_01_cluster_budget",
+                  "passed": false
+                },
+                {
+                  "id": "math_02_rate_synthesis",
+                  "passed": false
+                },
+                {
+                  "id": "logic_03_transitive_order",
+                  "passed": false
+                },
+                {
+                  "id": "logic_04_constraint_elimination",
+                  "passed": false
+                }
+              ]
+            }
+          },
+          "summarization": {
+            "suite": "summarization",
+            "total": 2,
+            "passed": 0,
+            "pass_rate": 0.0,
+            "details": {
+              "items": [
+                {
+                  "id": "sum_01_exception_retention",
+                  "passed": false,
+                  "fact_recall": 0.0,
+                  "qualification_preserved": false,
+                  "hallucinated": false,
+                  "concise": true
+                },
+                {
+                  "id": "sum_02_conditional_threshold",
+                  "passed": false,
+                  "fact_recall": 0.0,
+                  "qualification_preserved": false,
+                  "hallucinated": false,
+                  "concise": true
+                }
+              ]
+            }
+          },
+          "structured_json": {
+            "suite": "structured_json",
+            "total": 2,
+            "passed": 0,
+            "pass_rate": 0.0,
+            "details": {
+              "syntax_valid_rate": 0.5,
+              "items": [
+                {
+                  "id": "json_01_service_manifest",
+                  "valid_json": true,
+                  "passed": false,
+                  "reason": "semantic_check_failed"
+                },
+                {
+                  "id": "json_02_budget_ledger",
+                  "valid_json": false,
+                  "passed": false,
+                  "reason": "invalid_json"
+                }
+              ]
+            }
+          },
+          "charts_diagrams": {
+            "suite": "charts_diagrams",
+            "total": 2,
+            "passed": 0,
+            "pass_rate": 0.0,
+            "details": {
+              "items": [
+                {
+                  "id": "diag_01_mermaid_router",
+                  "syntax_valid": true,
+                  "passed": false,
+                  "reason": "missing_edge:api_ingress->core_engine"
+                },
+                {
+                  "id": "chart_02_timeseries_spec",
+                  "syntax_valid": false,
+                  "passed": false,
+                  "reason": "invalid_json"
+                }
+              ]
+            }
+          },
+          "long_context": {
+            "suite": "long_context",
+            "total": 2,
+            "passed": 0,
+            "pass_rate": 0.0,
+            "details": {
+              "items": [
+                {
+                  "id": "long_01_distant_needle_sum",
+                  "passed": false
+                },
+                {
+                  "id": "long_02_contradiction_detection",
+                  "passed": false
+                }
+              ]
+            }
+          }
+        }
+      },
+      "external_reference_qwen25_1p5b": {
+        "model_id": "ref_qwen2.5_1.5b_instruct",
+        "overall_pass_rate": 0.3125,
+        "suites": {
+          "coding": {
+            "suite": "coding",
+            "total": 4,
+            "passed": 1,
+            "pass_rate": 0.25,
+            "details": {
+              "items": [
+                {
+                  "id": "code_01_dedup_preserve",
+                  "passed": true,
+                  "reason": "passed"
+                },
+                {
+                  "id": "code_02_coalesce_ranges",
+                  "passed": false,
+                  "reason": "SyntaxError: unterminated string literal (detected at line 3)"
+                },
+                {
+                  "id": "code_03_balanced_delims",
+                  "passed": false,
+                  "reason": "SyntaxError: unterminated string literal (detected at line 2)"
+                },
+                {
+                  "id": "code_04_top_k_freq",
+                  "passed": false,
+                  "reason": "SyntaxError: unterminated string literal (detected at line 7)"
+                }
+              ]
+            }
+          },
+          "math_logic": {
+            "suite": "math_logic",
+            "total": 4,
+            "passed": 2,
+            "pass_rate": 0.5,
+            "details": {
+              "items": [
+                {
+                  "id": "math_01_cluster_budget",
+                  "passed": true
+                },
+                {
+                  "id": "math_02_rate_synthesis",
+                  "passed": true
+                },
+                {
+                  "id": "logic_03_transitive_order",
+                  "passed": false
+                },
+                {
+                  "id": "logic_04_constraint_elimination",
+                  "passed": false
+                }
+              ]
+            }
+          },
+          "summarization": {
+            "suite": "summarization",
+            "total": 2,
+            "passed": 0,
+            "pass_rate": 0.0,
+            "details": {
+              "items": [
+                {
+                  "id": "sum_01_exception_retention",
+                  "passed": false,
+                  "fact_recall": 0.3333,
+                  "qualification_preserved": false,
+                  "hallucinated": false,
+                  "concise": true
+                },
+                {
+                  "id": "sum_02_conditional_threshold",
+                  "passed": false,
+                  "fact_recall": 0.5,
+                  "qualification_preserved": false,
+                  "hallucinated": false,
+                  "concise": true
+                }
+              ]
+            }
+          },
+          "structured_json": {
+            "suite": "structured_json",
+            "total": 2,
+            "passed": 1,
+            "pass_rate": 0.5,
+            "details": {
+              "syntax_valid_rate": 1.0,
+              "items": [
+                {
+                  "id": "json_01_service_manifest",
+                  "valid_json": true,
+                  "passed": true,
+                  "reason": "passed"
+                },
+                {
+                  "id": "json_02_budget_ledger",
+                  "valid_json": true,
+                  "passed": false,
+                  "reason": "semantic_check_failed"
+                }
+              ]
+            }
+          },
+          "charts_diagrams": {
+            "suite": "charts_diagrams",
+            "total": 2,
+            "passed": 0,
+            "pass_rate": 0.0,
+            "details": {
+              "items": [
+                {
+                  "id": "diag_01_mermaid_router",
+                  "syntax_valid": true,
+                  "passed": false,
+                  "reason": "missing_edge:api_ingress->core_engine"
+                },
+                {
+                  "id": "chart_02_timeseries_spec",
+                  "syntax_valid": false,
+                  "passed": false,
+                  "reason": "invalid_json"
+                }
+              ]
+            }
+          },
+          "long_context": {
+            "suite": "long_context",
+            "total": 2,
+            "passed": 1,
+            "pass_rate": 0.5,
+            "details": {
+              "items": [
+                {
+                  "id": "long_01_distant_needle_sum",
+                  "passed": true
+                },
+                {
+                  "id": "long_02_contradiction_detection",
+                  "passed": false
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  "e_cap_02": {
+    "experiment_id": "E-CAP-02",
+    "hypothesis": "Open-vocabulary slot diversity + cosine LR annealing resolves SFT slot memorization and underfitting",
+    "decontaminated_examples": 1099,
+    "steps": 600,
+    "wall_seconds": 512.53,
+    "final_sft_ce": 0.0214,
+    "baseline_e_cap_01_pass_rate": 0.0,
+    "e_cap_02_pass_rate": 0.25,
+    "external_qwen25_1p5b_pass_rate": 0.3125,
+    "evaluation": {
+      "model_id": "nanolm_25m_hybrid_swa_sft_v2",
+      "overall_pass_rate": 0.25,
+      "suites": {
+        "coding": {
+          "suite": "coding",
+          "total": 4,
+          "passed": 3,
+          "pass_rate": 0.75,
+          "details": {
+            "items": [
+              {
+                "id": "code_01_dedup_preserve",
+                "passed": true,
+                "reason": "passed"
+              },
+              {
+                "id": "code_02_coalesce_ranges",
+                "passed": true,
+                "reason": "passed"
+              },
+              {
+                "id": "code_03_balanced_delims",
+                "passed": false,
+                "reason": "NameError: name 'is_balanced_brackets' is not defined"
+              },
+              {
+                "id": "code_04_top_k_freq",
+                "passed": true,
+                "reason": "passed"
+              }
+            ]
+          }
+        },
+        "math_logic": {
+          "suite": "math_logic",
+          "total": 4,
+          "passed": 1,
+          "pass_rate": 0.25,
+          "details": {
+            "items": [
+              {
+                "id": "math_01_cluster_budget",
+                "passed": false
+              },
+              {
+                "id": "math_02_rate_synthesis",
+                "passed": false
+              },
+              {
+                "id": "logic_03_transitive_order",
+                "passed": false
+              },
+              {
+                "id": "logic_04_constraint_elimination",
+                "passed": true
+              }
+            ]
+          }
+        },
+        "summarization": {
+          "suite": "summarization",
+          "total": 2,
+          "passed": 0,
+          "pass_rate": 0.0,
+          "details": {
+            "items": [
+              {
+                "id": "sum_01_exception_retention",
+                "passed": false,
+                "fact_recall": 0.0,
+                "qualification_preserved": false,
+                "hallucinated": false,
+                "concise": true
+              },
+              {
+                "id": "sum_02_conditional_threshold",
+                "passed": false,
+                "fact_recall": 0.0,
+                "qualification_preserved": true,
+                "hallucinated": false,
+                "concise": true
+              }
+            ]
+          }
+        },
+        "structured_json": {
+          "suite": "structured_json",
+          "total": 2,
+          "passed": 0,
+          "pass_rate": 0.0,
+          "details": {
+            "syntax_valid_rate": 0.5,
+            "items": [
+              {
+                "id": "json_01_service_manifest",
+                "valid_json": false,
+                "passed": false,
+                "reason": "invalid_json"
+              },
+              {
+                "id": "json_02_budget_ledger",
+                "valid_json": true,
+                "passed": false,
+                "reason": "semantic_check_failed"
+              }
+            ]
+          }
+        },
+        "charts_diagrams": {
+          "suite": "charts_diagrams",
+          "total": 2,
+          "passed": 0,
+          "pass_rate": 0.0,
+          "details": {
+            "items": [
+              {
+                "id": "diag_01_mermaid_router",
+                "syntax_valid": false,
+                "passed": false,
+                "reason": "missing_flowchart_header"
+              },
+              {
+                "id": "chart_02_timeseries_spec",
+                "syntax_valid": true,
+                "passed": false,
+                "reason": "semantic_check_failed"
+              }
+            ]
+          }
+        },
+        "long_context": {
+          "suite": "long_context",
+          "total": 2,
+          "passed": 0,
+          "pass_rate": 0.0,
+          "details": {
+            "items": [
+              {
+                "id": "long_01_distant_needle_sum",
+                "passed": false
+              },
+              {
+                "id": "long_02_contradiction_detection",
+                "passed": false
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

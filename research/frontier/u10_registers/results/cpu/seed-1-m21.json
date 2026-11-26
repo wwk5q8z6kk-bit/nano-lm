@@ -1,0 +1,68 @@
+{
+  "arm": "m21",
+  "seed": 1,
+  "checkpoint_sha256": "ad15915e602556f5fddbfe8b89e6f3f3747e54a59d41d35497d9b03716b0dec3",
+  "max_abs_delta": 4.899999999974369e-06,
+  "windows": {
+    "web/128": {
+      "cpu_bpb": 1.9284134,
+      "mps_bpb": 1.92841,
+      "windows": 24
+    },
+    "textbook/128": {
+      "cpu_bpb": 1.8487922,
+      "mps_bpb": 1.84879,
+      "windows": 24
+    },
+    "math/128": {
+      "cpu_bpb": 2.2752897,
+      "mps_bpb": 2.27529,
+      "windows": 24
+    },
+    "code/128": {
+      "cpu_bpb": 2.198348,
+      "mps_bpb": 2.19835,
+      "windows": 24
+    },
+    "web/256": {
+      "cpu_bpb": 1.9030897,
+      "mps_bpb": 1.90309,
+      "windows": 24
+    },
+    "textbook/256": {
+      "cpu_bpb": 1.8336349,
+      "mps_bpb": 1.83363,
+      "windows": 24
+    },
+    "math/256": {
+      "cpu_bpb": 2.2100421,
+      "mps_bpb": 2.21004,
+      "windows": 24
+    },
+    "code/256": {
+      "cpu_bpb": 2.0293925,
+      "mps_bpb": 2.02939,
+      "windows": 24
+    },
+    "web/512": {
+      "cpu_bpb": 1.8496993,
+      "mps_bpb": 1.8497,
+      "windows": 16
+    },
+    "textbook/512": {
+      "cpu_bpb": 1.7737861,
+      "mps_bpb": 1.77379,
+      "windows": 16
+    },
+    "math/512": {
+      "cpu_bpb": 2.1101553,
+      "mps_bpb": 2.11016,
+      "windows": 16
+    },
+    "code/512": {
+      "cpu_bpb": 1.6009937,
+      "mps_bpb": 1.60099,
+      "windows": 16
+    }
+  }
+}

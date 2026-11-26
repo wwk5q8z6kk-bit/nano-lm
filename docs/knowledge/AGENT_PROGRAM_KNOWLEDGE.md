@@ -5,16 +5,9 @@ and the typed authorities linked below still win.
 
 ## What Nano is
 
-Nano is the AI research program itself. Its current proving capability is P1:
-faithful scribing from messy transcripts into grounded structured state. The
-research, harnesses, and compute infrastructure exist to improve that AI; they
-are not a separate research product.
+NanoLM develops a general-purpose language model. Use the original native training stack, recovered native checkpoints and reviewed architecture experiments to guide work. The [model research map](../research/MODEL_RESEARCH_PROGRAM.md) distinguishes integrated code from experimental branches.
 
-```text
-Nano Core (`nano/`)            domain-general evidence, state, and runtime
-Learned Nano AI (`nano_ai/`)   learned transcript-to-structure research
-Medical P1 (`nanoscribe/`)     encounter proposals, binding, and evaluation
-```
+NanoScribe is the historical medical application. Its corpus, tests and frozen decisions serve reproducibility.
 
 ## Authority and live state
 
@@ -29,33 +22,12 @@ authority until selectively reviewed and merged.
 
 ## Current scientific boundary
 
-H6 is complete and **REJECTED**. Its one-shot evaluation was consumed on Kaggle
-and is preserved at
-[`artifacts/nano_h6/H6_TERMINAL_DECISION.json`](../../artifacts/nano_h6/H6_TERMINAL_DECISION.json).
-The checkpoint passed overall and held-value copying but failed absence,
-conflict, and uncertainty. A hash-gated row-level decomposition accounts for
-all 5,000 decisions: 3,901 joint correct, 241 state-only errors, 771
-binding-only errors, and 87 combined errors. Absence and uncertainty are
-primarily state-selection failures; supported fields are primarily exact-span
-binding failures; conflict is split between binding-only and combined errors.
-Threshold and verifier effects were not assessed. Therefore:
-
-- do not rerun, reopen, or rename H6;
-- do not treat copying as the current primary blocker;
-- choose one bounded intervention against one diagnosed mechanism rather than
-  treating abstention and binding as a single failure;
-- keep future training data disjoint from frozen evaluation data.
-
-Reproduce the diagnosis without loading the model or rerunning H6:
-
-```bash
-python3 -m nano_ai.training.diagnose_h6
-```
+Model-only language, reasoning and transfer results require identified weights, tokenizer, data, scorer and inference settings. A verifier's success on scripted tasks measures that system. Treat a one-seed architecture comparison as exploratory.
 
 ## Compute choice
 
 Use local CPU/MPS for development and cheap mechanism tests. Use Kaggle first
-when its free runtime fits. Use RunPod for exact GPU/runtime needs, persistent
+when its free runtime fits. Use credit-backed Google Cloud for finite experiments within the available allocation. Use RunPod for exact GPU/runtime needs, persistent
 storage, or managed inference. Before paid work, bind the Git SHA, data revision,
 termination condition, budget, and artifact destination. Never use PHI or
 private owner material.

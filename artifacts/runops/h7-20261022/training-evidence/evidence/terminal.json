@@ -1,0 +1,13 @@
+{
+  "attempt_id": "c6177067-487f-4872-a84e-cd2c9eab8278",
+  "elapsed_seconds": 3694.707,
+  "error": null,
+  "exit_code": 0,
+  "finished_at_utc": "2026-10-22T20:35:11Z",
+  "phase": "completed",
+  "reservation_sha256": "b57d8680d0832c3e0f6be7cf2e921d0b37c858791f28aeff39e1a3b573110b47",
+  "retry_authorized": false,
+  "stage": "training",
+  "started_at_utc": "2026-10-22T19:33:36Z",
+  "status": "completed"
+}

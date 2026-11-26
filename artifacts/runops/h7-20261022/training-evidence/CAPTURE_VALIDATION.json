@@ -1,0 +1,50 @@
+{
+  "attempt_archive_sha256": "3398dd2a7444d4b0a7a55d6c0e31bda53f24c2a76413f275718dd5b101225a40",
+  "attempt_archive_bytes": 146505939,
+  "terminal": {
+    "attempt_id": "c6177067-487f-4872-a84e-cd2c9eab8278",
+    "elapsed_seconds": 3694.707,
+    "error": null,
+    "exit_code": 0,
+    "finished_at_utc": "2026-10-22T20:35:11Z",
+    "phase": "completed",
+    "reservation_sha256": "b57d8680d0832c3e0f6be7cf2e921d0b37c858791f28aeff39e1a3b573110b47",
+    "retry_authorized": false,
+    "stage": "training",
+    "started_at_utc": "2026-10-22T19:33:36Z",
+    "status": "completed"
+  },
+  "runtime": {
+    "cuda_available": false,
+    "pytest": "9.0.2",
+    "python": "3.13.15",
+    "tokenizers": "0.22.2",
+    "torch": "2.11.0+cpu",
+    "torch_cuda": null
+  },
+  "treatment_archive_sha256": "cef53ffe6822cdfd5bb31d03575b98a690efe4d1ab223088bb15ede03e903414",
+  "treatment_archive_bytes": 73203231,
+  "candidates": [
+    {
+      "label": "treatment-seed-20260805",
+      "path": "artifacts/runops/h7-20261022/downloads/training-capture/verified-treatments/results/seed-20260805/epoch-2.pt",
+      "sha256": "3ca81cb4aaa9ef05a0faa7e1a5760cdee2533004a78b2cb076b10758f04372a0",
+      "artifact_bytes": 13168916,
+      "seed": 20260805,
+      "epoch": 2,
+      "report_sha256": "7a6a192c4df10ccb7c0a5c89fc13fed6d182eb3a329255fdd250acf6a3c3a19e"
+    },
+    {
+      "label": "treatment-seed-20260806",
+      "path": "artifacts/runops/h7-20261022/downloads/training-capture/verified-treatments/results/seed-20260806/epoch-2.pt",
+      "sha256": "abe4caa57bd97538744391c6b046b3ddc2e6569aa830106a4a3345152fa0efac",
+      "artifact_bytes": 13168916,
+      "seed": 20260806,
+      "epoch": 2,
+      "report_sha256": "a5e6a282aa4f380cba55f2c3d5f1b33500695e1e66f31f0eb50aec6f154c9357"
+    }
+  ],
+  "all_attempt_members_verified": true,
+  "all_treatment_members_verified": true,
+  "remaining_runtime_seconds": 10705
+}

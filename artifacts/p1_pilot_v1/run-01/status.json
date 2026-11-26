@@ -1,0 +1,6 @@
+{
+  "status": "INTERRUPTED_DEVELOPMENT_ATTEMPT",
+  "completed_generations": 1,
+  "reason": "Semantic review corrected ambiguous medication-conflict annotation before the complete pilot. Generation in progress was interrupted.",
+  "original_input_sha256": "01b99601be1a9a00cd4aa2b8b4933971a5ace8ffb33c88702c5f809184172101"
+}

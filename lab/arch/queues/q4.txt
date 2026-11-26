@@ -1,0 +1,5 @@
+--arm H2_delta --tokens 600e6 --seed 0
+--arm R2_delta_loop --tokens 600e6 --seed 0
+--arm H2_delta --tokens 600e6 --seed 1
+--arm R2_delta_loop --tokens 600e6 --seed 1
+--arm R2_delta_loop --tokens 600e6 --seed 1 --match flops

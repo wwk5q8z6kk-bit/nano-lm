@@ -1,0 +1,350 @@
+{
+  "exact_gold_proposal": {
+    "fields": 800,
+    "exact": 662,
+    "exact_state": 515,
+    "asserted": 418,
+    "gold_explicit": 556,
+    "licensing_errors": 0,
+    "missed_explicit_assertion": 138,
+    "exact_assertion": 418,
+    "correct_withholding": 244,
+    "exact_usable_yield": 0.7518,
+    "exact_assertion_precision": 1.0
+  },
+  "gold_proposal_failure_reasons": [
+    {
+      "field": "chief_complaint",
+      "reason": "no_clinical_complaint_at_span",
+      "count": 37
+    },
+    {
+      "field": "severity",
+      "reason": "severity_not_linked_to_current_episode",
+      "count": 32
+    },
+    {
+      "field": "allergy",
+      "reason": "incomplete_substance_name",
+      "count": 19
+    },
+    {
+      "field": "duration",
+      "reason": "value_fails_field_type_guard",
+      "count": 14
+    },
+    {
+      "field": "chief_complaint",
+      "reason": "retracted_by_patient_correction",
+      "count": 9
+    },
+    {
+      "field": "severity",
+      "reason": "incomplete_numeric_token",
+      "count": 6
+    },
+    {
+      "field": "duration",
+      "reason": "retracted_by_patient_correction",
+      "count": 5
+    },
+    {
+      "field": "severity",
+      "reason": "retracted_by_patient_correction",
+      "count": 5
+    },
+    {
+      "field": "medication",
+      "reason": "retracted_by_patient_correction",
+      "count": 4
+    },
+    {
+      "field": "medication",
+      "reason": "invalid_or_hedged_denial_span",
+      "count": 2
+    },
+    {
+      "field": "allergy",
+      "reason": "retracted_by_patient_correction",
+      "count": 2
+    },
+    {
+      "field": "medication",
+      "reason": "no_field_owned_substance_at_span",
+      "count": 1
+    },
+    {
+      "field": "allergy",
+      "reason": "coexisting_multiple_substances_require_uncertain",
+      "count": 1
+    },
+    {
+      "field": "medication",
+      "reason": "coexisting_multiple_substances_require_uncertain",
+      "count": 1
+    }
+  ],
+  "gold_proposal_examples": [
+    {
+      "id": "prospective-00-00",
+      "field": "chief_complaint",
+      "mode": "direct",
+      "reference": {
+        "state": "supported",
+        "quote": "throbbing headache",
+        "start": 116,
+        "end": 134
+      },
+      "reason": "no_clinical_complaint_at_span"
+    },
+    {
+      "id": "prospective-00-00",
+      "field": "duration",
+      "mode": "direct",
+      "reference": {
+        "state": "supported",
+        "quote": "five mornings",
+        "start": 422,
+        "end": 435
+      },
+      "reason": "value_fails_field_type_guard"
+    },
+    {
+      "id": "prospective-02-00",
+      "field": "severity",
+      "mode": "direct",
+      "reference": {
+        "state": "supported",
+        "quote": "seven out of ten",
+        "start": 417,
+        "end": 433
+      },
+      "reason": "severity_not_linked_to_current_episode"
+    },
+    {
+      "id": "prospective-10-00",
+      "field": "allergy",
+      "mode": "direct",
+      "reference": {
+        "state": "supported",
+        "quote": "latex",
+        "start": 182,
+        "end": 187
+      },
+      "reason": "incomplete_substance_name"
+    },
+    {
+      "id": "prospective-08-01",
+      "field": "duration",
+      "mode": "logistical_interruption",
+      "reference": {
+        "state": "supported",
+        "quote": "six hours",
+        "start": 193,
+        "end": 202
+      },
+      "reason": "retracted_by_patient_correction"
+    },
+    {
+      "id": "prospective-08-01",
+      "field": "medication",
+      "mode": "direct",
+      "reference": {
+        "state": "supported",
+        "quote": "gabapentin",
+        "start": 67,
+        "end": 77
+      },
+      "reason": "retracted_by_patient_correction"
+    },
+    {
+      "id": "prospective-13-01",
+      "field": "severity",
+      "mode": "direct",
+      "reference": {
+        "state": "supported",
+        "quote": "six out of ten",
+        "start": 375,
+        "end": 389
+      },
+      "reason": "incomplete_numeric_token"
+    },
+    {
+      "id": "prospective-08-02",
+      "field": "severity",
+      "mode": "direct",
+      "reference": {
+        "state": "supported",
+        "quote": "6/10",
+        "start": 186,
+        "end": 190
+      },
+      "reason": "retracted_by_patient_correction"
+    },
+    {
+      "id": "prospective-02-03",
+      "field": "medication",
+      "mode": "explicit_replacement",
+      "reference": {
+        "state": "supported",
+        "quote": "albuterol",
+        "start": 325,
+        "end": 334
+      },
+      "reason": "no_field_owned_substance_at_span"
+    },
+    {
+      "id": "prospective-08-03",
+      "field": "chief_complaint",
+      "mode": "logistical_interruption",
+      "reference": {
+        "state": "supported",
+        "quote": "lower back pain",
+        "start": 44,
+        "end": 59
+      },
+      "reason": "retracted_by_patient_correction"
+    },
+    {
+      "id": "prospective-02-04",
+      "field": "allergy",
+      "mode": "explicit_replacement",
+      "reference": {
+        "state": "supported",
+        "quote": "adhesive tape",
+        "start": 389,
+        "end": 402
+      },
+      "reason": "coexisting_multiple_substances_require_uncertain"
+    },
+    {
+      "id": "prospective-07-06",
+      "field": "medication",
+      "mode": "denial",
+      "reference": {
+        "state": "absent",
+        "quote": "No medications.",
+        "start": 233,
+        "end": 248
+      },
+      "reason": "invalid_or_hedged_denial_span"
+    },
+    {
+      "id": "prospective-07-06",
+      "field": "allergy",
+      "mode": "direct",
+      "reference": {
+        "state": "supported",
+        "quote": "Shellfish",
+        "start": 169,
+        "end": 178
+      },
+      "reason": "retracted_by_patient_correction"
+    },
+    {
+      "id": "prospective-02-08",
+      "field": "medication",
+      "mode": "explicit_replacement",
+      "reference": {
+        "state": "supported",
+        "quote": "levothyroxine",
+        "start": 402,
+        "end": 415
+      },
+      "reason": "coexisting_multiple_substances_require_uncertain"
+    }
+  ],
+  "teacher_verification_losses": {
+    "flash": {
+      "events": {
+        "raw_exact_changed_in_checker": 122,
+        "raw_exact_drop_reproduced_by_exact_reference": 122,
+        "raw_licensing_error_removed": 17
+      },
+      "raw_exact_loss_by_field": {
+        "chief_complaint": 41,
+        "duration": 19,
+        "severity": 36,
+        "allergy": 20,
+        "medication": 6
+      },
+      "raw_exact_loss_by_binder_reason": {
+        "no_clinical_complaint_at_span": 33,
+        "value_fails_field_type_guard": 14,
+        "severity_not_linked_to_current_episode": 25,
+        "incomplete_substance_name": 18,
+        "retracted_by_patient_correction": 24,
+        "incomplete_numeric_token": 6,
+        "invalid_or_hedged_denial_span": 2
+      }
+    },
+    "pro": {
+      "events": {
+        "raw_exact_changed_in_checker": 119,
+        "raw_exact_drop_reproduced_by_exact_reference": 119,
+        "raw_licensing_error_removed": 5
+      },
+      "raw_exact_loss_by_field": {
+        "chief_complaint": 34,
+        "duration": 19,
+        "severity": 36,
+        "allergy": 22,
+        "medication": 8
+      },
+      "raw_exact_loss_by_binder_reason": {
+        "no_clinical_complaint_at_span": 26,
+        "value_fails_field_type_guard": 14,
+        "severity_not_linked_to_current_episode": 25,
+        "incomplete_substance_name": 19,
+        "retracted_by_patient_correction": 24,
+        "incomplete_numeric_token": 6,
+        "no_field_owned_substance_at_span": 1,
+        "coexisting_multiple_substances_require_uncertain": 2,
+        "invalid_or_hedged_denial_span": 2
+      }
+    }
+  },
+  "wrong_citation_examples": {
+    "flash": [
+      {
+        "id": "prospective-02-06",
+        "field": "duration",
+        "gold": {
+          "state": "supported",
+          "quote": "a week",
+          "start": 319,
+          "end": 325
+        },
+        "selected": "one week",
+        "source_interval": [
+          258,
+          266
+        ],
+        "decoy": [
+          "retracted"
+        ]
+      }
+    ],
+    "pro": []
+  },
+  "possible_equivalent_gold_decoys": [
+    {
+      "id": "prospective-02-06",
+      "field": "duration",
+      "decoy": {
+        "field": "duration",
+        "kind": "retracted",
+        "role": "Patient",
+        "quote": "one week",
+        "start": 258,
+        "end": 266
+      },
+      "gold": {
+        "state": "supported",
+        "quote": "a week",
+        "start": 319,
+        "end": 325
+      }
+    }
+  ]
+}

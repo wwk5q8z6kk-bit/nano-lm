@@ -1,0 +1,16 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[B7-3B-Fixed] Encoded & causally shifted 473/480 stratified 32B+120B trajectories for SmolLM3-3B
+[transformers] `torch_dtype` is deprecated! Use `dtype` instead!
+Fetching 2 files:   0%|          | 0/2 [00:00<?, ?it/s]Fetching 2 files:  50%|█████     | 1/2 [00:05<00:05,  5.83s/it]Fetching 2 files: 100%|██████████| 2/2 [00:19<00:00, 10.63s/it]Fetching 2 files: 100%|██████████| 2/2 [00:19<00:00,  9.91s/it]
+Loading weights:   0%|          | 0/326 [00:00<?, ?it/s]Loading weights: 100%|██████████| 326/326 [00:00<00:00, 7943.85it/s]
+[B7-3B-Fixed] Extracted Self-Anchor SmolLM3-3B Top-64+Tail next-token logits in 44.9s
+Loading weights:   0%|          | 0/326 [00:00<?, ?it/s]Loading weights: 100%|██████████| 326/326 [00:00<00:00, 9003.32it/s]
+[B7-3B-Fixed] Self-Anchored KD+FFT epoch mean_loss=0.3483 (ce=0.4850, self_kl=0.0420) elapsed=95.9s
+Writing model shards:   0%|          | 0/1 [00:00<?, ?it/s]Writing model shards: 100%|██████████| 1/1 [00:13<00:00, 13.86s/it]Writing model shards: 100%|██████████| 1/1 [00:13<00:00, 13.86s/it]
+Loading weights:   0%|          | 0/326 [00:00<?, ?it/s]Loading weights:  37%|███▋      | 119/326 [00:00<00:00, 1184.89it/s]Loading weights:  75%|███████▍  | 244/326 [00:00<00:00, 1218.36it/s]Loading weights: 100%|██████████| 326/326 [00:00<00:00, 1263.51it/s]
+Loading weights:   0%|          | 0/326 [00:00<?, ?it/s]Loading weights: 100%|██████████| 326/326 [00:00<00:00, 10060.58it/s]
+[transformers] The attention mask is not set with a batched input, and cannot be inferred from input because pad token is same as eos token. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+[transformers] Ignoring clean_up_tokenization_spaces=True for BPE tokenizer TokenizersBackend. The clean_up_tokenization post-processing step is designed for WordPiece tokenizers and is destructive for BPE (it strips spaces before punctuation). Set clean_up_tokenization_spaces=False to suppress this warning, or set clean_up_tokenization_spaces_for_bpe_even_though_it_will_corrupt_output=True to force cleanup anyway.
+[GRPO G=8] step 45/50 reward=0.342 active=10
+Writing model shards:   0%|          | 0/1 [00:00<?, ?it/s]Writing model shards: 100%|██████████| 1/1 [00:13<00:00, 13.77s/it]Writing model shards: 100%|██████████| 1/1 [00:13<00:00, 13.77s/it]
+SAVED_NANOLM_B7_3B_FIXED /workspace/models/nanolm_b7_3b_fixed {"schema": "nanolm.trackb_phase5b_b7_3b_fixed.v1", "base_model": "HuggingFaceTB/SmolLM3-3B", "total_params": 3075098624, "active_params": 3075098624, "method": "Stratified_32B_120B_CausalShifted_SelfAnchored_Top64KL_L2Anchored_100pct_FFT_plus_G8_GRPO", "self_kd_alpha": 0.35, "mean_epoch_ce": 0.485, "mean_epoch_self_kl": 0.042, "self_kd_seconds": 44.9, "anchored_fft_seconds": 109.97, "grpo_steps": 50, "group_size": 8, "active_variance_groups": 13, "mean_reward_first_quarter": 0.2917, "mean_reward_last_quarter": 0.5625, "grpo_wall_s": 571.19, "grpo_trainable_params": 30228480}

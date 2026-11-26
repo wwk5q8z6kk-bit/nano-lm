@@ -1,0 +1,30 @@
+Processed prompts:  91%|█████████ | 11916/13103 [01:30<00:06, 184.60it/s, est. speed input: 24862.45 toks/s, output: 131.24 toks/s][A
+Processed prompts:  91%|█████████▏| 11980/13103 [01:33<00:17, 62.78it/s, est. speed input: 24267.56 toks/s, output: 128.32 toks/s] [A
+Processed prompts:  93%|█████████▎| 12173/13103 [01:33<00:06, 137.80it/s, est. speed input: 24498.73 toks/s, output: 130.22 toks/s][A
+Processed prompts:  94%|█████████▍| 12369/13103 [01:33<00:03, 235.77it/s, est. speed input: 24731.69 toks/s, output: 132.16 toks/s][A
+Processed prompts:  95%|█████████▌| 12501/13103 [01:33<00:02, 284.33it/s, est. speed input: 24841.65 toks/s, output: 133.22 toks/s][A
+Processed prompts:  96%|█████████▌| 12583/13103 [01:34<00:01, 275.27it/s, est. speed input: 24860.66 toks/s, output: 133.62 toks/s][A
+Processed prompts:  97%|█████████▋| 12648/13103 [01:34<00:01, 251.10it/s, est. speed input: 24851.54 toks/s, output: 133.81 toks/s][A
+Processed prompts:  97%|█████████▋| 12702/13103 [01:34<00:01, 227.71it/s, est. speed input: 24833.39 toks/s, output: 133.90 toks/s][A
+Processed prompts:  97%|█████████▋| 12770/13103 [01:35<00:01, 219.64it/s, est. speed input: 24830.54 toks/s, output: 134.14 toks/s][A
+Processed prompts:  98%|█████████▊| 12838/13103 [01:35<00:01, 214.43it/s, est. speed input: 24828.11 toks/s, output: 134.37 toks/s][A
+Processed prompts:  99%|█████████▊| 12907/13103 [01:35<00:00, 213.61it/s, est. speed input: 24829.12 toks/s, output: 134.64 toks/s][A
+Processed prompts:  99%|█████████▉| 12977/13103 [01:36<00:00, 211.83it/s, est. speed input: 24827.56 toks/s, output: 134.89 toks/s][A
+Processed prompts: 100%|█████████▉| 13048/13103 [01:36<00:00, 230.06it/s, est. speed input: 24849.47 toks/s, output: 135.29 toks/s][A
+Processed prompts: 100%|██████████| 13103/13103 [01:36<00:00, 230.06it/s, est. speed input: 24912.81 toks/s, output: 135.86 toks/s][AProcessed prompts: 100%|██████████| 13103/13103 [01:36<00:00, 135.86it/s, est. speed input: 24912.81 toks/s, output: 135.86 toks/s]
+Running loglikelihood requests:   0%|          | 1/13103 [01:39<361:00:58, 99.20s/it]Running loglikelihood requests:   4%|▍         | 564/13103 [01:39<25:46,  8.11it/s]  Running loglikelihood requests:  10%|▉         | 1264/13103 [01:39<08:47, 22.44it/s]Running loglikelihood requests:  16%|█▌        | 2106/13103 [01:39<03:54, 46.96it/s]Running loglikelihood requests:  24%|██▎       | 3090/13103 [01:39<01:54, 87.65it/s]Running loglikelihood requests:  31%|███▏      | 4112/13103 [01:39<01:00, 147.43it/s]Running loglikelihood requests:  40%|███▉      | 5187/13103 [01:39<00:33, 236.05it/s]Running loglikelihood requests:  48%|████▊     | 6264/13103 [01:39<00:18, 360.33it/s]Running loglikelihood requests:  56%|█████▌    | 7318/13103 [01:39<00:10, 529.07it/s]Running loglikelihood requests:  64%|██████▍   | 8420/13103 [01:40<00:06, 771.73it/s]Running loglikelihood requests:  73%|███████▎  | 9529/13103 [01:40<00:03, 1101.79it/s]Running loglikelihood requests:  82%|████████▏ | 10745/13103 [01:40<00:01, 1585.02it/s]Running loglikelihood requests:  92%|█████████▏| 12066/13103 [01:40<00:00, 2268.10it/s]Running loglikelihood requests: 100%|██████████| 13103/13103 [01:40<00:00, 130.42it/s] 
+fatal: not a git repository (or any of the parent directories): .git
+(MainProcess pid=12638) INFO 11-17 07:05:37 [utils.py:628] [shutdown] Process manager: send sigterm to process EngineCore
+(EngineCore pid=13117) INFO 11-17 07:05:37 [core.py:1698] [shutdown] EngineCore: trigger received signal=SIGTERM
+(EngineCore pid=13117) INFO 11-17 07:05:37 [core.py:1889] [shutdown] EngineCore: start mode=abort timeout=0s
+(EngineCore pid=13117) INFO 11-17 07:05:37 [core.py:1920] [shutdown] EngineCore: request processing complete; starting resource teardown
+(EngineCore pid=13117) INFO 11-17 07:05:37 [core.py:1746] [shutdown] EngineCore: exiting busy loop
+2026-11-17:07:05:39 INFO     [loggers.evaluation_tracker:247] Saving results aggregated
+vllm ({'pretrained': 'Qwen/Qwen3-1.7B', 'revision': '70d244cc86ccca08cf5af4e1e306ecf908b1ad5e', 'dtype': 'bfloat16', 'gpu_memory_utilization': 0.85, 'max_model_len': 8192, 'enable_thinking': False}), gen_kwargs: ({}), limit: None, num_fewshot: 5, batch_size: auto
+|    Tasks     |Version|Filter|n-shot| Metric |   |Value |   |Stderr|
+|--------------|------:|------|-----:|--------|---|-----:|---|-----:|
+|arc_challenge |      1|none  |     5|acc     |↑  |0.4889|±  |0.0146|
+|              |       |none  |     5|acc_norm|↑  |0.5213|±  |0.0146|
+|truthfulqa_mc2|      3|none  |     0|acc     |↑  |0.4588|±  |0.0155|
+|winogrande    |      1|none  |     5|acc     |↑  |0.6069|±  |0.0137|
+

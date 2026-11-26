@@ -1,0 +1,20 @@
+{
+  "original": "10e141081475afa6ef76b26f9350c8c5caf00635",
+  "outputs": {
+    "M0": {
+      "vocabulary_logits_compared": 2588672,
+      "max_abs": 0.0,
+      "checkpoint_sha256": "da288dea9ff7f8b909ca30eef928bf4d33d134e322adfcac4b2c942117d50a0a"
+    },
+    "M2": {
+      "vocabulary_logits_compared": 2588672,
+      "max_abs": 0.0,
+      "checkpoint_sha256": "cb7ae63f111f08cdbee0f55197730d9992d21745a7e87aaa7c04341128197d2a"
+    },
+    "S2": {
+      "vocabulary_logits_compared": 2588672,
+      "max_abs": 0.0,
+      "checkpoint_sha256": "8eaf9a4c5a94e22d85adf5f038a82190e2f287530fc8a1002cf93c372df2b6e7"
+    }
+  }
+}

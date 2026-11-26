@@ -1,0 +1,5 @@
+--arm T2_swa --tokens 600e6 --seed 0
+--arm P2_delta --tokens 600e6 --seed 0
+--arm T2_swa --tokens 600e6 --seed 1
+--arm P2_delta --tokens 600e6 --seed 1
+--arm T0_dense --tokens 600e6 --seed 0 --optim muon

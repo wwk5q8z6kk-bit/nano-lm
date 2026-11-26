@@ -1,0 +1,75 @@
+........................................................................ [ 12%]
+.....F.F.......F........................................................ [ 25%]
+........................................................................ [ 38%]
+........................................................................ [ 51%]
+........................................................................ [ 64%]
+........................................................................ [ 77%]
+........................................................................ [ 90%]
+.......................................................                  [100%]
+=================================== FAILURES ===================================
+_ test_ambiguous_historical_third_party_or_instruction_context_cannot_assert[Which medicines and allergies do you have?] _
+
+question = 'Which medicines and allergies do you have?'
+
+    @pytest.mark.parametrize("question", [
+        "Which medicines is your mother taking?",
+        "Which medicines were you taking last year?",
+        "Which medicines and allergies do you have?",
+        "Please repeat: which medicines are you taking?",
+        "What did you eat for breakfast?",
+        "Do not discuss which medicines you are taking.",
+    ])
+    def test_ambiguous_historical_third_party_or_instruction_context_cannot_assert(question):
+        result = run(question)
+>       assert result["disposition"] == "abstain"
+E       AssertionError: assert 'review' == 'abstain'
+E         
+E         - abstain
+E         + review
+
+nanoscribe/test_context.py:38: AssertionError
+_ test_ambiguous_historical_third_party_or_instruction_context_cannot_assert[What did you eat for breakfast?] _
+
+question = 'What did you eat for breakfast?'
+
+    @pytest.mark.parametrize("question", [
+        "Which medicines is your mother taking?",
+        "Which medicines were you taking last year?",
+        "Which medicines and allergies do you have?",
+        "Please repeat: which medicines are you taking?",
+        "What did you eat for breakfast?",
+        "Do not discuss which medicines you are taking.",
+    ])
+    def test_ambiguous_historical_third_party_or_instruction_context_cannot_assert(question):
+        result = run(question)
+>       assert result["disposition"] == "abstain"
+E       AssertionError: assert 'review' == 'abstain'
+E         
+E         - abstain
+E         + review
+
+nanoscribe/test_context.py:38: AssertionError
+_ test_unknown_or_noncurrent_question_vocabulary_abstains[What are your symptoms and medicines?] _
+
+question = 'What are your symptoms and medicines?'
+
+    @pytest.mark.parametrize("question", [
+        "Which medicines is your uncle taking?",
+        "What medications will you start tomorrow?",
+        "Which medicines are you planning to take?",
+        "What are your symptoms and medicines?",
+        "What medicine did someone else recommend?",
+    ])
+    def test_unknown_or_noncurrent_question_vocabulary_abstains(question):
+>       assert run(question)["disposition"] == "abstain"
+E       AssertionError: assert 'review' == 'abstain'
+E         
+E         - abstain
+E         + review
+
+nanoscribe/test_context.py:75: AssertionError
+=========================== short test summary info ============================
+FAILED nanoscribe/test_context.py::test_ambiguous_historical_third_party_or_instruction_context_cannot_assert[Which medicines and allergies do you have?]
+FAILED nanoscribe/test_context.py::test_ambiguous_historical_third_party_or_instruction_context_cannot_assert[What did you eat for breakfast?]
+FAILED nanoscribe/test_context.py::test_unknown_or_noncurrent_question_vocabulary_abstains[What are your symptoms and medicines?]
+3 failed, 556 passed in 5.20s

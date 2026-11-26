@@ -1,0 +1,157 @@
+{
+  "created_utc": "2026-10-23T23:35:14.074415+00:00",
+  "before_any_model_inference": true,
+  "independence": "Two context-isolated AI-agent annotations; not human/clinician or independent model-family validation. Root adjudicator has implementation context but has seen no scored inference outputs.",
+  "sources_sha256": "fdfc670f3ffb74aa86911a8520c5c8da336a0b1e3dbcdf3297bbd9110d848c13",
+  "annotator_hashes": {
+    "annotations_a.json": "c6e5cbee2febbc9b9affdded28399d860bb10425f628ab474729cccefcfc96f0",
+    "annotations_b.json": "b9251e1e53268cc0d0e2d55ef8a9422f2c066b4e0548fa179e6df861f9313ef9"
+  },
+  "field_count": 120,
+  "state_agreement_count": 120,
+  "state_agreement_rate": 1.0,
+  "state_cohens_kappa": 1.0,
+  "complete_span_set_agreement_count": 115,
+  "complete_span_set_agreement_rate": 0.9583333333333334,
+  "disagreements": [
+    {
+      "case_id": "fresh-05",
+      "field": "MED",
+      "state_disagreement": false,
+      "a": {
+        "state": "U",
+        "spans": [
+          "I may have, but I honestly can't remember whether I took a tablet or just got the packet out.",
+          "No, I can't say."
+        ],
+        "rationale": "The patient cannot establish whether any medication was actually taken."
+      },
+      "b": {
+        "state": "U",
+        "spans": [
+          "I may have, but I honestly can't remember whether I took a tablet or just got the packet out."
+        ],
+        "rationale": "The patient cannot establish whether any medicine was actually taken."
+      },
+      "decision": "A",
+      "reason": "Retain both independent uncertainty observations; the second response confirms unresolved recall."
+    },
+    {
+      "case_id": "fresh-11",
+      "field": "MED",
+      "state_disagreement": false,
+      "a": {
+        "state": "S",
+        "spans": [
+          "ibuprofen yesterday",
+          "Sorry, that was for a headache months ago.",
+          "No, just the ibuprofen."
+        ],
+        "rationale": "The patient explicitly reassigns aspirin to a different historical episode and identifies ibuprofen as the sole medication for this headache."
+      },
+      "b": {
+        "state": "S",
+        "spans": [
+          "ibuprofen yesterday"
+        ],
+        "rationale": "The patient explicitly corrects the aspirin attribution to an old episode and identifies ibuprofen as the only medicine for this headache."
+      },
+      "decision": "A",
+      "reason": "Retain the corrected current value first, the historical reattribution, and the exclusive-current-use confirmation."
+    },
+    {
+      "case_id": "fresh-12",
+      "field": "MED",
+      "state_disagreement": false,
+      "a": {
+        "state": "S",
+        "spans": [
+          "acetaminophen last night",
+          "I was describing how things were before yesterday.",
+          "No, that was the only one."
+        ],
+        "rationale": "The patient explicitly places the earlier nonuse before yesterday and confirms one subsequent treatment, resolving the apparent contradiction."
+      },
+      "b": {
+        "state": "S",
+        "spans": [
+          "acetaminophen last night"
+        ],
+        "rationale": "The patient resolves the initial nonuse report as referring to before yesterday and explicitly reports subsequent use for the throat."
+      },
+      "decision": "A",
+      "reason": "Retain the current value first plus explicit timing resolution and sole-medication confirmation."
+    },
+    {
+      "case_id": "fresh-16",
+      "field": "ALG",
+      "state_disagreement": false,
+      "a": {
+        "state": "U",
+        "spans": [
+          "There is one, but I can't remember whether the name was penicillin or a sulfa antibiotic.",
+          "I don't have the old card, and I would be guessing."
+        ],
+        "rationale": "The patient reports one allergy but cannot identify which of two possible drugs it involves."
+      },
+      "b": {
+        "state": "U",
+        "spans": [
+          "There is one, but I can't remember whether the name was penicillin or a sulfa antibiotic.",
+          "I would be guessing."
+        ],
+        "rationale": "The patient reports an allergy exists but explicitly cannot identify which named alternative it is."
+      },
+      "decision": "A",
+      "reason": "Retain the complete explanatory uncertainty clause rather than truncating it to its last phrase."
+    },
+    {
+      "case_id": "fresh-24",
+      "field": "MED",
+      "state_disagreement": false,
+      "a": {
+        "state": "S",
+        "spans": [
+          "I took it last night"
+        ],
+        "rationale": "The local pronoun it unambiguously refers to ibuprofen in the immediately preceding question. The patient affirms taking it; the evidence stays in patient wording rather than inventing a patient quote of the drug name."
+      },
+      "b": {
+        "state": "S",
+        "spans": [
+          "Yes, I took it last night."
+        ],
+        "rationale": "The affirmative answer and local it clearly refer to ibuprofen named in the preceding question. Patient-only evidence cannot spell out that name without inventing a quote, so the full affirmative report is retained."
+      },
+      "decision": "A",
+      "reason": "Use the shortest complete affirmed medication-use clause. Its pronoun refers to the immediately preceding clinician question; no drug name is invented in patient evidence."
+    }
+  ],
+  "additional_adjudications": [
+    {
+      "case_id": "fresh-09",
+      "field": "MED",
+      "original": {
+        "state": "C",
+        "spans": [
+          "Ibuprofen last night.",
+          "I haven't taken any medicine at all for this headache.",
+          "I'm mixing things up, and I can't settle which is right."
+        ],
+        "rationale": "Medication use and blanket nonuse concern the same headache; the patient explicitly leaves their incompatibility unresolved."
+      },
+      "adjudicated": {
+        "state": "C",
+        "spans": [
+          "Ibuprofen last night.",
+          "I haven't taken any medicine at all for this headache."
+        ],
+        "rationale": "Unresolved positive use versus blanket nonuse for the same headache. Gold C evidence is the two incompatible reports; later uncertainty confirms nonresolution but is not itself one side of the contradiction."
+      },
+      "reason": "Use only the incompatible positive/negative observations as the required gold conflict pair so a positive-plus-uncertainty pair cannot earn conflict evidence credit."
+    }
+  ],
+  "excluded_cases": [],
+  "state_changes": 0,
+  "gold_case_count": 24
+}

@@ -1,71 +1,20 @@
-# Model Research Program
+# Model research program
 
-Three layers run through all capability programs (P1–P9).
+The active research compares native NanoLM language models, starting with general-language baselines. Native weights, third-party base models after adaptation, and systems with tools each have distinct evaluation contracts.
 
-## Compute
+## Research map
 
-```text
-Original Nano
-→ trained from scratch locally on Apple Silicon
+| Lineage | Source | What can be tested |
+|---|---|---|
+| Original 3.15M native LM | Integrated `pretrain/` and `sft/` | Causal LM pretraining and alignment mechanisms at small scale. |
+| Native dense and hybrid checkpoints | Recovered experimental weights | Strict loading, tokenizer identity, common-text evaluation, throughput and memory. Check checkpoint and training provenance before relating runs. |
+| Architecture discovery | [PR 174](https://github.com/wwk5q8z6kk-bit/nano-lm/pull/174), [PR 175](https://github.com/wwk5q8z6kk-bit/nano-lm/pull/175), [PR 176](https://github.com/wwk5q8z6kk-bit/nano-lm/pull/176) | Cross-branch implementations and controlled comparisons. Similar names can represent different backbones. Use the exact revision and experiment manifest. |
+| Post-training and evaluation | [PR 171](https://github.com/wwk5q8z6kk-bit/nano-lm/pull/171) | Distinguish native model training, external-weight adaptation, verifier behavior and measured student outcomes. |
+| Foundation model research proposals | [November 17 proposal](FOUNDATION_INTELLIGENCE_PROGRAM.md) | Candidate studies and evaluation designs. Parameter targets and proposed architectures are hypotheses. |
+| Historical scribing | Integrated `nanoscribe/`, `nano_ai/` and frozen artifacts | Reproduction of the former application's scoped findings. |
 
-Current Nano research
-→ local development + Kaggle free GPU + RunPod exact-runtime compute
+## Comparisons
 
-Future deployment
-→ chosen independently from training infrastructure
-```
+Use identical scored text, context and tokenizer when possible. If tokenizers differ, account for the exact scored bytes before comparing bits per byte. Compare quality with training tokens, parameter count, wall time and memory. State known or unknown data overlap, seed count and the contribution of any external model or runtime.
 
-Kaggle and RunPod are complementary active backends. Use Kaggle when its free
-runtime fits; use RunPod for exact GPU/runtime requirements, persistent storage,
-or managed inference. Routine RunPod training is
-**ALLOWED_WITHIN_ACTIVE_EXPERIMENT_BUDGET**. Materially costly runs require
-experiment-scoped authorization; confirmatory evidential runs require prereg
-plus experiment-scoped authorization. Training venue does not determine
-deployment venue. See [ACTIVE_NOW.md](../ACTIVE_NOW.md) and
-[infrastructure/RUNPOD.md](../infrastructure/RUNPOD.md).
-
-## Integration status (this tree)
-
-Base branch: `origin/master` @ `c778520`. Paths below reflect **what exists in this checkout**.
-
-| Component | State | Canonical location (this tree) |
-|-----------|-------|--------------------------------|
-| Original 3.15M stack | **integrated** | `pretrain/`, `sft/`, `scribe/` |
-| Fabric verification | **integrated** | `fabric/` |
-| Wedge v1 | **integrated** | `wedge_v1/` |
-| Nano AI through H6 | **integrated** | `nano_ai/`, `artifacts/nano_h6/` |
-| H7-BM boundary-margin screen | **trainer locally verified / execution package next** | `research/hypotheses/H7_BOUNDARY_MARGIN.md`, `nano_ai/training/boundary_margin.py`, `nano_ai/training/train_evidence_query_h7.py`, `artifacts/nano_h7/screen-v1/` |
-| Span-port / register work | **not yet integrated** | cross-branch — source branch + commit |
-| Measurement-integrity reconciliation | **not yet integrated** | cross-branch — commit `9fe5b6b6` (evaluate separately) |
-
-H6 is terminal and rejected. Its exact result is authoritative for that
-experiment; it is not permission to rerun the one-shot evaluation. Span-port,
-P4, and CUAD work remain cross-branch until separately reviewed.
-
----
-
-## A — Mechanism models (microscopes)
-
-**Scale:** ~3M–100M from-scratch (e.g. original nano-lm trunk, `scale/`, `stage_m/`)
-
-**Purpose:** controlled experiments, architecture/objective tests, copy/retrieval/induction
-
-**Repo (integrated):** `pretrain/`, `sft/`, `scribe/`, `trajectory/`
-
-## B — Compact production models
-
-**Scale:** efficient pretrained / adapted / distilled
-
-**Integrated lineage:** `nano_ai/` through the frozen H6 decision. **Cross-branch
-lineage:** later span-port/register experiments, which are not current program
-authority.
-
-## C — Teacher / reference models
-
-Ceilings, synthetic data, judging, distillation — not default deploy.
-
-## Evidence pointers (integrated artifacts)
-
-- Paper α: `papers/latex/`, `trajectory/results_*.json`
-- E1: `trajectory/results_e1_utility.json`
-- E4: `trajectory/results_e4_utility.json`
+The [execution plan](../EXECUTION_PLAN.md) identifies which comparison to run next. The [charter](../PROJECT_CHARTER.md) defines the research objective.

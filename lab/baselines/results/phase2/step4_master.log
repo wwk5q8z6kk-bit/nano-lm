@@ -1,0 +1,9 @@
+=== 2026-11-17T21:39:59Z INSTALL VLLM + HARMONY + SYMPY ===
+ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.
+virtualenv 20.35.4 requires filelock<4,>=3.12.2, but you have filelock 4.2.11 which is incompatible.
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+=== 2026-11-17T22:00:57Z 1/4: BASE QWEN3-1.7B COMPETITIONS 1 & 2 ===
+=== 2026-11-17T22:09:26Z 2/4: QWEN3-8B COMPETITIONS 1 & 2 + 8-PILLAR ===
+=== 2026-11-17T22:45:32Z 3/4: QWEN3-32B COMPETITIONS 1 & 2 + 8-PILLAR ===
+=== 2026-11-17T23:07:02Z 4/4: OPENAI/GPT-OSS-120B (117B MoE) COMPETITIONS 1 & 2 + 8-PILLAR ===
+STEP4_ALL_COMPARATORS_COMPLETE

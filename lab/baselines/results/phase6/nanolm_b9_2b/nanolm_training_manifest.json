@@ -1,0 +1,21 @@
+{
+  "schema": "nanolm.trackb_phase6_b9_2b.v1",
+  "base_model": "Qwen/Qwen3-1.7B",
+  "total_params": 1720574976,
+  "active_params": 1720574976,
+  "method": "CausalCompleted_Stratified_32B_120B_Qwen32B_Top64KD_L2FFT_G8_GRPO_plus_WiSE_FT_0p25",
+  "kd_alpha": 0.75,
+  "wise_ft_base_weight": 0.25,
+  "causal_completion_aug_count": 66,
+  "mean_epoch_ce": 0.6176,
+  "mean_epoch_kd_kl": 0.2963,
+  "kd_seconds": 306.04,
+  "anchored_fft_seconds": 138.48,
+  "grpo_steps": 60,
+  "group_size": 8,
+  "active_variance_groups": 12,
+  "mean_reward_first_quarter": 0.2917,
+  "mean_reward_last_quarter": 0.525,
+  "grpo_wall_s": 487.02,
+  "grpo_trainable_params": 17432576
+}

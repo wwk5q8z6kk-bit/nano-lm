@@ -1,81 +1,18 @@
-# Project Charter
+# Project charter
 
-## Mission
+Build a general-purpose language model that can compete at the frontier. NanoLM's research question is how much language understanding, reasoning and adaptability its own trained weights can deliver at a given training and inference cost. Frontier capability is the objective. Establishing it requires independently reproducible comparisons against contemporary models on multiple domains.
 
-> **Build the smallest useful, reliable intelligence system that can construct a faithful representation of messy evidence, compress it without corrupting it, maintain that representation across time, and ultimately reason, plan, and act over it while preserving provenance and uncertainty.**
+## What counts as progress
 
-Nano is **not** defined by parameter count, a single benchmark, or one application.
+- Train or recover native Nano checkpoints and establish their identity, training data, tokenizer and measured behavior.
+- Compare architectures at matched data and token budgets. Report parameters, compute, memory, throughput and quality together so a change in one can be weighed against its cost.
+- Measure transfer to held-out sources and tasks. Report results for the base model, adapted model and any system using tools or retrieval separately. Teachers and external weights can supply useful comparisons.
+- Scale candidates when a repeatable improvement justifies the next experiment. Model size, architecture and deployment hardware remain research choices.
 
-## Macro-phases (strategic intent)
+## Program boundary
 
-```text
-FOUNDATION I — P1 Master Scribing
-faithful capture: "What happened?"
+NanoScribe was the prior medical application. It is outside the active research, product and compute program. Its code and evaluations remain available to reproduce historical results. A future standalone application would need its own scope and evidence. The former scribing, summarization and charting sequence places no prerequisites on general-model research.
 
-        ↓
+The original 3.15M from-scratch LM anchors the model lineage. Paper α, E1, E4 and the terminal H6/H7 decisions retain their original scientific scope. Public or explicitly licensed research data are eligible under their terms. Private owner data and PHI are outside authorization.
 
-FOUNDATION II — P2 Summarization + P3 Charting
-faithful compression + longitudinal state:
-"What matters?" · "What is the state, and how has it changed?"
-
-        ↓
-
-INTELLIGENCE EXPANSION — P4–P9
-synthesis → questioning → reasoning → planning → action → adaptation
-```
-
-The nine-program ladder ([CAPABILITY_LADDER.md](CAPABILITY_LADDER.md)) details P1–P9. Only **Foundation I** is the near-term capability frontier.
-
-## Capability-aware naming
-
-```text
-Nano Core + Medical DomainPack + P1  =  NanoScribe (faithful encounter record)
-
-Nano Core + Medical DomainPack + P1–P3
-  =  longitudinal medical documentation intelligence (not yet earned)
-
-P4–P9  =  progressively broader synthesis, reasoning, planning, action, adaptation
-```
-
-A scribe is **not** the full medical-intelligence system.
-
-## Optimization target
-
-Optimize the Pareto frontier across:
-
-```text
-capability × factual reliability × evidence grounding × controllability
-× privacy × memory × latency × compute × energy × monetary cost × human review burden
-```
-
-## Why medicine first
-
-Medical scribing is **DomainPack #1** — high-consequence, structured, measurable. Nano Core stays domain-general.
-
-## Model / software co-design
-
-> **Do not ask the model to learn what software can solve more reliably, and do not maintain brittle software for what learned representations can solve more generally.**
-
-## Compute
-
-Kaggle and RunPod are complementary active training backends: use free Kaggle
-when its runtime fits, and RunPod when exact GPU/runtime requirements,
-persistence, or managed inference justify it. Local zero-cost exploratory
-training is **ALLOWED**. Routine RunPod training is
-**ALLOWED_WITHIN_ACTIVE_EXPERIMENT_BUDGET**. Materially costly runs require
-**EXPERIMENT_SCOPED_AUTHORIZATION**. Confirmatory evidential runs require
-**PREREG + EXPERIMENT_SCOPED_AUTHORIZATION**. PHI and private owner material are
-**NOT AUTHORIZED**. Canonical: [ACTIVE_NOW.md](ACTIVE_NOW.md),
-[infrastructure/RUNPOD.md](infrastructure/RUNPOD.md).
-
-## Three research layers
-
-| Layer | Role |
-|-------|------|
-| Mechanism models | Cheap controlled experiments (3M–100M from-scratch) |
-| Compact production models | Pretrained/adapted/distilled deployable models |
-| Teacher/reference models | Ceilings, synth data, judging — not default deploy |
-
-## Historical foundation
-
-The **3.15M from-scratch LM** remains the experimental foundation. Measured kills (E1, E4) apply to **tested regimes** — see typed authority in [PROJECT_AUTHORITY.md](PROJECT_AUTHORITY.md).
+The current experiments, compute rules and evidence requirements are in the [execution plan](EXECUTION_PLAN.md) and [active state](ACTIVE_NOW.md).

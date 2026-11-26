@@ -1,0 +1,28 @@
+{
+  "device": "mps",
+  "runs": [
+    {
+      "arm": "m21",
+      "tokens_per_second": 10725.209006367264
+    },
+    {
+      "arm": "gqa",
+      "tokens_per_second": 56428.01351686465
+    },
+    {
+      "arm": "m21",
+      "tokens_per_second": 10648.235359893519
+    },
+    {
+      "arm": "gqa",
+      "tokens_per_second": 56502.41672161803
+    }
+  ],
+  "mean_tokens_per_second": {
+    "m21": 10686.72218313039,
+    "gqa": 56465.215119241344
+  },
+  "ratio": 5.283679518531412,
+  "dense_updates": 21100,
+  "torch": "2.11.0"
+}

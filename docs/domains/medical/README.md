@@ -1,8 +1,8 @@
 # Medical DomainPack
 
-Medicine is **DomainPack #1** — the first proving ground for Nano Core, not the permanent boundary of the program.
+This directory records NanoScribe, the former medical application. Its protocol and naming are preserved for reproduction. General-model research follows the [project charter](../../PROJECT_CHARTER.md).
 
-## Why medical first
+## Why the earlier program used medicine
 
 High-consequence, structured, measurable errors force mastery of:
 

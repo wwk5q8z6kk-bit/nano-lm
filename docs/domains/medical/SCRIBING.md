@@ -1,5 +1,7 @@
 # P1 — Master Scribing (Medical)
 
+Historical application specification. NanoScribe is outside the active NanoLM research program.
+
 ## Target pipeline
 
 ```text
@@ -49,9 +51,9 @@ Synthetic/mock benchmark success alone is insufficient.
 
 `scribe/` stages (v1/v2, G, A, C, S) and Paper α inform design — see [FAILURE_TO_ARCHITECTURE.md](../../FAILURE_TO_ARCHITECTURE.md).
 
-E1 KILL applies to the **old closed generative-substrate claim** on the old task — not to abandoning P1 scribing as the current capability frontier.
+E1 KILL applies to the old closed generative-substrate claim on the tested task.
 
-## Immediate engineering focus
+## Engineering focus of the former application
 
 1. Encounter representation schema (entity/event/evidence refs)
 2. Span/evidence bottleneck

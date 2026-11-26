@@ -1,0 +1,101 @@
+{
+  "all-missing": {
+    "fields": 220,
+    "exact": 131,
+    "expected_assertions": 89,
+    "exact_assertions": 0,
+    "emitted": 0,
+    "overclaims": 0,
+    "omissions": 89
+  },
+  "direct-reader/finetuned": {
+    "fields": 220,
+    "exact": 189,
+    "expected_assertions": 89,
+    "exact_assertions": 58,
+    "emitted": 61,
+    "overclaims": 0,
+    "omissions": 28
+  },
+  "direct-reader/pretrained": {
+    "fields": 220,
+    "exact": 142,
+    "expected_assertions": 89,
+    "exact_assertions": 13,
+    "emitted": 16,
+    "overclaims": 2,
+    "omissions": 75
+  },
+  "first-assertion": {
+    "fields": 220,
+    "exact": 193,
+    "expected_assertions": 89,
+    "exact_assertions": 65,
+    "emitted": 81,
+    "overclaims": 3,
+    "omissions": 11
+  },
+  "oracle": {
+    "fields": 220,
+    "exact": 198,
+    "expected_assertions": 89,
+    "exact_assertions": 67,
+    "emitted": 67,
+    "overclaims": 0,
+    "omissions": 22
+  },
+  "qwen-1.5b/base": {
+    "fields": 220,
+    "exact": 189,
+    "expected_assertions": 89,
+    "exact_assertions": 61,
+    "emitted": 81,
+    "overclaims": 3,
+    "omissions": 11
+  },
+  "qwen-1.5b/learned": {
+    "fields": 220,
+    "exact": 191,
+    "expected_assertions": 89,
+    "exact_assertions": 63,
+    "emitted": 81,
+    "overclaims": 3,
+    "omissions": 11
+  },
+  "qwen-7b-lora/slate-adapter": {
+    "fields": 220,
+    "exact": 187,
+    "expected_assertions": 89,
+    "exact_assertions": 58,
+    "emitted": 74,
+    "overclaims": 2,
+    "omissions": 17
+  },
+  "qwen-7b-lora/slate-base": {
+    "fields": 220,
+    "exact": 186,
+    "expected_assertions": 89,
+    "exact_assertions": 58,
+    "emitted": 76,
+    "overclaims": 3,
+    "omissions": 16
+  },
+  "qwen-7b/base": {
+    "fields": 220,
+    "exact": 190,
+    "expected_assertions": 89,
+    "exact_assertions": 62,
+    "emitted": 81,
+    "overclaims": 3,
+    "omissions": 11
+  },
+  "qwen-7b/learned": {
+    "fields": 220,
+    "exact": 190,
+    "expected_assertions": 89,
+    "exact_assertions": 60,
+    "emitted": 75,
+    "overclaims": 1,
+    "omissions": 15
+  }
+}

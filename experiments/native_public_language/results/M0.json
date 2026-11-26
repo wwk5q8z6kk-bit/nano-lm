@@ -1,0 +1,112 @@
+{
+  "arm": "M0",
+  "checkpoint_sha256": "da288dea9ff7f8b909ca30eef928bf4d33d134e322adfcac4b2c942117d50a0a",
+  "checks": {
+    "native_fp32_vs_fp64_mean_abs": 1.9842175233986126e-05,
+    "native_mean_loss_abs": 0.0,
+    "prefix_logit_max_abs": 1.52587890625e-05,
+    "single_token_loss_abs": 5.828670879282072e-15
+  },
+  "device": "cpu",
+  "dtype": "float32",
+  "parameters": 348966912,
+  "rows": {
+    "fed-0129": {
+      "ordered_bits": 3982.723353206928,
+      "shuffled_bits": 9064.53752436207
+    },
+    "fed-0319": {
+      "ordered_bits": 3885.586697280838,
+      "shuffled_bits": 8799.741554928087
+    },
+    "fed-0507": {
+      "ordered_bits": 3509.7938646378843,
+      "shuffled_bits": 7863.774398481281
+    },
+    "fed-0618": {
+      "ordered_bits": 3843.367202768794,
+      "shuffled_bits": 8780.558735991544
+    },
+    "fed-0730": {
+      "ordered_bits": 3439.0243182232393,
+      "shuffled_bits": 7614.1090036458445
+    },
+    "fed-0917": {
+      "ordered_bits": 3572.5593423944892,
+      "shuffled_bits": 8400.061947426628
+    },
+    "fed-1029": {
+      "ordered_bits": 3485.869232993625,
+      "shuffled_bits": 7681.998282868195
+    },
+    "fed-1210": {
+      "ordered_bits": 3494.5919836775693,
+      "shuffled_bits": 7580.861176498583
+    },
+    "law-1": {
+      "ordered_bits": 4972.278566706809,
+      "shuffled_bits": 12009.487944129707
+    },
+    "law-2": {
+      "ordered_bits": 522.7729996275797,
+      "shuffled_bits": 1319.4864717574287
+    },
+    "law-3": {
+      "ordered_bits": 425.7260878198101,
+      "shuffled_bits": 969.2233321804385
+    },
+    "law-4": {
+      "ordered_bits": 4393.786680118914,
+      "shuffled_bits": 11691.45924006782
+    },
+    "law-5": {
+      "ordered_bits": 548.4549113292862,
+      "shuffled_bits": 1187.7083609528167
+    },
+    "law-6": {
+      "ordered_bits": 493.34385160239884,
+      "shuffled_bits": 1094.4097955230402
+    },
+    "law-7": {
+      "ordered_bits": 474.76806441335543,
+      "shuffled_bits": 1126.1764607094149
+    },
+    "law-8": {
+      "ordered_bits": 530.9795313788186,
+      "shuffled_bits": 1264.5206546247243
+    },
+    "weather-al01": {
+      "ordered_bits": 1302.7916561435175,
+      "shuffled_bits": 2715.9671077548187
+    },
+    "weather-al02": {
+      "ordered_bits": 1800.6250062206204,
+      "shuffled_bits": 3760.424097069891
+    },
+    "weather-al03": {
+      "ordered_bits": 4976.46351297323,
+      "shuffled_bits": 9708.845277541332
+    },
+    "weather-al04": {
+      "ordered_bits": 2973.1999436115984,
+      "shuffled_bits": 5990.3888412642655
+    },
+    "weather-al05": {
+      "ordered_bits": 3120.3946644749726,
+      "shuffled_bits": 6805.062344527812
+    },
+    "weather-al06": {
+      "ordered_bits": 1953.4044126136782,
+      "shuffled_bits": 3921.4410767757386
+    },
+    "weather-al07": {
+      "ordered_bits": 2732.3330518266343,
+      "shuffled_bits": 5089.142872360645
+    },
+    "weather-al08": {
+      "ordered_bits": 2134.674184569614,
+      "shuffled_bits": 4260.160613468188
+    }
+  },
+  "torch": "2.11.0"
+}

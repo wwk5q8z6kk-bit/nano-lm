@@ -1,0 +1,30 @@
+Processed prompts:  94%|█████████▎| 12266/13103 [03:00<00:08, 98.91it/s, est. speed input: 12398.69 toks/s, output: 67.97 toks/s][A
+Processed prompts:  94%|█████████▍| 12332/13103 [03:01<00:07, 98.46it/s, est. speed input: 12397.23 toks/s, output: 68.08 toks/s][A
+Processed prompts:  95%|█████████▍| 12399/13103 [03:01<00:07, 98.59it/s, est. speed input: 12396.36 toks/s, output: 68.19 toks/s][A
+Processed prompts:  95%|█████████▌| 12466/13103 [03:02<00:06, 97.88it/s, est. speed input: 12393.91 toks/s, output: 68.30 toks/s][A
+Processed prompts:  96%|█████████▌| 12533/13103 [03:03<00:05, 99.30it/s, est. speed input: 12394.27 toks/s, output: 68.42 toks/s][A
+Processed prompts:  96%|█████████▌| 12601/13103 [03:03<00:05, 100.27it/s, est. speed input: 12394.34 toks/s, output: 68.54 toks/s][A
+Processed prompts:  97%|█████████▋| 12669/13103 [03:04<00:04, 100.84it/s, est. speed input: 12393.92 toks/s, output: 68.66 toks/s][A
+Processed prompts:  97%|█████████▋| 12738/13103 [03:05<00:03, 100.96it/s, est. speed input: 12392.91 toks/s, output: 68.78 toks/s][A
+Processed prompts:  98%|█████████▊| 12807/13103 [03:05<00:02, 100.96it/s, est. speed input: 12391.37 toks/s, output: 68.90 toks/s][A
+Processed prompts:  98%|█████████▊| 12876/13103 [03:06<00:02, 102.15it/s, est. speed input: 12391.23 toks/s, output: 69.03 toks/s][A
+Processed prompts:  99%|█████████▉| 12947/13103 [03:07<00:01, 102.90it/s, est. speed input: 12390.51 toks/s, output: 69.16 toks/s][A
+Processed prompts:  99%|█████████▉| 13018/13103 [03:07<00:00, 104.82it/s, est. speed input: 12391.19 toks/s, output: 69.30 toks/s][A
+Processed prompts: 100%|█████████▉| 13091/13103 [03:07<00:00, 142.48it/s, est. speed input: 12427.89 toks/s, output: 69.65 toks/s][A
+Processed prompts: 100%|██████████| 13103/13103 [03:07<00:00, 142.48it/s, est. speed input: 12434.68 toks/s, output: 69.71 toks/s][AProcessed prompts: 100%|██████████| 13103/13103 [03:07<00:00, 69.71it/s, est. speed input: 12434.68 toks/s, output: 69.71 toks/s] 
+Running loglikelihood requests:   0%|          | 1/13103 [03:11<696:17:19, 191.32s/it]Running loglikelihood requests:   5%|▌         | 672/13103 [03:11<41:20,  5.01it/s]   Running loglikelihood requests:  12%|█▏        | 1619/13103 [03:11<12:41, 15.09it/s]Running loglikelihood requests:  21%|██        | 2692/13103 [03:11<05:31, 31.36it/s]Running loglikelihood requests:  30%|██▉       | 3872/13103 [03:11<02:42, 56.84it/s]Running loglikelihood requests:  39%|███▉      | 5146/13103 [03:11<01:22, 95.95it/s]Running loglikelihood requests:  49%|████▉     | 6465/13103 [03:11<00:43, 153.37it/s]Running loglikelihood requests:  60%|█████▉    | 7819/13103 [03:12<00:22, 236.72it/s]Running loglikelihood requests:  70%|███████   | 9197/13103 [03:12<00:10, 356.11it/s]Running loglikelihood requests:  80%|████████  | 10483/13103 [03:12<00:05, 510.82it/s]Running loglikelihood requests:  89%|████████▉ | 11724/13103 [03:12<00:01, 717.59it/s]Running loglikelihood requests: 100%|██████████| 13103/13103 [03:12<00:00, 68.09it/s] 
+fatal: not a git repository (or any of the parent directories): .git
+(MainProcess pid=62842) INFO 11-17 08:02:11 [utils.py:628] [shutdown] Process manager: send sigterm to process EngineCore
+(EngineCore pid=63094) INFO 11-17 08:02:11 [core.py:1698] [shutdown] EngineCore: trigger received signal=SIGTERM
+(EngineCore pid=63094) INFO 11-17 08:02:11 [core.py:1889] [shutdown] EngineCore: start mode=abort timeout=0s
+(EngineCore pid=63094) INFO 11-17 08:02:11 [core.py:1920] [shutdown] EngineCore: request processing complete; starting resource teardown
+(EngineCore pid=63094) INFO 11-17 08:02:11 [core.py:1746] [shutdown] EngineCore: exiting busy loop
+2026-11-17:08:02:13 INFO     [loggers.evaluation_tracker:247] Saving results aggregated
+vllm ({'pretrained': 'microsoft/Phi-4-mini-instruct', 'revision': 'cfbefacb99257ffa30c83adab238a50856ac3083', 'dtype': 'bfloat16', 'gpu_memory_utilization': 0.85, 'max_model_len': 8192, 'enable_thinking': False}), gen_kwargs: ({}), limit: None, num_fewshot: 5, batch_size: auto
+|    Tasks     |Version|Filter|n-shot| Metric |   |Value |   |Stderr|
+|--------------|------:|------|-----:|--------|---|-----:|---|-----:|
+|arc_challenge |      1|none  |     5|acc     |↑  |0.5435|±  |0.0146|
+|              |       |none  |     5|acc_norm|↑  |0.5759|±  |0.0144|
+|truthfulqa_mc2|      3|none  |     0|acc     |↑  |0.4829|±  |0.0149|
+|winogrande    |      1|none  |     5|acc     |↑  |0.7364|±  |0.0124|
+

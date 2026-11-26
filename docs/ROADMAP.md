@@ -1,6 +1,6 @@
 # Roadmap
 
-One developmental arc — not contradictory projects.
+The current objective is a general-purpose frontier model.
 
 ## Narrative arc
 
@@ -16,7 +16,8 @@ One developmental arc — not contradictory projects.
 → Wedge v1 (local verified document intelligence)
 → pretrained transfer / span grounding (H6 program)
 → Nano Core + capability ladder (this docs reset)
-→ P1 Master Scribing (current frontier)
+→ P1 scribing application (historical)
+→ general-purpose language model research (current)
 ```
 
 ## What history taught (compressed)
@@ -31,30 +32,8 @@ One developmental arc — not contradictory projects.
 | E4 | On **tested R★**, classical still wins — generative+verify track STOP for that regime |
 | Wedge | Classical-first local document intelligence works; LM probe not indicated on current snapshots; over-abstention is a product failure class |
 
-**Invalid assumption to retire:** "Nano = 3.15M LM" or "Nano = Wedge only" or "one generative model is the system."
+## Current milestones
 
-**Surviving architecture:** compact models + retrieval + memory + schemas + verifiers + routing + human review.
+Recover and measure the native checkpoints, compare candidate architectures at matched budgets, then scale or adapt the candidate that survives replication. The [execution plan](EXECUTION_PLAN.md) defines the measurements and decisions. Model and systems results have separate evidence requirements.
 
-## Phase map (forward)
-
-| Phase | Focus | Status |
-|-------|-------|--------|
-| **0 — Evidence foundation** | Paper α, E1/E3/E4, freeze tags | Done (protected) |
-| **1 — Doc authority reset** | `docs/` canonical tree, README rewrite | **In progress** |
-| **2 — P1 scribe evidence** | Encounter representation, span bottleneck, external eval design | Next engineering |
-| **3 — P1 scribe mastery** | Exit gate: metrics + blinded human eval | Gated |
-| **4 — P2 summarization** | Hierarchical compression over verified state | Spec only until P1 exit |
-| **5 — P3 charting** | Longitudinal identity and timelines | Spec only until P1 exit |
-| **6+ — P4–P9** | Synthesis → adaptation | Architectural requirements only |
-
-## What we are not doing now
-
-- Re-running E1 on the old task
-- Claiming clinical validation from mock/synthetic benchmarks alone
-- Treating RunPod training as globally unauthorized (backend is active; costly/confirmatory runs stay experiment-scoped)
-- Uploading PHI / private clinical data to RunPod
-- Merging doc reset to `master` without owner review
-
-## Historical documents
-
-See [archive/LEGACY_STRATEGY_INDEX.md](archive/LEGACY_STRATEGY_INDEX.md).
+[Earlier scribing program](https://github.com/wwk5q8z6kk-bit/nano-lm/blob/46c65f0044e81ac73251e18a5a7d69a7299a8079/docs/ROADMAP.md)

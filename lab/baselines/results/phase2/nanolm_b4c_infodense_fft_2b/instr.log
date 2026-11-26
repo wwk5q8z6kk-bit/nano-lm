@@ -1,0 +1,25 @@
+Processed prompts:  85%|████████▌ | 460/541 [00:04<00:01, 41.79it/s, est. speed input: 5813.54 toks/s, output: 23772.33 toks/s][A
+Processed prompts:  86%|████████▌ | 465/541 [00:04<00:02, 33.34it/s, est. speed input: 5555.11 toks/s, output: 23321.25 toks/s][A
+Processed prompts:  87%|████████▋ | 469/541 [00:05<00:02, 28.04it/s, est. speed input: 5344.02 toks/s, output: 22926.37 toks/s][A
+Processed prompts:  87%|████████▋ | 473/541 [00:05<00:03, 21.68it/s, est. speed input: 5063.89 toks/s, output: 22206.53 toks/s][A
+Processed prompts:  88%|████████▊ | 476/541 [00:05<00:03, 18.20it/s, est. speed input: 4848.78 toks/s, output: 21652.43 toks/s][A
+Processed prompts:  89%|████████▊ | 479/541 [00:05<00:03, 16.66it/s, est. speed input: 4683.71 toks/s, output: 21320.42 toks/s][A
+Processed prompts:  89%|████████▉ | 481/541 [00:06<00:06,  8.88it/s, est. speed input: 4184.78 toks/s, output: 19318.22 toks/s][A
+Processed prompts:  89%|████████▉ | 483/541 [00:06<00:06,  9.21it/s, est. speed input: 4100.71 toks/s, output: 19172.50 toks/s][A
+Processed prompts: 100%|██████████| 541/541 [00:06<00:00,  9.21it/s, est. speed input: 4565.96 toks/s, output: 29882.70 toks/s][AProcessed prompts: 100%|██████████| 541/541 [00:06<00:00, 78.19it/s, est. speed input: 4565.96 toks/s, output: 29882.70 toks/s]
+Running generate_until requests:   0%|          | 1/541 [00:07<1:03:06,  7.01s/it]Running generate_until requests: 100%|██████████| 541/541 [00:07<00:00, 77.15it/s]
+fatal: not a git repository (or any of the parent directories): .git
+(MainProcess pid=30489) INFO 11-17 20:36:25 [utils.py:628] [shutdown] Process manager: send sigterm to process EngineCore
+(EngineCore pid=30771) INFO 11-17 20:36:25 [core.py:1698] [shutdown] EngineCore: trigger received signal=SIGTERM
+(EngineCore pid=30771) INFO 11-17 20:36:25 [core.py:1889] [shutdown] EngineCore: start mode=abort timeout=0s
+(EngineCore pid=30771) INFO 11-17 20:36:25 [core.py:1920] [shutdown] EngineCore: request processing complete; starting resource teardown
+(EngineCore pid=30771) INFO 11-17 20:36:25 [core.py:1746] [shutdown] EngineCore: exiting busy loop
+2026-11-17:20:36:26 INFO     [loggers.evaluation_tracker:247] Saving results aggregated
+vllm ({'pretrained': '/workspace/models/nanolm_b4c_infodense_fft_2b', 'dtype': 'bfloat16', 'gpu_memory_utilization': 0.85, 'max_model_len': 8192, 'enable_thinking': False}), gen_kwargs: ({'max_gen_toks': 1280, 'temperature': 0}), limit: None, num_fewshot: None, batch_size: auto
+|Tasks |Version|Filter|n-shot|        Metric         |   |Value |   |Stderr|
+|------|------:|------|-----:|-----------------------|---|-----:|---|------|
+|ifeval|      4|none  |     0|inst_level_loose_acc   |↑  |0.7674|±  |   N/A|
+|      |       |none  |     0|inst_level_strict_acc  |↑  |0.7362|±  |   N/A|
+|      |       |none  |     0|prompt_level_loose_acc |↑  |0.6858|±  |0.0200|
+|      |       |none  |     0|prompt_level_strict_acc|↑  |0.6562|±  |0.0204|
+

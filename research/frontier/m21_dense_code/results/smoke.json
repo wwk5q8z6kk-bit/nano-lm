@@ -1,0 +1,22 @@
+{
+  "training_windows_per_seed": 32000,
+  "offsets": {
+    "0": "465c1bf89c8b6feca9a53d4bd37baa708fdebf50e29c55fb4796faaee876ba07",
+    "1": "e3541709413eb2fcdbecebb919e5ccb9a8eaecb738e26ca588a4dd2279739703",
+    "2": "0da0824449a4485b6812d03d91e68961bc1e7385691a710fbb5ae582cde7b844"
+  },
+  "models": {
+    "m21": {
+      "parameters": 5046637,
+      "step1_loss": 9.540775299072266,
+      "prefix_max_delta": 0.0
+    },
+    "gqa": {
+      "parameters": 5046656,
+      "step1_loss": 10.456414222717285,
+      "prefix_max_delta": 0.0
+    }
+  },
+  "dense_original_cpu_state_logits_gradients_equal": true,
+  "validation_optimizer_or_model_calls": 0
+}

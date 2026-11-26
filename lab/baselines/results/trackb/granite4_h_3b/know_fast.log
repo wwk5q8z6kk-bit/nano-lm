@@ -1,0 +1,30 @@
+Processed prompts:  94%|█████████▎| 12276/13103 [02:55<00:08, 97.84it/s, est. speed input: 12765.06 toks/s, output: 69.84 toks/s][A
+Processed prompts:  94%|█████████▍| 12341/13103 [02:56<00:07, 97.41it/s, est. speed input: 12762.34 toks/s, output: 69.94 toks/s][A
+Processed prompts:  95%|█████████▍| 12406/13103 [02:57<00:07, 98.04it/s, est. speed input: 12760.87 toks/s, output: 70.05 toks/s][A
+Processed prompts:  95%|█████████▌| 12472/13103 [02:57<00:06, 98.72it/s, est. speed input: 12759.69 toks/s, output: 70.16 toks/s][A
+Processed prompts:  96%|█████████▌| 12538/13103 [02:58<00:05, 98.78it/s, est. speed input: 12757.52 toks/s, output: 70.27 toks/s][A
+Processed prompts:  96%|█████████▌| 12604/13103 [02:59<00:05, 98.42it/s, est. speed input: 12754.46 toks/s, output: 70.37 toks/s][A
+Processed prompts:  97%|█████████▋| 12671/13103 [02:59<00:04, 100.07it/s, est. speed input: 12754.25 toks/s, output: 70.49 toks/s][A
+Processed prompts:  97%|█████████▋| 12738/13103 [03:00<00:03, 100.38it/s, est. speed input: 12752.37 toks/s, output: 70.61 toks/s][A
+Processed prompts:  98%|█████████▊| 12805/13103 [03:01<00:02, 101.00it/s, est. speed input: 12750.90 toks/s, output: 70.72 toks/s][A
+Processed prompts:  98%|█████████▊| 12873/13103 [03:01<00:02, 101.18it/s, est. speed input: 12748.64 toks/s, output: 70.83 toks/s][A
+Processed prompts:  99%|█████████▉| 12942/13103 [03:02<00:01, 101.38it/s, est. speed input: 12746.01 toks/s, output: 70.95 toks/s][A
+Processed prompts:  99%|█████████▉| 13012/13103 [03:03<00:00, 102.59it/s, est. speed input: 12744.35 toks/s, output: 71.07 toks/s][A
+Processed prompts: 100%|█████████▉| 13084/13103 [03:03<00:00, 136.82it/s, est. speed input: 12779.41 toks/s, output: 71.41 toks/s][A
+Processed prompts: 100%|██████████| 13103/13103 [03:03<00:00, 136.82it/s, est. speed input: 12790.72 toks/s, output: 71.52 toks/s][AProcessed prompts: 100%|██████████| 13103/13103 [03:03<00:00, 71.52it/s, est. speed input: 12790.72 toks/s, output: 71.52 toks/s] 
+Running loglikelihood requests:   0%|          | 1/13103 [03:05<675:15:00, 185.54s/it]Running loglikelihood requests:   4%|▎         | 477/13103 [03:05<57:22,  3.67it/s]   Running loglikelihood requests:   9%|▊         | 1119/13103 [03:05<18:38, 10.71it/s]Running loglikelihood requests:  13%|█▎        | 1743/13103 [03:05<09:15, 20.47it/s]Running loglikelihood requests:  19%|█▊        | 2449/13103 [03:05<04:54, 36.18it/s]Running loglikelihood requests:  25%|██▍       | 3249/13103 [03:06<02:40, 61.49it/s]Running loglikelihood requests:  31%|███▏      | 4126/13103 [03:06<01:29, 100.86it/s]Running loglikelihood requests:  39%|███▉      | 5095/13103 [03:06<00:49, 162.38it/s]Running loglikelihood requests:  47%|████▋     | 6107/13103 [03:06<00:27, 252.82it/s]Running loglikelihood requests:  55%|█████▌    | 7269/13103 [03:06<00:14, 398.42it/s]Running loglikelihood requests:  66%|██████▌   | 8627/13103 [03:06<00:07, 635.28it/s]Running loglikelihood requests:  74%|███████▍  | 9719/13103 [03:06<00:03, 892.68it/s]Running loglikelihood requests:  83%|████████▎ | 10811/13103 [03:06<00:01, 1238.29it/s]Running loglikelihood requests:  93%|█████████▎| 12216/13103 [03:06<00:00, 1840.11it/s]Running loglikelihood requests: 100%|██████████| 13103/13103 [03:06<00:00, 70.11it/s]  
+fatal: not a git repository (or any of the parent directories): .git
+(MainProcess pid=46193) INFO 11-17 07:43:46 [utils.py:628] [shutdown] Process manager: send sigterm to process EngineCore
+(EngineCore pid=46443) INFO 11-17 07:43:46 [core.py:1698] [shutdown] EngineCore: trigger received signal=SIGTERM
+(EngineCore pid=46443) INFO 11-17 07:43:46 [core.py:1889] [shutdown] EngineCore: start mode=abort timeout=0s
+(EngineCore pid=46443) INFO 11-17 07:43:46 [core.py:1920] [shutdown] EngineCore: request processing complete; starting resource teardown
+(EngineCore pid=46443) INFO 11-17 07:43:46 [core.py:1746] [shutdown] EngineCore: exiting busy loop
+2026-11-17:07:43:48 INFO     [loggers.evaluation_tracker:247] Saving results aggregated
+vllm ({'pretrained': 'ibm-granite/granite-4.0-h-micro', 'revision': 'd5f01a3ea75f088947be3aae039f4ad52837dfde', 'dtype': 'bfloat16', 'gpu_memory_utilization': 0.85, 'max_model_len': 8192, 'enable_thinking': False}), gen_kwargs: ({}), limit: None, num_fewshot: 5, batch_size: auto
+|    Tasks     |Version|Filter|n-shot| Metric |   |Value |   |Stderr|
+|--------------|------:|------|-----:|--------|---|-----:|---|-----:|
+|arc_challenge |      1|none  |     5|acc     |↑  |0.6246|±  |0.0142|
+|              |       |none  |     5|acc_norm|↑  |0.6553|±  |0.0139|
+|truthfulqa_mc2|      3|none  |     0|acc     |↑  |0.5812|±  |0.0155|
+|winogrande    |      1|none  |     5|acc     |↑  |0.7159|±  |0.0127|
+

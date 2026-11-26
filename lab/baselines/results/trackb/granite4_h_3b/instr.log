@@ -1,0 +1,30 @@
+Processed prompts:  96%|█████████▌| 519/541 [00:59<00:02,  9.02it/s, est. speed input: 669.31 toks/s, output: 2765.90 toks/s][A
+Processed prompts:  96%|█████████▋| 521/541 [00:59<00:03,  5.44it/s, est. speed input: 665.14 toks/s, output: 2773.74 toks/s][A
+Processed prompts:  97%|█████████▋| 526/541 [01:00<00:01,  8.03it/s, est. speed input: 668.71 toks/s, output: 2865.36 toks/s][A
+Processed prompts:  98%|█████████▊| 528/541 [01:00<00:01,  8.58it/s, est. speed input: 669.02 toks/s, output: 2897.87 toks/s][A
+Processed prompts:  98%|█████████▊| 530/541 [01:01<00:02,  4.75it/s, est. speed input: 659.87 toks/s, output: 2886.45 toks/s][A
+Processed prompts:  98%|█████████▊| 531/541 [01:01<00:02,  4.15it/s, est. speed input: 656.20 toks/s, output: 2883.20 toks/s][A
+Processed prompts:  98%|█████████▊| 532/541 [01:01<00:02,  4.43it/s, est. speed input: 655.63 toks/s, output: 2896.74 toks/s][A
+Processed prompts:  99%|█████████▊| 533/541 [01:02<00:01,  4.04it/s, est. speed input: 653.13 toks/s, output: 2901.60 toks/s][A
+Processed prompts:  99%|█████████▉| 535/541 [01:02<00:01,  4.09it/s, est. speed input: 650.02 toks/s, output: 2917.56 toks/s][A
+Processed prompts:  99%|█████████▉| 537/541 [01:02<00:00,  5.44it/s, est. speed input: 650.51 toks/s, output: 2949.94 toks/s][A
+Processed prompts:  99%|█████████▉| 538/541 [01:03<00:00,  4.14it/s, est. speed input: 646.56 toks/s, output: 2947.82 toks/s][A
+Processed prompts: 100%|█████████▉| 540/541 [01:04<00:00,  3.50it/s, est. speed input: 641.06 toks/s, output: 2954.24 toks/s][A
+Processed prompts: 100%|██████████| 541/541 [01:04<00:00,  2.82it/s, est. speed input: 635.69 toks/s, output: 2945.41 toks/s][A
+Processed prompts: 100%|██████████| 541/541 [01:04<00:00,  2.82it/s, est. speed input: 635.69 toks/s, output: 2945.41 toks/s][AProcessed prompts: 100%|██████████| 541/541 [01:04<00:00,  8.37it/s, est. speed input: 635.69 toks/s, output: 2945.41 toks/s]
+Running generate_until requests:   0%|          | 1/541 [01:05<9:48:20, 65.37s/it]Running generate_until requests: 100%|██████████| 541/541 [01:05<00:00,  8.28it/s]
+fatal: not a git repository (or any of the parent directories): .git
+(MainProcess pid=47157) INFO 11-17 07:50:41 [utils.py:628] [shutdown] Process manager: send sigterm to process EngineCore
+(EngineCore pid=47408) INFO 11-17 07:50:41 [core.py:1698] [shutdown] EngineCore: trigger received signal=SIGTERM
+(EngineCore pid=47408) INFO 11-17 07:50:41 [core.py:1889] [shutdown] EngineCore: start mode=abort timeout=0s
+(EngineCore pid=47408) INFO 11-17 07:50:41 [core.py:1920] [shutdown] EngineCore: request processing complete; starting resource teardown
+(EngineCore pid=47408) INFO 11-17 07:50:41 [core.py:1746] [shutdown] EngineCore: exiting busy loop
+2026-11-17:07:50:43 INFO     [loggers.evaluation_tracker:247] Saving results aggregated
+vllm ({'pretrained': 'ibm-granite/granite-4.0-h-micro', 'revision': 'd5f01a3ea75f088947be3aae039f4ad52837dfde', 'dtype': 'bfloat16', 'gpu_memory_utilization': 0.85, 'max_model_len': 8192, 'enable_thinking': False}), gen_kwargs: ({'max_gen_toks': 1280, 'temperature': 0}), limit: None, num_fewshot: None, batch_size: auto
+|Tasks |Version|Filter|n-shot|        Metric         |   |Value |   |Stderr|
+|------|------:|------|-----:|-----------------------|---|-----:|---|------|
+|ifeval|      4|none  |     0|inst_level_loose_acc   |↑  |0.8777|±  |   N/A|
+|      |       |none  |     0|inst_level_strict_acc  |↑  |0.8585|±  |   N/A|
+|      |       |none  |     0|prompt_level_loose_acc |↑  |0.8189|±  |0.0166|
+|      |       |none  |     0|prompt_level_strict_acc|↑  |0.7967|±  |0.0173|
+

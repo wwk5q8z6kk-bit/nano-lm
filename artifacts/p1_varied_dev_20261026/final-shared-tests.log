@@ -1,0 +1,52 @@
+........................................................................ [ 12%]
+........................................................................ [ 24%]
+........................................................................ [ 37%]
+........................................................................ [ 49%]
+................................................F.....F................. [ 62%]
+........................................................................ [ 74%]
+........................................................................ [ 87%]
+........................................................................ [ 99%]
+...                                                                      [100%]
+=================================== FAILURES ===================================
+_ test_supported_clause_survives_separate_uncertainty_and_review_text[What symptoms?-I have wrist stiffness. I am not sure how long it has lasted.-CC-wrist stiffness-0] _
+
+question = 'What symptoms?'
+reply = 'I have wrist stiffness. I am not sure how long it has lasted.'
+label = 'CC', value = 'wrist stiffness', index = 0
+
+    @pytest.mark.parametrize('question,reply,label,value,index', [
+        ('When did it start?', 'It started six days ago. I remember the date.', 'DUR', 'six days', 1),
+        ('When did it start?', 'It started six days ago. I cannot identify the tablet I tried.', 'DUR', 'six days', 1),
+        ('How intense?', "It is moderate. That's all.", 'SEV', 'moderate', 2),
+        ('Which medicine did you try?', 'I took naproxen today. Thanks.', 'MED', 'naproxen', 3),
+        ('Which medicine did you try?', 'I used ibuprofen this morning. I cannot rate the pain.', 'MED', 'ibuprofen', 3),
+        ('Any allergies?', 'Latex gives me hives. Thank you.', 'ALG', 'Latex', 4),
+        ('What symptoms?', 'I have wrist stiffness. I am not sure how long it has lasted.', 'CC', 'wrist stiffness', 0),
+    ])
+    def test_supported_clause_survives_separate_uncertainty_and_review_text(question, reply, label, value, index):
+        source = f'Doctor: {question}\r\nPatient: {reply}'
+        result = checked(source, **{label: f'S[{value}]'})
+>       assert result['note']['claims'][index]['state'] == 'supported'
+E       AssertionError: assert 'uncertain' == 'supported'
+E         
+E         - supported
+E         + uncertain
+
+nanoscribe/test_reply_retention_dev.py:31: AssertionError
+______ test_two_concrete_clauses_retain_two_fields_with_original_offsets _______
+
+    def test_two_concrete_clauses_retain_two_fields_with_original_offsets():
+        source = ('Doctor: Which medicine did you try?\r\n'
+                  'Patient: I took aspirin this evening. I am allergic to nickel.')
+        result = checked(source, MED='S[aspirin]', ALG='S[nickel]')
+>       assert [c['state'] for c in result['note']['claims'][3:]] == ['supported', 'supported']
+E       AssertionError: assert ['supported', 'uncertain'] == ['supported', 'supported']
+E         
+E         At index 1 diff: 'uncertain' != 'supported'
+E         Use -v to get more diff
+
+nanoscribe/test_reply_retention_dev.py:51: AssertionError
+=========================== short test summary info ============================
+FAILED nanoscribe/test_reply_retention_dev.py::test_supported_clause_survives_separate_uncertainty_and_review_text[What symptoms?-I have wrist stiffness. I am not sure how long it has lasted.-CC-wrist stiffness-0]
+FAILED nanoscribe/test_reply_retention_dev.py::test_two_concrete_clauses_retain_two_fields_with_original_offsets
+2 failed, 577 passed in 4.68s

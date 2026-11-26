@@ -1,0 +1,25 @@
+Processed prompts:  92%|█████████▏| 497/541 [00:09<00:05,  7.97it/s, est. speed input: 6183.26 toks/s, output: 15061.95 toks/s][A
+Processed prompts: 100%|██████████| 541/541 [00:09<00:00,  7.97it/s, est. speed input: 6674.42 toks/s, output: 21125.73 toks/s][AProcessed prompts: 100%|██████████| 541/541 [00:09<00:00, 58.58it/s, est. speed input: 6674.42 toks/s, output: 21125.73 toks/s]
+Running generate_until requests:   0%|          | 1/541 [00:09<1:24:06,  9.35s/it]Running generate_until requests: 100%|██████████| 541/541 [00:09<00:00, 57.84it/s]
+fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+2026-11-18:13:25:58 INFO     [loggers.evaluation_tracker:247] Saving results aggregated
+vllm ({'pretrained': '/workspace/models/nanolm_b8_3b', 'dtype': 'bfloat16', 'gpu_memory_utilization': 0.85, 'max_model_len': 8192}), gen_kwargs: ({'max_gen_toks': 1280, 'temperature': 0}), limit: None, num_fewshot: None, batch_size: auto
+|Tasks |Version|Filter|n-shot|        Metric         |   |Value |   |Stderr|
+|------|------:|------|-----:|-----------------------|---|-----:|---|------|
+|ifeval|      4|none  |     0|inst_level_loose_acc   |↑  |0.8094|±  |   N/A|
+|      |       |none  |     0|inst_level_strict_acc  |↑  |0.7782|±  |   N/A|
+|      |       |none  |     0|prompt_level_loose_acc |↑  |0.7283|±  |0.0191|
+|      |       |none  |     0|prompt_level_strict_acc|↑  |0.6913|±  |0.0199|
+
+(MainProcess pid=5953) INFO 11-18 13:25:58 [utils.py:628] [shutdown] Process manager: send sigterm to process EngineCore
+(EngineCore pid=6282) INFO 11-18 13:25:58 [core.py:1698] [shutdown] EngineCore: trigger received signal=SIGTERM
+(EngineCore pid=6282) INFO 11-18 13:25:58 [core.py:1889] [shutdown] EngineCore: start mode=abort timeout=0s
+(EngineCore pid=6282) INFO 11-18 13:25:58 [core.py:1920] [shutdown] EngineCore: request processing complete; starting resource teardown
+(EngineCore pid=6282) INFO 11-18 13:25:58 [core.py:1746] [shutdown] EngineCore: exiting busy loop
+(MainProcess pid=5953) WARNING 11-18 13:26:00 [core_client.py:869] [shutdown] MPClient: engine core exited unexpectedly; starting cleanup
+(MainProcess pid=5953) INFO 11-18 13:26:00 [core_client.py:822] [shutdown] MPClient: start timeout=default
+(MainProcess pid=5953) INFO 11-18 13:26:00 [core_client.py:824] [shutdown] MPClient: stopping engine manager
+(MainProcess pid=5953) INFO 11-18 13:26:00 [core_client.py:826] [shutdown] MPClient: engine manager stopped
+(MainProcess pid=5953) INFO 11-18 13:26:00 [core_client.py:827] [shutdown] MPClient: cleaning up background resources
+(MainProcess pid=5953) INFO 11-18 13:26:00 [core_client.py:829] [shutdown] MPClient: complete
