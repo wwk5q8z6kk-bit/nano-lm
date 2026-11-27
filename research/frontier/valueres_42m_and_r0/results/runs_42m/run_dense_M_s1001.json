@@ -1,0 +1,185 @@
+{
+  "schema": "nanolm_valueres_42m_confirm_v1",
+  "completed": true,
+  "arm": "dense",
+  "size": "M",
+  "seed": 1001,
+  "params": 40379904,
+  "device_index": 1,
+  "device_kind": "TPU v5 lite",
+  "jax_version": "0.6.2",
+  "optax_version": "0.2.9",
+  "recipe": {
+    "opt": "optax.contrib.muon",
+    "lr": 0.004,
+    "wd": 0.1,
+    "wd_on": "matrices",
+    "lr_floor": 0.01,
+    "warmup": 500,
+    "batch_size": 64,
+    "micro": 64,
+    "seq": 512,
+    "steps": 24400,
+    "train_tokens": 799539200
+  },
+  "provenance": {
+    "train_bin_bytes": 20000000000,
+    "train_bin_head64mb_sha256": "e7bf4e8640936185f195f73f563ea8ba89bf5b3daaaaba7402839ceee35bd924",
+    "manifest_sha256": "e80b51e7e156167982d9dbf89f9a762ac01a7dbb627d19c6c5bbbb3817ba3d1b",
+    "val_sha256": {
+      "web": "28c1dbcb75eab107a5db5bd61a9e023d05eacd22b5479779163b545b4439f27e",
+      "textbook": "e6fc2bcea248793296af68fe05be1adda6ef6c64d6e4dad7b4d3c3806f22c90e",
+      "math": "ea56aed8922cbf2cba3076bf51749da0354ee03a1bbd16817b4984343066dcb6",
+      "code": "a2ed084bcaa56e70be3eb86a7690472326050a9b559fff909a243db9ba208053"
+    },
+    "tasks_sha256": "ec09b3fca3121e5781ea2f77a6abfeac9d89286f45d7379ff53a894f9c06a424",
+    "code_sha256": "c89cd8975fcf535cfc05132931acfbf61831625fe9b12b3414f2b0771f8f1381",
+    "ckpt_file": "dense-M-s1001.npz",
+    "ckpt_sha256": "59b976f05245d67a1d4e8614b85d8b847292efa2bb0411fbb845865933cdc8f0"
+  },
+  "curve": [
+    {
+      "step": 4000,
+      "tokens": 131072000,
+      "train_sec": 501.43,
+      "tokens_per_second": 261395,
+      "train_loss": 3.531,
+      "grad_norm": 0.1746,
+      "web": 1.246,
+      "textbook": 0.9582,
+      "math": 1.3688,
+      "code": 1.0776,
+      "mix": 1.2043
+    },
+    {
+      "step": 8000,
+      "tokens": 262144000,
+      "train_sec": 1002.83,
+      "tokens_per_second": 261404,
+      "train_loss": 3.5832,
+      "grad_norm": 0.2939,
+      "web": 1.211,
+      "textbook": 0.9181,
+      "math": 1.3241,
+      "code": 1.0281,
+      "mix": 1.1657
+    },
+    {
+      "step": 12000,
+      "tokens": 393216000,
+      "train_sec": 1504.22,
+      "tokens_per_second": 261409,
+      "train_loss": 3.4829,
+      "grad_norm": 0.2525,
+      "web": 1.1811,
+      "textbook": 0.8815,
+      "math": 1.2806,
+      "code": 0.9844,
+      "mix": 1.1315
+    },
+    {
+      "step": 16000,
+      "tokens": 524288000,
+      "train_sec": 2005.6,
+      "tokens_per_second": 261412,
+      "train_loss": 3.3341,
+      "grad_norm": 0.3602,
+      "web": 1.1443,
+      "textbook": 0.8364,
+      "math": 1.2265,
+      "code": 0.9179,
+      "mix": 1.0878
+    },
+    {
+      "step": 20000,
+      "tokens": 655360000,
+      "train_sec": 2506.98,
+      "tokens_per_second": 261414,
+      "train_loss": 3.1733,
+      "grad_norm": 0.3682,
+      "web": 1.1037,
+      "textbook": 0.7885,
+      "math": 1.1718,
+      "code": 0.8589,
+      "mix": 1.0422
+    },
+    {
+      "step": 24000,
+      "tokens": 786432000,
+      "train_sec": 3008.36,
+      "tokens_per_second": 261416,
+      "train_loss": 3.0622,
+      "grad_norm": 0.4001,
+      "web": 1.0814,
+      "textbook": 0.763,
+      "math": 1.1422,
+      "code": 0.8291,
+      "mix": 1.0176
+    },
+    {
+      "step": 24400,
+      "tokens": 799539200,
+      "train_sec": 3058.54,
+      "tokens_per_second": 261412,
+      "train_loss": 2.9318,
+      "grad_norm": 0.3995,
+      "web": 1.0808,
+      "textbook": 0.7623,
+      "math": 1.1417,
+      "code": 0.8284,
+      "mix": 1.017
+    }
+  ],
+  "rank_buckets_mix": {
+    "rank1_calib": 0.0442,
+    "rank2_8_rerank": 0.2887,
+    "rank9_64_mid": 0.2949,
+    "rank65plus_miss": 0.3892,
+    "top1_acc": 0.2192,
+    "top64_acc": 0.8656
+  },
+  "diagnostics": {},
+  "causal_ablations": {},
+  "downstream_7tasks": {
+    "hellaswag": {
+      "acc": 0.273,
+      "n": 10042,
+      "chance": 0.25,
+      "acc_norm": 0.2864
+    },
+    "arc_easy": {
+      "acc": 0.4491,
+      "n": 2376,
+      "chance": 0.25,
+      "acc_norm": 0.4032
+    },
+    "arc_challenge": {
+      "acc": 0.1894,
+      "n": 1172,
+      "chance": 0.25,
+      "acc_norm": 0.2295
+    },
+    "piqa": {
+      "acc": 0.5936,
+      "n": 1838,
+      "chance": 0.5,
+      "acc_norm": 0.5876
+    },
+    "winogrande": {
+      "acc": 0.5091,
+      "n": 1267,
+      "chance": 0.5
+    },
+    "openbookqa": {
+      "acc": 0.162,
+      "n": 500,
+      "chance": 0.25,
+      "acc_norm": 0.278
+    },
+    "lambada": {
+      "acc": 0.2296,
+      "ppl": 190.22,
+      "n": 5153
+    }
+  }
+}
