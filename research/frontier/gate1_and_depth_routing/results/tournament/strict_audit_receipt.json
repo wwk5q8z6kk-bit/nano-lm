@@ -1,0 +1,23 @@
+{
+  "provenance": {
+    "validated_seeds": [
+      1000,
+      1001,
+      1002
+    ],
+    "receipt_sha256": {
+      "seed_1000.json": "19e04ef0afbb41e9a06994d7e5ee6c9820ad29e9d603280fed5f521f67bfc7df",
+      "seed_1001.json": "90d694298e5a70f6847db1f4003a41e96bbff1af029cc87face498b0cdb53ab3",
+      "seed_1002.json": "abec8ba7d79648dba781b1c705f94aa8996e3dfb0b2d8af99ef5eeb942b3b665"
+    }
+  },
+  "historic_verdicts_unchanged": {
+    "D1_depth_routing": "CLOSE_DEPTH_ROUTING_AT_14M",
+    "coda_fraction_of_dense10_equal_token_gain": -0.0169,
+    "D2_coda_refinement": "REJECT_UNCONDITIONAL_CODA_REFINE"
+  },
+  "strict_post_audit_verdicts": {
+    "D1_strict": "QUALIFY_VALUE_RES_FOR_42M_GATE_REJECT_BLOCK_ATTNRES",
+    "D2_strict": "REJECT_UNCONDITIONAL_CODA_REFINE"
+  }
+}

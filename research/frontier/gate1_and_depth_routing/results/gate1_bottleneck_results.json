@@ -1,0 +1,528 @@
+{
+  "models": {
+    "S": {
+      "web": {
+        "total_bpb": 1.1945,
+        "reported_bpb": 1.1944,
+        "mean_entropy_bits": 5.63,
+        "copy_split": {
+          "copyable_token_share": 0.1399,
+          "copyable_bpb_contrib": 0.0573,
+          "noncopy_bpb_contrib": 1.1372,
+          "copyable_cond_bpb": 0.4095,
+          "noncopy_cond_bpb": 1.3221
+        },
+        "rank_split": {
+          "top1_acc": 0.3433,
+          "top8_acc": 0.616,
+          "top64_acc": 0.8036,
+          "rank1_calib_bpb_contrib": 0.0887,
+          "rank2_8_rerank_bpb_contrib": 0.251,
+          "rank9_64_mid_bpb_contrib": 0.3157,
+          "rank65plus_miss_bpb_contrib": 0.5391
+        },
+        "pos_cond_bpb": {
+          "early_0_63": 1.3199,
+          "mid_64_255": 1.1853,
+          "late_256_511": 1.17
+        },
+        "freq_split": {
+          "common_0_511_share": 0.5808,
+          "mid_512_8191_share": 0.3034,
+          "rare_8192plus_share": 0.1158,
+          "common_0_511_bpb_contrib": 0.466,
+          "mid_512_8191_bpb_contrib": 0.4926,
+          "rare_8192plus_bpb_contrib": 0.2359,
+          "common_bits_per_tok": 3.623,
+          "rare_bits_per_tok": 9.2
+        }
+      },
+      "textbook": {
+        "total_bpb": 0.894,
+        "reported_bpb": 0.894,
+        "mean_entropy_bits": 5.042,
+        "copy_split": {
+          "copyable_token_share": 0.0975,
+          "copyable_bpb_contrib": 0.0212,
+          "noncopy_bpb_contrib": 0.8727,
+          "copyable_cond_bpb": 0.2178,
+          "noncopy_cond_bpb": 0.967
+        },
+        "rank_split": {
+          "top1_acc": 0.4173,
+          "top8_acc": 0.6837,
+          "top64_acc": 0.86,
+          "rank1_calib_bpb_contrib": 0.0771,
+          "rank2_8_rerank_bpb_contrib": 0.2178,
+          "rank9_64_mid_bpb_contrib": 0.2641,
+          "rank65plus_miss_bpb_contrib": 0.335
+        },
+        "pos_cond_bpb": {
+          "early_0_63": 1.017,
+          "mid_64_255": 0.8841,
+          "late_256_511": 0.8707
+        },
+        "freq_split": {
+          "common_0_511_share": 0.5128,
+          "mid_512_8191_share": 0.3595,
+          "rare_8192plus_share": 0.1277,
+          "common_0_511_bpb_contrib": 0.2755,
+          "mid_512_8191_bpb_contrib": 0.4246,
+          "rare_8192plus_bpb_contrib": 0.1939,
+          "common_bits_per_tok": 2.702,
+          "rare_bits_per_tok": 7.634
+        }
+      },
+      "math": {
+        "total_bpb": 1.2963,
+        "reported_bpb": 1.2962,
+        "mean_entropy_bits": 4.214,
+        "copy_split": {
+          "copyable_token_share": 0.3656,
+          "copyable_bpb_contrib": 0.1615,
+          "noncopy_bpb_contrib": 1.1348,
+          "copyable_cond_bpb": 0.4417,
+          "noncopy_cond_bpb": 1.7888
+        },
+        "rank_split": {
+          "top1_acc": 0.4624,
+          "top8_acc": 0.7407,
+          "top64_acc": 0.8876,
+          "rank1_calib_bpb_contrib": 0.1237,
+          "rank2_8_rerank_bpb_contrib": 0.3572,
+          "rank9_64_mid_bpb_contrib": 0.3555,
+          "rank65plus_miss_bpb_contrib": 0.4599
+        },
+        "pos_cond_bpb": {
+          "early_0_63": 1.5595,
+          "mid_64_255": 1.2928,
+          "late_256_511": 1.2331
+        },
+        "freq_split": {
+          "common_0_511_share": 0.6927,
+          "mid_512_8191_share": 0.2245,
+          "rare_8192plus_share": 0.0828,
+          "common_0_511_bpb_contrib": 0.6534,
+          "mid_512_8191_bpb_contrib": 0.435,
+          "rare_8192plus_bpb_contrib": 0.2079,
+          "common_bits_per_tok": 2.924,
+          "rare_bits_per_tok": 7.786
+        }
+      },
+      "code": {
+        "total_bpb": 0.9903,
+        "reported_bpb": 0.9902,
+        "mean_entropy_bits": 3.729,
+        "copy_split": {
+          "copyable_token_share": 0.4677,
+          "copyable_bpb_contrib": 0.1254,
+          "noncopy_bpb_contrib": 0.865,
+          "copyable_cond_bpb": 0.2681,
+          "noncopy_cond_bpb": 1.6249
+        },
+        "rank_split": {
+          "top1_acc": 0.592,
+          "top8_acc": 0.7934,
+          "top64_acc": 0.887,
+          "rank1_calib_bpb_contrib": 0.0963,
+          "rank2_8_rerank_bpb_contrib": 0.241,
+          "rank9_64_mid_bpb_contrib": 0.2209,
+          "rank65plus_miss_bpb_contrib": 0.4322
+        },
+        "pos_cond_bpb": {
+          "early_0_63": 1.4222,
+          "mid_64_255": 0.9906,
+          "late_256_511": 0.8822
+        },
+        "freq_split": {
+          "common_0_511_share": 0.5115,
+          "mid_512_8191_share": 0.3325,
+          "rare_8192plus_share": 0.156,
+          "common_0_511_bpb_contrib": 0.298,
+          "mid_512_8191_bpb_contrib": 0.4098,
+          "rare_8192plus_bpb_contrib": 0.2825,
+          "common_bits_per_tok": 1.965,
+          "rare_bits_per_tok": 6.108
+        }
+      },
+      "mix": {
+        "total_bpb": 1.1442,
+        "reported_bpb": 1.1441,
+        "copyable_bpb_contrib": 0.0743,
+        "noncopy_bpb_contrib": 1.0698,
+        "noncopy_loss_fraction": 0.935,
+        "top1_acc": 0.3982,
+        "top64_acc": 0.8319,
+        "rank1_calib_bpb_contrib": 0.0927,
+        "rank2_8_rerank_bpb_contrib": 0.2593,
+        "rank9_64_mid_bpb_contrib": 0.3028,
+        "rank2_64_loss_fraction": 0.4913,
+        "rank65plus_miss_bpb_contrib": 0.4894,
+        "early_0_63_bpb": 1.3239,
+        "late_256_511_bpb": 1.1048
+      }
+    },
+    "M": {
+      "web": {
+        "total_bpb": 1.1076,
+        "reported_bpb": 1.1075,
+        "mean_entropy_bits": 5.186,
+        "copy_split": {
+          "copyable_token_share": 0.1399,
+          "copyable_bpb_contrib": 0.052,
+          "noncopy_bpb_contrib": 1.0556,
+          "copyable_cond_bpb": 0.3717,
+          "noncopy_cond_bpb": 1.2272
+        },
+        "rank_split": {
+          "top1_acc": 0.3688,
+          "top8_acc": 0.6496,
+          "top64_acc": 0.8327,
+          "rank1_calib_bpb_contrib": 0.0869,
+          "rank2_8_rerank_bpb_contrib": 0.2533,
+          "rank9_64_mid_bpb_contrib": 0.3082,
+          "rank65plus_miss_bpb_contrib": 0.4592
+        },
+        "pos_cond_bpb": {
+          "early_0_63": 1.2377,
+          "mid_64_255": 1.0999,
+          "late_256_511": 1.0807
+        },
+        "freq_split": {
+          "common_0_511_share": 0.5808,
+          "mid_512_8191_share": 0.3034,
+          "rare_8192plus_share": 0.1158,
+          "common_0_511_bpb_contrib": 0.4367,
+          "mid_512_8191_bpb_contrib": 0.4533,
+          "rare_8192plus_bpb_contrib": 0.2176,
+          "common_bits_per_tok": 3.396,
+          "rare_bits_per_tok": 8.486
+        }
+      },
+      "textbook": {
+        "total_bpb": 0.7903,
+        "reported_bpb": 0.7902,
+        "mean_entropy_bits": 4.394,
+        "copy_split": {
+          "copyable_token_share": 0.0975,
+          "copyable_bpb_contrib": 0.0179,
+          "noncopy_bpb_contrib": 0.7723,
+          "copyable_cond_bpb": 0.1839,
+          "noncopy_cond_bpb": 0.8557
+        },
+        "rank_split": {
+          "top1_acc": 0.4549,
+          "top8_acc": 0.7317,
+          "top64_acc": 0.8933,
+          "rank1_calib_bpb_contrib": 0.0731,
+          "rank2_8_rerank_bpb_contrib": 0.2199,
+          "rank9_64_mid_bpb_contrib": 0.2425,
+          "rank65plus_miss_bpb_contrib": 0.2548
+        },
+        "pos_cond_bpb": {
+          "early_0_63": 0.9211,
+          "mid_64_255": 0.7802,
+          "late_256_511": 0.7651
+        },
+        "freq_split": {
+          "common_0_511_share": 0.5128,
+          "mid_512_8191_share": 0.3595,
+          "rare_8192plus_share": 0.1277,
+          "common_0_511_bpb_contrib": 0.2443,
+          "mid_512_8191_bpb_contrib": 0.3746,
+          "rare_8192plus_bpb_contrib": 0.1714,
+          "common_bits_per_tok": 2.396,
+          "rare_bits_per_tok": 6.747
+        }
+      },
+      "math": {
+        "total_bpb": 1.1823,
+        "reported_bpb": 1.1822,
+        "mean_entropy_bits": 3.806,
+        "copy_split": {
+          "copyable_token_share": 0.3656,
+          "copyable_bpb_contrib": 0.1439,
+          "noncopy_bpb_contrib": 1.0384,
+          "copyable_cond_bpb": 0.3936,
+          "noncopy_cond_bpb": 1.6368
+        },
+        "rank_split": {
+          "top1_acc": 0.4911,
+          "top8_acc": 0.7696,
+          "top64_acc": 0.908,
+          "rank1_calib_bpb_contrib": 0.1174,
+          "rank2_8_rerank_bpb_contrib": 0.3507,
+          "rank9_64_mid_bpb_contrib": 0.3361,
+          "rank65plus_miss_bpb_contrib": 0.378
+        },
+        "pos_cond_bpb": {
+          "early_0_63": 1.4474,
+          "mid_64_255": 1.1785,
+          "late_256_511": 1.1188
+        },
+        "freq_split": {
+          "common_0_511_share": 0.6927,
+          "mid_512_8191_share": 0.2245,
+          "rare_8192plus_share": 0.0828,
+          "common_0_511_bpb_contrib": 0.6017,
+          "mid_512_8191_bpb_contrib": 0.3948,
+          "rare_8192plus_bpb_contrib": 0.1857,
+          "common_bits_per_tok": 2.692,
+          "rare_bits_per_tok": 6.955
+        }
+      },
+      "code": {
+        "total_bpb": 0.875,
+        "reported_bpb": 0.875,
+        "mean_entropy_bits": 3.236,
+        "copy_split": {
+          "copyable_token_share": 0.4677,
+          "copyable_bpb_contrib": 0.1061,
+          "noncopy_bpb_contrib": 0.7689,
+          "copyable_cond_bpb": 0.2269,
+          "noncopy_cond_bpb": 1.4445
+        },
+        "rank_split": {
+          "top1_acc": 0.6232,
+          "top8_acc": 0.8236,
+          "top64_acc": 0.9075,
+          "rank1_calib_bpb_contrib": 0.0873,
+          "rank2_8_rerank_bpb_contrib": 0.2366,
+          "rank9_64_mid_bpb_contrib": 0.1987,
+          "rank65plus_miss_bpb_contrib": 0.3524
+        },
+        "pos_cond_bpb": {
+          "early_0_63": 1.284,
+          "mid_64_255": 0.8745,
+          "late_256_511": 0.7732
+        },
+        "freq_split": {
+          "common_0_511_share": 0.5115,
+          "mid_512_8191_share": 0.3325,
+          "rare_8192plus_share": 0.156,
+          "common_0_511_bpb_contrib": 0.2629,
+          "mid_512_8191_bpb_contrib": 0.3609,
+          "rare_8192plus_bpb_contrib": 0.2512,
+          "common_bits_per_tok": 1.734,
+          "rare_bits_per_tok": 5.431
+        }
+      },
+      "mix": {
+        "total_bpb": 1.0481,
+        "reported_bpb": 1.0481,
+        "copyable_bpb_contrib": 0.066,
+        "noncopy_bpb_contrib": 0.9821,
+        "noncopy_loss_fraction": 0.937,
+        "top1_acc": 0.4264,
+        "top64_acc": 0.8593,
+        "rank1_calib_bpb_contrib": 0.0891,
+        "rank2_8_rerank_bpb_contrib": 0.2596,
+        "rank9_64_mid_bpb_contrib": 0.2901,
+        "rank2_64_loss_fraction": 0.5245,
+        "rank65plus_miss_bpb_contrib": 0.4093,
+        "early_0_63_bpb": 1.2294,
+        "late_256_511_bpb": 1.0077
+      }
+    },
+    "L": {
+      "web": {
+        "total_bpb": 1.0505,
+        "reported_bpb": 1.0504,
+        "mean_entropy_bits": 4.861,
+        "copy_split": {
+          "copyable_token_share": 0.1399,
+          "copyable_bpb_contrib": 0.0481,
+          "noncopy_bpb_contrib": 1.0024,
+          "copyable_cond_bpb": 0.3437,
+          "noncopy_cond_bpb": 1.1654
+        },
+        "rank_split": {
+          "top1_acc": 0.3887,
+          "top8_acc": 0.6724,
+          "top64_acc": 0.8495,
+          "rank1_calib_bpb_contrib": 0.0849,
+          "rank2_8_rerank_bpb_contrib": 0.2532,
+          "rank9_64_mid_bpb_contrib": 0.2985,
+          "rank65plus_miss_bpb_contrib": 0.4138
+        },
+        "pos_cond_bpb": {
+          "early_0_63": 1.1833,
+          "mid_64_255": 1.0425,
+          "late_256_511": 1.0232
+        },
+        "freq_split": {
+          "common_0_511_share": 0.5808,
+          "mid_512_8191_share": 0.3034,
+          "rare_8192plus_share": 0.1158,
+          "common_0_511_bpb_contrib": 0.4175,
+          "mid_512_8191_bpb_contrib": 0.4275,
+          "rare_8192plus_bpb_contrib": 0.2055,
+          "common_bits_per_tok": 3.246,
+          "rare_bits_per_tok": 8.016
+        }
+      },
+      "textbook": {
+        "total_bpb": 0.723,
+        "reported_bpb": 0.723,
+        "mean_entropy_bits": 3.967,
+        "copy_split": {
+          "copyable_token_share": 0.0975,
+          "copyable_bpb_contrib": 0.0158,
+          "noncopy_bpb_contrib": 0.7073,
+          "copyable_cond_bpb": 0.1618,
+          "noncopy_cond_bpb": 0.7836
+        },
+        "rank_split": {
+          "top1_acc": 0.4814,
+          "top8_acc": 0.7634,
+          "top64_acc": 0.9142,
+          "rank1_calib_bpb_contrib": 0.0702,
+          "rank2_8_rerank_bpb_contrib": 0.2199,
+          "rank9_64_mid_bpb_contrib": 0.2269,
+          "rank65plus_miss_bpb_contrib": 0.2061
+        },
+        "pos_cond_bpb": {
+          "early_0_63": 0.8532,
+          "mid_64_255": 0.7154,
+          "late_256_511": 0.6963
+        },
+        "freq_split": {
+          "common_0_511_share": 0.5128,
+          "mid_512_8191_share": 0.3595,
+          "rare_8192plus_share": 0.1277,
+          "common_0_511_bpb_contrib": 0.2255,
+          "mid_512_8191_bpb_contrib": 0.3405,
+          "rare_8192plus_bpb_contrib": 0.157,
+          "common_bits_per_tok": 2.212,
+          "rare_bits_per_tok": 6.182
+        }
+      },
+      "math": {
+        "total_bpb": 1.1046,
+        "reported_bpb": 1.1045,
+        "mean_entropy_bits": 3.51,
+        "copy_split": {
+          "copyable_token_share": 0.3656,
+          "copyable_bpb_contrib": 0.1314,
+          "noncopy_bpb_contrib": 0.9732,
+          "copyable_cond_bpb": 0.3593,
+          "noncopy_cond_bpb": 1.5341
+        },
+        "rank_split": {
+          "top1_acc": 0.515,
+          "top8_acc": 0.7901,
+          "top64_acc": 0.9192,
+          "rank1_calib_bpb_contrib": 0.1123,
+          "rank2_8_rerank_bpb_contrib": 0.3449,
+          "rank9_64_mid_bpb_contrib": 0.3141,
+          "rank65plus_miss_bpb_contrib": 0.3333
+        },
+        "pos_cond_bpb": {
+          "early_0_63": 1.3772,
+          "mid_64_255": 1.0999,
+          "late_256_511": 1.04
+        },
+        "freq_split": {
+          "common_0_511_share": 0.6927,
+          "mid_512_8191_share": 0.2245,
+          "rare_8192plus_share": 0.0828,
+          "common_0_511_bpb_contrib": 0.5669,
+          "mid_512_8191_bpb_contrib": 0.3664,
+          "rare_8192plus_bpb_contrib": 0.1713,
+          "common_bits_per_tok": 2.537,
+          "rare_bits_per_tok": 6.412
+        }
+      },
+      "code": {
+        "total_bpb": 0.8073,
+        "reported_bpb": 0.8073,
+        "mean_entropy_bits": 2.898,
+        "copy_split": {
+          "copyable_token_share": 0.4677,
+          "copyable_bpb_contrib": 0.0938,
+          "noncopy_bpb_contrib": 0.7135,
+          "copyable_cond_bpb": 0.2006,
+          "noncopy_cond_bpb": 1.3404
+        },
+        "rank_split": {
+          "top1_acc": 0.6453,
+          "top8_acc": 0.8403,
+          "top64_acc": 0.9199,
+          "rank1_calib_bpb_contrib": 0.0786,
+          "rank2_8_rerank_bpb_contrib": 0.2293,
+          "rank9_64_mid_bpb_contrib": 0.1902,
+          "rank65plus_miss_bpb_contrib": 0.3092
+        },
+        "pos_cond_bpb": {
+          "early_0_63": 1.2072,
+          "mid_64_255": 0.8094,
+          "late_256_511": 0.7058
+        },
+        "freq_split": {
+          "common_0_511_share": 0.5115,
+          "mid_512_8191_share": 0.3325,
+          "rare_8192plus_share": 0.156,
+          "common_0_511_bpb_contrib": 0.2411,
+          "mid_512_8191_bpb_contrib": 0.3325,
+          "rare_8192plus_bpb_contrib": 0.2337,
+          "common_bits_per_tok": 1.59,
+          "rare_bits_per_tok": 5.053
+        }
+      },
+      "mix": {
+        "total_bpb": 0.9858,
+        "reported_bpb": 0.9857,
+        "copyable_bpb_contrib": 0.0602,
+        "noncopy_bpb_contrib": 0.9256,
+        "noncopy_loss_fraction": 0.9389,
+        "top1_acc": 0.448,
+        "top64_acc": 0.8754,
+        "rank1_calib_bpb_contrib": 0.0858,
+        "rank2_8_rerank_bpb_contrib": 0.2579,
+        "rank9_64_mid_bpb_contrib": 0.2782,
+        "rank2_64_loss_fraction": 0.5438,
+        "rank65plus_miss_bpb_contrib": 0.3638,
+        "early_0_63_bpb": 1.1685,
+        "late_256_511_bpb": 0.9448
+      }
+    }
+  },
+  "cache_L": {
+    "web": {
+      "model": 1.0505,
+      "with_cache": 1.0498,
+      "foreign_cache": 1.0505,
+      "gain": 0.0007,
+      "foreign_gain": -0.0
+    },
+    "textbook": {
+      "model": 0.723,
+      "with_cache": 0.7233,
+      "foreign_cache": 0.723,
+      "gain": -0.0003,
+      "foreign_gain": -0.0
+    },
+    "math": {
+      "model": 1.1046,
+      "with_cache": 1.1025,
+      "foreign_cache": 1.1046,
+      "gain": 0.0021,
+      "foreign_gain": -0.0
+    },
+    "code": {
+      "model": 0.8073,
+      "with_cache": 0.8031,
+      "foreign_cache": 0.8073,
+      "gain": 0.0043,
+      "foreign_gain": 0.0
+    },
+    "mix": {
+      "model": 0.9858,
+      "with_cache": 0.9846,
+      "foreign_cache": 0.9858,
+      "gain": 0.0012,
+      "foreign_gain": 0.0
+    }
+  },
+  "elapsed_seconds": 735.1
+}

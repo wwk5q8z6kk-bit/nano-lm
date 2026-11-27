@@ -1,0 +1,155 @@
+[
+  {
+    "name": "Blueprint H1 (32L, d=2560, V=65536, 24 GDN + 8 GQA)",
+    "total_params": 3881517571,
+    "total_B": 3.8815,
+    "strict_under_4B": true,
+    "headroom_to_4B_M": 118.48,
+    "breakdown_M": {
+      "embed": 167.77,
+      "lm_head": 0.0,
+      "ffn": 2265.01,
+      "full_attn": 183.52,
+      "recurrent": 1263.56,
+      "attn_res": 0.33,
+      "copy_head": 1.32
+    },
+    "active_params_per_tok_B": 3.8815,
+    "state_4k": {
+      "kv_mib": 80.0,
+      "rec_mib": 26.25,
+      "total_mib": 106.25
+    },
+    "state_32k": {
+      "kv_mib": 640.0,
+      "rec_mib": 26.25,
+      "total_mib": 666.25
+    },
+    "decode_dram_gb_per_tok_bf16_32k": 8.462
+  },
+  {
+    "name": "Qwen3.5-4B-like LM (32L, d=2560, V=248320, Qwen GDN sizes)",
+    "total_params": 4457897984,
+    "total_B": 4.4579,
+    "strict_under_4B": false,
+    "headroom_to_4B_M": -457.9,
+    "breakdown_M": {
+      "embed": 635.7,
+      "lm_head": 0.0,
+      "ffn": 2265.01,
+      "full_attn": 293.63,
+      "recurrent": 1263.56,
+      "attn_res": 0.0,
+      "copy_head": 0.0
+    },
+    "active_params_per_tok_B": 4.4579,
+    "state_4k": {
+      "kv_mib": 128.0,
+      "rec_mib": 26.25,
+      "total_mib": 154.25
+    },
+    "state_32k": {
+      "kv_mib": 1024.0,
+      "rec_mib": 26.25,
+      "total_mib": 1050.25
+    },
+    "decode_dram_gb_per_tok_bf16_32k": 10.017
+  },
+  {
+    "name": "Dense D0 Reference (32L, d=2560, V=65536, 32 GQA)",
+    "total_params": 2936187392,
+    "total_B": 2.9362,
+    "strict_under_4B": true,
+    "headroom_to_4B_M": 1063.81,
+    "breakdown_M": {
+      "embed": 167.77,
+      "lm_head": 0.0,
+      "ffn": 2265.01,
+      "full_attn": 503.41,
+      "recurrent": 0.0,
+      "attn_res": 0.0,
+      "copy_head": 0.0
+    },
+    "active_params_per_tok_B": 2.9362,
+    "state_4k": {
+      "kv_mib": 256.0,
+      "rec_mib": 0.0,
+      "total_mib": 256.0
+    },
+    "state_32k": {
+      "kv_mib": 2048.0,
+      "rec_mib": 0.0,
+      "total_mib": 2048.0
+    },
+    "decode_dram_gb_per_tok_bf16_32k": 8.02
+  },
+  {
+    "name": "Mamba-3 5:1 Hybrid R1 (30L, d=2560, V=65536, 25 SSM + 5 GQA)",
+    "total_params": 3684374200,
+    "total_B": 3.6844,
+    "strict_under_4B": true,
+    "headroom_to_4B_M": 315.63,
+    "breakdown_M": {
+      "embed": 167.77,
+      "lm_head": 0.0,
+      "ffn": 2123.44,
+      "full_attn": 78.66,
+      "recurrent": 1314.5,
+      "attn_res": 0.0,
+      "copy_head": 0.0
+    },
+    "active_params_per_tok_B": 3.6844,
+    "state_4k": {
+      "kv_mib": 40.0,
+      "rec_mib": 17.58,
+      "total_mib": 57.58
+    },
+    "state_32k": {
+      "kv_mib": 320.0,
+      "rec_mib": 17.58,
+      "total_mib": 337.58
+    },
+    "decode_dram_gb_per_tok_bf16_32k": 7.723
+  },
+  {
+    "name": "Looped Dense A2 (16 unique x 2 loops = 32L compute, d=2560, V=65536)",
+    "total_params": 1551981056,
+    "total_B": 1.552,
+    "strict_under_4B": true,
+    "headroom_to_4B_M": 2448.02,
+    "breakdown_M": {
+      "embed": 167.77,
+      "lm_head": 0.0,
+      "ffn": 1132.5,
+      "full_attn": 251.7,
+      "recurrent": 0.0,
+      "attn_res": 0.0,
+      "copy_head": 0.0
+    },
+    "active_params_per_tok_B": 2.9362,
+    "state_4k": {
+      "kv_mib": 256.0,
+      "rec_mib": 0.0,
+      "total_mib": 256.0
+    },
+    "state_32k": {
+      "kv_mib": 2048.0,
+      "rec_mib": 0.0,
+      "total_mib": 2048.0
+    },
+    "decode_dram_gb_per_tok_bf16_32k": 8.02
+  }
+]
+
+EMPIRICAL SCALING FIT (5 uniform-sampler NanoLM points, default AdamW):
+mix_bpb(N, D) ≈ 0.62 + 34.94*N^(-0.27) + 640.36*D^(-0.42) | RMSE=0.00070
+  N=  14.3M, D= 0.8B: actual=1.1451, fit=1.1454, resid=-0.0003
+  N=  40.4M, D= 0.8B: actual=1.0466, fit=1.0455, resid=+0.0011
+  N= 100.7M, D= 0.8B: actual=0.9775, fit=0.9780, resid=-0.0005
+  N= 100.7M, D= 2.0B: actual=0.9399, fit=0.9407, resid=-0.0008
+  N= 210.8M, D= 4.2B: actual=0.8763, fit=0.8758, resid=+0.0005
+  Extrapolated (illustrative only, default recipe): N= 210.8M, D= 10.0B -> 0.8580 (with -0.027 Muon+floor offset: ~0.8310)
+  Extrapolated (illustrative only, default recipe): N= 500.0M, D= 10.0B -> 0.8169 (with -0.027 Muon+floor offset: ~0.7899)
+  Extrapolated (illustrative only, default recipe): N=1000.0M, D= 20.0B -> 0.7800 (with -0.027 Muon+floor offset: ~0.7530)
+  Extrapolated (illustrative only, default recipe): N=1000.0M, D=100.0B -> 0.7652 (with -0.027 Muon+floor offset: ~0.7382)
+  Extrapolated (illustrative only, default recipe): N=3200.0M, D=100.0B -> 0.7302 (with -0.027 Muon+floor offset: ~0.7032)
